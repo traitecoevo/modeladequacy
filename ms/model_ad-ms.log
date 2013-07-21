@@ -1,0 +1,782 @@
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  21 JUL 2013 11:00
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**model_ad-ms.tex
+(./model_ad-ms.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman-x-2009-06-19, ngerman-x-2009-06-19, afrikaans, ancientgreek, ibycus, arabi
+c, armenian, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danis
+h, dutch, ukenglish, usenglishmax, esperanto, estonian, ethiopic, farsi, finnis
+h, french, galician, german, ngerman, swissgerman, monogreek, greek, hungarian,
+ icelandic, assamese, bengali, gujarati, hindi, kannada, malayalam, marathi, or
+iya, panjabi, tamil, telugu, indonesian, interlingua, irish, italian, kurmanji,
+ lao, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk, pol
+ish, portuguese, romanian, russian, sanskrit, serbian, serbianc, slovak, sloven
+ian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, welsh, loaded
+.
+(/usr/local/texlive/2011/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2011/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/mathpazo.sty
+Package: mathpazo 2005/04/12 PSNFSS-v9.2a Palatino w/ Pazo Math (D.Puga, WaS) 
+\symupright=\mathgroup4
+) (./ms.sty
+Package: ms 2008/07/28 v1 Rich's manuscript definitions
+
+Package: ms - common definitions
+(/usr/local/texlive/2011/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2000/12/01 6.7 Contributed and Supported LaTeX2e package
+
+Package: `setspace' 6.7 <2000/12/01>
+) (/usr/local/texlive/2011/texmf-dist/tex/latex/lineno/lineno.sty
+Package: lineno 2005/11/02 line numbers on paragraphs v4.41
+\linenopenalty=\count87
+\output=\toks14
+\linenoprevgraf=\count88
+\linenumbersep=\dimen103
+\linenumberwidth=\dimen104
+\c@linenumber=\count89
+\c@pagewiselinenumber=\count90
+\c@LN@truepage=\count91
+\c@internallinenumber=\count92
+\c@internallinenumbers=\count93
+\quotelinenumbersep=\dimen105
+\bframerule=\dimen106
+\bframesep=\dimen107
+\bframebox=\box26
+LaTeX Info: Redefining \\ on input line 3056.
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks15
+\ex@=\dimen108
+))
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen109
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count94
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count95
+\leftroot@=\count96
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count97
+\DOTSCASE@=\count98
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box27
+\strutbox@=\box28
+\big@size=\dimen110
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count99
+\c@MaxMatrixCols=\count100
+\dotsspace@=\muskip10
+\c@parentequation=\count101
+\dspbrk@lvl=\count102
+\tag@help=\toks16
+\row@=\count103
+\column@=\count104
+\maxfields@=\count105
+\andhelp@=\toks17
+\eqnshift@=\dimen111
+\alignsep@=\dimen112
+\tagshift@=\dimen113
+\tagwidth@=\dimen114
+\totwidth@=\dimen115
+\lineht@=\dimen116
+\@envbody=\toks18
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks19
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/refstyle/refstyle.sty
+Package: refstyle 2010/11/02 v0.5 Reference formatting (DNJ Els)
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks20
+)
+Package refstyle Info: Config file refstyle.cfg used on input line 322.
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/refstyle/refstyle.cfg
+File: refstyle.cfg 2010/11/02 0.5 Configuration file for refstyle (DNJ Els)
+Package refstyle Info: New reference template \newref{part} on input line 468.
+Package refstyle Info: \partkey created on input line 468.
+Package refstyle Info: \partlabel created on input line 468.
+Package refstyle Info: \partref created on input line 468.
+Package refstyle Info: \Partref created on input line 468.
+Package refstyle Info: \partrangeref created on input line 468.
+Package refstyle Info: \Partrangeref created on input line 468.
+Package refstyle Info: \partpageref created on input line 468.
+Package refstyle Info: New reference template \newref{chap} on input line 501.
+Package refstyle Info: \chapkey created on input line 501.
+Package refstyle Info: \chaplabel created on input line 501.
+Package refstyle Info: \chapref created on input line 501.
+Package refstyle Info: \Chapref created on input line 501.
+Package refstyle Info: \chaprangeref created on input line 501.
+Package refstyle Info: \Chaprangeref created on input line 501.
+Package refstyle Info: \chappageref created on input line 501.
+Package refstyle Info: New reference template \newref{sec} on input line 511.
+Package refstyle Info: \seckey created on input line 511.
+Package refstyle Info: \seclabel created on input line 511.
+Package refstyle Info: \secref created on input line 511.
+Package refstyle Info: \Secref created on input line 511.
+Package refstyle Info: \secrangeref created on input line 511.
+Package refstyle Info: \Secrangeref created on input line 511.
+Package refstyle Info: \secpageref created on input line 511.
+Package refstyle Info: New reference template \newref{eq} on input line 526.
+Package refstyle Info: \eqkey created on input line 526.
+Package refstyle Info: \eqlabel created on input line 526.
+Package refstyle Info: \eqref created on input line 526.
+Package refstyle Info: \Eqref created on input line 526.
+Package refstyle Info: \eqrangeref created on input line 526.
+Package refstyle Info: \Eqrangeref created on input line 526.
+Package refstyle Info: \eqpageref created on input line 526.
+Package refstyle Info: New reference template \newref{fig} on input line 544.
+Package refstyle Info: \figkey created on input line 544.
+Package refstyle Info: \figlabel created on input line 544.
+Package refstyle Info: \figref created on input line 544.
+Package refstyle Info: \Figref created on input line 544.
+Package refstyle Info: \figrangeref created on input line 544.
+Package refstyle Info: \Figrangeref created on input line 544.
+Package refstyle Info: \figpageref created on input line 544.
+Package refstyle Info: New reference template \newref{tab} on input line 553.
+Package refstyle Info: \tabkey created on input line 553.
+Package refstyle Info: \tablabel created on input line 553.
+Package refstyle Info: \tabref created on input line 553.
+Package refstyle Info: \Tabref created on input line 553.
+Package refstyle Info: \tabrangeref created on input line 553.
+Package refstyle Info: \Tabrangeref created on input line 553.
+Package refstyle Info: \tabpageref created on input line 553.
+Package refstyle Info: New reference template \newref{fn} on input line 568.
+Package refstyle Info: \fnkey created on input line 568.
+Package refstyle Info: \fnlabel created on input line 568.
+Package refstyle Info: \fnref created on input line 568.
+Package refstyle Info: \Fnref created on input line 568.
+Package refstyle Info: \fnrangeref created on input line 568.
+Package refstyle Info: \Fnrangeref created on input line 568.
+Package refstyle Info: \fnpageref created on input line 568.
+))
+(/usr/local/texlive/2011/texmf-dist/tex/latex/ncctools/extdash.sty
+Package: extdash 2005/01/29 v1.2 Extended Dash Package (NCC)
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/message (HO)
+)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/04/18 v1.20 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count106
+))
+(/usr/local/texlive/2011/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2010/03/01 v1.5 Switches for detecting VTeX and its modes (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count107
+\Gm@cntv=\count108
+\c@Gm@tempcnt=\count109
+\Gm@bindingoffset=\dimen117
+\Gm@wd@mp=\dimen118
+\Gm@odd@mp=\dimen119
+\Gm@even@mp=\dimen120
+\Gm@layoutwidth=\dimen121
+\Gm@layoutheight=\dimen122
+\Gm@layouthoffset=\dimen123
+\Gm@layoutvoffset=\dimen124
+\Gm@dimlist=\toks21
+))
+(/usr/local/texlive/2011/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip46
+\bibsep=\skip47
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count110
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+)
+\Gin@req@height=\dimen125
+\Gin@req@width=\dimen126
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2010/01/09 v3.1m Customizing captions (AR)
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2010/01/14 v3.1m caption3 kernel (AR)
+\captionmargin=\dimen127
+\captionmargin@=\dimen128
+\captionwidth=\dimen129
+\caption@indent=\dimen130
+\caption@parindent=\dimen131
+\caption@hangindent=\dimen132
+)
+\c@ContinuedFloat=\count111
+)
+(./model_ad-ms.aux)
+\openout1 = `model_ad-ms.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Try loading font information for OT1+pplj on input line 29.
+
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/ot1pplj.fd
+File: ot1pplj.fd 2004/09/06 font definitions for OT1/pplj.
+)
+(/usr/local/texlive/2011/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count112
+\scratchdimen=\dimen133
+\scratchbox=\box29
+\nofMPsegments=\count113
+\nofMParguments=\count114
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count115
+\MPscratchDim=\dimen134
+\MPnumerator=\count116
+\makeMPintoPDFobject=\count117
+\everyMPtoPDFconversion=\toks23
+)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(99.58464pt, 415.12572pt, 99.58464pt)
+* v-part:(T,H,B)=(99.58464pt, 595.8007pt, 99.58464pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=415.12572pt
+* \textheight=595.8007pt
+* \oddsidemargin=27.31465pt
+* \evensidemargin=27.31465pt
+* \topmargin=-9.68535pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=44.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2011/04/22 v0.16 Utilities of pdfTeX for LuaTeX (HO)
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Managing graphics extensions (HO)
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2011/04/07 v1.3 Defining keys (HO)
+))
+(/usr/local/texlive/2011/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2010/12/23 v3.10 Keyval support for LaTeX options (HO)
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2011/04/07 v1.13 Key value parser (HO)
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2011/02/16 v1.5 Prefix for e-TeX command names (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Font shape `OT1/pplj/bx/n' in size <12> not available
+(Font)              Font shape `OT1/pplj/b/n' tried instead on input line 30.
+LaTeX Font Info:    Try loading font information for OT1+ppl on input line 30.
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/ot1ppl.fd
+File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
+)
+LaTeX Font Info:    Try loading font information for OML+zplm on input line 30.
+
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/omlzplm.fd
+File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
+)
+LaTeX Font Info:    Try loading font information for OMS+zplm on input line 30.
+
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/omszplm.fd
+File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
+)
+LaTeX Font Info:    Try loading font information for OMX+zplm on input line 30.
+
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/omxzplm.fd
+File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
+)
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 30.
+
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/ot1zplm.fd
+File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
+)
+Overfull \hbox (8.99467pt too wide) in paragraph at lines 30--30
+ [][] 
+ []
+
+[1
+
+{/Users/mwp/Library/texlive/2011/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Font shape `OT1/pplj/bx/n' in size <17.28> not available
+(Font)              Font shape `OT1/pplj/b/n' tried instead on input line 34.
+ [2
+
+]
+
+Package natbib Warning: Citation `Westoby1992TREE' on page 3 undefined on input
+ line 50.
+
+
+Package natbib Warning: Citation `Lord1995AmNat' on page 3 undefined on input l
+ine 50.
+
+
+Package natbib Warning: Citation `Westoby2002' on page 3 undefined on input lin
+e 50.
+
+
+Package natbib Warning: Citation `Moles2005' on page 3 undefined on input line 
+50.
+
+
+Package natbib Warning: Citation `Cornwell2013' on page 3 undefined on input li
+ne 50.
+
+
+Package natbib Warning: Citation `PennellHarmon' on page 3 undefined on input l
+ine 52.
+
+
+Package natbib Warning: Citation `Grafen1989' on page 3 undefined on input line
+ 52.
+
+
+Package natbib Warning: Citation `Mooers1999' on page 3 undefined on input line
+ 52.
+
+
+Package natbib Warning: Citation `Maddison2007' on page 3 undefined on input li
+ne 52.
+
+
+Package natbib Warning: Citation `FitzJohn2010' on page 3 undefined on input li
+ne 52.
+
+[3]
+
+Package natbib Warning: Citation `Omeara2012' on page 4 undefined on input line
+ 54.
+
+
+Package natbib Warning: Citation `PennellHarmon' on page 4 undefined on input l
+ine 54.
+
+
+Package natbib Warning: Citation `Landis2012' on page 4 undefined on input line
+ 54.
+
+
+Package natbib Warning: Citation `Eastmanlevy' on page 4 undefined on input lin
+e 54.
+
+
+Package natbib Warning: Citation `Pagel1999' on page 4 undefined on input line 
+54.
+
+[4]
+
+Package natbib Warning: Citation `Burbrink2012' on page 5 undefined on input li
+ne 56.
+
+
+Package natbib Warning: Citation `Grafen1989' on page 5 undefined on input line
+ 56.
+
+
+Package natbib Warning: Citation `Freckleton2010' on page 5 undefined on input 
+line 56.
+
+
+Package natbib Warning: Citation `Hansen2012' on page 5 undefined on input line
+ 56.
+
+
+Package natbib Warning: Citation `PennellHarmon' on page 5 undefined on input l
+ine 56.
+
+
+Package natbib Warning: Citation `Simpson 1944' on page 5 undefined on input li
+ne 58.
+
+
+Package natbib Warning: Citation `Simpson1953' on page 5 undefined on input lin
+e 58.
+
+
+Package natbib Warning: Citation `Schulter2000' on page 5 undefined on input li
+ne 58.
+
+
+Package natbib Warning: Citation `Yoder2010' on page 5 undefined on input line 
+58.
+
+
+Package natbib Warning: Citation `Akaike1973' on page 5 undefined on input line
+ 58.
+
+[5]
+
+Package natbib Warning: Citation `Gelmanbook' on page 6 undefined on input line
+ 60.
+
+
+Package natbib Warning: Citation `GautLewis1995' on page 6 undefined on input l
+ine 60.
+
+
+Package natbib Warning: Citation `SullivanSwofford' on page 6 undefined on inpu
+t line 60.
+
+
+Package natbib Warning: Citation `Goldman' on page 6 undefined on input line 60
+.
+
+
+Package natbib Warning: Citation `HuelsenbeckBull1996' on page 6 undefined on i
+nput line 60.
+
+
+Package natbib Warning: Citation `SandersonKim' on page 6 undefined on input li
+ne 60.
+
+
+Package natbib Warning: Citation `Bollback2002' on page 6 undefined on input li
+ne 60.
+
+
+Package natbib Warning: Citation `Ripplinger2010' on page 6 undefined on input 
+line 60.
+
+
+Package natbib Warning: Citation `Lewis2013' on page 6 undefined on input line 
+60.
+
+
+Package natbib Warning: Citation `Brown2013' on page 6 undefined on input line 
+60.
+
+
+Package natbib Warning: Citation `Minin2003' on page 6 undefined on input line 
+60.
+
+
+Package natbib Warning: Citation `Abdo2005' on page 6 undefined on input line 6
+0.
+
+
+Package natbib Warning: Citation `SullivanJoyce2005' on page 6 undefined on inp
+ut line 60.
+
+
+Package natbib Warning: Citation `Akaike1973' on page 6 undefined on input line
+ 62.
+
+
+Package natbib Warning: Citation `AICC' on page 6 undefined on input line 62.
+
+
+Package natbib Warning: Citation `BA2004' on page 6 undefined on input line 62.
+
+
+
+Package natbib Warning: Citation `Wilks1938' on page 6 undefined on input line 
+62.
+
+[6]
+
+Package natbib Warning: Citation `Simpson1944' on page 7 undefined on input lin
+e 64.
+
+
+Package natbib Warning: Citation `Simpson1953' on page 7 undefined on input lin
+e 64.
+
+
+Package natbib Warning: Citation `FreckletonHarvey2006' on page 7 undefined on 
+input line 64.
+
+
+Package natbib Warning: Citation `Harmon2003' on page 7 undefined on input line
+ 64.
+
+
+Package natbib Warning: Citation `Slater2010' on page 7 undefined on input line
+ 64.
+
+
+Package natbib Warning: Citation `Reich1997' on page 7 undefined on input line 
+68.
+
+
+Package natbib Warning: Citation `Wright2005' on page 7 undefined on input line
+ 68.
+
+
+Package natbib Warning: Citation `Cornwell2013' on page 7 undefined on input li
+ne 68.
+
+[7]
+LaTeX Font Info:    Font shape `OT1/pplj/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/pplj/b/n' tried instead on input line 74.
+
+
+Package natbib Warning: Citation `Rohlf2001' on page 8 undefined on input line 
+76.
+
+
+Package natbib Warning: Citation `Blomberg2012' on page 8 undefined on input li
+ne 76.
+
+[8]
+
+Package natbib Warning: Citation `Rohlf2001' on page 9 undefined on input line 
+89.
+
+
+Package natbib Warning: Citation `Blomberg2012' on page 9 undefined on input li
+ne 89.
+
+
+Package natbib Warning: Citation `ks' on page 9 undefined on input line 91.
+
+
+Package natbib Warning: Citation `Rohlf2001' on page 9 undefined on input line 
+91.
+
+
+Package natbib Warning: Citation `Landis2013' on page 9 undefined on input line
+ 91.
+
+
+Package natbib Warning: Citation `Eastmanjump' on page 9 undefined on input lin
+e 91.
+
+
+Package natbib Warning: Citation `PennellPE' on page 9 undefined on input line 
+91.
+
+[9]
+
+Package natbib Warning: Citation `Garland1993' on page 10 undefined on input li
+ne 95.
+
+
+Package natbib Warning: Citation `Garland1993' on page 10 undefined on input li
+ne 97.
+
+
+Package natbib Warning: Citation `FreckletonHarvey2006' on page 10 undefined on
+ input line 99.
+
+
+Package natbib Warning: Citation `Garland1993' on page 10 undefined on input li
+ne 99.
+
+[10]
+
+Package natbib Warning: Citation `Piazza1975' on page 11 undefined on input lin
+e 104.
+
+[11]
+
+Package natbib Warning: Citation `ZanneBigTree' on page 12 undefined on input l
+ine 131.
+
+
+Package natbib Warning: Citation `ZanneBigTree' on page 12 undefined on input l
+ine 131.
+
+
+Package natbib Warning: Citation `phlawd' on page 12 undefined on input line 13
+1.
+
+[12]
+
+Package natbib Warning: Citation `CranstonTOL' on page 13 undefined on input li
+ne 133.
+
+[13]
+
+Package natbib Warning: Citation `geiger' on page 14 undefined on input line 15
+1.
+
+
+Package natbib Warning: Citation `geiger' on page 14 undefined on input line 15
+1.
+
+
+Package natbib Warning: Citation `Slater2012Fossil' on page 14 undefined on inp
+ut line 151.
+
+
+Package natbib Warning: Citation `geiger' on page 14 undefined on input line 15
+1.
+
+
+Package natbib Warning: Citation `Eastmanjump' on page 14 undefined on input li
+ne 151.
+
+
+Package natbib Warning: Citation `UyedaBayou' on page 14 undefined on input lin
+e 151.
+
+
+Package natbib Warning: Citation `nlme' on page 14 undefined on input line 151.
+
+
+
+Package natbib Warning: Citation `ape' on page 14 undefined on input line 151.
+
+[14] (./model_ad-ms.bbl [15] [16])
+
+Package natbib Warning: There were undefined citations.
+
+[17] (./model_ad-ms.aux) ) 
+Here is how much of TeX's memory you used:
+ 5029 strings out of 493633
+ 73226 string characters out of 3143378
+ 147351 words of memory out of 3000000
+ 8192 multiletter control sequences out of 15000+200000
+ 40765 words of font info for 99 fonts, out of 3000000 for 9000
+ 831 hyphenation exceptions out of 8191
+ 38i,8n,38p,1533b,262s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/local/texlive/2011/texmf-dist/fonts/enc/dvips/b
+ase/8r.enc}</usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mex10.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mi10.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
+10.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
+0.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12
+.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/mathpazo/fplmb.pfb>
+</usr/local/texlive/2011/texmf-dist/fonts/type1/public/mathpazo/fplmr.pfb></usr
+/local/texlive/2011/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/loc
+al/texlive/2011/texmf-dist/fonts/type1/public/fpl/fplrc8a.pfb></usr/local/texli
+ve/2011/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2011
+/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2011/texmf-
+dist/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on model_ad-ms.pdf (17 pages, 142099 bytes).
+PDF statistics:
+ 108 PDF objects out of 1000 (max. 8388607)
+ 76 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

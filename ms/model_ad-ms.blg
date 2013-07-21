@@ -1,0 +1,80 @@
+This is BibTeX, Version 0.99d (TeX Live 2011)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: model_ad-ms.aux
+The style file: sysbio.bst
+Database file #1: model_ad.bib.bib
+Warning--I didn't find a database entry for "Westoby1992TREE"
+Warning--I didn't find a database entry for "Lord1995AmNat"
+Warning--I didn't find a database entry for "Westoby2002"
+Warning--I didn't find a database entry for "Moles2005"
+Warning--I didn't find a database entry for "Cornwell2013"
+Warning--I didn't find a database entry for "PennellHarmon"
+Warning--I didn't find a database entry for "Grafen1989"
+Warning--I didn't find a database entry for "Mooers1999"
+Warning--I didn't find a database entry for "Maddison2007"
+Warning--I didn't find a database entry for "FitzJohn2010"
+Warning--I didn't find a database entry for "Omeara2012"
+Warning--I didn't find a database entry for "Landis2012"
+Warning--I didn't find a database entry for "Eastmanlevy"
+Warning--I didn't find a database entry for "Pagel1999"
+Warning--I didn't find a database entry for "Burbrink2012"
+Warning--I didn't find a database entry for "Freckleton2010"
+Warning--I didn't find a database entry for "Hansen2012"
+Warning--I didn't find a database entry for "Gelmanbook"
+Warning--I didn't find a database entry for "SullivanSwofford"
+Warning--I didn't find a database entry for "Goldman"
+Warning--I didn't find a database entry for "HuelsenbeckBull1996"
+Warning--I didn't find a database entry for "SandersonKim"
+Warning--I didn't find a database entry for "Ripplinger2010"
+Warning--I didn't find a database entry for "Lewis2013"
+Warning--I didn't find a database entry for "Brown2013"
+Warning--I didn't find a database entry for "Minin2003"
+Warning--I didn't find a database entry for "Abdo2005"
+Warning--I didn't find a database entry for "SullivanJoyce2005"
+Warning--I didn't find a database entry for "AICC"
+Warning--I didn't find a database entry for "BA2004"
+Warning--I didn't find a database entry for "NeymanPearson"
+Warning--I didn't find a database entry for "Reich1997"
+Warning--I didn't find a database entry for "Wright2005"
+You've used 20 entries,
+            2858 wiz_defined-function locations,
+            808 strings with 9170 characters,
+and the built_in function-call counts, 12116 in all, are:
+= -- 1040
+> -- 564
+< -- 15
++ -- 192
+- -- 168
+* -- 866
+:= -- 1915
+add.period$ -- 80
+call.type$ -- 20
+change.case$ -- 154
+chr.to.int$ -- 20
+cite$ -- 40
+duplicate$ -- 860
+empty$ -- 883
+format.name$ -- 216
+if$ -- 2476
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 189
+newline$ -- 91
+num.names$ -- 80
+pop$ -- 304
+preamble$ -- 1
+purify$ -- 136
+quote$ -- 0
+skip$ -- 304
+stack$ -- 0
+substring$ -- 628
+swap$ -- 366
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 174
+warning$ -- 0
+while$ -- 83
+width$ -- 0
+write$ -- 248
+(There were 33 warnings)

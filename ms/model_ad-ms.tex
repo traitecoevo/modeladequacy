@@ -1,0 +1,165 @@
+\documentclass[12pt]{article}
+\usepackage[osf]{mathpazo}
+\usepackage{ms}
+\usepackage{natbib}
+\usepackage{lineno}
+\usepackage{graphicx}
+\usepackage{caption}
+\modulolinenumbers[5]
+\linenumbers
+
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+
+\title{The adequacy of trait models and the rise of angiosperm functional diversity}
+\author{
+Matthew W. Pennell$^{1,2}$, William K. Cornwell$^{3,4}$, Luke J. Harmon$^{1}$
+}
+\date{}
+\affiliation{\noindent
+$^{1}$ Department of Biological Sciences and Institute for Bioinformatics and Evolutionary Studies, University of Idaho, Moscow, ID 83844, U.S.A.\\
+$^{2}$ \texttt{mwpennell@gmail.com}\\
+$^{3}$ VU University\\
+$^{4}$ University of NSW
+}
+\runninghead{are macroevolutionary models adequate?}
+
+
+\begin{document}
+\mstitlepage
+\parindent=1.5em
+\addtolength{\parskip}{.3em}
+
+\begin{abstract}
+Abstract here
+\end{abstract}
+
+\vfill
+
+\newpage
+
+
+\begin{quotation}
+\noindent There are known knowns; there are things we know we don't know. There are known unknowns; that is to say, there are things that we now know we don't know. But there are also unknown unknowns --- there are things we do not know we don't know. 
+
+---Fmr. U.S. Secretary of Defense Donald Rumsfeld
+\end{quotation}
+
+\section{Introduction}
+Angiosperms are one of the most spectacular radiations in the history of the earth. The $>$300,000 species which make up the clade have diversified into a huge array of functional forms, from the grasses of the Serengeti to the trees of the Amazonian rainforest, and have come to dominate most terrestrial ecosystems. As researchers interested in macroevolution, we would like to understand how such trait diversity came to be --- the who, what, when, where and whys of deep time. These questions need to be placed in a phylogenetic context if we are to make substantiave progress towards addressing them. For example, seed size, which is a proxy for a plant's life--history strategy, varies X orders of magnitude across angiosperms \citep{Westoby1992TREE, Lord1995AmNat, Westoby2002, Moles2005, Cornwell2013} [COMPLETE EXAMPLE HERE]
+
+The last few decades have seen a tremendous growth in statistical methods that make use of phylogenetic trees and comparative data to address macroevolutionary questions \citep[for a recent review see][]{PennellHarmon}. We can ask whether traits are evolutionary correlated with one another \citep[e.g.][]{Felsenstein1985, Grafen1989}, whether different lineages have evolved at different rates \citep[e.g.][]{Omeara2006, Eastman2011}, what the predominant mode of evolution has been \citep[e.g.][]{HansenMartins1996, Mooers1999, Harmon2010}, how the mode has varied across clades \citep[e.g.][]{ButlerKing2004, Beaulieu2012}, and how trait evolution has influenced the diversification of lineages \citep[e.g.][]{Maddison2007, FitzJohn2010}. However, all of these necessarily rely on our ability to model the evolution of traits along a phylogeny; and as eloquently articulated by \citet{Hunt2012}, any statements regarding the rate (tempo) of evolution are contigent about the particular model of change (mode).
+
+A number of models of trait evolution have been proposed \citep[see][]{Omeara2012, PennellHarmon}. Brownian motion (BM), in which evolution proceeds via an undirected random walk such that the variance in the trait value accumulates proportional to time, is the oldest, and most commonly applied model of continuous character evolution. Originally developed as a model for estimating phylogenetic trees from allelic frequencies \citep{EC1964}, BM has been used as a more general model of phylogenetic change in phylogenetics \citep{Felsenstein1973, Thompson1975} and is the underlying model in Felsenstein's phylogenetically independent contrasts \citep[PICs;][]{Felsenstein1985} for investigating correlated evolution. Another model is the Ornstein--Uhlenbeck process \citep[OU, or ``Hansen'' model;][]{Felsenstein1988, Hansen1997} which can be loosely described as ``evolution on a spring'' --- variance accumulates at a rate $\sigma^2$, but is ``pulled'' towards a mean value $\theta$ with some strength $\alpha$. Alternate models that have been considered include: the ``Early Burst'' \citep[EB;][]{Blomberg2003, Harmon2010, SlaterPennell} model, in which most of the evolution occurs early in the clades history; a BM model with a trend in the mean trait value \citep{Hunt2006}; models depicting jumps in phenotypic space \citep{Landis2012, Eastmanlevy}; and other variations on the models described above \citep[e.g.][]{Pagel1997, Pagel1999, ButlerKing2004, Omeara2006, Eastman2011, Beaulieu2012, SlaterMEE}.
+
+The general procedure for using a macroevolutionary models is to first compare amongst a set of candidate models, using likelihood ratio tests or information criteria. The preferred model is then used in one of two ways: 1) make inferences directly from the model fit by interpreting the observed pattern \citep[e.g.][]{Harmon2010, Burbrink2012}; or 2) use the model to test other evolutionary hypotheses \citep[e.g.][]{Grafen1989, Freckleton2010}. In either case, there are a number of important questions that need to be considered. One is that of interpretation --- what can our models tell us about the process of evolution \citep{HansenMartins1996, Hansen2012, PennellHarmon}? Another is statistical --- is the model we are using capturing sufficient amount of the variation to address the question we are interested in? The latter question, known in statistical terminology as model adequacy, is the subject of our investigation here.
+
+Consider again the example of seed size evolution in angiosperms. We may want to ask, for instance whether the variation in seed size we observe today accumulated early in the history of some clade of interest, which may suggest an adaptive radiation \citep{Simpson 1944, Simpson1953, Schulter2000, Yoder2010, SlaterPennell}. To do we could fit mulitple models of trait evolution --- an Early Burst model \citep{Blomberg2003, Harmon2010} and a BM model. We could then compare the model fits using some model selection criterion \citep[e.g. AIC;][]{Akaike1973}. Once we have the best--fitting model in hand, we would like to be able to draw inferences from it as to the general tempo of seed size in our group. But before we can do so, we would want to ensure that our model is actually capturing the relevant variation --- that is, is our model adequate?
+
+In many statistical applications, assessing the absolute fit of the model \textit{a posteriori} is a routine procedure \citep{Gelmanbook}. Before drawing inferences about the parameters of the model, we want to know whether the model we used is adequately capturing the relevant patterns in the data. Model adequacy has been investigated for models of sequence evolution for the purposes of inferring phylogenetic trees \citep[e.g.][]{GautLewis1995, SullivanSwofford, Goldman, HuelsenbeckBull1996, SandersonKim, Bollback2002, Ripplinger2010, Lewis2013, Brown2013} and forms the basis for the Decision--Theoretic approach to model selection in phylogenetics \citep{Minin2003, Abdo2005, SullivanJoyce2005}. However, in phylogenetic comparative methods, model adequacy has until very recently been largely neglected and its potential importance, generally underappreciated (but see below).
+
+\citet{Boettiger2012} developed a ``phylogenetic monte carlo'' approach to assess when a given comparative data set contained enough information to distinguish between two candidate models. In brief, their procedure was as follows: 1) select 2 candidate models $\mathcal{M}_0$ and $\mathcal{M}_1$; 2) fit $\mathcal{M}_0$ and $\mathcal{M}_1$ to the data using Maximum likelihood; 3) use the MLE for model parameters $\hat{\Theta}$ to simulate $n$ data sets; 4) for each of the $n$ data sets simulated under $\mathcal{M}_0$, fit both $\mathcal{M}_0$ and $\mathcal{M}_1$ and calculate difference in likelihood values $\delta = -2(L_{\mathcal{M}_0} - L_{\mathcal{M}_1})$; and 5) compare distribution of $\delta$ for datasets simulated under $\mathcal{M}_0$ with distribution of $\delta$ for datasets simulated under $\mathcal{M}_1$. \citet{Boettiger2012} demonstrated that their approach had much better ``classical'' statistical properties (specifically Type--I and Type--II errors) compared to using Information Theoretic methods of model selection, such as AIC \citep{Akaike1973}, AICc \citep{AICC}, and BIC \citep{Schwarz1978}. (Though we note that this is not an entirely fair comparison; Information Theoretic approaches differ philosophically from frequentist approaches to model selection [\citealt{BA2004}] and do not really have Type--I and Type--II error rates in the same way likelihood ratio tests [\citealt{Wilks1938}] are expected to have.)
+
+\citet{SlaterPennell} also focused on the case of comparing two--models. Their method differs from that of \citet{Boettiger2012} in that theirs was a fully Bayesian posterior predictive approach specifically aimed at detecting ``early bursts'' of trait evolution \citep[\textit{sensu}][]{Simpson1944, Simpson1953, Harmon2010}. They sampled from the joint posterior distribution of the parameters, simulated data under the sampled parameters and then used two alternative summary statistics --- the relationship between the logarithm of the phylogenetic independent contrasts and the height above the root that the contrasts was inferred \citep[a.k.a. the ``node height test'';][]{FreckletonHarvey2006}, and the Mean Disparity Index \citep[MDI;][]{Harmon2003, Slater2010} --- to evaluate...
+
+However, both of these cases used a simulation based approach to assess whether the data was informative enough to select amongs two candidate models. A broader question is whether a given model is a good fit to the data on its own terms --- compared to the universe of possible models we could consider.
+
+The aim of our paper is two--fold. First, we wanted to address a fundamental macroevolutionary question: what are the major patterns in the evolution of plant functional traits? We focused on five important ecological traits --- seed mass, leaf size, maximum height, specific leaf area and leaf nitrogen content \citep[the latter two being proxies for the ``leaf economic spectrum'', which characterizes the plant's hydrodynamics;][]{Reich1997, Wright2005} --- which together encompass the major axes of life history and functional variation in vascular plants \citep{Cornwell2013}. Investigating this empirical question forced us to address more theoretical ones, relating to the second aim of this paper: do our evolutionary models capture meaningful patterns when applied at this scale and how are we to know?
+
+In this paper, we develop a general approach to assessing the adequacy of trait evolutionary models for continuous characters.
+
+\section{Methods and data}
+
+\subsection{Methodology}
+
+Our approach is based on the use of Felsenstein's \citeyear{Felsenstein1973, Felsenstein1985} Phylogenetic Independent Contrasts (PIC) method, which we will briefly review \citep[for more details, see][]{Rohlf2001, Blomberg2012}. We have observed trait values $X_1, X_2, \ldots, X_N$ at the tips of a phylogenetic tree $\mathcal{T}$ consisting of $N$ species. Due to shared history of ancestry between the tips, $X_1, X_2, \ldots, X_N$ are not independent observations. To deal with this problem, Felsenstein suggested taking $N-1$ contrasts $c_1, c_2, \ldots, c_{N-1}$, the differences $X_{i} - X_{j}$ between the observations at tips $i$ and $j$. If we assume a BM model of trait evolution, in which variation accumulates directly proportional to time, these contrasts will be Independent and Identically Distributed (I.I.D.), hence the name PICs. The procedure can be described algorithmically. 1) Take the contrast $c = X_i - X_j$ at node $k$, where $k$ is the most recent common ancestor of tips $i$ and $j$. 2) Standardize the contrast by its dividing by its standard deviation, which under BM is $\sqrt{v_i + v_j}$, the square root of the sum of the branch lengths leading to $i$ and $j$, 3) Estimate a trait value for the ancestral node $k$ by taking the mean of its descendants' trait values, weighted by their branch lengths
+
+\begin{equation}
+X_k = \frac{(1 / v_i)X_i + (1 / v_j)X_j}{1/v_i + 1/v_j}.
+\end{equation}
+
+4) Lengthen the branch below $k$ by $v_i v_j / (v_i + v_j)$, in order to account for error in the estimation of $k$. Iterating across all nodes in the phylogeny, the result is a set of contrasts $\mathbf{c}$, which, as stated above, will be I.I.D., \textit{only if the true model which generated the observations was BM} \citep{Rohlf2001}. As our method described in this paper essentially evaluates whether this condition holds, we will refer to $\mathbf{c}$ as contrasts, rather than PICs throughout. 
+
+\subsubsection{Summary statistics}
+
+To assess model adequacy we have chosen 6 summary statistics $\mathcal{S}_1, \ldots, \mathcal{S}_6$:
+
+\begin{enumerate}
+\item $\overline{\mathbf{c}^2}$: the mean of the squared contrasts. This is equivalent to the Restricted maximum likelihood (REML) estimate of the Brownian motion rate parameter $\sigma^2$ \citep{Garland1992, Rohlf2001}. We chose this statistic to capture variation in the rate of trait evolution.
+
+\item $D_c$: the D--statistic obtained from Kolmolgorov-Smirnoff [SPELLING] test \citep{ks} from comparing the distribution of contrasts to that of a normal distribution with mean 0 and standard deviation $\sqrt{\overline{\mathbf{c}}^2}$. This is the expected distribution of the contrasts under BM \citep{Felsenstein1985, Rohlf2001}. We chose this to capture deviations from normality, such as would be produced if traits evolved via a ``jump diffusion'' type model \citep{Landis2013, Eastmanjump}, in which trait evolution may occasionally occur at rates much greater than the background rates \citep[see][]{PennellPE}.
+
+\item $\mathrm{var} (| \mathbf{c} |)$: the variance in the absolute value of the contrasts. This was chosen to capture heterogeneity in the rate of trait evolution.
+
+\item $m_{cv}$: the slope resulting from fitting a linear model between the absolute value of the contrasts and their expected variances. Each contrast has an expected variance equal to XX \citep{Felsenstein1985}. Under a model of BM, we expect no relationship between these. In using this, we are asking whether the contrasts are larger or smaller than we expect based on their branch lengths. If, for example, more evolution occured per unit time on short branches than long branches, we would observe a negative slope. 
+
+\item $m_{ca}$: the slope resulting from fitting a linear model between the absolute value of the PICs and the inferred ancestral state. We estimated the ancestral state using the least--squared method suggested by \citep{Felsenstein1985} as this uses an identical procedure to that done when estimating PICs. This statistic will allow us to evaluate whether there is variation in rates relative to the trait value (e.g. do larger organisms evolve faster?)
+
+\item $m_{ct}$: the slope resulting from fitting a linear model between the absolute value of the contrasts and the height above the root at which they are inferred. This is alternatively known as the node height test \citep{FreckletonHarvey2006, SlaterPennell} for detecting early bursts of trait evolution and has been been previously used to assess the fit of BM models. 
+\end{enumerate}
+
+\subsubsection{Rescaling the phylogeny}
+
+While the above summary statistics are appropriate for a BM model of trait evolution, the same will not be true of alternative models. That is because under alternative models, we no longer expect PICs to have I.I.D. properties. Our solution to the problem is to use the estimated parameters of a more complex model $\Theta$ to create what we term a ``unit tree''. A unit tree is defined as a tree in which if the model we fit is the generating model, the data at the tips will be distributed as it would be under a BM process with a rate $\sigma^2$ equal to 1. (We note here that this is not technically a rate in the strict mathematical sense of the term \citep{Bookstein1987} but this is commonly used shorthand.)  Below, we define this concept mor formally. Any phylogenetic tree $\mathcal{T}$ can be completely described by a $N \times N$ variance--covariance (vcv) matrix $\mathbf{C}$, where $N$ is equal to the number of tips in $\mathcal{T}$. The elements $C_{i,j}$ are the shared path--length from the root to the most recent common ancestor of $i$ and $j$ \citep{Piazza1975}. The diagonal elements ($i = j$) are simply the total distance from the root to the tips. For any model, we can describe a second matrix $\mathbf{\Sigma}$, which is the expected vcv matrix between observations at the tips. For example, under BM, in which variation accumulates proportionally to time under a single rate $\sigma^2$, 
+\begin{equation}
+\Sigma_{ij} = \sigma^2 C_{ij}
+\end{equation}
+and thus
+\begin{equation}
+\mathbf{\Sigma} = \sigma^2 \mathbf{C}.
+\end{equation}
+Under a single--optimum OU model of trait evolution, 
+\begin{equation}
+\Sigma_{ij} = \frac{\sigma^2}{\alpha} \exp[-2\alpha (T-C_{ij})] (1- \exp[-2\alpha C_{ij}])
+\end{equation}
+where $\sigma^2$ is the BM rate parameter, $\alpha$ is the strength of attraction towards to mean and $T$ is the total depth of the tree \citep{Hansen1997, ButlerKing2004}. A vcv matrix $\mathbf{U}$, which describes the unit tree is then by definition equivalent to $\mathbf{\Sigma}$ for any model. We note that in practice we are using the estimated paramters $\hat{\Theta}$ from fitting the model to construct $\mathbf{U}$. For the case of using a model with a single mean, we can transform $\mathbf{T}$ to $\mathbf{U}$ by... If we use a model with multiple means, such as a multi--optimum OU model \citep{ButlerKing2004, Beaulieu2012}, we must 
+
+\subsubsection{Parametric bootstrapping}
+
+\subsubsection{Posterior predictive simulations}
+
+\subsubsection{Phylogenetic regression}
+
+\subsubsection{Simulations}
+
+
+\subsection{Empirical analyses}
+
+\subsubsection{Phylogenetic tree and Trait Data}
+
+We used a ``megaphylogeny'' of Angiosperms from a recent study by \citet{ZanneBigTree}. The tree contains 32,xxx taxa and covers xx \% of familial diversity and yy \% of generic diversity across all Angiosperms. We will not provide the full details on the phylogeny here and refer interested readers to the original publication \citep{ZanneBigTree}. But in brief, the data matrix was constructed using previoulsy published data on \textsc{genbank}, which was obtained using the program \texttt{PHLAWD} \citep{phlawd}. 5 genes were 
+
+For the purposes of this study, we used the MLE point estimate of the phylogeny. We could have used a set of bootstrapped trees and ran our analyses across all of them, but for the purposes of the present study, it should not qualitatively affect our results. This tree is published on \textsc{treebase} (assession number), \textsc{dryad} (accession number), and is included as part of the \textsc{open tree of life} project \citep{CranstonTOL}.
+
+\subsubsection{Adequacy of models for plant functional traits}
+
+
+\section{Results}
+
+\subsection{Simulation results}
+
+\subsection{Adequacy of models for plant functional traits}
+
+
+\section{Discussion}
+
+\newpage
+\section{A note on implementation}
+
+All source code for this project at \texttt{www.github.com/mwpennell/modeladequacy}.
+
+\section{Concluding remarks}
+
+
+\section{Acknowledgments}
+
+We would like to thank the members of the Tempo and Mode of Trait Evolution Working Group at the National Evolutionary Synthesis Center (NESCent) as well as NESCent for funding our group. We thank Jon Eastman for his assistance with the MCMC algorithm for fitting trait evolutionary models.
+
+
+
+\newpage
+\bibliographystyle{sysbio}
+\bibliography{model_ad.bib}
+
+\end{document}
