@@ -42,7 +42,7 @@ make.sigsqReml <- function(unit.tree){
 	
 	}
 	
-	.sigsqReml
+	list(fxn=.sigsqReml, unit.tree=unit.tree)
 	
 }
 
@@ -85,7 +85,7 @@ make.ksPic <- function(unit.tree){
 	
 	}
 	
-	.ksPic
+	list(fxn=.ksPic, unit.tree=unit.tree)
 }
 
 
@@ -119,7 +119,7 @@ make.varPic <- function(unit.tree){
 
 	}
 	
-	.varPic
+	list(fxn=.varPic, unit.tree=unit.tree)
 }
 
 
@@ -167,7 +167,7 @@ make.slopePicBl <- function(unit.tree){
 	
 	}
 	
-	.slopePicBl
+	list(fxn=.slopePicBl, unit.tree=unit.tree)
 
 }
 
@@ -212,7 +212,7 @@ make.slopePicAnc <- function(unit.tree){
 	
 	}
 	
-	.slopePicAnc
+	list(fxn=.slopePicAnc, unit.tree=unit.tree)
 	
 }
 
@@ -256,7 +256,7 @@ make.slopePicNh <- function(unit.tree){
 	
 	}
 	
-	.slopePicNh
+	list(fxn=.slopePicNh, unit.tree=unit.tree)
 }
 
 
@@ -305,7 +305,7 @@ make.defStats <- function(unit.tree){
 
 traitStat <- function(data, stats){
 
-	ss <- lapply(stats, function(f) f(data))
+	ss <- lapply(stats, function(f) f$fxn(data))
 	stats <- do.call(c, ss)
 	stats
 }
@@ -317,7 +317,8 @@ traitStat <- function(data, stats){
 
 ## Simulate data on unit tree
 ## Wrapper fxn for sim.char
-## Takes unit.tree and nsim (specify number of sims to do
+## Takes unit.tree
+## Takes nsim (specify number of sims to do)
 
 sim.charUnit <- function(unit.tree, nsim){
 
@@ -338,14 +339,22 @@ sim.charUnit <- function(unit.tree, nsim){
 ## Wrapper function which simulates n data sets and calculates summary statistics
 ## Trait Stat parametric bootstrap
 ## Takes the following as arguments
-## Unit.tree
 ## Named list of functions (same as given to traitStat
 ## nsim
+## Gets unit.tree from fxns
 
-traitStatPb <- function(unit.tree, stats, nsim){
+traitStatPb <- function(stats, nsim){
+
+	## Collect unit trees
+	ut <- lapply(stats, function(x) return(x$unit.tree))
+	
+	## Check to make sure that they are all identical
+	if (length(unique(ut)) != 1){
+		return(print("Not all statistic fxns were built with the same unit tree"))
+		}
 
 	## Simulate nsim data sets
-	sim.data <- sim.charUnit(unit.tree, nsim)
+	sim.data <- sim.charUnit(ut[[1]], nsim)
 	
 	## Calculate summary statistics across all datasets
 	sim.ss <- lapply(sim.data, function(x) traitStat(x, stats))
