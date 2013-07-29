@@ -315,4 +315,49 @@ traitStat <- function(data, stats){
 
 
 
+## Simulate data on unit tree
+## Wrapper fxn for sim.char
+## Takes unit.tree and nsim (specify number of sims to do
+
+sim.charUnit <- function(unit.tree, nsim){
+
+	## Simulate trait data under BM with rate 1
+	sims <- sim.char(phy=unit.tree, par=1, nsim=nsim, model="BM")
+	
+	## Convert format so that it can be used with lapply
+	data <- lapply(c(1:nsim), function(x) sims[,,x])
+	
+	data
+
+}
+
+
+
+
+
+## Wrapper function which simulates n data sets and calculates summary statistics
+## Trait Stat parametric bootstrap
+## Takes the following as arguments
+## Unit.tree
+## Named list of functions (same as given to traitStat
+## nsim
+
+traitStatPb <- function(unit.tree, stats, nsim){
+
+	## Simulate nsim data sets
+	sim.data <- sim.charUnit(unit.tree, nsim)
+	
+	## Calculate summary statistics across all datasets
+	sim.ss <- lapply(sim.data, function(x) traitStat(x, stats))
+	
+	## Convert to data.frame
+	sim.ss <- do.call(rbind, sim.ss)
+	
+	sim.ss
+
+}
+
+
+
+
 
