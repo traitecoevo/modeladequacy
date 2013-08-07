@@ -20,15 +20,19 @@ library(multicore)
 
 ## These all take a unit.tree and the data as a named vector
 
+## They return a function
+
 ## SS1: REML estimate of sigsq using phylogenetic independent contrasts
 ## Equal to the mean of the squared values
 
-sigsqReml <- function(unit.tree, data){
+make.sigsqReml <- function(unit.tree){
 	
 	## check to make tree is a "phylo" object
 	if (class(unit.tree) != "phylo"){
 		return(print("Unit.tree must be of class phylo"))
 	}
+	
+	.sigsqReml <- function(data){
 	
 	## check tree and data names
 	td <- treedata(phy=unit.tree, data=data)
@@ -42,6 +46,10 @@ sigsqReml <- function(unit.tree, data){
 	remlss <- mean(pics^2)	
 	
 	return(remlss)
+	
+	}
+	
+	return(.sigsqReml)
 	
 }
 
