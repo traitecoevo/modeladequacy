@@ -1,0 +1,37 @@
+papers to cite for model adequacy:
+
+Garland et al. 1992
+Garland et al. 1993 Simulation
+Garland and Ives 2000 Predicting the past
+Freckleton 2009 Ignoring the model
+Martins and Garland 1991
+Garland et al. 1999 
+Garland 1992 Rate tests
+Sokal and Rohlf biometry
+PDAP package (Midford et al. 2005)
+Felsenstein 1988
+Harvey and Pagel 1991
+Hadfield and Nakagawa 2010
+Hadfield 2010
+Session and Larson 1987 First application of independent contrasts
+Price 1997
+Pagel 1993
+Hansen 2008 Slouch
+Bartoszek and Hansen 2012
+Bartoszek et al. 2012
+Lynch 1991
+Housworth 2004
+Diaz-Uriate and Garland 1996 -- tested for deviations from BM
+Losos and Miles 1994
+Felsenstein 2008
+Ives 2010
+Rohlf 2006
+Pagel 1992
+
+check out Donoghue 1989 Evolution
+probably unrelated but read Bookstein 2012
+Milligan 1994 See acknowledgments in Pagel 1994
+
+what about inviting rich onto the paper.
+
+
