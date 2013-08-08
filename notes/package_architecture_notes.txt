@@ -1,0 +1,70 @@
+## Notes on design of quercus architecture
+
+create a class of object called "unit.tree", containing the following elements
+	
+	'phylo' object (and all its structures)
+		'phylo' object will be scaled by model fit
+	trait data (required for computation of some summary stats)
+	pics (contrasts and variances)
+	
+	
+		
+fxn: as.unit.tree() builds 'unit tree'. takes the followings args
+	
+	'phylo' object -- tree used in the analysis
+	trait data
+	
+	
+
+fxn: phylo.model() rescales tree from model fit. takes the args:	
+	
+	phylo object (unscaled)
+	vcv matrix -- inherited from fitting model
+	weight matrix -- inherited from fitting model with multiple means
+		default=NULL
+		
+	returns a phylo object which has been rescaled	
+	
+	
+		
+set of fxns to parse output from various programs
+	e.g. parse.fitContinuous, parse.auteur, parse.ouwie, parse.pgls
+	
+	all return a vcv (and weight matrix if applicable) which can be used
+	in as.unit.tree()
+	
+
+
+set of functions to which calculate summary statistics
+	sigsqReml,
+	ksPic,
+	varPic,
+	slopePicBl,
+	slopePicAsr,
+	slopePicNh
+	
+	all fxns of form f(unit.tree, data=NULL)
+	
+
+
+defSummStats() makes a list of default summary stats
+	
+
+
+traitStat(unit.tree, data, stats)
+	
+	stats in the form of a list. can be inherited from defSummStats
+	or can be a custom list
+	
+
+sim.char.unit(unit.tree, n.sim)
+
+	simulates n.sim datasets on unit.tree (BM with rate 1)
+	
+	
+	
+	
+
+
+	
+
