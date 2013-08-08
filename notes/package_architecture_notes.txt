@@ -51,16 +51,50 @@ defSummStats() makes a list of default summary stats
 	
 
 
-traitStat(unit.tree, data, stats)
+traitStat(unit.tree, data=NULL, stats)
 	
 	stats in the form of a list. can be inherited from defSummStats
 	or can be a custom list
 	
+	unit.tree can either be a single unit tree or else a list. 
+	
+	if data != NULL, there can only be one unit.tree input
+	
 
-sim.char.unit(unit.tree, n.sim)
+
+sim.charUnit(unit.tree, n.sim)
 
 	simulates n.sim datasets on unit.tree (BM with rate 1)
+	outputs a set of 'unit.trees', each with a different data object attached
 	
+	can run traitStat across all of them
+	
+	
+
+compare.summStat(summ.stats.obs, summ.stats.sim)
+
+	if summ.stats.obs is a vector, get quantile by comparing to sims
+	
+	if summ.stats.obs if a data.frame (from a Bayesian analysis), perfrom
+	a KS test between the two distribution
+	(need to then check if same length)
+	
+	
+
+plot.summStat(summ.stats.obs, summ.stats.sim, stats=NULL, control=list())
+
+	plot the distribution of simulated SS versus observed
+	
+	works for ML or continuous
+	
+	the control is the plotting controls (colors, layouts, etc.)
+	
+	
+	
+	
+	
+
+
 	
 	
 	
