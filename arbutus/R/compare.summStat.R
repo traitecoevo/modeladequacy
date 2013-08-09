@@ -22,20 +22,23 @@
 compare.summStat <- function(summ.stats.obs, summ.stats.sim){
 	
 	## check to make sure names are the same
-	if (all(names(summ.stats.obs) %in% names(summ.stats.sim)))
+	if (!all(names(summ.stats.obs) %in% names(summ.stats.sim)))
 		stop("Column names must match between two sets of summary statistics")
+		
+	## reorder to make sure they are in the correct order
+	summ.stats.sim <- summ.stats.sim[,names(summ.stats.obs)]	
 	
-	if (inherits(summ.stats.obs, "numeric")){ # only one set of summ.stats supplied
+	if (nrow(summ.stats.obs) == 1){ # only one set of summ.stats supplied
 		
 		p.value <- vector()
 		
-		for (i in 1:length(summ.stats.obs)){
+		for (i in 1:ncol(summ.stats.obs)){
 			
 			## empirical summary stats
-			obs <- summ.stats.obs[i]
+			obs <- summ.stats.obs[,i]
 			
 			## simulated summary stats
-			sim <- asumm.stats.sim[,names(obs)]
+			sim <- summ.stats.sim[,i]
 			
 			## calculate p-value
 			p.r <- length(which(sim >= obs))/(length(sim) + 1)
@@ -52,7 +55,7 @@ compare.summStat <- function(summ.stats.obs, summ.stats.sim){
 		## if data.frame of observed summary statistics supplied
 		## check to make sure that they are the same size as the
 		## simulated summary statistics
-		if(nrow(summ.stats.data) != nrow(summ.stats.sim))
+		if(nrow(summ.stats.obs) != nrow(summ.stats.sim))
 			stop("If inputting multiple observed summary stats, the data.frame must be the same size as that of the simulated summary stats")
 		
 		for (j in 1:ncol(summ.stats.obs)){
