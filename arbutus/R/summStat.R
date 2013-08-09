@@ -1,4 +1,4 @@
-## arbutus:::traitStat
+## arbutus:::summStat
 
 ## Fxn for calculating summary statistics across a unit.tree or a set of unit.trees
 
@@ -13,7 +13,7 @@
 ## returns a named data.frame with all of the summary statistics
 
 
-traitStat <- function(unit.tree, data=NULL, stats=NULL){
+summStat <- function(unit.tree, data=NULL, stats=NULL){
 	if (is.null(stats))
 		stats <- defSummStats()
 		
