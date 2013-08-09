@@ -1,7 +1,7 @@
 all: data-preprocess
 
-data-fetch: data/wright-2004.xls data/leda.txt
-data-preprocess: data/wright-2004.csv data/leda.csv
+data-fetch: data/wright-2004.xls data/leda.txt data/kew-fetch
+data-preprocess: data/wright-2004.csv data/leda.csv data/kew.csv
 
 data/wright-2004.xls:
 	Rscript R/make-data-wright-2004.xls.R
@@ -13,4 +13,10 @@ data/leda.txt:
 data/leda.csv: data/leda.txt R/make-data-leda.csv.R
 	Rscript R/make-data-leda.csv.R
 
-.PHONY: all data-fetch data-preprocess
+data/kew-fetch: data/kew_apg_basal_dicots.html
+data/kew_apg_basal_dicots.html:
+	Rscript R/make-data-kew-fetch
+data/kew.csv: data/kew_apg_basal_dicots.html
+	Rscript R/make-data-kew.csv.R
+
+.PHONY: all data-fetch data-preprocess data/kew-fetch
