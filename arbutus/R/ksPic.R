@@ -1,4 +1,4 @@
-## quercus:::ksPic
+## arbutus:::ksPic
 
 ## A function for comparing the distribution of the contrasts
 ## to a normal distribution with mean 0 and sd = sqroot(mean(pics^2))

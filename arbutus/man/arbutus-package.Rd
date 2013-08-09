@@ -1,6 +1,6 @@
-\name{quercus-package}
-\alias{quercus-package}
-\alias{quercus}
+\name{arbutus-package}
+\alias{arbutus-package}
+\alias{arbutus}
 \docType{package}
 \title{
 What the package does (short line)

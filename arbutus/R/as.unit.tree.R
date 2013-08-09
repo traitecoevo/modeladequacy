@@ -1,4 +1,4 @@
-## quercus:::as.unit.tree()
+## arbutus:::as.unit.tree()
 
 ## takes a phylo object (which has been previously rescaled) and a data frame
 ## calculates the contrasts and variance

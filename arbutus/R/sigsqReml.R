@@ -1,10 +1,10 @@
-## quercus:::sigsqReml
+## arbutus:::sigsqReml
 
 ## A function for computing the REML estimate of sigma^2
 ## Equal to the mean of the squared contrasts
 ## Takes a unit.tree object
 ## If data == NULL, uses the data supplied by unit.tree
-## If data != NULL, uses input data
+## If data != NULL, creates unit.tree with input data
 
 sigsqReml <- function(unit.tree, data=NULL){
 	
