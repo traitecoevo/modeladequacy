@@ -16,7 +16,7 @@ ksPic <- function(unit.tree, data=NULL){
 	nd <- rnorm(10000, mean=0, sd=sd)
 	
 	## KS test
-	ksbm <- ks.test(pics[,"contrasts"], nd)$statistic
+	ksbm <- ks.test(unit.tree$pics[,"contrasts"], nd)$statistic
 	
 	as.numeric(ksbm)	
 
