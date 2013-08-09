@@ -58,7 +58,6 @@ traitStat(unit.tree, data=NULL, stats)
 	
 	unit.tree can either be a single unit tree or else a list. 
 	
-	if data != NULL, there can only be one unit.tree input
 	
 
 

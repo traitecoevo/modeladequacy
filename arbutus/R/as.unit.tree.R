@@ -23,7 +23,7 @@ as.unit.tree <- function(x, data){
 	unit.tree <- list(phy=phy, data=data, pics=pics)
 	
 	## change the class of the unit.tree
-	class(unit.tree) <- c("unit.tree", "phylo")
+	class(unit.tree) <- c("unit.tree")
 	
 	unit.tree
 
