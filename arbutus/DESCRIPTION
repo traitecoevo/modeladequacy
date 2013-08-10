@@ -7,3 +7,4 @@ Author: Matthew Pennell, William Cornwell, Richard FitzJohn, Luke Harmon
 Maintainer: Matthew Pennell <mwpennell@gmail.com>
 Description: Using summary statistics and simulations to evaluate whether a phylogenetic model of continuous character evolution adequately captures the variation in the comparative data. Can be used for both univariate and multivariate models (e.g. phylogenetic regression) of trait evolution.  
 License: GPL-2 | GPL-3
+Depends: geiger, ggplot2
