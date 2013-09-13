@@ -1,2 +1,14 @@
 import(geiger, ggplot2)
-exportPattern("^[[:alpha:]]+")
+
+export(as.unit.tree)
+export(compare.summStat)
+export(defSummStats) # not sure -- used outside at all?
+export(ksPic)
+export(plot.picBl) # will need rename at some point
+export(sigsqReml)
+export(sim.charUnit)
+export(slopePicAsr)
+export(slopePicBl)
+export(slopePicNh)
+export(summStat)
+export(varPic)
