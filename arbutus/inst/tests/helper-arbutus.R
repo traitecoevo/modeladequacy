@@ -1,6 +1,7 @@
 ## Arrange to quietly load these packages so that messages don't
 ## overwhelm the output; lots of dependent packages and some conflicts
 ## generate a lot of noise.
+library(testthat)
 suppressMessages(library(arbutus))
 suppressMessages(library(diversitree))
 library(parallel)
