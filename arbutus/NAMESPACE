@@ -1,6 +1,12 @@
 import(geiger, ggplot2)
 
 export(as.unit.tree)
+S3method(as.unit.tree, gfit)
+S3method(as.unit.tree, fit.mle)
+S3method(as.unit.tree, phylo)
+
+export(is.unit.tree)
+
 export(compare.summStat)
 export(defSummStats) # not sure -- used outside at all?
 export(ksPic)
