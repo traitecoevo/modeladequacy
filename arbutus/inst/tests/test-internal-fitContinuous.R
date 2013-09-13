@@ -109,6 +109,10 @@ test_that("Overall processed object looks legit", {
   expect_that(names(obj.bm), is_identical_to(obj.names))
   expect_that(names(obj.ou), is_identical_to(obj.names))
   expect_that(names(obj.eb), is_identical_to(obj.names))
+
+  expect_that(names(obj.bm.noSE), is_identical_to(obj.names))
+  expect_that(names(obj.ou.noSE), is_identical_to(obj.names))
+  expect_that(names(obj.eb.noSE), is_identical_to(obj.names))
 })
 
 test_that("Nonsense cases should fail", {

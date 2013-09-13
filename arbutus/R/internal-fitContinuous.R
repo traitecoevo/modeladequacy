@@ -28,14 +28,14 @@ modeldata.gfit <- function(fit, ...) {
 }
 
 modelpars.gfit <- function(fit, ...) {
-  model <- modeltype.gfit(fit)
+  model <- modeltype(fit)
   if (model %in% c("BM", "OU", "EB")) {
     pars <- as.list(coef(fit))
     if (!("SE" %in% names(pars)))
       pars$SE <- 0
     pars[c(setdiff(names(pars), "SE"), "SE")]
   } else {
-    stop(sprintf("Cannot extract from models of model %s", model))    
+    stop(sprintf("Cannot extract from models of model %s", model))
   }
 }
 
