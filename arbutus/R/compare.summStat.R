@@ -94,20 +94,31 @@ compare.summStat <- function(summ.stats.obs, summ.stats.sim){
 	## return two-tailed p-values
 	pp <- p.value*2
 
+        ## return all info so that summary stats can be plotted
+        out <- list(p.values = pp, summ.stats.obs=summ.stats.obs, summ.stats.sim=summ.stats.sim)
+
         ## define class for print fxn
-	class(pp) <- c("phymod.pvalue", "numeric")
-        return(pp)
+	class(out) <- c("phy.ss", "list")
+        return(out)
 			
 }
 
 
 
 
-## define print fxn for class phymod.pvalue
+## define print fxn for class phy.ss
 
-print.phymod.pvalue <- function(x){
+print.phy.ss <- function(x){
    cat("Two-tailed p-values for summary statistics: \n")
    cat("\n")
-   attr(x, "class") <- NULL
-   print(x)
+   print(unclass(x$p.values))
 }
+
+
+## function to extract p-values from phy.ss object
+
+pvalueSummStat <- function(x)
+    x$p.values
+
+
+

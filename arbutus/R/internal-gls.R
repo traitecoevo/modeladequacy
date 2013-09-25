@@ -36,23 +36,40 @@ modelpars.gls <- function(fit, ...){
     ## get model
     model <- modeltype(fit)
 
-    ## get sigsq
+    ## get phy
     phy <- modeldata(fit)$phy
+
+    ## pull out residuals
     rr <- resid(fit)
-    sigsq = (rr %*% solve(vcv(phy)) %*% rr) / (Ntip(phy)-1)
+   
 
-    if (model == "BM")
-       pars <- list(sigsq=sigsq, SE=0)
+    if (model == "BM"){
+       sigsq <- (rr %*% solve(vcv(phy)) %*% rr) / (Ntip(phy)-1) 
+       pars <- list(sigsq=sigsq, z0=NA, SE=0)
+    }
+    
+    ## if model is not BM, need to rescale the tree first, before computing sigsq
+    if (model == "OU"){
+        alpha <- as.numeric(fit$modelStruct$corStruct)
+        rescalephy <- rescale(phy, model="OU", alpha=alpha, sigsq=1)
+        sigsq <- (rr %*% solve(vcv(rescalephy)) %*% rr) / (Ntip(phy)-1) 
+        pars <- list(alpha=alpha, sigsq=sigsq, z0=NA, SE=0)
+    }
 
-    if (model == "OU")
-        pars <- list(alpha=as.numeric(fit$modelStruct$corStruct), sigsq=sigsq, , SE=0)
+    if (model == "EB"){
+        a <- as.numeric(fit$modelStruct$corStruct)
+        rescalephy <- rescale(phy, model="EB", a=a, sigsq=1)
+        sigsq <- (rr %*% solve(vcv(rescalephy)) %*% rr) / (Ntip(phy)-1) 
+        pars <- list(a=a, sigsq=sigsq, z0=NA, SE=0)
+    }
 
-    if (model == "EB")
-        pars <- list(a=as.numeric(fit$modelStruct$corStruct), sigsq=sigsq, SE=0)
-
-    if (model == "lambda")
-        pars <- list(lambda=as.numeric(fit$modelStruct$corStruct),sigsq=sigsq, SE=0)
-
+    if (model == "lambda"){
+        lambda <- as.numeric(fit$modelStruct$corStruct)
+        rescalephy <- rescale(phy, model="lambda", lambda=lambda, sigsq=1)
+        sigsq <- (rr %*% solve(vcv(rescalephy)) %*% rr) / (Ntip(phy)-1) 
+        pars <- list(lambda=lambda, sigsq=sigsq, z0=NA, SE=0)
+    }
+    
     pars
 }
 
