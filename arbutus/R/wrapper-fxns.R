@@ -7,13 +7,13 @@ phyModelCheck <- function(x, nsim=1000, stats=NULL, ...){
     unit.tree <- as.unit.tree(x, ...)
 
     ## compute summary statistics on observed data
-    ss.obs <- summStat(unit.tree)
+    ss.obs <- summStat(unit.tree, stats=stats)
 
     ## simulate n datasets
     sims <- sim.charUnit(unit.tree, nsim=nsim)
 
     ## compute summary statistics on simulated data
-    ss.sim <- summStat(sims)
+    ss.sim <- summStat(sims, stats=stats)
 
     ## compare summary statistics between observed and simulated
     p.values <- compare.summStat(ss.obs, ss.sim)
