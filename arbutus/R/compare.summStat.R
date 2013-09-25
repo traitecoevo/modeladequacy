@@ -117,7 +117,7 @@ print.phy.ss <- function(x){
 
 ## function to extract p-values from phy.ss object
 
-pvalueSummStat <- function(x)
+pvalueSummStats <- function(x)
     x$p.values
 
 

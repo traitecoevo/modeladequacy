@@ -13,6 +13,7 @@ S3method(modelphylo, model.fitC)
 export(is.unit.tree)
 
 export(compare.summStat)
+export(pvalueSummStats)
 export(defSummStats) # not sure -- used outside at all?
 export(ksPic)
 export(sigsqReml)

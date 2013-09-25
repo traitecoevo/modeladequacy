@@ -260,8 +260,5 @@ slopePicAsr <- function(unit.tree, data=NULL){
 
 ## takes no arguments
 
-defSummStats <- function(){
-
-	list("REML.sigsq"=sigsqReml, "KS.D"=ksPic, "Var.pic"=varPic, "m.pic.var"=slopePicBl, "m.pic.asr"=slopePicAsr, "m.pic.nh"=slopePicNh)
-
-}
+defSummStats <- function()
+    list("reml.sigsq"=sigsqReml, "var.con"=varPic, "slope.con.var"=slopePicBl, "slope.con.asr"=slopePicAsr, "slope.con.nh"=slopePicNh, "ks.dstat"=ksPic)
