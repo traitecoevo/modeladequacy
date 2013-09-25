@@ -1,5 +1,6 @@
 import(geiger)
 import(ggplot2)
+import(gridExtra)
 
 export(as.unit.tree)
 S3method(as.unit.tree, gfit)
@@ -29,6 +30,7 @@ export(edgeHeight)
 export(phyModelCheck)
 
 S3method(print, phy.ss)
+S3method(plot, phy.ss)
 
 export(contrastVar.plot)
 export(contrastAsr.plot)

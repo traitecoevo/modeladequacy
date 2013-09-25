@@ -4,6 +4,7 @@
 
 ## plot slope of contrasts versus variance
 ## not really that flexible at the moment
+## only work for single unit.trees (not posterior distributions)
 
 contrastVar.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
@@ -92,3 +93,49 @@ contrastNh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
 ## takes a phy.ss object
 
+plot.phy.ss <- function(x, colour=c("dodgerblue4", "darkblue")){
+
+    ## get observed summary stats
+    ss.obs <- x$summ.stats.obs
+    ss.sim <- x$summ.stats.sim
+
+    ## check if ss.obs is a single value or a distribution
+    if (nrow(ss.obs) == 1){ ## historgram plot
+        stats <- names(ss.obs)
+
+        p <- lapply(stats, function(x) phy.ss.singleplot(ss.obs[x], ss.sim, colour=colour))
+
+        do.call(grid.arrange, p)
+    } else {
+        stop("distribution plots not yet implemented")
+    }
+}
+
+
+                        
+                        
+phy.ss.singleplot <- function(ss, ss.sim, colour){
+
+    stat <- names(ss)
+    range <- range(ss.sim[,stat])
+    bins <- (range[2] - range[1]) * 40/length(ss.sim[,stat])
+
+    .e <- environment()
+    p <- ggplot(ss.sim, aes(x=ss.sim[,stat]), environment =.e)
+    p <- p + geom_histogram(binwidth=bins, alpha=0.5, fill=colour[1], aes(y=..density..))
+    p <- p + xlab(stat)
+    p <- p + theme_bw()
+    p <- p + geom_vline(x=as.numeric(ss), colour=colour[2], size=1, alpha=0.5)
+
+    return(p)
+}
+    
+                       
+    
+    
+        
+
+        
+
+
+  
