@@ -24,9 +24,12 @@ compare.summStat <- function(summ.stats.obs, summ.stats.sim){
 	## check to make sure names are the same
 	if (!all(names(summ.stats.obs) %in% names(summ.stats.sim)))
 		stop("Column names must match between two sets of summary statistics")
-		
-	## reorder to make sure they are in the correct order
-	summ.stats.sim <- summ.stats.sim[,names(summ.stats.obs)]	
+
+
+	## if multiple columns, reorder to make sure they are in the correct order
+        if (ncol(summ.stats.obs) > 1){
+            summ.stats.sim <- summ.stats.sim[,names(summ.stats.obs)]
+        }
 	
 	if (nrow(summ.stats.obs) == 1){ # only one set of summ.stats supplied
 		
@@ -48,7 +51,7 @@ compare.summStat <- function(summ.stats.obs, summ.stats.sim){
 			p.value <- c(p.value, p)
 		}
 		
-		names(p.value) <- names(p.value)
+		names(p.value) <- colnames(summ.stats.obs)
 		
 	} else {
 	
@@ -57,22 +60,30 @@ compare.summStat <- function(summ.stats.obs, summ.stats.sim){
 		## simulated summary statistics
 		if(nrow(summ.stats.obs) != nrow(summ.stats.sim))
 			stop("If inputting multiple observed summary stats, the data.frame must be the same size as that of the simulated summary stats")
-		
+
+
+                p.value <- vector()
+
 		for (j in 1:ncol(summ.stats.obs)){
-			
-			## observed distribution of summary stats
-			dist.obs <- summ.stats.obs[,i]
-			
-			## simulated distribution of summary stats
-			dist.sim <- summ.stats.sim[,names(dist.obs)]
-			
-			## perform ks-test
-			ks <- suppressWarnings(ks.test(dist.obs, dist.sim))
-			
-			## get p-value
-			p <- ks$p.value
-			
-			p.value <- c(p.value, p)
+
+                    p.l <- vector()
+                    p.r <- vector()
+
+                    ## compute pairwise comparisons
+			for (i in 1:nrow(summ.stats.obs)){
+
+                            tmp.l  <- summ.stats.sim[i,j] < summ.stats.obs[i,j]
+                            p.l <- c(p.l, tmp.l)
+                            tmp.r <- summ.stats.sim[i,j] >= summ.stats.obs[i,j]
+                            p.r <- c(p.r, tmp.r)
+
+                        }
+
+                    p.l <- length(which(p.l))/(nrow(summ.stats.obs))
+                    p.r <- length(which(p.r))/(nrow(summ.stats.obs))
+                    p <- min(p.l, p.r)
+
+                    p.value <- c(p.value, p)
 			
 		}
 		
@@ -80,8 +91,23 @@ compare.summStat <- function(summ.stats.obs, summ.stats.sim){
 					
 	}
 	
-	## return p-values
-	p.value		
+	## return two-tailed p-values
+	pp <- p.value*2
+
+        ## define class for print fxn
+	class(pp) <- c("phymod.pvalue", "numeric")
+        return(pp)
 			
-			
+}
+
+
+
+
+## define print fxn for class phymod.pvalue
+
+print.phymod.pvalue <- function(x){
+   cat("Two-tailed p-values for summary statistics: \n")
+   cat("\n")
+   attr(x, "class") <- NULL
+   print(x)
 }

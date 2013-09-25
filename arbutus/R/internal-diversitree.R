@@ -53,10 +53,15 @@ modelpars.fit.mle <- function(fit, lik, ..., check=TRUE) {
   }
 }
 
+
+## As this will use the rescaling fxns from fitContinuous, I have
+## called this an object of "model.fitC" class
 modelinfo.fit.mle <- function(fit, lik, ..., check=TRUE) {
-  list(data=modeldata(fit, lik, check=check),
-       pars=modelpars(fit, lik, check=FALSE), # no need to check twice
-       type=modeltype(fit))
+  m <- list(data=modeldata(fit, lik, check=check),
+            pars=modelpars(fit, lik, check=FALSE), # no need to check twice
+            type=modeltype(fit))
+  class(m) <- "model.fitC"
+  m
 }
 
 check.diversitree.lik.fit <- function(fit, lik, error=TRUE, ...) {

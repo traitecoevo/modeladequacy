@@ -1,6 +1,11 @@
-as.unit.tree <- function(x, ...)
-  UseMethod("as.unit.tree")
+## arbutus:::as.unit.tree
 
+## x can be either a fitted object or else a phylo object
+as.unit.tree <- function(x, ...)
+    UseMethod("as.unit.tree")
+
+## x is of class phylo
+## data is also required
 as.unit.tree.phylo <- function(x, data, ...) {
   ## check tree and data to make sure they match
   td <- treedata(phy=x, data=data)
@@ -19,35 +24,46 @@ as.unit.tree.phylo <- function(x, data, ...) {
   unit.tree
 }
 
+
+
+## x is of class gfit (geiger fitted object)
 as.unit.tree.gfit <- function(x, ...) {
-  info <- modelinfo(x)
-  as.unit.tree(rescale(info), info$data$data)
+  ## use S3 generic modelinfo to pull out the tree, data, parameter
+  ## estimates and model type
+  obj <- modelinfo(x, ...)
+
+  ## rescale the phylogeny according to the model
+  phy <- modelphylo(obj)
+
+  ## build unit.tree from phylo object
+  as.unit.tree(phy, obj$data$data)
 }
 
-as.unit.tree.fit.mle <- function(x, lik, ...) {
-  info <- modelinfo(x, lik)
-  as.unit.tree(rescale(info), info$data$data)
+## x is of class gls (gls fitted model)
+as.unit.tree.gls <- function(x, ...){
+    ## use modelinfo to pull out tree data and parameter estimates
+    obj <- modelinfo(x, ...)
+
+    ## rescale the phylogeny according to the model
+    phy <- modelphylo(obj)
+
+    ## build unit.tree from phylo object
+    ## here, data is the residuals
+    as.unit.tree(phy, obj$data$data)
 }
 
-## This is temporary, and will depend on Matt's changes to the
-## rescaling functions.  Only handles BM for now.
-rescale <- function(obj) {
-  if (obj$type == "BM") {
-    phy <- obj$data$phy
-    sigsq <- obj$pars[["sigsq"]]
-    se <- obj$pars[["SE"]]
+## x is of class fit.mle (diversitree fitted object)
+as.unit.tree.fit.mle <- function(x, ...){
+    ## use modelinfo to get tree, data and model parameters
+    obj <- modelinfo(x, ...)
 
-    phy$edge.length <- phy$edge.length * sigsq
-    if (!is.null(se)) {
-      tips <- phy$edge[,2] <= Ntip(phy)
-      phy$edge.length[tips] <- phy$edge.length[tips] + se^2
-    }
+    ## rescale tree according to the model
+    phy <- modelphylo(obj)
 
-    phy
-  } else {
-    stop("Not yet implemented")
-  }
+    ## create unit.tree from rescaled phylogeny and data
+    as.unit.tree(phy, obj$data$data)
 }
 
+## utility fxn to check if object is of class unit.tree
 is.unit.tree <- function(x)
-  inherits(x, "unit.tree")
+    inherits(x, "unit.tree")
