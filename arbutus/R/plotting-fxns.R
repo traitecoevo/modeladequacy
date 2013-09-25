@@ -6,6 +6,9 @@
 ## not really that flexible at the moment
 ## only work for single unit.trees (not posterior distributions)
 
+
+## takes model fitted objects which will be rerouted through as.unit.tree
+
 contrastVar.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
     ## build unit tree from model object
@@ -15,7 +18,8 @@ contrastVar.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
     dat <- as.data.frame(ut$pics)
     dat$contrasts <- abs(dat$contrasts)
 
-    p <- ggplot(dat, aes(variance, contrasts))
+    .e <- environment()
+    p <- ggplot(dat, aes(variance, contrasts), environment=.e)
     p <- p + stat_smooth(method="lm", fill=col[1], colour=col[2], size=1, alpha=0.1)
     p <- p + geom_point()
     p <- p + theme_bw()
@@ -44,7 +48,8 @@ contrastAsr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
     ## create a dataframe
     dat <- cbind.data.frame(asr, pics)
 
-    p <- ggplot(dat, aes(asr, pics))
+    .e <- environment()
+    p <- ggplot(dat, aes(asr, pics), environment=.e)
     p <- p + stat_smooth(method="lm", fill=col[1], colour=col[2], size=1, alpha=0.1)
     p <- p + geom_point()
     p <- p + theme_bw()
@@ -74,7 +79,8 @@ contrastNh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
     ## create a dataframe
     dat <- cbind.data.frame(nh, pics)
 
-    p <- ggplot(dat, aes(nh, pics))
+    .e <- environment()
+    p <- ggplot(dat, aes(nh, pics), environment=.e)
     p <- p + stat_smooth(method="lm", fill=col[1], colour=col[2], size=1, alpha=0.1)
     p <- p + geom_point()
     p <- p + theme_bw()
@@ -113,7 +119,7 @@ plot.phy.ss <- function(x, colour=c("dodgerblue4", "darkblue")){
 
 
                         
-                        
+## for a single summary statistic                   
 phy.ss.singleplot <- function(ss, ss.sim, colour){
 
     stat <- names(ss)
@@ -129,7 +135,10 @@ phy.ss.singleplot <- function(ss, ss.sim, colour){
 
     return(p)
 }
-    
+
+
+
+
                        
     
     
