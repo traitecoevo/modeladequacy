@@ -159,9 +159,13 @@ phy.ss.distplot <- function(ss.obs, ss.sim, stat, colour){
     dat <- cbind.data.frame(res, idx)
     colnames(dat) <- c("summ.stats", "type")
 
+    range <- range(dat[,"summ.stats"])
+    range <- range[2] - range[1]
+    bins <- range * 40/length(dat[,"summ.stats"])
+
     .e <- environment()
-    p <- ggplot(dat, aes(x=summ.stats), environment = .e)
-    p <- p + geom_density(alpha =0.5, aes(fill=type))
+    p <- ggplot(dat, aes(x=summ.stats, fill=type), environment = .e)
+    p <- p + geom_histogram(binwidth=bins, position="identity", alpha=0.6, aes(y=..density..))
     p <- p + scale_fill_manual(values=colour)
     p <- p + xlab(stat)
     p <- p + theme_bw()
@@ -191,8 +195,8 @@ phy.ss.dummyplot <- function(colour){
     colnames(dat) <- c("summ.stats", "type")
 
     .e <- environment()
-    p <- ggplot(dat, aes(x=summ.stats), environment = .e)
-    p <- p + geom_density(alpha =0.5, aes(fill=type))
+    p <- ggplot(dat, aes(x=summ.stats, fill=type), environment = .e)
+    p <- p + geom_histogram(binwidth=0.1, alpha =0.6, position="identity", aes(y=..density..))
     p <- p + scale_fill_manual(values=colour)
     p <- p + xlab("dummy")
     p <- p + theme_bw()
