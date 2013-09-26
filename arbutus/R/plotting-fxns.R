@@ -113,7 +113,17 @@ plot.phy.ss <- function(x, colour=c("dodgerblue4", "darkblue")){
 
         do.call(grid.arrange, p)
     } else {
-        stop("distribution plots not yet implemented")
+        stats <- names(ss.obs)
+
+        p <- lapply(stats, function(x) phy.ss.distplot(ss.obs, ss.sim, x, colour=colour))
+
+        ## dummy plot to get legend with correct colors and style
+        legend <- phy.ss.legend(phy.ss.dummyplot(colour))
+        lwidth <- sum(legend$width)
+
+        res <- do.call(arrangeGrob, p)
+        grid.newpage()
+        grid.arrange(res, legend, widths=unit.c(unit(1, "npc") - lwidth, lwidth), ncol=2)
     }
 }
 
@@ -135,6 +145,62 @@ phy.ss.singleplot <- function(ss, ss.sim, colour){
 
     return(p)
 }
+
+
+
+
+## for a distribution of summary statistics
+phy.ss.distplot <- function(ss.obs, ss.sim, stat, colour){
+
+
+    ## bind the two distributions together
+    res <- c(ss.obs[,stat], ss.sim[,stat])
+    idx <- c(rep("Empirical", length(ss.obs[,stat])), rep("Simulated", length(ss.sim[,stat])))
+    dat <- cbind.data.frame(res, idx)
+    colnames(dat) <- c("summ.stats", "type")
+
+    .e <- environment()
+    p <- ggplot(dat, aes(x=summ.stats), environment = .e)
+    p <- p + geom_density(alpha =0.5, aes(fill=type))
+    p <- p + scale_fill_manual(values=colour)
+    p <- p + xlab(stat)
+    p <- p + theme_bw()
+    p <- p + theme(legend.position="none")
+
+    return(p)
+}
+
+
+
+
+## internal fxn used to get the legend
+## modified from code written by Hadley W.
+
+phy.ss.legend <- function(plot){
+    tmp <- ggplot_gtable(ggplot_build(plot))
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+    legend <- tmp$grobs[[leg]]
+    return(legend)
+}
+
+## dummy fxn to quickly get legend
+phy.ss.dummyplot <- function(colour){
+    x <- rnorm(10)
+    y <- c(rep("Empirical", 5), rep("Simulated", 5))
+    dat <- cbind.data.frame(x,y)
+    colnames(dat) <- c("summ.stats", "type")
+
+    .e <- environment()
+    p <- ggplot(dat, aes(x=summ.stats), environment = .e)
+    p <- p + geom_density(alpha =0.5, aes(fill=type))
+    p <- p + scale_fill_manual(values=colour)
+    p <- p + xlab("dummy")
+    p <- p + theme_bw()
+    p <- p + theme(legend.title=element_blank())
+
+    return(p)
+}
+    
 
 
 
