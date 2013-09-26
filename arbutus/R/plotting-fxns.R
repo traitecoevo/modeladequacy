@@ -99,7 +99,7 @@ contrastNh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
 ## takes a phy.ss object
 
-plot.phy.ss <- function(x, colour=c("dodgerblue4", "darkblue")){
+plot.phy.ss <- function(x, colour=c("darkblue", "dodgerblue4")){
 
     ## get observed summary stats
     ss.obs <- x$summ.stats.obs
@@ -138,10 +138,10 @@ phy.ss.singleplot <- function(ss, ss.sim, colour){
 
     .e <- environment()
     p <- ggplot(ss.sim, aes(x=ss.sim[,stat]), environment =.e)
-    p <- p + geom_histogram(binwidth=bins, alpha=0.5, fill=colour[1], aes(y=..density..))
+    p <- p + geom_histogram(binwidth=bins, alpha=0.6, fill=colour[2], aes(y=..density..))
     p <- p + xlab(stat)
     p <- p + theme_bw()
-    p <- p + geom_vline(x=as.numeric(ss), colour=colour[2], size=1, alpha=0.5)
+    p <- p + geom_vline(x=as.numeric(ss), colour=colour[1], size=1, alpha=0.6)
 
     return(p)
 }
