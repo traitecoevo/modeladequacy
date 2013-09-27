@@ -298,7 +298,7 @@ modelphylo.model.fitC <- function(x, ...){
                    kappa = modelphyloKappa(phy, pars),
                    delta = modelphyloDelta(phy, pars),
                    trend = modelphyloTrend(phy, pars),
-                   white = modelphyloWhite(phy),
+                   white = modelphyloWhite(phy, pars),
                )
 
     ## return rescaled phylogeny
