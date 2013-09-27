@@ -1,31 +1,39 @@
-## arbutus:::sim.char.unit
-
-## fxn for simulating BM with rate 1 along a unit tree
-## repeats n times
-
-## each simulation generates a unit.tree with the simulated data
-
-## 2 arguments:
-## unit.tree -- the unit.tree across which to simulate (can just be of class 'phylo' as data or pics are not used)
-
-## nsim -- the number of simulations
-
-## Note that if it is given one unit.tree, the fxn simulates nsim datasets on the unit tree
-## If given a list of unit.trees, the fxn simulates one dataset per tree and ignores the nsim command
-
-
+#' Simulate character evolution on unit tree according to a BM process
+#'
+#' @param unit.tree A 'unit.tree' object
+#' @param nsim The number of datasets to simulate (if single unit.tree is provided; see below)
+#' 
+#' @return A list of unit.trees. In each unit.tree, the phylogeny will be the same as that of the input unit.tree(s)
+#'   but the data and the contrasts will be replaced by the simulated datasets.
+#' 
+#' @note If a single unit.tree is supplied, the function will simulate \code{nsim} datasets under a Brownian motion
+#'   process with a rate of 1. If a lits of unit.trees supplied (such as those derived from a Bayesian analysis)
+#'   \code{sim.char.unit} will simulate a single data set on each tree in the list and the \code{nsim} argument will
+#'   be ignored
+#' 
+#' @seealso \code{link[arbutus]{sim.char}} which this function wraps
+#' 
+#' @export sim.char.unit
+#'
+#' @examples
+#'   data(geospiza)
+#'   td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#'   phy <- td$phy
+#'   dat <- td$data[,"wingL"]
+#'   unit.tree <- as.unit.tree(phy, dat)
+#'   sims <- sim.char.unit(unit.tree, nsim=2)
+#'   sims
+#' 
 sim.char.unit <- function(unit.tree, nsim=1000){
 	if (inherits(unit.tree, "unit.tree")){ ## simulate on one tree
-
-                phy <- unit.tree$phy
-                dat <- sim.char(phy, par=1, nsim=nsim, model="BM")[,,]
-                ut <- lapply(1:nsim, function(x) as.unit.tree(phy, dat[,x]))
+            phy <- unit.tree$phy
+            dat <- sim.char(phy, par=1, nsim=nsim, model="BM")[,,]
+            ut <- lapply(1:nsim, function(x) as.unit.tree(phy, dat[,x]))
                 
             } else { ## simulate one simulation per tree in list
-
-                ## first check to make sure first element is a unit.tree
-                if (!is.unit.tree(unit.tree[[1]]))
-                    stop("unit.tree must be either a single unit tree or a list of unit.trees")
+             ## first check to make sure first element is a unit.tree
+            if (!is.unit.tree(unit.tree[[1]]))
+                stop("unit.tree must be either a single unit tree or a list of unit.trees")
 
                 multi.phy <- lapply(unit.tree, function(x) return(x$phy))
                 multi.dat <- lapply(multi.phy, function(x) return(sim.char(x, par=1, model="BM")[,,]))
