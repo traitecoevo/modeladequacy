@@ -1,4 +1,4 @@
-## arbutus:::compare.summStat
+## arbutus:::compare.summ.stats
 
 ## fxn for comparing empirical to simulated summary statistics
 
@@ -14,12 +14,7 @@
 ## returns a named vector of p.values, with each element corresponding to a statistic used
 
 
-
-## NOTE: need to check to make sure I am computing the "p-values" correctly
-
-
-
-compare.summStat <- function(summ.stats.obs, summ.stats.sim){
+compare.summ.stats <- function(summ.stats.obs, summ.stats.sim){
 	
 	## check to make sure names are the same
 	if (!all(names(summ.stats.obs) %in% names(summ.stats.sim)))
@@ -117,7 +112,7 @@ print.phy.ss <- function(x){
 
 ## function to extract p-values from phy.ss object
 
-pvalueSummStats <- function(x)
+pval.summ.stats <- function(x)
     x$p.values
 
 

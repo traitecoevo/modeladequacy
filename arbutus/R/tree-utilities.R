@@ -2,7 +2,7 @@
 
 ## get node heights (this is equivalent to the internal geiger fxn heights.phylo() )
 
-edgeHeight <- function(phy){
+edge.height <- function(phy){
 	phy <- reorder(phy, "postorder")
 	n <- length(phy$tip.label)
 	n.node <- phy$Nnode

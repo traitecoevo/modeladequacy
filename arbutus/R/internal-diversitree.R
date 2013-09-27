@@ -6,21 +6,21 @@
 ## issue #9.  This means that many of these require both the fitted
 ## object and the likelihood function, but will by default check that
 ## the likelihood function could plausibly been used to fit the model.
-modeltype.fit.mle <- function(fit, ...) {
+model.type.fit.mle <- function(fit, ...) {
   toupper(sub("^fit\\.mle\\.", "", class(fit)[[1]]))
 }
 
-modeldata.fit.mle <- function(fit, lik, ..., check=TRUE) {
+model.data.fit.mle <- function(fit, lik, ..., check=TRUE) {
   if (check)
     check.diversitree.lik.fit(fit, lik, error=TRUE)
   cache <- diversitree:::get.cache(lik)
   list(phy=cache$info$phy, data=cache$states)
 }
 
-modelpars.fit.mle <- function(fit, lik, ..., check=TRUE) {
+model.pars.fit.mle <- function(fit, lik, ..., check=TRUE) {
   if (check)
     check.diversitree.lik.fit(fit, lik, error=TRUE)
-  model <- modeltype(fit)
+  model <- model.type(fit)
   if (model %in% c("BM", "OU")) {
     pars <- as.list(coef(fit))
 
@@ -56,11 +56,11 @@ modelpars.fit.mle <- function(fit, lik, ..., check=TRUE) {
 
 ## As this will use the rescaling fxns from fitContinuous, I have
 ## called this an object of "model.fitC" class
-modelinfo.fit.mle <- function(fit, lik, ..., check=TRUE) {
-  m <- list(data=modeldata(fit, lik, check=check),
-            pars=modelpars(fit, lik, check=FALSE), # no need to check twice
-            type=modeltype(fit))
-  class(m) <- "model.fitC"
+model.info.fit.mle <- function(fit, lik, ..., check=TRUE) {
+  m <- list(data=model.data(fit, lik, check=check),
+            pars=model.pars(fit, lik, check=FALSE), # no need to check twice
+            type=model.type(fit))
+  class(m) <- "fitC"
   m
 }
 

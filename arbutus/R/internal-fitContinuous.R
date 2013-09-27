@@ -15,30 +15,30 @@
 
 ## Note even though these aren't actually S3 generics (yet) the
 ## function names are written as though they are.
-modeltype.gfit <- function(fit, ...) {
+model.type.gfit <- function(fit, ...) {
   ret <- attr(fit$lik, "model")
   if (is.null(ret) || !is.character(ret) || length(ret) != 1)
     stop("Failed to extract model type from geiger fit")
   ret
 }
 
-modeldata.gfit <- function(fit, ...) {
+model.data.gfit <- function(fit, ...) {
   e <- environment(fit$lik)
   list(phy=get("phy", e), data=get("dat", e))
 }
 
-modelpars.gfit <- function(fit, ...) {
-  model <- modeltype(fit)
+model.pars.gfit <- function(fit, ...) {
+  model <- model.type(fit)
     pars <- as.list(coef(fit))
     if (!("SE" %in% names(pars)))
       pars$SE <- 0
     pars[c(setdiff(names(pars), "SE"), "SE")]
 }
 
-modelinfo.gfit <- function(fit, ...) {
-  m <- list(data=modeldata(fit),
-            pars=modelpars(fit),
-            type=modeltype(fit))
-  class(m) <- "model.fitC"
+model.info.gfit <- function(fit, ...) {
+  m <- list(data=model.data(fit),
+            pars=model.pars(fit),
+            type=model.type(fit))
+  class(m) <- "fitC"
   m
 }

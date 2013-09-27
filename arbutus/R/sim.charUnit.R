@@ -1,4 +1,4 @@
-## arbutus:::simcharUnit
+## arbutus:::sim.char.unit
 
 ## fxn for simulating BM with rate 1 along a unit tree
 ## repeats n times
@@ -14,7 +14,7 @@
 ## If given a list of unit.trees, the fxn simulates one dataset per tree and ignores the nsim command
 
 
-sim.charUnit <- function(unit.tree, nsim=1000){
+sim.char.unit <- function(unit.tree, nsim=1000){
 	if (inherits(unit.tree, "unit.tree")){ ## simulate on one tree
 
                 phy <- unit.tree$phy

@@ -2,7 +2,7 @@
 ## fxns for parsing a gls object from fitting a pgls model using gls (from nlme)
 ## note here that the relevant data is the residuals, not the original trait values
 
-modeltype.gls <- function(fit, ...){
+model.type.gls <- function(fit, ...){
 
     ## figure out what model was used using ape's cor scheme
     ## convert model to geiger's nomenclature
@@ -22,7 +22,7 @@ modeltype.gls <- function(fit, ...){
     model
 }
 
-modeldata.gls <- function(fit, ...){
+model.data.gls <- function(fit, ...){
     phy <- attr(fit$modelStruct$corStruct, "tree")
 
     ## data is the residuals
@@ -32,12 +32,12 @@ modeldata.gls <- function(fit, ...){
     list(phy=phy, data=data)
 }
 
-modelpars.gls <- function(fit, ...){
+model.pars.gls <- function(fit, ...){
     ## get model
-    model <- modeltype(fit)
+    model <- model.type(fit)
 
     ## get phy
-    phy <- modeldata(fit)$phy
+    phy <- model.data(fit)$phy
 
     ## pull out residuals
     rr <- resid(fit)
@@ -73,10 +73,10 @@ modelpars.gls <- function(fit, ...){
     pars
 }
 
-modelinfo.gls <- function(fit, ...){
-    m <- list(data=modeldata(fit),
-         pars=modelpars(fit),
-         type=modeltype(fit))
-    class(m) <- "model.fitC"
+model.info.gls <- function(fit, ...){
+    m <- list(data=model.data(fit),
+         pars=model.pars(fit),
+         type=model.type(fit))
+    class(m) <- "fitC"
     m
 }

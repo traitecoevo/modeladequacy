@@ -11,12 +11,12 @@ phy.unit <- as.unit.tree(phy, states)
 
 test_that("Summary statistic wrapper function produces correct output", {
     ## check default summary stats
-    stat.fxn <- arbutus:::defSummStats()
+    stat.fxn <- arbutus:::def.summ.stats()
     expect_that(is.list(stat.fxn), is_true())
     expect_that(length(stat.fxn), equals(6))
 
     ## make sure it uses correct summary stats if default
-    ss <- summStat(phy.unit, stats=NULL)
+    ss <- summ.stats(phy.unit, stats=NULL)
     ss.names <- names(ss)
     expect_that(ss.names, equals(names(stat.fxn)))
 
@@ -28,15 +28,15 @@ test_that("Summary statistic wrapper function produces correct output", {
     ## Multiple trees:
     ut <- list(phy.unit, phy.unit)
     set.seed(1)
-    ss.multi <- summStat(ut, stats=NULL)
+    ss.multi <- summ.stats(ut, stats=NULL)
     expect_that(ss.multi, is_a("data.frame"))
     nrow.ss.multi <- nrow(ss.multi)
     expect_that(nrow.ss.multi, equals(2))
 
     ## Something else
-    expect_that(summStat(list()), throws_error())
-    expect_that(summStat(phy), throws_error())
-    expect_that(summStat(1), throws_error())
+    expect_that(summ.stats(list()), throws_error())
+    expect_that(summ.stats(phy), throws_error())
+    expect_that(summ.stats(1), throws_error())
 })
 
 test_that("Custom supplied functions work correctly", {
@@ -44,22 +44,22 @@ test_that("Custom supplied functions work correctly", {
     foo <- function(x)
         mean(x$pics[,"contrasts"])
 
-    ss.mean <- summStat(phy.unit, stats=list(mean=foo))
+    ss.mean <- summ.stats(phy.unit, stats=list(mean=foo))
     ss.names.mean <- names(ss.mean)
     expect_that(ss.names.mean, equals("mean"))
 
     ## Things that should cause errors:
     ## Unnamed list:
-    expect_that(summStat(phy.unit, stats=list(foo)),
+    expect_that(summ.stats(phy.unit, stats=list(foo)),
                 throws_error())
     ## Not given a list
-    expect_that(summStat(phy.unit, stats=foo),
+    expect_that(summ.stats(phy.unit, stats=foo),
                 throws_error())
     ## Empty list
-    expect_that(summStat(phy.unit, stats=list()),
+    expect_that(summ.stats(phy.unit, stats=list()),
                 throws_error())
     ## Not functions
-    expect_that(summStat(phy.unit, stats=list(a=1)),
+    expect_that(summ.stats(phy.unit, stats=list(a=1)),
                 throws_error())
 })
 
@@ -68,7 +68,7 @@ test_that("Custom supplied functions work correctly", {
 test_that("REML sigsq is being calculated correctly", {
     phy.unit <- as.unit.tree(phy, states)
 
-    ss <- round(as.numeric(summStat(phy.unit)[,"reml.sigsq"]), 7)
+    ss <- round(sigsq.reml, 7)
     expect_that(ss, equals(0.130356))
 })
 

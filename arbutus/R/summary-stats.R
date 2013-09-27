@@ -5,7 +5,7 @@
 
 
 
-## arbutus:::summStat
+## arbutus:::summ.stats
 
 ## Fxn for calculating summary statistics across a unit.tree or a set of unit.trees
 
@@ -19,15 +19,15 @@
 
 ## Note: data from unit.trees will be used
 
-summStat <- function(unit.tree, stats=NULL){
-  stats <- checkSummStats(stats)
+summ.stats <- function(unit.tree, stats=NULL){
+  stats <- check.summ.stats(stats)
   if (inherits(unit.tree, "unit.tree")){
     # One unit.tree
     res <- do.call(cbind.data.frame,
                    lapply(stats, function(x) x(unit.tree)))
   } else if (is.list(unit.tree) && length(unit.tree) > 0) {
     # Multiple unit.trees
-    res <- do.call(rbind, lapply(unit.tree, summStat, stats))
+    res <- do.call(rbind, lapply(unit.tree, summ.stats, stats))
   } else {
     # Anything else
     stop("'unit.tree' must be a single unit.tree, or a list of them")
@@ -35,47 +35,41 @@ summStat <- function(unit.tree, stats=NULL){
   res
 }
 
-## arbutus:::sigsqReml
+## arbutus:::sigsq.reml
 
 ## A function for computing the REML estimate of sigma^2
 ## Equal to the mean of the squared contrasts
 ## Takes a unit.tree object
-## If data == NULL, uses the data supplied by unit.tree
-## If data != NULL, creates unit.tree with input data
 
-sigsqReml <- function(unit.tree, data=NULL){
-	## make sure the unit.tree is of class 'unit.tree'
-	## if not create a unit.tree using supplied data
-	if (!inherits(unit.tree, "unit.tree"))
-		unit.tree <- as.unit.tree(unit.tree, data)
+sigsq.reml <- function(unit.tree){
+    ## make sure the unit.tree is of class 'unit.tree'
+    assert.is.unit.tree(unit.tree)
 
-	mean(unit.tree$pics[,"contrasts"]^2)
+    mean(unit.tree$pics[,"contrasts"]^2)
 }
 
 
 
 
 
-## arbutus:::ksPic
+## arbutus:::ks.pic
 
 ## A function for comparing the distribution of the contrasts
 ## to a normal distribution with mean 0 and sd = sqroot(mean(pics^2))
 ## uses D-statistic from KS test
 
-ksPic <- function(unit.tree, data=NULL){
-	## make sure the unit.tree is of class 'unit.tree'
-	## if not create a unit.tree using supplied data
-	if (!inherits(unit.tree, "unit.tree"))
-		unit.tree <- as.unit.tree(unit.tree, data)
+ks.pic <- function(unit.tree){
+    ## make sure the unit.tree is of class 'unit.tree'
+    assert.is.unit.tree(unit.tree)
+        
+    ## simulate a null distribution
+    sd <- sqrt(mean(unit.tree$pics[,"contrasts"]^2))
+    nd <- rnorm(10000, mean=0, sd=sd)
 
-	## simulate a null distribution
-	sd <- sqrt(mean(unit.tree$pics[,"contrasts"]^2))
-	nd <- rnorm(10000, mean=0, sd=sd)
+    ## KS test
+    ksbm <- ks.test(unit.tree$pics[,"contrasts"], nd)$statistic
 
-	## KS test
-	ksbm <- ks.test(unit.tree$pics[,"contrasts"], nd)$statistic
-
-	unname(ksbm)
+    unname(ksbm)
 }
 
 
@@ -84,20 +78,16 @@ ksPic <- function(unit.tree, data=NULL){
 
 
 
-## arbutus:::varPic
+## arbutus:::var.pic
 
 ## A fxn for computing the variance in pic estimates
 ## Takes a unit.tree object
-## If data == NULL, uses the data attached to unit.tree
-## If data != NULL, creates unit.tree with input data
 
-varPic <- function(unit.tree, data=NULL) {
-	## make sure the unit.tree is of class 'unit.tree'
-	## if not create a unit.tree using supplied data
-	if (!inherits(unit.tree, "unit.tree"))
-		unit.tree <- as.unit.tree(unit.tree, data)
-
-        var(abs(unit.tree$pics[,"contrasts"]))
+var.pic <- function(unit.tree) {
+    ## make sure the unit.tree is of class 'unit.tree'
+    assert.is.unit.tree(unit.tree)
+    
+    var(abs(unit.tree$pics[,"contrasts"]))
 }
 
 
@@ -107,31 +97,27 @@ varPic <- function(unit.tree, data=NULL) {
 
 
 
-## arbutus:::slopePicBl
+## arbutus:::slope.pic.bl
 
 ## Fxn for computing the slope between the contrasts and their standard deviations
 ## Used as a measure of variation with respect to branch length
 
 ## Takes a unit.tree object
-## If data == NULL, uses the data attached to unit.tree
-## If data != NULL, creates unit.tree with input data
 
-slopePicBl <- function(unit.tree, data=NULL){
-	## make sure the unit.tree is of class 'unit.tree'
-	## if not create a unit.tree using supplied data
-	if (!inherits(unit.tree, "unit.tree"))
-		unit.tree <- as.unit.tree(unit.tree, data)
+slope.pic.bl <- function(unit.tree){
+    ## make sure the unit.tree is of class 'unit.tree'
+    assert.is.unit.tree(unit.tree)
+    
+    ## sd of the pics
+    sd.pic <- sqrt(unit.tree$pics[,"variance"])
 
-	## sd of the pics
-	sd.pic <- sqrt(unit.tree$pics[,"variance"])
+    ## absolute value of the pics
+    abs.pic <- abs(unit.tree$pics[,"contrasts"])
 
-	## absolute value of the pics
-	abs.pic <- abs(unit.tree$pics[,"contrasts"])
+    ## fit a linear model
+    cv <- lm(abs.pic ~ sd.pic)
 
-	## fit a linear model
-	cv <- lm(abs.pic ~ sd.pic)
-
-	unname(coef(cv)["sd.pic"])
+    unname(coef(cv)["sd.pic"])
 }
 
 
@@ -142,37 +128,32 @@ slopePicBl <- function(unit.tree, data=NULL){
 
 
 
-## arbutus:::slopePicNh
+## arbutus:::slope.pic.nh
 
 ## Fxn for computing the slope between the contrasts and the height of the node at which the contrast is computed
 ## Used as a measure of variation with respect to time
 
 ## Takes a unit.tree object
-## If data == NULL, uses the data attached to unit.tree
-## If data != NULL, creates unit.tree with input data
 
 # NOTES:
 ##
 ## 1. Need to swap out branching.times() with a function that works for non-ultrametric trees (working on the fxn nodeAge to do this)
 
-slopePicNh <- function(unit.tree, data=NULL){
+slope.pic.nh <- function(unit.tree){
+    ## make sure the unit.tree is of class 'unit.tree'
+    assert.is.unit.tree(unit.tree)
 
-	## make sure the unit.tree is of class 'unit.tree'
-	## if not create a unit.tree using supplied data
-	if (!inherits(unit.tree, "unit.tree"))
-		unit.tree <- as.unit.tree(unit.tree, data)
+    ## node heights (see note 1)
+    nh <- branching.times(unit.tree$phy)
 
-	## node heights (see note 1)
-	nh <- branching.times(unit.tree$phy)
+    ## absolute value of the pics
+    abs.pic <- abs(unit.tree$pics[,"contrasts"])
 
-	## absolute value of the pics
-	abs.pic <- abs(unit.tree$pics[,"contrasts"])
+    ## fit a linear model
 
-	## fit a linear model
+    ch <- lm(abs.pic ~ nh)
 
-	ch <- lm(abs.pic ~ nh)
-
-	unname(coef(ch)["nh"])
+    unname(coef(ch)["nh"])
 }
 
 
@@ -182,7 +163,7 @@ slopePicNh <- function(unit.tree, data=NULL){
 
 
 
-## arbutus:::slopePicAsr
+## arbutus:::slope.pic.asr
 
 ## Fxn for computing the slope between the contrasts and the inferred ancestral state at the node
 ## Used as a measure of variation with respect to trait value
@@ -198,23 +179,20 @@ slopePicNh <- function(unit.tree, data=NULL){
 ## 1. Use "pic" method in ape. Not sure if this is appropriate or not.
 
 
-slopePicAsr <- function(unit.tree, data=NULL){
+slope.pic.asr <- function(unit.tree){
+    ## make sure the unit.tree is of class 'unit.tree'
+    assert.is.unit.tree(unit.tree)
+    
+    ## reconstruct ancestors using pic method
+    asr <- ace(unit.tree$data, unit.tree$phy, method="pic")$ace
 
-	## make sure the unit.tree is of class 'unit.tree'
-	## if not create a unit.tree using supplied data
-	if (!inherits(unit.tree, "unit.tree"))
-		unit.tree <- as.unit.tree(unit.tree, data)
+    ## absolute value of pics
+    abs.pic <- abs(unit.tree$pics[,"contrasts"])
 
-	## reconstruct ancestors using pic method
-	asr <- ace(unit.tree$data, unit.tree$phy, method="pic")$ace
+    ## fit linear model
+    ca <- lm(abs.pic ~ asr)
 
-	## absolute value of pics
-	abs.pic <- abs(unit.tree$pics[,"contrasts"])
-
-	## fit linear model
-	ca <- lm(abs.pic ~ asr)
-
-	unname(coef(ca)["asr"])
+    unname(coef(ca)["asr"])
 }
 
 
@@ -225,19 +203,19 @@ slopePicAsr <- function(unit.tree, data=NULL){
 
 
 
-## arbutus:::defSummStats
+## arbutus:::def.summ.stats
 
 ## function to build list of default summary statistics
 ## used internally in traitStats
 
 ## takes no arguments
 
-defSummStats <- function()
-    list("reml.sigsq"=sigsqReml, "var.con"=varPic, "slope.con.var"=slopePicBl, "slope.con.asr"=slopePicAsr, "slope.con.nh"=slopePicNh, "ks.dstat"=ksPic)
+def.summ.stats <- function()
+    list("reml.sigsq"=sigsq.reml, "var.con"=var.pic, "slope.con.var"=slope.pic.bl, "slope.con.asr"=slope.pic.asr, "slope.con.nh"=slope.pic.nh, "ks.dstat"=ks.pic)
 
-checkSummStats <- function(stats) {
+check.summ.stats <- function(stats) {
   if (is.null(stats))
-    stats <- defSummStats()
+    stats <- def.summ.stats()
   else if (!is.list(stats) || is.null(names(stats)) ||
            any(names(stats) == "" || length(stats) == 0))
     ## (note that the second check does not always enforce

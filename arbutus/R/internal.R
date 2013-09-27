@@ -1,18 +1,18 @@
 ## internal functions for defining generic fxns and parameter names
 
-modeltype <- function(fit, ...)
-  UseMethod("modeltype")
-modeldata <- function(fit, ...)
-  UseMethod("modeldata")
-modelpars <- function(fit, ...)
-  UseMethod("modelpars")
-modelinfo <- function(fit, ...)
-  UseMethod("modelinfo")
+model.type <- function(fit, ...)
+  UseMethod("model.type")
+model.data <- function(fit, ...)
+  UseMethod("model.data")
+model.pars <- function(fit, ...)
+  UseMethod("model.pars")
+model.info <- function(fit, ...)
+  UseMethod("model.info")
 
 
 
-modelphylo <- function(x, ...)
-    UseMethod("modelphylo")
+make.model.phylo <- function(x, ...)
+    UseMethod("make.model.phylo")
 
 
 

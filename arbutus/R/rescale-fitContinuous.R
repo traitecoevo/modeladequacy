@@ -13,7 +13,7 @@
 
 
 
-modelphyloBM <- function(phy, pars){
+model.phylo.bm <- function(phy, pars){
     ## check pars to make sure they are non-negative
     if (pars$sigsq < 0 | pars$SE < 0)
         stop("Parameters need to be non-negative")
@@ -35,13 +35,13 @@ modelphyloBM <- function(phy, pars){
 
 
 
-modelphyloOU <- function(phy, pars){
+model.phylo.ou <- function(phy, pars){
     ## check pars to make sure they are non-negative
     if (pars$sigsq < 0 || pars$alpha < 0 || pars$SE < 0)
         stop("Parameters need to be non-negative")
 
     ## get all heights
-    ht <- edgeHeight(phy)
+    ht <- edge.height(phy)
 
     ## get tree depth
     ## same as max(branching.times(phy)) but works for non-ultrametric trees
@@ -78,13 +78,13 @@ modelphyloOU <- function(phy, pars){
 
 
 ## Rescale phylogeny according to early burst model
-modelphyloEB <- function(phy, pars){
+model.phylo.eb <- function(phy, pars){
     ## check pars to make sure they are non-negative
     if (pars$sigsq < 0 || pars$SE < 0)
         stop("Parameters need to be non-negative")
 
     ## get all heights
-    ht <- edgeHeight(phy)
+    ht <- edge.height(phy)
 
     ## get tree depth
     ## same as max(branching.times(phy)) but works for non-ultrametric trees
@@ -122,13 +122,13 @@ modelphyloEB <- function(phy, pars){
 
 
 ## lambda transformation
-modelphyloLambda <- function(phy, pars){
+model.phylo.lambda <- function(phy, pars){
     ## check pars to make sure they are non-negative
     if (pars$sigsq < 0 || pars$SE < 0)
         stop("Parameters need to be non-negative")
 
     ## get all heights
-    ht <- edgeHeight(phy)
+    ht <- edge.height(phy)
 
     ## get tree depth
     ## same as max(branching.times(phy)) but works for non-ultrametric trees
@@ -172,7 +172,7 @@ modelphyloLambda <- function(phy, pars){
 
 
 ## kappa transformation
-modelphyloKappa <- function(phy, pars){
+model.phylo.kappa <- function(phy, pars){
     ## check pars to make sure they are non-negative
     if (pars$sigsq < 0 || pars$kappa < 0 || pars$SE < 0)
         stop("Parameters need to be non-negative")
@@ -199,13 +199,13 @@ modelphyloKappa <- function(phy, pars){
 
 
 ## delta transformation
-modelphyloDelta <- function(phy, pars){
+model.phylo.delta <- function(phy, pars){
     ## check pars to make sure they are non-negative
     if (pars$sigsq < 0 || pars$delta < 0 || pars$SE < 0)
         stop("Parameters need to be non-negative")
 
     ## get all heights
-    ht <- edgeHeight(phy)
+    ht <- edge.height(phy)
 
     ## get tree depth
     ## same as max(branching.times(phy)) but works for non-ultrametric trees
@@ -244,7 +244,7 @@ modelphyloDelta <- function(phy, pars){
 ## NEED TO WRITE THIS FXN LATER
 ## placeholder fxn
 
-modelphyloTrend <- function(phy, pars)
+model.phylo.trend <- function(phy, pars)
     stop("trend model is not currently implemented")
 
 
@@ -253,7 +253,7 @@ modelphyloTrend <- function(phy, pars)
 
 ## white noise transformation
 ## turn tree into star phylogeny
-modelphyloWhite <- function(phy, pars){
+model.phylo.white <- function(phy, pars){
     ## check pars to make sure they are non-negative
     if (pars$sigsq < 0)
         stop("Parameters need to be non-negative")
@@ -276,10 +276,10 @@ modelphyloWhite <- function(phy, pars){
 
 
 
-## modelPhylo fxn for rescaling based on fitContinuous styles model.fitC
+## make.model.phylo.fitC fxn for rescaling based on fitContinuous styles 'fitC'
 ## includes fitContinuous, diversitree, gls, pgls, MCMCglmm, fitContinuousMCMC, etc.
 
-modelphylo.model.fitC <- function(x, ...){
+make.model.phylo.fitC <- function(x, ...){
     ## get model
     model <- x$type
 
@@ -291,14 +291,14 @@ modelphylo.model.fitC <- function(x, ...){
 
     ## use switch function to get appropriate transformation
     rphy <- switch(model,
-                   BM = modelphyloBM(phy, pars),
-                   OU = modelphyloOU(phy, pars),
-                   EB = modelphyloEB(phy, pars),
-                   lambda = modelphyloLambda(phy, pars),
-                   kappa = modelphyloKappa(phy, pars),
-                   delta = modelphyloDelta(phy, pars),
-                   trend = modelphyloTrend(phy, pars),
-                   white = modelphyloWhite(phy, pars),
+                   BM = model.phylo.bm(phy, pars),
+                   OU = model.phylo.ou(phy, pars),
+                   EB = model.phylo.eb(phy, pars),
+                   lambda = model.phylo.lambda(phy, pars),
+                   kappa = model.phylo.kappa(phy, pars),
+                   delta = model.phylo.delta(phy, pars),
+                   trend = model.phylo.trend(phy, pars),
+                   white = model.phylo.white(phy, pars),
                )
 
     ## return rescaled phylogeny

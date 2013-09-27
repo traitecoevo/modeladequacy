@@ -9,7 +9,7 @@
 
 ## takes model fitted objects which will be rerouted through as.unit.tree
 
-contrastVar.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
+contrast.var.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
     ## build unit tree from model object
     ut <- as.unit.tree(x, ...)
@@ -34,7 +34,7 @@ contrastVar.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
 
 ## plot slope of the contrasts versus their inferred ancestral state
-contrastAsr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
+contrast.asr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
     ## build unit tree from model object
     ut <- as.unit.tree(x, ...)
@@ -65,7 +65,7 @@ contrastAsr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
 ## plot of contrasts versus node height
 
-contrastNh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
+contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
     ## build unit tree from model object
     ut <- as.unit.tree(x, ...)
