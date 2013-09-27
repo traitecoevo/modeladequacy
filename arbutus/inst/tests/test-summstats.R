@@ -68,7 +68,7 @@ test_that("Custom supplied functions work correctly", {
 test_that("REML sigsq is being calculated correctly", {
     phy.unit <- as.unit.tree(phy, states)
 
-    ss <- round(sigsq.reml, 7)
+    ss <- round(sigsq.reml(phy.unit), 7)
     expect_that(ss, equals(0.130356))
 })
 
