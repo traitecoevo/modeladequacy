@@ -19,35 +19,21 @@
 
 ## Note: data from unit.trees will be used
 
-
 summStat <- function(unit.tree, stats=NULL){
-	if (is.null(stats))
-		stats <- defSummStats()
-
-	## single unit.tree
-	if (inherits(unit.tree, "unit.tree")){
-		res <- lapply(stats, function(x) x(unit.tree))
-		res <- do.call(cbind.data.frame, res)
-
-	} else { ## multiple unit.trees
-
-		res <- data.frame()
-
-		## compute all stats across all unit.trees
-		for (i in 1:length(unit.tree)){
-			tmp <- lapply(stats, function(x) x(unit.tree[[i]]))
-			tmp2 <- do.call(cbind, tmp)
-			res <- rbind(res,tmp2)
-
-		}
-	}
-
-	res
-
+  stats <- checkSummStats(stats)
+  if (inherits(unit.tree, "unit.tree")){
+    # One unit.tree
+    res <- do.call(cbind.data.frame,
+                   lapply(stats, function(x) x(unit.tree)))
+  } else if (is.list(unit.tree) && length(unit.tree) > 0) {
+    # Multiple unit.trees
+    res <- do.call(rbind, lapply(unit.tree, summStat, stats))
+  } else {
+    # Anything else
+    stop("'unit.tree' must be a single unit.tree, or a list of them")
+  }
+  res
 }
-
-
-
 
 ## arbutus:::sigsqReml
 
@@ -58,14 +44,12 @@ summStat <- function(unit.tree, stats=NULL){
 ## If data != NULL, creates unit.tree with input data
 
 sigsqReml <- function(unit.tree, data=NULL){
-
 	## make sure the unit.tree is of class 'unit.tree'
 	## if not create a unit.tree using supplied data
 	if (!inherits(unit.tree, "unit.tree"))
 		unit.tree <- as.unit.tree(unit.tree, data)
 
 	mean(unit.tree$pics[,"contrasts"]^2)
-
 }
 
 
@@ -79,7 +63,6 @@ sigsqReml <- function(unit.tree, data=NULL){
 ## uses D-statistic from KS test
 
 ksPic <- function(unit.tree, data=NULL){
-
 	## make sure the unit.tree is of class 'unit.tree'
 	## if not create a unit.tree using supplied data
 	if (!inherits(unit.tree, "unit.tree"))
@@ -92,8 +75,7 @@ ksPic <- function(unit.tree, data=NULL){
 	## KS test
 	ksbm <- ks.test(unit.tree$pics[,"contrasts"], nd)$statistic
 
-	as.numeric(ksbm)
-
+	unname(ksbm)
 }
 
 
@@ -110,14 +92,12 @@ ksPic <- function(unit.tree, data=NULL){
 ## If data != NULL, creates unit.tree with input data
 
 varPic <- function(unit.tree, data=NULL) {
-
 	## make sure the unit.tree is of class 'unit.tree'
 	## if not create a unit.tree using supplied data
 	if (!inherits(unit.tree, "unit.tree"))
 		unit.tree <- as.unit.tree(unit.tree, data)
 
         var(abs(unit.tree$pics[,"contrasts"]))
-
 }
 
 
@@ -137,7 +117,6 @@ varPic <- function(unit.tree, data=NULL) {
 ## If data != NULL, creates unit.tree with input data
 
 slopePicBl <- function(unit.tree, data=NULL){
-
 	## make sure the unit.tree is of class 'unit.tree'
 	## if not create a unit.tree using supplied data
 	if (!inherits(unit.tree, "unit.tree"))
@@ -152,8 +131,7 @@ slopePicBl <- function(unit.tree, data=NULL){
 	## fit a linear model
 	cv <- lm(abs.pic ~ sd.pic)
 
-	as.numeric(cv$coefficients["sd.pic"])
-
+	unname(coef(cv)["sd.pic"])
 }
 
 
@@ -194,10 +172,7 @@ slopePicNh <- function(unit.tree, data=NULL){
 
 	ch <- lm(abs.pic ~ nh)
 
-	slope <- ch$coefficients["nh"]
-
-	as.numeric(slope)
-
+	unname(coef(ch)["nh"])
 }
 
 
@@ -239,10 +214,7 @@ slopePicAsr <- function(unit.tree, data=NULL){
 	## fit linear model
 	ca <- lm(abs.pic ~ asr)
 
-	slope <- ca$coefficients["asr"]
-
-	as.numeric(slope)
-
+	unname(coef(ca)["asr"])
 }
 
 
@@ -262,3 +234,16 @@ slopePicAsr <- function(unit.tree, data=NULL){
 
 defSummStats <- function()
     list("reml.sigsq"=sigsqReml, "var.con"=varPic, "slope.con.var"=slopePicBl, "slope.con.asr"=slopePicAsr, "slope.con.nh"=slopePicNh, "ks.dstat"=ksPic)
+
+checkSummStats <- function(stats) {
+  if (is.null(stats))
+    stats <- defSummStats()
+  else if (!is.list(stats) || is.null(names(stats)) ||
+           any(names(stats) == "" || length(stats) == 0))
+    ## (note that the second check does not always enforce
+    ## length(stats) > 0)
+    stop("'stats' must be a named list with at least one element")
+  else if (!all(sapply(stats, is.function)))
+    stop("All elements of stats must be functions")
+  stats
+}

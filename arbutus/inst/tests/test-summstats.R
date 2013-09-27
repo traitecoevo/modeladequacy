@@ -7,10 +7,9 @@ dat <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
 
 phy <- dat$phy
 states <- dat$dat[,"wingL"]
+phy.unit <- as.unit.tree(phy, states)
 
 test_that("Summary statistic wrapper function produces correct output", {
-    phy.unit <- as.unit.tree(phy, states)
-
     ## check default summary stats
     stat.fxn <- arbutus:::defSummStats()
     expect_that(is.list(stat.fxn), is_true())
@@ -21,6 +20,26 @@ test_that("Summary statistic wrapper function produces correct output", {
     ss.names <- names(ss)
     expect_that(ss.names, equals(names(stat.fxn)))
 
+
+    ## Single tree:
+    expect_that(ss, is_a("data.frame"))
+    expect_that(nrow(ss), equals(1))
+
+    ## Multiple trees:
+    ut <- list(phy.unit, phy.unit)
+    set.seed(1)
+    ss.multi <- summStat(ut, stats=NULL)
+    expect_that(ss.multi, is_a("data.frame"))
+    nrow.ss.multi <- nrow(ss.multi)
+    expect_that(nrow.ss.multi, equals(2))
+
+    ## Something else
+    expect_that(summStat(list()), throws_error())
+    expect_that(summStat(phy), throws_error())
+    expect_that(summStat(1), throws_error())
+})
+
+test_that("Custom supplied functions work correctly", {
     ## if custom fxn supplied
     foo <- function(x)
         mean(x$pics[,"contrasts"])
@@ -29,18 +48,22 @@ test_that("Summary statistic wrapper function produces correct output", {
     ss.names.mean <- names(ss.mean)
     expect_that(ss.names.mean, equals("mean"))
 
-    ## make sure output is correct for a single and multiple unit trees
-    expect_that(ss, is_a("data.frame"))
-    nrow.ss <- nrow(ss)
-    expect_that(nrow.ss, equals(1))
-    ut <- list(phy.unit, phy.unit)
-    set.seed(1)
-    ss.multi <- summStat(ut, stats=NULL)
-    expect_that(ss.multi, is_a("data.frame"))
-    nrow.ss.multi <- nrow(ss.multi)
-    expect_that(nrow.ss.multi, equals(2))
-
+    ## Things that should cause errors:
+    ## Unnamed list:
+    expect_that(summStat(phy.unit, stats=list(foo)),
+                throws_error())
+    ## Not given a list
+    expect_that(summStat(phy.unit, stats=foo),
+                throws_error())
+    ## Empty list
+    expect_that(summStat(phy.unit, stats=list()),
+                throws_error())
+    ## Not functions
+    expect_that(summStat(phy.unit, stats=list(a=1)),
+                throws_error())
 })
+
+
 
 test_that("REML sigsq is being calculated correctly", {
     phy.unit <- as.unit.tree(phy, states)
