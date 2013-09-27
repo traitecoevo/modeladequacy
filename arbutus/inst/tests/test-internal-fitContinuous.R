@@ -118,8 +118,4 @@ test_that("Overall processed object looks legit", {
 test_that("Nonsense cases should fail", {
   expect_that(modelinfo(NULL), throws_error())
   expect_that(modelinfo(unclass(fit.bm)), throws_error())
-  tmp <- fit.bm
-  attr(tmp$lik, "model") <- "foo"
-  expect_that(modeltype(tmp), equals("foo"))
-  expect_that(modelinfo(tmp), throws_error())
 })
