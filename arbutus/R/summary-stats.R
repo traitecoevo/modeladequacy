@@ -72,12 +72,45 @@ summ.stats <- function(unit.tree, stats=NULL){
 
 
 
-## arbutus:::sigsq.reml
 
-## A function for computing the REML estimate of sigma^2
-## Equal to the mean of the squared contrasts
-## Takes a unit.tree object
 
+
+
+
+#' @title REML estimate of BM parameter
+#'
+#' @description Calculates the mean of the squared contrasts,
+#' which is equal to the REML estimate of the BM rate parameter.
+#' Used as a summary statistic to evaluate model adequacy
+#'
+#' @param unit.tree a 'unit.tree' object
+#'
+#' @details This summary statistic is used to assess the ability of the model
+#' to adequate estimate the rate of evolution. On datasets simulated on a unit.tree (see \code{\link{sim.char.unit}}),
+#' the expected value is equal to 1.
+#'
+#' The REML estimate of \eqn{sigma^2} is included as a default
+#' summary statistic in the function \code{\link{summ.stats}}
+#'
+#' @return estimate of \eqn{sigma^2}
+#'
+#' @export sigsq.reml
+#'
+#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
+#'
+#' @author Matt Pennell
+#'
+#' @examples
+#' data(geospiza)
+#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#' phy <- td$phy
+#' dat <- td$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, dat)
+#'
+#' ## Estimate sigsq from unit.tree
+#'
+#' sigsq.reml(unit.tree)
+#' 
 sigsq.reml <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
@@ -89,12 +122,47 @@ sigsq.reml <- function(unit.tree){
 
 
 
-## arbutus:::ks.pic
 
-## A function for comparing the distribution of the contrasts
-## to a normal distribution with mean 0 and sd = sqroot(mean(pics^2))
-## uses D-statistic from KS test
 
+
+#' @title Evaluate normality of contrasts
+#'
+#' @description Performs Kolmogorov-Smirnov test comparing distribution
+#' of contrasts with that of a normal distribution with mean 0 and variance
+#' equal to the square root of the mean of squared contrasts
+#'
+#' @param unit.tree a unit.tree object
+#'
+#' @details This summary statistics is used to evaluate whether the assumption of multivariate normailty
+#' is appropriate. If the model which generated the data is the fitted model, we expect the
+#' square root ofthe mean of squared contrasts to be equal to 1. The empirical estimate is used
+#' rather than assume a variance of 1 to reduce the overlap between this summary statistic and the
+#' REML estimate of \eqn{sigma^2} (see \code{\link{reml.sigsq}}). The Kolmogorov-Smirnov (KS) test is a
+#' non-parameteric test which computes the maximum distance \eqn{D} between two cumulative distribution functions.
+#' Running the test multiple times on the same data will produce slightly different values due to the fact
+#' that the null distribution is produced by randomly drawing from a normal distribution.
+#'
+#' The KS-D statistic is included as a default summary statistic
+#' in the function \code{\link{summ.stats}}.
+#'
+#' @return the D-statistic from a KS-test
+#'
+#' @export ks.pic
+#'
+#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link{stats::ks.test}}
+#'
+#' @author Matt Pennell
+#'
+#' @examples
+#' data(geospiza)
+#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#' phy <- td$phy
+#' dat <- td$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, dat)
+#'
+#' ## KS-D statistic
+#' ks.pic(unit.tree)
+#'
 ks.pic <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
@@ -115,11 +183,36 @@ ks.pic <- function(unit.tree){
 
 
 
-## arbutus:::var.pic
-
-## A fxn for computing the variance in pic estimates
-## Takes a unit.tree object
-
+#' @title Variance of contrasts
+#'
+#' @description Calculates the variance of the absolute value of the contrasts
+#'
+#' @param unit.tree a 'unit.tree' object
+#'
+#' @details This summary is used to evaluate whether the model is sufficiently
+#' capturing the variation in rates across the tree.
+#'
+#' The variance of contrasts is included as a default summary statistic
+#' in the function \code{\link{summ.stats}}
+#'
+#' @return the estimate of the variance of the absolute value of the contrasts
+#'
+#' @export var.pic
+#'
+#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
+#'
+#' @author Matt Pennell
+#'
+#' @examples
+#' data(geospiza)
+#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#' phy <- td$phy
+#' dat <- td$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, dat)
+#'
+#' ## estimate variance of contrasts
+#' var.pic(unit.tree)
+#' 
 var.pic <- function(unit.tree) {
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
