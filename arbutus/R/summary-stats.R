@@ -1,24 +1,41 @@
-## these are the functions for calculating summary statistics
-##
-## Written by Matt Pennell
-## Last modified 18/09/13
-
-
-
-## arbutus:::summ.stats
-
-## Fxn for calculating summary statistics across a unit.tree or a set of unit.trees
-
-## 2 arguments
-## unit.tree -- can be either a single unit.tree or a list of unit.trees
-
-## summ.stats -- a named list of summary statistics. Default is NULL, meaning that the fxn uses the set of 6 default summary statistics
-
-
-## returns a named data.frame with all of the summary statistics
-
-## Note: data from unit.trees will be used
-
+#' Calculate summary statistics on a unit tree
+#'
+#' @param unit.tree a 'unit.tree' object or list of unit.trees
+#' @param stats a named list of summary statistics to calculate on the unit.tree.
+#'   If no \code{stats} argument supplied, default summary statistics are used.
+#'
+#' @return A data.frame with the summary statistics.
+#'
+#' @note This function can be applied to either a single 'unit.tree' of object or a list of 'unit.tree' objects.
+#'   If \code{stats=NULL} default summary statistics are used (see \code{\link[arbutus]{def.summ.stats} for details).
+#'   User defined summary statistics can be supplied as a named list of functions (see examples). The functions supplied
+#'   must take a unit.tree as argument and perform an operation on at least one of the elements of the object
+#'   (see \code{link}{as.unit.tree})
+#'  
+#'
+#' @seealso \code{\link[arbutus]{def.summ.stats}}, \code{\link{sigsq.reml}}, \code{\link{var.pic}}
+#'   \code{\link{slope.con.bl}}, \code{\link{slope.con.asr}}, \code{\link{slope.con.nh}}
+#'
+#' @export summ.stats
+#'
+#' @examples
+#'   data(geospiza)
+#'   td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#'   phy <- td$phy
+#'   dat <- td$data[,"wingL"]
+#'   unit.tree <- as.unit.tree(phy, dat)
+#'
+#'   ## use default statistics
+#'   summ.stat <- summ.stats(unit.tree, stats=NULL)
+#'   summ.stat
+#'
+#'   ## user defined statistics
+#'   mean.con <- function(x) mean(x$pics[,"contrasts"])
+#'   max.con <- function(x) max(x$pics[,"contrasts"])
+#'
+#'   summ.stat.user <- summ.stats(unit.tree, stats=list(mean = mean.con, max = max.con))
+#'   summ.stat.user
+#'  
 summ.stats <- function(unit.tree, stats=NULL){
   stats <- check.summ.stats(stats)
   if (inherits(unit.tree, "unit.tree")){
