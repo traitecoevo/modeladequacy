@@ -4,14 +4,13 @@
 #' @param stats a named list of summary statistics to calculate on the unit.tree.
 #'   If no \code{stats} argument supplied, default summary statistics are used.
 #'
-#' @return A data.frame with the summary statistics.
-#'
-#' @note This function can be applied to either a single 'unit.tree' of object or a list of 'unit.tree' objects.
+#' @details This function can be applied to either a single 'unit.tree' of object or a list of 'unit.tree' objects.
 #'   If \code{stats=NULL} default summary statistics are used (see \code{\link[arbutus]{def.summ.stats} for details).
 #'   User defined summary statistics can be supplied as a named list of functions (see examples). The functions supplied
 #'   must take a unit.tree as argument and perform an operation on at least one of the elements of the object
 #'   (see \code{link}{as.unit.tree})
-#'  
+#'
+#' @return A data.frame with the summary statistics.
 #'
 #' @seealso \code{\link[arbutus]{def.summ.stats}}, \code{\link{sigsq.reml}}, \code{\link{var.pic}}
 #'   \code{\link{slope.con.bl}}, \code{\link{slope.con.asr}}, \code{\link{slope.con.nh}}

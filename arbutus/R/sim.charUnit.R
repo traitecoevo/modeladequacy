@@ -6,7 +6,7 @@
 #' @return A list of unit.trees. In each unit.tree, the phylogeny will be the same as that of the input unit.tree(s)
 #'   but the data and the contrasts will be replaced by the simulated datasets.
 #' 
-#' @note If a single unit.tree is supplied, the function will simulate \code{nsim} datasets under a Brownian motion
+#' @details If a single unit.tree is supplied, the function will simulate \code{nsim} datasets under a Brownian motion
 #'   process with a rate of 1. If a lits of unit.trees supplied (such as those derived from a Bayesian analysis)
 #'   \code{sim.char.unit} will simulate a single data set on each tree in the list and the \code{nsim} argument will
 #'   be ignored
