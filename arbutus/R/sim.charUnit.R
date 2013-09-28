@@ -1,7 +1,7 @@
 #' Simulate character evolution on unit tree according to a BM process
 #'
-#' @param unit.tree A 'unit.tree' object
-#' @param nsim The number of datasets to simulate (if single unit.tree is provided; see below)
+#' @param unit.tree a 'unit.tree' object
+#' @param nsim the number of datasets to simulate (if single unit.tree is provided; see below)
 #' 
 #' @return A list of unit.trees. In each unit.tree, the phylogeny will be the same as that of the input unit.tree(s)
 #'   but the data and the contrasts will be replaced by the simulated datasets.
@@ -11,7 +11,7 @@
 #'   \code{sim.char.unit} will simulate a single data set on each tree in the list and the \code{nsim} argument will
 #'   be ignored
 #' 
-#' @seealso \code{link[arbutus]{sim.char}} which this function wraps
+#' @seealso \code{\link[geiger]{sim.char}} which this function wraps
 #' 
 #' @export sim.char.unit
 #'
