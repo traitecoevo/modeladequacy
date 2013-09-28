@@ -25,7 +25,7 @@
   'unit.tree' of object or a list of 'unit.tree' objects.
   If \code{stats=NULL} default summary statistics are used.
   The default summary statistics are the following:
-  \itemize{ \item{reml.sigsq: }{The mean of the squared
+  \enumerate{ \item{reml.sigsq: }{The mean of the squared
   contrasts. This is equivalent to the REML estimate of
   sigsq.}
 

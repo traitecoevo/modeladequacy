@@ -8,7 +8,7 @@
 #'
 #' @details This function can be applied to either a single 'unit.tree' of object or a list of 'unit.tree' objects.
 #' If \code{stats=NULL} default summary statistics are used. The default summary statistics are the following:
-#'  \itemize{
+#'  \enumerate{
 #'   \item{reml.sigsq: }{The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.}
 #'
 #'   \item{var.con: }{The variance of the absolute value of the contrasts.}
