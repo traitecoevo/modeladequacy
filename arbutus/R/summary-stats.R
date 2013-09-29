@@ -13,7 +13,7 @@
 #'
 #'   \item{var.con: }{The variance of the absolute value of the contrasts.}
 #'
-#'   \item{slope.con.bl: }{The slope of a linear model fit between the contrasts and their expected variances.}
+#'   \item{slope.con.var: }{The slope of a linear model fit between the contrasts and their expected variances.}
 #'
 #'   \item{slope.con.asr: }{The slope of a linear model fit between the contrasts and their inferred ancestral state.}
 #'
@@ -227,14 +227,41 @@ var.pic <- function(unit.tree) {
 
 
 
-## arbutus:::slope.pic.bl
-
-## Fxn for computing the slope between the contrasts and their standard deviations
-## Used as a measure of variation with respect to branch length
-
-## Takes a unit.tree object
-
-slope.pic.bl <- function(unit.tree){
+#' @title Relationship between contrasts and their variances
+#'
+#' @description Fits a linear model between the absolute value of constrasts
+#' and their expected variances
+#'
+#' @param unit.tree a unit.tree object
+#'
+#' @details This summary statistic is the estimate of the slope from fitting
+#' a linear model between the contrasts and their expected variance. It is used
+#' to evaluate whether the model is adequately capturing variation relative to branch
+#' lengths. If the generating model is correct, we expect there not to be a relationship
+#' between the contrasts and their variances (i.e. slope ~ 0).
+#'
+#' The slope of the contrasts and their variances is included as a default summary statistic
+#' in the function \code{\link{summ.stats}}
+#'
+#' @return the estimated slope paramter
+#'
+#' @export slope.pic.var
+#'
+#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link{stats::lm}}
+#'
+#' @author Matt Pennell
+#'
+#' @examples
+#' data(geospiza)
+#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#' phy <- td$phy
+#' dat <- td$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, dat)
+#'
+#' ## estimate slope
+#' slope.pic.var(unit.tree)
+#' 
+slope.pic.var <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
     
@@ -341,7 +368,7 @@ slope.pic.asr <- function(unit.tree){
 ## takes no arguments
 
 def.summ.stats <- function()
-    list("reml.sigsq"=sigsq.reml, "var.con"=var.pic, "slope.con.var"=slope.pic.bl, "slope.con.asr"=slope.pic.asr, "slope.con.nh"=slope.pic.nh, "ks.dstat"=ks.pic)
+    list("reml.sigsq"=sigsq.reml, "var.con"=var.pic, "slope.con.var"=slope.pic.var, "slope.con.asr"=slope.pic.asr, "slope.con.nh"=slope.pic.nh, "ks.dstat"=ks.pic)
 
 check.summ.stats <- function(stats) {
   if (is.null(stats))

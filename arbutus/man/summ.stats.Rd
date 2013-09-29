@@ -32,7 +32,7 @@
   \item{var.con: }{The variance of the absolute value of
   the contrasts.}
 
-  \item{slope.con.bl: }{The slope of a linear model fit
+  \item{slope.con.var: }{The slope of a linear model fit
   between the contrasts and their expected variances.}
 
   \item{slope.con.asr: }{The slope of a linear model fit
