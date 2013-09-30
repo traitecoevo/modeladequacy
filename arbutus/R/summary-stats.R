@@ -306,6 +306,8 @@ slope.pic.var <- function(unit.tree){
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link{stats::lm}}
 #'
+#' @export slope.pic.nh
+#'
 #' @author Matt Pennell
 #'
 #' @examples
@@ -370,6 +372,8 @@ slope.pic.nh <- function(unit.tree){
 #'
 #' @author Matt Pennell
 #'
+#' @export slope.pic.asr
+#'
 #' @examples
 #' data(geospiza)
 #' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
@@ -404,16 +408,75 @@ slope.pic.asr <- function(unit.tree){
 
 
 
-## arbutus:::def.summ.stats
 
-## function to build list of default summary statistics
-## used internally in traitStats
-
-## takes no arguments
-
+#' @title Internal function for getting default summary statistics
+#'
+#' @description Creates a list of the default summary statistics to be used
+#' to asses model adequacy
+#'
+#' @details The following summary statistics are produced by this function:
+#' \enumerate{
+#'   \item{reml.sigsq: }{The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.}
+#'
+#'   \item{var.con: }{The variance of the absolute value of the contrasts.}
+#'
+#'   \item{slope.con.var: }{The slope of a linear model fit between the contrasts and their expected variances.}
+#'
+#'   \item{slope.con.asr: }{The slope of a linear model fit between the contrasts and their inferred ancestral state.}
+#'
+#'   \item{slope.con.nh: }{The slope of a linear model fit between the contrasts and the node height at which they were calculated.}
+#'
+#'   \item{ks.pic: }{The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.}
+#'  }
+#'
+#' @return a named list of functions
+#'
+#' @export def.summ.stats
+#'
+#' @keywords internal
+#'
+#' @seealso \code{\link{summ.stats}}, \code{\link{sigsq.reml}}, \code{\link{var.pic}}, \code{\link{slope.con.bl}}, \code{\link{slope.con.nh}}, \code{\link{slope.con.asr}}, \code{\link{ks.pic}}
+#'
+#' @author Matt Pennell
+#'
+#' @examples
+#' ## get default summary stats
+#' stats <- def.summ.stats
+#' stats
 def.summ.stats <- function()
     list("reml.sigsq"=sigsq.reml, "var.con"=var.pic, "slope.con.var"=slope.pic.var, "slope.con.asr"=slope.pic.asr, "slope.con.nh"=slope.pic.nh, "ks.dstat"=ks.pic)
 
+
+
+
+
+
+#' @title Internal function to check summary stats
+#'
+#' @description Makes sure summary statistics sent to \code{\link{summ.stats}} are in the correct format
+#'
+#' @param stats a named list of summary statistics
+#'
+#' @return named list of summary statistics after being checked.
+#'
+#' @seealso \code{\link{summ.stats}}
+#'
+#' @export check.summ.stats
+#'
+#' @keywords internal
+#'
+#' @author Rich FitzJohn
+#'
+#' @examples
+#' ## produce list of summary stats (using default summary statistics)
+#' check.summ.stats(def.summ.stats())
+#'
+#' ## use custom list of summary statistics
+#' foo <- function(x) mean(x$pics[,"contrasts"])
+#'
+#' my.stats <- list(mean.of.contrasts=foo)
+#' check.summ.stats(my.stats)
+#
 check.summ.stats <- function(stats) {
   if (is.null(stats))
     stats <- def.summ.stats()
