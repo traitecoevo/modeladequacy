@@ -45,7 +45,7 @@ fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
 
 ## check adequacy of BM model
 ## get p-values for default summary statistics
-modelad.bm <- phy.model.check(fit.bm)
+modelad.bm <- phy.model.check(fit.bm, nsim=10)
 modelad.bm
 
 
@@ -55,7 +55,7 @@ fit.ou <- suppressWarnings(fitContinuous(phy=phy, dat=data, model="OU",
                                                   control=list(niter=10)))
 
 ## check adequacy of OU model
-modelad.ou <- phy.model.check(fit.ou)
+modelad.ou <- phy.model.check(fit.ou, nsim=10)
 }
 \seealso{
   \code{\link{as.unit.tree}}, \code{\link{summ.stats}},
