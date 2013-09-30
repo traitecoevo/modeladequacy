@@ -37,9 +37,6 @@ res <- compare.summ.stats(ss.obs, ss.sim)
 ## extract p-values
 pval.summ.stats(res)
 }
-\author{
-  Matt Pennell
-}
 \seealso{
   \code{\link{compare.summ.stats}}
 }

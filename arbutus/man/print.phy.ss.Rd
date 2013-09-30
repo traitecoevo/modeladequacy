@@ -29,7 +29,4 @@ p <- phy.model.check(f, nsim=10)
 ## print output
 p
 }
-\author{
-  Matt Pennell
-}
 

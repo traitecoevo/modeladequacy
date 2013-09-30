@@ -177,7 +177,6 @@ compare.summ.stats <- function(summ.stats.obs, summ.stats.sim){
 #'
 #' @return prints p.values to screen
 #'
-#' @author Matt Pennell
 #'
 #' @method print phy.ss
 #' @S3method print phy.ss
@@ -220,7 +219,6 @@ print.phy.ss <- function(x){
 #'
 #' @seealso \code{\link{compare.summ.stats}}
 #'
-#' @author Matt Pennell
 #'
 #' @examples
 #' data(geospiza)
