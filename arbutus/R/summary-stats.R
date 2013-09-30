@@ -32,7 +32,6 @@
 #'
 #' @seealso \code{\link{def.summ.stats}}, \code{\link{sigsq.reml}}, \code{\link{var.pic}}, \code{\link{slope.con.bl}}, \code{\link{slope.con.nh}}, \code{\link{slope.con.asr}}, \code{\link{ks.pic}}
 #'
-#' @author Matt Pennell, Rich FitzJohn
 #'
 #' @examples
 #' data(geospiza)
@@ -98,7 +97,6 @@ summ.stats <- function(unit.tree, stats=NULL){
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
 #'
-#' @author Matt Pennell
 #'
 #' @examples
 #' data(geospiza)
@@ -151,7 +149,6 @@ sigsq.reml <- function(unit.tree){
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link{stats::ks.test}}
 #'
-#' @author Matt Pennell
 #'
 #' @examples
 #' data(geospiza)
@@ -201,7 +198,6 @@ ks.pic <- function(unit.tree){
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
 #'
-#' @author Matt Pennell
 #'
 #' @examples
 #' data(geospiza)
@@ -249,7 +245,6 @@ var.pic <- function(unit.tree) {
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link{stats::lm}}
 #'
-#' @author Matt Pennell
 #'
 #' @examples
 #' data(geospiza)
@@ -308,7 +303,6 @@ slope.pic.var <- function(unit.tree){
 #'
 #' @export slope.pic.nh
 #'
-#' @author Matt Pennell
 #'
 #' @examples
 #' data(geospiza)
@@ -370,7 +364,6 @@ slope.pic.nh <- function(unit.tree){
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link{stats::lm}}, \code{\link{ape::pic}}
 #'
-#' @author Matt Pennell
 #'
 #' @export slope.pic.asr
 #'
@@ -437,7 +430,6 @@ slope.pic.asr <- function(unit.tree){
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{sigsq.reml}}, \code{\link{var.pic}}, \code{\link{slope.con.bl}}, \code{\link{slope.con.nh}}, \code{\link{slope.con.asr}}, \code{\link{ks.pic}}
 #'
-#' @author Matt Pennell
 #'
 #' @examples
 #' ## get default summary stats
@@ -465,7 +457,6 @@ def.summ.stats <- function()
 #'
 #' @keywords internal
 #'
-#' @author Rich FitzJohn
 #'
 #' @examples
 #' ## produce list of summary stats (using default summary statistics)

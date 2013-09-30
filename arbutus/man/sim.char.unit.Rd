@@ -43,9 +43,6 @@ sims <- sim.char.unit(unit.tree, nsim=2)
 
 sims
 }
-\author{
-  Matt Pennell
-}
 \seealso{
   \code{\link{geiger::sim.char}} which this function wraps
 }

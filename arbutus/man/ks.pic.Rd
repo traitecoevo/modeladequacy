@@ -46,9 +46,6 @@ unit.tree <- as.unit.tree(phy, dat)
 ## KS-D statistic
 ks.pic(unit.tree)
 }
-\author{
-  Matt Pennell
-}
 \seealso{
   \code{\link{summ.stats}}, \code{\link{def.summ.stats}},
   \code{\link{stats::ks.test}}

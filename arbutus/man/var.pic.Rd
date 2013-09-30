@@ -34,9 +34,6 @@ unit.tree <- as.unit.tree(phy, dat)
 ## estimate variance of contrasts
 var.pic(unit.tree)
 }
-\author{
-  Matt Pennell
-}
 \seealso{
   \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
 }

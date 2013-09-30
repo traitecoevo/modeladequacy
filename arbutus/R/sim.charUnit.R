@@ -18,8 +18,6 @@
 #' 
 #' @export sim.char.unit
 #'
-#' @author Matt Pennell
-#'
 #' @examples
 #' data(geospiza)
 #' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))

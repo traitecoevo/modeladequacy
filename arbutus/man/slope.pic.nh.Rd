@@ -39,9 +39,6 @@ unit.tree <- as.unit.tree(phy, dat)
 ## estimate slope
 slope.pic.nh(unit.tree)
 }
-\author{
-  Matt Pennell
-}
 \seealso{
   \code{\link{summ.stats}}, \code{\link{def.summ.stats}},
   \code{\link{stats::lm}}

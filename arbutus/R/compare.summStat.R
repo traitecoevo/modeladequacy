@@ -39,18 +39,16 @@
 #' function \code{\link{pval.summ.stats}}
 #'
 #' @return an object of class 'phy.ss' which is a list containing the following objects:
-#' \itemize{
-#'  \item{\code{p.values}: }{Two--tailed p-values for all summary statistics}
-#'  \item{\code{summ.stats.obs}: }{The input data frame of observed summary statistics}
-#'  \item{\code{summ.stats.sim}: }{The input data frame of simulated summary statistics}
+#' \describe{
+#'  \item{p.values}{Two--tailed p-values for all summary statistics}
+#'  \item{summ.stats.obs}{The input data frame of observed summary statistics}
+#'  \item{summ.stats.sim}{The input data frame of simulated summary statistics}
 #' }
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{plot.phy.ss}}, \code{\link{pval.summ.stats}},
 #' \code{\link{phy.model.check}}
 #'
 #' @export compare.summ.stats
-#'
-#' @author Matt Pennell
 #'
 #' @examples
 #' data(geospiza)

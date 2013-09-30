@@ -41,9 +41,6 @@
 stats <- def.summ.stats
 stats
 }
-\author{
-  Matt Pennell
-}
 \seealso{
   \code{\link{summ.stats}}, \code{\link{sigsq.reml}},
   \code{\link{var.pic}}, \code{\link{slope.con.bl}},

@@ -46,9 +46,6 @@ unit.tree <- as.unit.tree(phy, dat)
 ## estimate slope
 slope.pic.asr(unit.tree)
 }
-\author{
-  Matt Pennell
-}
 \seealso{
   \code{\link{summ.stats}}, \code{\link{def.summ.stats}},
   \code{\link{stats::lm}}, \code{\link{ape::pic}}

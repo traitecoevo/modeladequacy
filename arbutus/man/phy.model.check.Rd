@@ -40,7 +40,8 @@ data <- td$data[,"wingL"]
 
 ## fit Brownian motion model
 ## using geiger's fitContinuous function
-fit.bm <- fitContinuous(phy=phy, dat=data, model="BM")
+fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
+                                 control=list(niter=10))
 
 ## check adequacy of BM model
 ## get p-values for default summary statistics
@@ -50,13 +51,11 @@ modelad.bm
 
 ## fit Ornstein-Uhlenbeck model
 ## again, using geiger's fitContinuous function
-fit.ou <- suppressWarnings(fitContinuous(phy=phy, dat=data, model="OU"))
+fit.ou <- suppressWarnings(fitContinuous(phy=phy, dat=data, model="OU",
+                                                  control=list(niter=10)))
 
 ## check adequacy of OU model
 modelad.ou <- phy.model.check(fit.ou)
-}
-\author{
-  Matt Pennell, Rich FitzJohn
 }
 \seealso{
   \code{\link{as.unit.tree}}, \code{\link{summ.stats}},

@@ -15,11 +15,11 @@
 }
 \value{
   an object of class 'phy.ss' which is a list containing
-  the following objects: \itemize{ \item{\code{p.values}:
-  }{Two--tailed p-values for all summary statistics}
-  \item{\code{summ.stats.obs}: }{The input data frame of
-  observed summary statistics} \item{\code{summ.stats.sim}:
-  }{The input data frame of simulated summary statistics} }
+  the following objects: \describe{
+  \item{p.values}{Two--tailed p-values for all summary
+  statistics} \item{summ.stats.obs}{The input data frame of
+  observed summary statistics} \item{summ.stats.sim}{The
+  input data frame of simulated summary statistics} }
 }
 \description{
   Calculates two--tailed p-values from comparing observed
@@ -91,9 +91,6 @@ pval.summ.stats(res)
 
 ## plot results
 plot(res)
-}
-\author{
-  Matt Pennell
 }
 \seealso{
   \code{\link{summ.stats}}, \code{\link{plot.phy.ss}},

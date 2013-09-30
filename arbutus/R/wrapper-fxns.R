@@ -23,7 +23,6 @@
 #' 
 #' @seealso \code{\link{as.unit.tree}}, \code{\link{summ.stats}}, \code{\link{sim.char.unit}}, \code{\link{compare.summ.stats}}
 #'
-#' @author Matt Pennell, Rich FitzJohn
 #'
 #' @examples
 #' ## finch data
@@ -34,7 +33,8 @@
 #'
 #' ## fit Brownian motion model
 #' ## using geiger's fitContinuous function
-#' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM")
+#' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
+#'                                  control=list(niter=10))
 #'
 #' ## check adequacy of BM model
 #' ## get p-values for default summary statistics
@@ -44,7 +44,8 @@
 #'
 #' ## fit Ornstein-Uhlenbeck model
 #' ## again, using geiger's fitContinuous function
-#' fit.ou <- suppressWarnings(fitContinuous(phy=phy, dat=data, model="OU"))
+#' fit.ou <- suppressWarnings(fitContinuous(phy=phy, dat=data, model="OU",
+#'                                                   control=list(niter=10)))
 #'
 #' ## check adequacy of OU model
 #' modelad.ou <- phy.model.check(fit.ou)

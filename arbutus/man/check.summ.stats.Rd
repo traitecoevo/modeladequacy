@@ -24,9 +24,6 @@ foo <- function(x) mean(x$pics[,"contrasts"])
 my.stats <- list(mean.of.contrasts=foo)
 check.summ.stats(my.stats)
 }
-\author{
-  Rich FitzJohn
-}
 \seealso{
   \code{\link{summ.stats}}
 }

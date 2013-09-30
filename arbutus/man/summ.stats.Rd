@@ -72,9 +72,6 @@ summ.stat.user <- summ.stats(unit.tree,
                     stats=list(mean = mean.con, max = max.con))
 summ.stat.user
 }
-\author{
-  Matt Pennell, Rich FitzJohn
-}
 \seealso{
   \code{\link{def.summ.stats}}, \code{\link{sigsq.reml}},
   \code{\link{var.pic}}, \code{\link{slope.con.bl}},
