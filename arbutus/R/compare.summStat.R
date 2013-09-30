@@ -164,8 +164,40 @@ compare.summ.stats <- function(summ.stats.obs, summ.stats.sim){
 
 
 
-## define print fxn for class phy.ss
 
+
+
+
+
+
+#' @title Print summary statistics
+#'
+#' @description Generic function for printing 'phy.ss' objects
+#' from \code{\link{compare.summ.stats}}
+#'
+#' @param x a 'phy.ss' object
+#'
+#' @return prints p.values to screen
+#'
+#' @author Matt Pennell
+#'
+#' @method print phy.ss
+#' @S3method print phy.ss
+#'
+#' @examples
+#' data(geospiza)
+#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#' phy <- td$phy
+#' dat <- td$data[,"wingL"]
+#'
+#' ## fit BM model using fitContinuous
+#' f <- fitContinuous(phy, dat, model="BM", control=list(niter=10))
+#'
+#' ## use phy.model.check to assess model adequacy
+#' p <- phy.model.check(f, nsim=10)
+#'
+#' ## print output
+#' p
 print.phy.ss <- function(x){
    cat("Two-tailed p-values for summary statistics: \n")
    cat("\n")
