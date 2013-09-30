@@ -285,17 +285,39 @@ slope.pic.var <- function(unit.tree){
 
 
 
-## arbutus:::slope.pic.nh
-
-## Fxn for computing the slope between the contrasts and the height of the node at which the contrast is computed
-## Used as a measure of variation with respect to time
-
-## Takes a unit.tree object
-
-# NOTES:
-##
-## 1. Need to swap out branching.times() with a function that works for non-ultrametric trees (working on the fxn nodeAge to do this)
-
+#' @title Relationship between contrasts and node height
+#'
+#' @description Fits a linear model between the absolute value of the contrasts
+#' and the node height at which they were calculated
+#'
+#' @param unit.tree a 'unit.tree' object
+#'
+#' @details This summary statistic is the estimate of the slope from fitting
+#' a linear model between the contrasts and the node height (i.e. tree depth)
+#' at which they were calculated. It is used
+#' to evaluate whether the model is adequately capturing variation relative to tree depth.
+#' If the generating model is correct, we expect there not to be a relationship
+#' between the contrasts and their node height (i.e. slope ~ 0).
+#'
+#' The slope of the contrasts and their variances is included as a default summary statistic
+#' in the function \code{\link{summ.stats}} 
+#' 
+#' @return the estimated slope parameter
+#'
+#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link{stats::lm}}
+#'
+#' @author Matt Pennell
+#'
+#' @examples
+#' data(geospiza)
+#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#' phy <- td$phy
+#' dat <- td$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, dat)
+#'
+#' ## estimate slope
+#' slope.pic.nh(unit.tree)
+#' 
 slope.pic.nh <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
@@ -320,22 +342,44 @@ slope.pic.nh <- function(unit.tree){
 
 
 
-## arbutus:::slope.pic.asr
-
-## Fxn for computing the slope between the contrasts and the inferred ancestral state at the node
-## Used as a measure of variation with respect to trait value
-
-## Takes a unit.tree object
-## If data == NULL, uses the data attached to unit.tree
-## If data != NULL, creates unit.tree with input data
-
-
-
-## NOTES:
-##
-## 1. Use "pic" method in ape. Not sure if this is appropriate or not.
-
-
+#' @title Relationship between contrasts and inferred ancestral state
+#'
+#' @description Fits a linear model between the absolute value of the contrasts
+#' and the ancestral state inferred at the node at which the contrast was calculated
+#'
+#' @param unit.tree a 'unit.tree' object
+#'
+#' @details This summary statistic is the estimate of the slope from fitting
+#' a linear model between the contrasts and the inferred ancestral state at the node
+#' at which the contrasts were calculated. It is used
+#' to evaluate whether the model is adequately capturing variation relative to ancestral state.
+#' The ancestral states are calculated using the contrast based approach and are not technically
+#' ancestral state estimates (see Felsenstein 1985); this is conceptually and statistically
+#' different from the maximum likelihood approach to reconstructing ancestral states.
+#' The contrast based approach is
+#' used here as there is a clear expectation of the relationship between the the contrasts and
+#' trait value. If the generating model is correct, we expect there not to be a relationship
+#' between the contrasts and their node height (i.e. slope ~ 0).
+#'
+#' The slope of the contrasts and their variances is included as a default summary statistic
+#' in the function \code{\link{summ.stats}} 
+#' 
+#' @return the estimated slope parameter
+#'
+#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link{stats::lm}}, \code{\link{ape::pic}}
+#'
+#' @author Matt Pennell
+#'
+#' @examples
+#' data(geospiza)
+#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#' phy <- td$phy
+#' dat <- td$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, dat)
+#'
+#' ## estimate slope
+#' slope.pic.asr(unit.tree)
+#' 
 slope.pic.asr <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
