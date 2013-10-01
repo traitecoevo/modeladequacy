@@ -96,7 +96,22 @@
 as.unit.tree <- function(x, ...)
     UseMethod("as.unit.tree")
 
+#' @method as.unit.tree default
+#' @S3method as.unit.tree default
+as.unit.tree.default <- function(x, ...) {
+  ## use S3 generic modelinfo to pull out the tree, data, parameter
+  ## estimates and model type.  This step will fail if an appropriate
+  ## method cannot be found, or if some optional arguments are not
+  ## given.
+  obj <- model.info(x, ...)
 
+  ## rescale the phylogeny according to the model
+  phy <- make.model.phylo(obj)
+
+  ## build unit.tree from phylo object
+  ## here, data is the residuals
+  as.unit.tree(phy, obj$data$data)
+}
 
 
 
@@ -121,71 +136,6 @@ as.unit.tree.phylo <- function(x, data, ...) {
 
   unit.tree
 }
-
-
-
-
-
-
-
-#' @method as.unit.tree gfit
-#' @S3method as.unit.tree gfit
-as.unit.tree.gfit <- function(x, ...) {
-  ## use S3 generic modelinfo to pull out the tree, data, parameter
-  ## estimates and model type
-  obj <- model.info(x, ...)
-
-  ## rescale the phylogeny according to the model
-  phy <- make.model.phylo(obj)
-
-  ## build unit.tree from phylo object
-  as.unit.tree(phy, obj$data$data)
-}
-
-
-
-
-
-
-
-
-#' @method as.unit.tree gls
-#' @S3method as.unit.tree gls
-as.unit.tree.gls <- function(x, ...){
-    ## use modelinfo to pull out tree data and parameter estimates
-    obj <- model.info(x, ...)
-
-    ## rescale the phylogeny according to the model
-    phy <- make.model.phylo(obj)
-
-    ## build unit.tree from phylo object
-    ## here, data is the residuals
-    as.unit.tree(phy, obj$data$data)
-}
-
-
-
-
-
-
-
-
-
-#' @method as.unit.tree fit.mle
-#' @S3method as.unit.tree fit.mle
-as.unit.tree.fit.mle <- function(x, ...){
-    ## use modelinfo to get tree, data and model parameters
-    obj <- model.info(x, ...)
-
-    ## rescale tree according to the model
-    phy <- make.model.phylo(obj)
-
-    ## create unit.tree from rescaled phylogeny and data
-    as.unit.tree(phy, obj$data$data)
-}
-
-
-
 
 
 
