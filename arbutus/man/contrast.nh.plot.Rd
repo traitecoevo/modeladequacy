@@ -1,8 +1,8 @@
-\name{contrast.var.plot}
-\alias{contrast.var.plot}
-\title{Plot contrasts versus their variances}
+\name{contrast.nh.plot}
+\alias{contrast.nh.plot}
+\title{Plot contrasts versus their node height}
 \usage{
-  contrast.var.plot(x, col = c("dodgerblue4", "darkblue"),
+  contrast.nh.plot(x, col = c("dodgerblue4", "darkblue"),
     ...)
 }
 \arguments{
@@ -16,14 +16,15 @@
 }
 \description{
   Plot the contrasts derived from a rescaled 'unit.tree'
-  against their expected variances.
+  against the node height (i.e. depth) at which they are
+  computed
 }
 \details{
   This function generates a plot of the observed contrasts
-  versus their expected variances (see
-  \code{\link{ape::pic}}). The slope of this plot is equal
-  to the summary statistic 'slope.pic.var', calculated by
-  \code{\link{slope.pic.var}} and is used as a default
+  versus their the node height at which they are computed
+  (see \code{\link{ape::pic}}). The slope of this plot is
+  equal to the summary statistic 'slope.pic.nh', calculated
+  by \code{\link{slope.pic.nh}} and is used as a default
   summary statistic in \code{\link{summ.stats}}.
 
   If the model is a good fit to the data (i.e. an adequate
@@ -34,7 +35,7 @@
   The function can currently only take a single dataset
   (does not integrate across multiple trees).
 
-  \code{contrast.var.plot} uses the
+  \code{contrast.nh.plot} uses the
   \code{\link{ggplot2::ggplot2}} library.
 }
 \examples{
@@ -50,10 +51,10 @@ fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
                                  control=list(niter=10))
 
 ## plot contrasts versus their variances
-contrast.var.plot(fit.bm)
+contrast.nh.plot(fit.bm)
 }
 \seealso{
   \code{\link{as.unit.tree}}, \code{\link{summ.stats}},
-  \code{\link{slope.pic.var}}
+  \code{\link{slope.pic.nh}}
 }
 

@@ -11,8 +11,6 @@ model.info <- function(fit, ...)
 
 
 
-make.model.phylo <- function(x, ...)
-    UseMethod("make.model.phylo")
 
 
 

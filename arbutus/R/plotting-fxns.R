@@ -23,7 +23,7 @@
 #'
 #' The function can currently only take a single dataset (does not integrate across multiple trees).
 #'
-#' It uses the \code{\link{ggplot2::ggplot2}} library.
+#' \code{contrast.var.plot} uses the \code{\link{ggplot2::ggplot2}} library.
 #'
 #' @seealso \code{\link{as.unit.tree}}, \code{\link{summ.stats}}, \code{\link{slope.pic.var}}
 #'
@@ -68,7 +68,62 @@ contrast.var.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
 
 
-## plot slope of the contrasts versus their inferred ancestral state
+
+
+
+
+
+
+
+
+
+
+#' @title Plot contrasts versus their inferred ancestral states
+#'
+#' @description Plot the contrasts derived from a rescaled 'unit.tree' against
+#' their inferred ancestral state.
+#'
+#' @param x a model fitted object or 'phylo' object that can be passed to \code{\link{as.unit.tree}}.
+#'
+#' @param col colours used for plotting
+#'
+#' @param ... additional arguments to be passed to \code{\link{as.unit.tree}}
+#'
+#' @details This function generates a plot of the observed contrasts versus their
+#' inferred ancestral state (see \code{\link{ape::pic}}, \code{\link{ape::ace}}).
+#' Note that the ancestral states are estimated using the 'pic' method, which
+#' differs somewhat from the ML estimate of the ancestral states.
+#' The slope of this plot is equal to
+#' the summary statistic 'slope.pic.asr', calculated by \code{\link{slope.pic.asr}}
+#' and is used as a default summary statistic in \code{\link{summ.stats}}. 
+#'
+#' If the model is a good fit to the data (i.e. an adequate model),
+#' the slope ~ 0. The purpose of the plot is to get a quick visual glance
+#' at the data and to assess whether or not the model inadequacy may be driven by outliers.
+#'
+#' The function can currently only take a single dataset (does not integrate across multiple trees).
+#'
+#' \code{contrast.asr.plot} uses the \code{\link{ggplot2::ggplot2}} library.
+#'
+#' @seealso \code{\link{as.unit.tree}}, \code{\link{summ.stats}}, \code{\link{slope.pic.asr}}
+#'
+#' @export contrast.asr.plot
+#'
+#' @examples
+#' ## finch data
+#' data(geospiza)
+#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#' phy <- td$phy
+#' data <- td$data[,"wingL"]
+#'
+#' ## fit Brownian motion model
+#' ## using geiger's fitContinuous function
+#' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
+#'                                  control=list(niter=10))
+#'
+#' ## plot contrasts versus their variances
+#' contrast.asr.plot(fit.bm)
+#' 
 contrast.asr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
     ## build unit tree from model object
@@ -98,8 +153,58 @@ contrast.asr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
 
 
-## plot of contrasts versus node height
 
+
+
+
+
+
+
+
+#' @title Plot contrasts versus their node height
+#'
+#' @description Plot the contrasts derived from a rescaled 'unit.tree' against
+#' the node height (i.e. depth) at which they are computed
+#'
+#' @param x a model fitted object or 'phylo' object that can be passed to \code{\link{as.unit.tree}}.
+#'
+#' @param col colours used for plotting
+#'
+#' @param ... additional arguments to be passed to \code{\link{as.unit.tree}}
+#'
+#' @details This function generates a plot of the observed contrasts versus their
+#' the node height at which they are computed (see \code{\link{ape::pic}}).
+#' The slope of this plot is equal to
+#' the summary statistic 'slope.pic.nh', calculated by \code{\link{slope.pic.nh}}
+#' and is used as a default summary statistic in \code{\link{summ.stats}}. 
+#'
+#' If the model is a good fit to the data (i.e. an adequate model),
+#' the slope ~ 0. The purpose of the plot is to get a quick visual glance
+#' at the data and to assess whether or not the model inadequacy may be driven by outliers.
+#'
+#' The function can currently only take a single dataset (does not integrate across multiple trees).
+#'
+#' \code{contrast.nh.plot} uses the \code{\link{ggplot2::ggplot2}} library.
+#'
+#' @seealso \code{\link{as.unit.tree}}, \code{\link{summ.stats}}, \code{\link{slope.pic.nh}}
+#'
+#' @export contrast.nh.plot
+#'
+#' @examples
+#' ## finch data
+#' data(geospiza)
+#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#' phy <- td$phy
+#' data <- td$data[,"wingL"]
+#'
+#' ## fit Brownian motion model
+#' ## using geiger's fitContinuous function
+#' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
+#'                                  control=list(niter=10))
+#'
+#' ## plot contrasts versus their variances
+#' contrast.nh.plot(fit.bm)
+#' 
 contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
     ## build unit tree from model object
