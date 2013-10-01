@@ -1,16 +1,5 @@
 ## fxns for rescaling tree according to fitContinuous type models
-## takes modelinfo objects
-
-## model specific rescaling fxns
 ## adopted from rescale.phylo in GEIGER (written by Jon Eastman)
-
-## import heights.phylo and .paths.phylo from GEIGER
-
-
-
-
-
-
 
 
 model.phylo.bm <- function(phy, pars){
@@ -276,9 +265,10 @@ model.phylo.white <- function(phy, pars){
 
 
 
-## make.model.phylo.fitC fxn for rescaling based on fitContinuous styles 'fitC'
-## includes fitContinuous, diversitree, gls, pgls, MCMCglmm, fitContinuousMCMC, etc.
 
+
+#' @method make.model.phylo fitC
+#' @S3method make.model.phylo fitC
 make.model.phylo.fitC <- function(x, ...){
     ## get model
     model <- x$type
@@ -304,3 +294,53 @@ make.model.phylo.fitC <- function(x, ...){
     ## return rescaled phylogeny
     rphy
 }
+
+
+
+
+#' @title Rescale phylogeny based on fitted model parameters
+#'
+#' @description Rescales phylogeny to form a 'unit.tree' using parameters
+#' from fitted model
+#'
+#' @param x an object inherited from \code{\link{model.info}}
+#'
+#' @details This is a generic function which rescales the phylogeny based on the model
+#' specific information. While the class and information may differ, the object must include
+#' the 'phylo' object to be rescaled and model specific information such as model type and
+#' parameter values.
+#'
+#' To include additional types of models, researchers will need to build a new \code{\link{model.info}}
+#' function for the given model type. The output should be assigned a novel class.
+#' A \code{make.model.phylo.classX} object will need to be created to perform the rescaling.
+#'
+#' @return a 'phylo' object that can be used to from a 'unit.tree' object
+#'
+#' @seealso \code{\link{as.unit.tree}}
+#'
+#' @export make.model.phylo
+#'
+#' @examples
+#' ## finch data
+#' data(geospiza)
+#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
+#' phy <- td$phy
+#' data <- td$data[,"wingL"]
+#'
+#'
+#' ## using just the given phylogeny
+#' unit.tree.phy <- as.unit.tree(phy, data)
+#'
+#' ## fit Brownian motion model
+#' ## using geiger's fitContinuous function
+#' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
+#'                                  control=list(niter=10))
+#'
+#' ## get model info using internal arbutus function
+#' info.bm <- arbutus:::model.info(fit.bm)
+#'
+#' ## rescale phylogeny based on model info
+#' make.model.phylo(info.bm)
+#' 
+make.model.phylo <- function(x, ...)
+    UseMethod("make.model.phylo")

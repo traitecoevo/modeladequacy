@@ -77,7 +77,7 @@
 #'
 #' ## this creates a 'fit.mle' object which can be used
 #' ## in 'as.unit.tree()'
-#' unit.tree.dt <- as.unit.tree(fit.bm.dt)
+#' ##  unit.tree.dt <- as.unit.tree(fit.bm.dt)
 #'
 #'
 #' ## Use pgls to look for a correlation between two traits
