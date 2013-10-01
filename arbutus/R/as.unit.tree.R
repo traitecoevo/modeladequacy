@@ -77,7 +77,7 @@
 #'
 #' ## this creates a 'fit.mle' object which can be used
 #' ## in 'as.unit.tree()'
-#' ##  unit.tree.dt <- as.unit.tree(fit.bm.dt)
+#' ## unit.tree.dt <- as.unit.tree(fit.bm.dt)
 #'
 #'
 #' ## Use pgls to look for a correlation between two traits
@@ -87,11 +87,11 @@
 #' ## dd <- cbind.data.frame(t1, t2)
 #'
 #' ## fit gls model with corPagel correlation structure
-#' fit.gls <- gls(t1~t2, data=dd, correlation=corPagel(phy=phy, value=1))
+#' ## fit.gls <- gls(t1~t2, data=dd, correlation=corPagel(phy=phy, value=1))
 #'
 #' ## this creates a 'gls' object which can be used
 #' ## in 'as.unit.tree()'
-#' unit.tree.gls <- as.unit.tree(fit.gls)
+#' ## unit.tree.gls <- as.unit.tree(fit.gls)
 #' 
 as.unit.tree <- function(x, ...)
     UseMethod("as.unit.tree")
