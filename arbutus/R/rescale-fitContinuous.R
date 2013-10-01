@@ -279,17 +279,24 @@ make.model.phylo.fitC <- function(x, ...){
     ## get parameters
     pars <- x$pars
 
-    ## use switch function to get appropriate transformation
-    rphy <- switch(model,
-                   BM = model.phylo.bm(phy, pars),
-                   OU = model.phylo.ou(phy, pars),
-                   EB = model.phylo.eb(phy, pars),
-                   lambda = model.phylo.lambda(phy, pars),
-                   kappa = model.phylo.kappa(phy, pars),
-                   delta = model.phylo.delta(phy, pars),
-                   trend = model.phylo.trend(phy, pars),
-                   white = model.phylo.white(phy, pars),
-               )
+    ## Translation function; all have argument list (phy, pars)
+    tr <- switch(model,
+                 BM=model.phylo.bm,
+                 OU=model.phylo.ou,
+                 EB=model.phylo.eb,
+                 lambda=model.phylo.lambda,
+                 kappa=model.phylo.kappa,
+                 delta=model.phylo.delta,
+                 trend=model.phylo.trend,
+                 white=model.phylo.trend)
+
+    if (is.data.frame(pars)) {
+      rphy <- lapply(seq_len(nrow(pars)), function(i)
+                     tr(phy, pars[i,]))
+      class(rphy) <- "multiPhylo"
+    } else {
+      rphy <- tr(phy, pars)
+    }
 
     ## return rescaled phylogeny
     rphy

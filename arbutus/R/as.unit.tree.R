@@ -137,6 +137,17 @@ as.unit.tree.phylo <- function(x, data, ...) {
   unit.tree
 }
 
+#' @method as.unit.tree multiPhylo
+#' @S3method as.unit.tree multiPhylo
+## NOTE[RGF]: Not sure what the appropriate class here is; it might be
+## multi.unit.tree, but let's see how these are actually used.  Using
+## 'multiPhylo' is harmless for now, I think.
+as.unit.tree.multiPhylo <- function(x, data, ...) {
+  res <- lapply(x, as.unit.tree, data, ...)
+  class(res) <- "multiPhylo"
+  res
+}
+
 
 
 

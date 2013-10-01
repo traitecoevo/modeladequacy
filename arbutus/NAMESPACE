@@ -1,4 +1,5 @@
 S3method(as.unit.tree,default)
+S3method(as.unit.tree,multiPhylo)
 S3method(as.unit.tree,phylo)
 S3method(make.model.phylo,fitC)
 S3method(plot,phy.ss)

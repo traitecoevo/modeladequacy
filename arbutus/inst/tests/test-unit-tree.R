@@ -50,6 +50,24 @@ test_that("BM tree rescaling worked (diversitree)", {
   expect_that(is.unit.tree(phy.unit), is_true())
 })
 
+test_that("BM tree rescaling worked (diversitree, mcmc)", {
+  lik.bm <- make.bm(phy, states)
+  fit.bm <- find.mle(lik.bm, .1)
+  set.seed(1)
+  samples.bm <- mcmc(lik.bm, coef(fit.bm), 100, w=0.1, print.every=0)
+
+  phy.unit <- as.unit.tree(samples.bm, lik.bm)
+  expect_that(phy.unit, is_a("multiPhylo"))
+  expect_that(phy.unit[[1]], is_a("unit.tree"))
+
+  ## Quick check:
+  idx <- 5
+  fit.bm$par <- coef(samples.bm)[idx,]
+  fit.bm$lnLik <- samples.bm$p[idx]
+  cmp <- as.unit.tree(fit.bm, lik.bm)
+  expect_that(phy.unit[[idx]], is_identical_to(cmp))
+})
+
 test_that("OU tree rescaling worked (fitContinuous)", {
     fit.ou <- suppressWarnings(fitContinuous(phy=phy, dat=states, model="OU",
                             control=list(niter=10)))
@@ -73,6 +91,28 @@ test_that("OU tree rescaling worked (diversitree)", {
 
     expect_that(phy.unit$phy, equals(cmp))
     expect_that(is.unit.tree(phy.unit), is_true())
+})
+
+test_that("OU tree rescaling worked (diversitree, mcmc)", {
+  lik.ou <- make.ou(phy, states)
+  fit.ou <- find.mle(lik.ou, x.init=c(0.1,0.1, mean(states)))
+  set.seed(1)
+  samples.ou <- mcmc(lik.ou, coef(fit.ou), 30,
+                     w=c(0.1, 10, 10),
+                     lower=c(0, 0, -10),
+                     upper=c(Inf, 100, 10),
+                     print.every=0)
+
+  phy.unit <- as.unit.tree(samples.ou, lik.ou)
+  expect_that(phy.unit, is_a("multiPhylo"))
+  expect_that(phy.unit[[1]], is_a("unit.tree"))
+
+  ## Quick check:
+  idx <- 5
+  fit.ou$par <- coef(samples.ou)[idx,]
+  fit.ou$lnLik <- samples.ou$p[idx]
+  cmp <- as.unit.tree(fit.ou, lik.ou)
+  expect_that(phy.unit[[idx]], is_identical_to(cmp))
 })
 
 test_that("EB tree rescaling worked (fitContinuous)", {
