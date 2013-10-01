@@ -8,7 +8,7 @@ model.phylo.bm <- function(phy, pars){
         stop("Parameters need to be non-negative")
 
     ## rescale branch lengths according to sigsq
-    sigsq = pars$sigsq
+    sigsq <- pars$sigsq
 
     phy$edge.length <- phy$edge.length * sigsq
 
@@ -51,7 +51,7 @@ model.phylo.ou <- function(phy, pars){
     phy$edge.length <- bl[phy$edge[,2]]
 
     ## rescale branch lengths according to sigsq
-    sigsq = pars$sigsq
+    sigsq <- pars$sigsq
 
     phy$edge.length <- phy$edge.length * sigsq
 
@@ -145,7 +145,7 @@ model.phylo.lambda <- function(phy, pars){
         warning("negative branch lengths in tranformed tree. Lambda may be too large")
 
     ## rescale branch lengths according to sigsq
-    sigsq = pars$sigsq
+    sigsq <- pars$sigsq
 
     phy$edge.length <- phy$edge.length * sigsq
 
@@ -171,7 +171,7 @@ model.phylo.kappa <- function(phy, pars){
     phy$edge.length <- phy$edge.length^kappa
 
     ## rescale branch lengths according to sigsq
-    sigsq = pars$sigsq
+    sigsq <- pars$sigsq
 
     phy$edge.length <- phy$edge.length * sigsq
 
@@ -214,7 +214,7 @@ model.phylo.delta <- function(phy, pars){
     phy$edge.length <- bl[phy$edge[,2]]
 
     ## rescale branch lengths according to sigsq
-    sigsq = pars$sigsq
+    sigsq <- pars$sigsq
 
     phy$edge.length <- phy$edge.length * sigsq
 
