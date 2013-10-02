@@ -288,7 +288,7 @@ make.model.phylo.fitC <- function(x, ...){
                  kappa=model.phylo.kappa,
                  delta=model.phylo.delta,
                  trend=model.phylo.trend,
-                 white=model.phylo.trend)
+                 white=model.phylo.white)
 
     if (is.data.frame(pars)) {
       rphy <- lapply(seq_len(nrow(pars)), function(i)
