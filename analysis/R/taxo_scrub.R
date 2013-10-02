@@ -1,9 +1,11 @@
 library(ape)
-wright<-read.csv("../data/wright-2004.csv",as.is=T)
-leda<-read.csv("../data/leda.csv",as.is=T)
+#wright<-read.csv("../data/wright-2004.csv",as.is=T)
+#leda<-read.csv("../data/leda.csv",as.is=T)
 
-trait.raw<-data.frame(gs=c(wright$Species,leda$SBS.name),sla=c(10000/10^(wright$LogLMA),10*leda$SLA.mean),
-                      Nmass=c(wright$N.mass,rep(NA,length(leda$SLA.mean))),dataset=c(rep("glop",length(wright$N.mass)),rep("leda",length(leda$SLA.mean))))
+#trait.raw<-data.frame(gs=c(wright$Species,leda$SBS.name),sla=c(10000/10^(wright$LogLMA),10*leda$SLA.mean),
+ #                     Nmass=c(wright$N.mass,rep(NA,length(leda$SLA.mean))),dataset=c(rep("glop",length(wright$N.mass)),rep("leda",length(leda$SLA.mean))))
+setwd("/Users/willcornwell/Documents/modeladequacy/analysis/R")
+trait.raw<-read.csv("species_mean_sla.csv")
 
 
 #loading tools from forest
