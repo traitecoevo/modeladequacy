@@ -5,20 +5,23 @@ library(ape)
 #trait.raw<-data.frame(gs=c(wright$Species,leda$SBS.name),sla=c(10000/10^(wright$LogLMA),10*leda$SLA.mean),
  #                     Nmass=c(wright$N.mass,rep(NA,length(leda$SLA.mean))),dataset=c(rep("glop",length(wright$N.mass)),rep("leda",length(leda$SLA.mean))))
 setwd("/Users/willcornwell/Documents/modeladequacy/analysis/R")
-trait.raw<-read.csv("species_mean_sla.csv")
+trait.raw<-read.csv("../output/species_mean_sla.csv")
+names(trait.raw)<-c("gs","sla")
+trait.raw$gs<-sub("_"," ",trait.raw$gs)
 
+#loading tools
+plantList<-read.csv("../data/spermatophyta_synonyms_PLANTLIST.csv",as.is=TRUE)
+corrections<-read.delim("../data/names-tr.txt",as.is=TRUE)
+tree<-read.tree("../data/tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
+errors<-read.csv("../data/errors.csv",as.is=TRUE)
+source("import-scrub.R")
 
-#loading tools from forest
-path.forest <- readLines("~/.forest_path")
-plantList<-read.csv(file.path(path.forest,"taxonomic/spermatophyta_synonyms_PLANTLIST.csv"),as.is=TRUE)
-corrections<-read.delim(file.path(path.forest,"db/names-tr.txt"),as.is=TRUE)
-tree<-read.tree(file.path(path.forest,"/trees/tempomode_trees_02112013/tempo_scrubbed_CONSTRAINT_rooted.dated.tre"))
-source(file.path(path.forest,"R/import-scrub.R"))
+corrections[,1][which(corrections[,1]%in%sub("_"," ",tree$tip.label))]<-NA
+corrections<-subset(corrections,!is.na(corrections[,1]))
 
 #
 #correcting errors (could be a seprate file, but it's only a few lines)
 #only errors in LEDA, none in glopnet
-errors<-read.csv(file.path(path.forest,"db/errors.csv"),as.is=TRUE)
 leda.errors<-subset(errors,errors$Dataset=="LEDA"&errors$trait=="sla")
 leda.errors$Original<-as.numeric(leda.errors$Original)
 leda.errors$Changed<-as.numeric(leda.errors$Changed)
@@ -49,33 +52,39 @@ potential.fixes<-plantList$species[match(new.missing,plantList$synonym)]
 fixed.names2<-potential.fixes[potential.fixes%in%tree$tip.label]
 #fixes 101 species
 
-look.up.table<-data.frame(original.names=c(missing.names[which(out.spp%in%tree$tip.label)]
-                                         ,new.missing[which(potential.fixes%in%tree$tip.label)])
-                                         ,fixed.names=c(fixed.names1,
-                                         fixed.names2))
+look.up.table<-data.frame(original.names=c(missing.names[which(out.spp%in%tree$tip.label)],new.missing[which(potential.fixes%in%tree$tip.label)]),fixed.names=c(fixed.names1,fixed.names2))
 trait.raw$gs<-gsub(" ","_",trait.raw$gs)
 
 temp<-look.up.table$fixed.names[match(trait.raw$gs,look.up.table$original.names)]
-temp<-as.character(temp[!is.na(temp)])
-trait.raw$gs[trait.raw$gs%in%look.up.table$original.names]<-temp
+trait.raw$gs[trait.raw$gs%in%look.up.table$original.names]<-as.character(temp[!is.na(temp)])
+
+
 
 sla.subset<-subset(trait.raw,!is.na(trait.raw$sla))
 #geometric mean for species
-sla.spp.mean<-exp(tapply(log(sla.subset$sla),as.factor(sla.subset$gs),FUN=mean))
+sla.spp.mean<-10^(tapply(log10(sla.subset$sla),as.factor(sla.subset$gs),FUN=mean))
+
+
+
+sla.spp.sd<-tapply(log10(sla.subset$sla),as.factor(sla.subset$gs),FUN=sd,na.rm=T)
+mean(sla.spp.sd,na.rm=T)
+
 write.csv(sla.spp.mean,"species_mean_sla.csv")
 
 #Code below here need manual supervision
 #False positive rate is too high without checking
 
-# agrep.for.names<-function(good.names,bad.name){
-#   fix<-good.names[agrep(bad.name,good.names,max.distance=0.08)]
-#  if (length(fix>0)){
-#   print(paste("bad name:",bad.name))
-#   print("fixes:")
-#   print(fix)
-#  }
-# }
+ agrep.for.names<-function(good.names,bad.name){
+   fix<-good.names[agrep(bad.name,good.names,max.distance=0.03)]
+  if (length(fix>0)&length(fix)<3){
+   print(paste("bad name:",bad.name))
+   print("fixes:")
+   print(fix)
+  }
+ }
 # 
-# still.missing<-sort(look.up.table$missing.names[is.na(look.up.table$fixed.names)])
-# hello<-sapply(still.missing,agrep.for.names,good.names=tree$tip.label)
+trait.raw$gs<-gsub(" ","_",trait.raw$gs)
+sla.subset<-subset(trait.raw,!is.na(trait.raw$sla))
+ still.missing<-sla.subset$gs[!sla.subset$gs%in%tree$tip.label]
+ hello<-sapply(still.missing,agrep.for.names,good.names=tree$tip.label)
 #this found about 15-20 more legit misspellings + many false positives.
