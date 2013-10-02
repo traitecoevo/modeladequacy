@@ -13,8 +13,6 @@
 ## Note that we depend on version 2.0 of geiger, and previous versions
 ## *will not work*, here.
 
-## Note even though these aren't actually S3 generics (yet) the
-## function names are written as though they are.
 model.type.gfit <- function(fit, ...) {
   ret <- attr(fit$lik, "model")
   if (is.null(ret) || !is.character(ret) || length(ret) != 1)
@@ -31,7 +29,11 @@ model.pars.gfit <- function(fit, ...) {
   model <- model.type(fit)
     pars <- as.list(coef(fit))
     if (!("SE" %in% names(pars)))
-      pars$SE <- 0
+      pars$SE <- unique(attr(fit$lik, "cache")$SE)
+
+    if (length(pars$SE) > 1)
+      stop("Variable SE not yet implemented")  
+  
     pars[c(setdiff(names(pars), "SE"), "SE")]
 }
 
