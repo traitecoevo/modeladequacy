@@ -13,6 +13,7 @@ License: GPL-2 | GPL-3
 Depends:
     ape,
     ggplot2,
+Suggests:
     grid,
     gridExtra
 Collate:
