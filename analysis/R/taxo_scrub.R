@@ -1,13 +1,13 @@
 library(ape)
-#wright<-read.csv("../data/wright-2004.csv",as.is=T)
-#leda<-read.csv("../data/leda.csv",as.is=T)
+wright<-read.csv("../data/wright-2004.csv",as.is=T)
+leda<-read.csv("../data/leda.csv",as.is=T)
 
-#trait.raw<-data.frame(gs=c(wright$Species,leda$SBS.name),sla=c(10000/10^(wright$LogLMA),10*leda$SLA.mean),
- #                     Nmass=c(wright$N.mass,rep(NA,length(leda$SLA.mean))),dataset=c(rep("glop",length(wright$N.mass)),rep("leda",length(leda$SLA.mean))))
-setwd("/Users/willcornwell/Documents/modeladequacy/analysis/R")
-trait.raw<-read.csv("../output/species_mean_sla.csv")
-names(trait.raw)<-c("gs","sla")
-trait.raw$gs<-sub("_"," ",trait.raw$gs)
+trait.raw<-data.frame(gs=c(wright$Species,leda$SBS.name),sla=c(10000/10^(wright$LogLMA),10*leda$SLA.mean),
+                      Nmass=c(wright$N.mass,rep(NA,length(leda$SLA.mean))),dataset=c(rep("glop",length(wright$N.mass)),rep("leda",length(leda$SLA.mean))))
+#setwd("/Users/wcornwell/Documents/modeladequacy/analysis/R")
+#trait.raw<-read.csv("../output/species_mean_sla.csv")
+#names(trait.raw)<-c("gs","sla")
+#trait.raw$gs<-sub("_"," ",trait.raw$gs)
 
 #loading tools
 plantList<-read.csv("../data/spermatophyta_synonyms_PLANTLIST.csv",as.is=TRUE)
@@ -44,7 +44,7 @@ still.missing<-missing.names[missing.names==out.spp]
 out.spp<-gsub(" ","_",out.spp)
 fixed.names1<-out.spp[out.spp%in%tree$tip.label]
 sum(fixed.names1%in%tree$tip.label)
-#fixes 162 species
+#fixes 165 species
 
 #using plant list synonmy
 new.missing<-out.spp[!out.spp%in%fixed.names1]
@@ -63,11 +63,9 @@ trait.raw$gs[trait.raw$gs%in%look.up.table$original.names]<-as.character(temp[!i
 sla.subset<-subset(trait.raw,!is.na(trait.raw$sla))
 #geometric mean for species
 sla.spp.mean<-10^(tapply(log10(sla.subset$sla),as.factor(sla.subset$gs),FUN=mean))
-
-
-
 sla.spp.sd<-tapply(log10(sla.subset$sla),as.factor(sla.subset$gs),FUN=sd,na.rm=T)
-mean(sla.spp.sd,na.rm=T)
+sd.real<-sla.spp.sd[sla.spp.sd>0.0001]
+mean(sd.real,na.rm=T)
 
 write.csv(sla.spp.mean,"species_mean_sla.csv")
 
