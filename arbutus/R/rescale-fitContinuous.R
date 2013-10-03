@@ -129,7 +129,7 @@ model.phylo.lambda <- function(phy, pars){
 
     ## get all path lengths
     ## call internal geiger fxn
-    pp <- geiger:::.paths.phylo(phy)
+    pp <- Tmax - ht$end[c(1:N)]
 
     ## rescale all branches according to lambda value
     lambda <- pars$lambda
