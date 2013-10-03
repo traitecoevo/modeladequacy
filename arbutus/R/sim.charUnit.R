@@ -51,3 +51,77 @@ sim.char.unit <- function(unit.tree, nsim=1000){
 	ut
 	
 }
+
+## Actual character simulation code imported from diversitree.  This
+## is optimised for the case where we have BM with rate 1.
+sim.char.std.bm <- function(tree, n.sim=1, x0=0) {
+  edge <- tree$edge
+  idx <- seq_len(max(edge))
+  n.tip <- length(tree$tip.label)
+  root <- n.tip + 1
+  is.tip <- idx <= n.tip
+  children <- get.children(edge, n.tip)
+  order <- rev(get.ordering(children, is.tip, root))
+  len <- tree$edge.length[match(idx, edge[, 2])]
+
+  len[root] <- 0 # set root length to zero to avoid warning.
+
+  n.edge <- length(len)
+  dy <- matrix(rnorm(n.edge * n.sim, 0, rep(sqrt(len), n.sim)),
+               n.edge, n.sim)
+
+  y <- matrix(NA, n.edge, n.sim)
+  y[root,] <- x0
+
+  for (i in order) {
+    j <- children[i,]
+    y[j,] <- y[rep.int(i, length(j)),] + dy[j,]
+  }
+
+  y.tip <- y[is.tip,,drop=FALSE]
+  rownames(y.tip) <- tree$tip.label
+
+  y.tip
+}
+
+## These two could probably be replaced by using ape's reorder, but
+## are also taken from diversitree.
+get.ordering <- function(children, is.tip, root) {
+  todo <- list(root)
+  i <- root
+  repeat {
+    kids <- children[i,]
+    i <- kids[!is.tip[kids]]
+    if (length(i) > 0)
+      todo <- c(todo, list(i))
+    else
+      break
+  }
+  as.vector(unlist(rev(todo)))
+}
+
+## TODO: This needs modifying to deal with multifurcations, but it
+## will throw an error.  It's possibly actually OK apart from the fact
+## that we aim for a matrix -- could we do a list instead?
+get.children <- function(edge, n.tip) {
+  ## To construct the children vector, this is what I used to do:
+  ##   lapply(idx[!is.tip], function(x) edge[edge[,1] == x,2])
+  ## But this is slow for large trees.  This is faster:
+  ## children <- split(edge[,2], edge[,1])
+  ## Surprisingly, most of the time is in coercing edge[,1] into a
+  ## factor.
+  x <- as.integer(edge[,1])
+  levels <- as.integer((n.tip+1):max(edge[,1]))
+  f <- match(x, levels)
+  levels(f) <- as.character(levels)
+  class(f) <- "factor"
+  children <- split(edge[,2], f)
+  names(children) <- NULL
+
+  ## In most cases, this will have been checked by check.tree()
+  ## This is currently the time sink here.
+  if (!all(unlist(lapply(children, length)) == 2))
+    stop("Multifircations/unbranched nodes in tree - best get rid of them")
+
+  rbind(matrix(NA, n.tip, 2), t(matrix(unlist(children), 2)))
+}
