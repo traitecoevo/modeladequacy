@@ -47,6 +47,19 @@ test_that("Multifurcations are not handled", {
   expect_that(is.binary.tree(phy.m), is_false())
 
   dat.g <- geiger::sim.char(phy.m, par=1, nsim=100, model="BM")[,,]
-  expect_that(dat.a <- sim.char.std.bm(phy.m, 100, x0=1),
-              throws_error())
+  dat.a <- arbutus:::sim.char.std.bm(phy.m, 100, x0=1)
+
+  ## Note that this fits on the binary tree, not the multifurcating
+  ## tree.
+  do.fit <- function(x) {
+    lik <- make.bm(phy, x, control=list(method="pruning"))
+    unname(coef(find.mle(lik, 1, "optimize",
+                         control=list(interval=c(0.1, 10)))))
+  }
+
+  est.g <- apply(dat.g, 2, do.fit)
+  est.a <- apply(dat.a, 2, do.fit)
+
+  expect_that(suppressWarnings(ks.test(est.a, est.g))$p.value,
+              is_greater_than(0.1))
 })

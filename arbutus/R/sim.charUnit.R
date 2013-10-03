@@ -74,7 +74,7 @@ sim.char.std.bm <- function(tree, n.sim=1, x0=0) {
   y[root,] <- x0
 
   for (i in order) {
-    j <- children[i,]
+    j <- children[[i]]
     y[j,] <- y[rep.int(i, length(j)),] + dy[j,]
   }
 
@@ -90,7 +90,7 @@ get.ordering <- function(children, is.tip, root) {
   todo <- list(root)
   i <- root
   repeat {
-    kids <- children[i,]
+    kids <- unlist(children[i])
     i <- kids[!is.tip[kids]]
     if (length(i) > 0)
       todo <- c(todo, list(i))
@@ -100,9 +100,8 @@ get.ordering <- function(children, is.tip, root) {
   as.vector(unlist(rev(todo)))
 }
 
-## TODO: This needs modifying to deal with multifurcations, but it
-## will throw an error.  It's possibly actually OK apart from the fact
-## that we aim for a matrix -- could we do a list instead?
+## Note that unlike diversitree's version, this returns a list and
+## allows multifurcations.
 get.children <- function(edge, n.tip) {
   ## To construct the children vector, this is what I used to do:
   ##   lapply(idx[!is.tip], function(x) edge[edge[,1] == x,2])
@@ -118,10 +117,5 @@ get.children <- function(edge, n.tip) {
   children <- split(edge[,2], f)
   names(children) <- NULL
 
-  ## In most cases, this will have been checked by check.tree()
-  ## This is currently the time sink here.
-  if (!all(unlist(lapply(children, length)) == 2))
-    stop("Multifircations/unbranched nodes in tree - best get rid of them")
-
-  rbind(matrix(NA, n.tip, 2), t(matrix(unlist(children), 2)))
+  c(rep(list(integer(0)), n.tip), children)
 }
