@@ -23,35 +23,36 @@ states <- dat$dat[,"wingL"]
 control <- list(niter=10)
 
 set.seed(1)
-fit.bm <- fitContinuous(phy, states, SE=NA, control=control, model="BM")
-fit.ou <- suppressWarnings(fitContinuous(phy, states, SE=NA,
-                                         control=control, model="OU"))
-fit.eb <- suppressWarnings(fitContinuous(phy, states, SE=NA,
-                                         control=control, model="EB"))
-fit.lam <- suppressWarnings(fitContinuous(phy, states, SE=NA,
-                                          control=control, model="lambda"))
-fit.del <- suppressWarnings(fitContinuous(phy, states, SE=NA,
-                                          control=control, model="delta"))
-fit.kap <- suppressWarnings(fitContinuous(phy, states, SE=NA,
-                                          control=control, model="kappa"))
-fit.wh <- suppressWarnings(fitContinuous(phy, states, SE=NA,
-                                         control=control, model="white"))
+fit.bm <- fitContinuousQuiet(phy, states, SE=NA, control=control,
+                             model="BM")
+fit.ou <- fitContinuousQuiet(phy, states, SE=NA, control=control,
+                             model="OU")
+fit.eb <- fitContinuousQuiet(phy, states, SE=NA, control=control,
+                             model="EB")
+fit.lam <- fitContinuousQuiet(phy, states, SE=NA, control=control,
+                              model="lambda")
+fit.del <- fitContinuousQuiet(phy, states, SE=NA, control=control,
+                              model="delta")
+fit.kap <- fitContinuousQuiet(phy, states, SE=NA, control=control,
+                              model="kappa")
+fit.wh <- fitContinuousQuiet(phy, states, SE=NA, control=control,
+                             model="white")
 
 ## And without SE:
-fit.bm.noSE <- fitContinuous(phy, states, control=control, model="BM")
-fit.ou.noSE <- suppressWarnings(fitContinuous(phy, states,
-                                              control=control, model="OU"))
-fit.eb.noSE <- suppressWarnings(fitContinuous(phy, states,
-                                         control=control, model="EB"))
-fit.lam.noSE <- suppressWarnings(fitContinuous(phy, states,
-                                          control=control, model="lambda"))
-fit.del.noSE <- suppressWarnings(fitContinuous(phy, states,
-                                          control=control, model="delta"))
-fit.kap.noSE <- suppressWarnings(fitContinuous(phy, states,
-                                          control=control, model="kappa"))
-fit.wh.noSE <- suppressWarnings(fitContinuous(phy, states,
-                                         control=control, model="white"))
-
+fit.bm.noSE <- fitContinuousQuiet(phy, states, control=control,
+                                  model="BM")
+fit.ou.noSE <- fitContinuousQuiet(phy, states, control=control,
+                                  model="OU")
+fit.eb.noSE <- fitContinuousQuiet(phy, states, control=control,
+                                  model="EB")
+fit.lam.noSE <- fitContinuousQuiet(phy, states, control=control,
+                                   model="lambda")
+fit.del.noSE <- fitContinuousQuiet(phy, states, control=control,
+                                   model="delta")
+fit.kap.noSE <- fitContinuousQuiet(phy, states, control=control,
+                                   model="kappa")
+fit.wh.noSE <- fitContinuousQuiet(phy, states, control=control,
+                                  model="white")
 
 test_that("Model types are correct", {
   expect_that(model.type(fit.bm), is_identical_to("BM"))
@@ -225,7 +226,7 @@ test_that("Variable length SE throws error", {
   expect_that(model.pars(fit.bm), throws_error())
 
   se[1] <- NA
-  fit.bm <- fitContinuous(phy, states, SE=se, control=control,
-                          model="BM")
+  fit.bm <- fitContinuousQuiet(phy, states, SE=se, control=control,
+                               model="BM")
   expect_that(model.pars(fit.bm), throws_error())
 })

@@ -24,8 +24,8 @@ test_that("Unit tree construction works", {
 })
 
 test_that("BM tree rescaling worked (fitContinuous)", {
-  fit.bm <- fitContinuous(phy=phy, dat=states, model="BM",
-                          control=list(niter=10))
+  fit.bm <- fitContinuousQuiet(phy=phy, dat=states, model="BM",
+                               control=list(niter=10))
   phy.unit <- as.unit.tree(fit.bm)
 
   ## Manual rescaling using Geiger function
@@ -69,8 +69,8 @@ test_that("BM tree rescaling worked (diversitree, mcmc)", {
 })
 
 test_that("OU tree rescaling worked (fitContinuous)", {
-    fit.ou <- suppressWarnings(fitContinuous(phy=phy, dat=states, model="OU",
-                            control=list(niter=10)))
+    fit.ou <- fitContinuousQuiet(phy=phy, dat=states, model="OU",
+                                 control=list(niter=10))
     phy.unit <- as.unit.tree(fit.ou)
 
     ## Manual rescaling using Geiger function
@@ -116,8 +116,8 @@ test_that("OU tree rescaling worked (diversitree, mcmc)", {
 })
 
 test_that("EB tree rescaling worked (fitContinuous)", {
-    fit.eb <- suppressWarnings(fitContinuous(phy=phy, dat=states, model="EB",
-                                             control=list(niter=10)))
+    fit.eb <- fitContinuousQuiet(phy=phy, dat=states, model="EB",
+                                 control=list(niter=10))
     phy.unit <- as.unit.tree(fit.eb)
 
     ## Manual rescaling using Geiger functions
@@ -128,8 +128,8 @@ test_that("EB tree rescaling worked (fitContinuous)", {
 })
 
 test_that("lambda tree rescaling worked (fitContinuous)", {
-    fit.lamb <- suppressWarnings(fitContinuous(phy=phy, dat=states, model="lambda",
-                                               control=list(niter=10)))
+    fit.lamb <- fitContinuousQuiet(phy=phy, dat=states, model="lambda",
+                                   control=list(niter=10))
     phy.unit <- as.unit.tree(fit.lamb)
 
     ## Manual rescaling using Geiger functions
@@ -140,8 +140,8 @@ test_that("lambda tree rescaling worked (fitContinuous)", {
 })
 
 test_that("kappa tree rescaling worked (fitContinuous)", {
-    fit.k <- suppressWarnings(fitContinuous(phy=phy, dat = states, model="kappa",
-                                            control = list(niter=10)))
+    fit.k <- fitContinuousQuiet(phy=phy, dat = states, model="kappa",
+                                control = list(niter=10))
 
     phy.unit <- as.unit.tree(fit.k)
 
@@ -153,8 +153,8 @@ test_that("kappa tree rescaling worked (fitContinuous)", {
 })
 
 test_that("delta tree rescaling worked (fitContinuous)", {
-    fit.d <- suppressWarnings(fitContinuous(phy=phy, dat=states, model="delta",
-                                            control = list(niter=10)))
+    fit.d <- fitContinuousQuiet(phy=phy, dat=states, model="delta",
+                                control = list(niter=10))
 
     phy.unit <- as.unit.tree(fit.d)
 
@@ -169,8 +169,8 @@ test_that("delta tree rescaling worked (fitContinuous)", {
 })
 
 test_that("white noise rescaling worked (fitContinuous)", {
-    fit.w <- suppressWarnings(fitContinuous(phy=phy, dat=states, model="white",
-                                            control = list(niter=10)))
+    fit.w <- fitContinuousQuiet(phy=phy, dat=states, model="white",
+                                control = list(niter=10))
 
     phy.unit <- as.unit.tree(fit.w)
 

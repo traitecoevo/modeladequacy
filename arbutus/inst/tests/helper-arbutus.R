@@ -16,3 +16,6 @@ is_less_than <- function(value) {
   function(actual)
     expectation(actual < value, paste("is not less than", value))
 }
+
+fitContinuousQuiet <- function(...)
+  suppressWarnings(fitContinuous(...))
