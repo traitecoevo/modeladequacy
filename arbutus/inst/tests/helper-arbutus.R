@@ -3,7 +3,11 @@
 ## generate a lot of noise.
 library(testthat)
 suppressMessages(library(arbutus))
+suppressMessages(library(geiger))
+## note: geiger must come before diversitree due to conflicts
+## between diversitree and coda
 suppressMessages(library(diversitree))
+
 library(parallel)
 
 ## Additional tests
