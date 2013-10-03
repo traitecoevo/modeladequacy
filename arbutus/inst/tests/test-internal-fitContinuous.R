@@ -215,3 +215,17 @@ test_that("Nonsense cases should fail", {
   expect_that(modelinfo(NULL), throws_error())
   expect_that(modelinfo(unclass(fit.bm)), throws_error())
 })
+
+test_that("Variable length SE throws error", {
+  set.seed(1)
+  se <- runif(length(states))
+  names(se) <- names(states)
+  fit.bm <- fitContinuous(phy, states, SE=se, control=control,
+                          model="BM")
+  expect_that(model.pars(fit.bm), throws_error())
+
+  se[1] <- NA
+  fit.bm <- fitContinuous(phy, states, SE=se, control=control,
+                          model="BM")
+  expect_that(model.pars(fit.bm), throws_error())
+})
