@@ -213,8 +213,10 @@ contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
     ## extract pics
     pics <- abs(ut$pics[,"contrasts"])
 
-    ## get tree and get branching times
-    nh <- branching.times(ut$phy)
+    ht <- edge.height(ut$phy)
+    N <- Ntip(ut$phy)
+    nh <- ht$end[c((N + 1):nrow(ht))]
+    names(nh) <- rownames(ht[c((N + 1):nrow(ht)),])
 
     ## create a dataframe
     dat <- cbind.data.frame(nh, pics)

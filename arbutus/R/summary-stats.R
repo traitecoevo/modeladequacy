@@ -318,8 +318,11 @@ slope.pic.nh <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
 
-    ## node heights (see note 1)
-    nh <- branching.times(unit.tree$phy)
+    ## node heights 
+    ht <- edge.height(unit.tree$phy)
+    N <- Ntip(unit.tree$phy)
+    nh <- ht$end[c((N + 1):nrow(ht))]
+    names(nh) <- rownames(ht[c((N + 1):nrow(ht)),])
 
     ## absolute value of the pics
     abs.pic <- abs(unit.tree$pics[,"contrasts"])
