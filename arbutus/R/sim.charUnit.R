@@ -32,29 +32,22 @@
 #' 
 #' sims
 #' 
-sim.char.unit <- function(unit.tree, nsim=1000){
-	if (inherits(unit.tree, "unit.tree")){ ## simulate on one tree
-            phy <- unit.tree$phy
-            dat <- sim.char(phy, par=1, nsim=nsim, model="BM")[,,]
-            ut <- lapply(1:nsim, function(x) as.unit.tree(phy, dat[,x]))
-                
-            } else { ## simulate one simulation per tree in list
-             ## first check to make sure first element is a unit.tree
-            if (!is.unit.tree(unit.tree[[1]]))
-                stop("unit.tree must be either a single unit tree or a list of unit.trees")
-
-                multi.phy <- lapply(unit.tree, function(x) return(x$phy))
-                multi.dat <- lapply(multi.phy, function(x) return(sim.char(x, par=1, model="BM")[,,]))
-                ut <- lapply(1:length(multi.phy), function(x) as.unit.tree(multi.phy[[x]], multi.dat[[x]]))
-            }
-                                    
-	ut
-	
+sim.char.unit <- function(unit.tree, nsim=1000) {
+  if (inherits(unit.tree, "unit.tree")) {
+    phy <- unit.tree$phy
+    dat <- sim.char.std.bm(phy, nsim)
+    lapply(seq_len(nsim), function(i) as.unit.tree(phy, dat[,i]))
+  } else if (is.list(unit.tree)) {
+    ## Simulate one data set per tree
+    lapply(unit.tree, function(u) sim.char.unit(u, nsim=1)[[1]])
+  } else {
+    stop("'unit.tree' must be a single unit tree or a list of unit.trees")
+  }
 }
 
 ## Actual character simulation code imported from diversitree.  This
 ## is optimised for the case where we have BM with rate 1.
-sim.char.std.bm <- function(tree, n.sim=1, x0=0) {
+sim.char.std.bm <- function(tree, nsim=1, x0=0) {
   edge <- tree$edge
   idx <- seq_len(max(edge))
   n.tip <- length(tree$tip.label)
@@ -67,10 +60,10 @@ sim.char.std.bm <- function(tree, n.sim=1, x0=0) {
   len[root] <- 0 # set root length to zero to avoid warning.
 
   n.edge <- length(len)
-  dy <- matrix(rnorm(n.edge * n.sim, 0, rep(sqrt(len), n.sim)),
-               n.edge, n.sim)
+  dy <- matrix(rnorm(n.edge * nsim, 0, rep(sqrt(len), nsim)),
+               n.edge, nsim)
 
-  y <- matrix(NA, n.edge, n.sim)
+  y <- matrix(NA, n.edge, nsim)
   y[root,] <- x0
 
   for (i in order) {
