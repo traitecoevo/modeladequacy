@@ -11,8 +11,9 @@ Description: Using summary statistics and simulations to evaluate whether a
     multivariate models (e.g. phylogenetic regression) of trait evolution.
 License: GPL-2 | GPL-3
 Depends:
-    geiger (>= 2.0),
+    ape,
     ggplot2,
+Suggests:
     grid,
     gridExtra
 Collate:

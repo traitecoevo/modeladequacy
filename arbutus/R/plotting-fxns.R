@@ -279,6 +279,9 @@ contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #' 
 plot.phy.ss <- function(x, colour=c("darkblue", "dodgerblue4")){
 
+    ## require grid and gridExtra
+    require(grid)
+    require(gridExtra)
     ## get observed summary stats
     ss.obs <- x$summ.stats.obs
     ss.sim <- x$summ.stats.sim
