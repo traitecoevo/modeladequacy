@@ -27,14 +27,17 @@ model.data.gfit <- function(fit, ...) {
 
 model.pars.gfit <- function(fit, ...) {
   model <- model.type(fit)
-    pars <- as.list(coef(fit))
-    if (!("SE" %in% names(pars)))
-      pars$SE <- unique(attr(fit$lik, "cache")$SE)
+  pars <- as.list(coef(fit))
+  if (!("SE" %in% names(pars)))
+    pars$SE <- unique(attr(fit$lik, "cache")$SE)
 
-    if (length(pars$SE) > 1)
-      stop("Variable SE not yet implemented")  
-  
-    pars[c(setdiff(names(pars), "SE"), "SE")]
+  # The second condition here works around some odd behaviour with
+  # geiger where a vector of SE values is given, but some are also
+  # being estimated.  This probably affects basically nobody.
+  if (length(pars$SE) > 1 || length(unique(attr(fit$lik, "cache")$SE)) > 1)
+    stop("Variable SE not yet implemented")
+
+  pars[c(setdiff(names(pars), "SE"), "SE")]
 }
 
 model.info.gfit <- function(fit, ...) {
