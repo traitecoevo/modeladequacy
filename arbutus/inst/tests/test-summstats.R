@@ -66,13 +66,130 @@ test_that("Custom supplied functions work correctly", {
 
 
 test_that("REML sigsq is being calculated correctly", {
-    phy.unit <- as.unit.tree(phy, states)
+    ss <- round(sigsq.reml(phy.unit), 5)
+    expect_that(ss, equals(0.13036))
+})
 
-    ss <- round(sigsq.reml(phy.unit), 7)
-    expect_that(ss, equals(0.130356))
+test_that("Variance of contrasts is being calculated correctly", {
+    ss <- round(var.pic(phy.unit), 5)
+    expect_that(ss, equals(0.06456))
+})
+
+test_that("Slope of contrasts and variance is being calculated correctly", {
+    ss <- round(slope.pic.var(phy.unit), 5)
+    expect_that(ss, equals(-0.79589))
+})
+
+test_that("Slope of contrasts and asr is being calculated correctly", {
+    ss <- round(slope.pic.asr(phy.unit), 5)
+    expect_that(ss, equals(-2.10474))
+})
+
+test_that("Slope of contrasts and node height is being calculated correctly", {
+    ss <- round(slope.pic.nh(phy.unit), 5)
+    expect_that(ss, equals(-0.80493))
+})
+
+test_that("KS D-Statistic is being calculated correctly",{
+    set.seed(1) ## simulates normal so need to set seed
+    ss <- round(ks.pic(phy.unit), 5)
+    expect_that(ss, equals(0.2936))
 })
 
 
+test_that("Summary statistic comparison is working properly",{
+
+    ## single observed summary stat
+    set.seed(1)
+    ss.o <- summ.stats(phy.unit)
+    stats <- names(ss.o)
+
+    set.seed(1)
+    sims <- sim.char.unit(phy.unit, nsim=6)
+
+    set.seed(1)
+    ss.s <- summ.stats(sims)
+    cc <- compare.summ.stats(ss.o, ss.s)
+
+    expect_that(cc, is_a("phy.ss"))
+    expect_that(cc, is_a("list"))
+    el <- c("p.values", "summ.stats.obs", "summ.stats.sim")
+    expect_that(names(cc), equals(el))
+    expect_that(cc$p.values, is_a("numeric"))
+    expect_that(cc$summ.stats.obs, is_a("data.frame"))
+    expect_that(cc$summ.stats.sim, is_a("data.frame"))
+    expect_that(names(cc$p.values), equals(stats))
+    expect_that(names(cc$summ.stats.obs), equals(stats))
+    expect_that(names(cc$summ.stats.sim), equals(stats))
+    expect_that(nrow(cc$summ.stats.obs), equals(1))
+    expect_that(nrow(cc$summ.stats.sim), equals(6))
+
+    ## check if values are correct
+    ex.p <- c(0,0,0,0,0,4/7)
+    expect_that(as.numeric(cc$p.values), equals(ex.p))
+
+    ## if we provide different names
+    ss.s.wrgname <- ss.s
+    names(ss.s.wrgname) <- c("a", "b", "c", "d", "e", "f")
+    expect_that(compare.summ.stats(ss.o, ss.wrgname), throws_error())
+
+    ## if lengths of summary stats are not the same
+    ss.wrgnum <- ss.s[c(1:5)]
+    expect_that(compare.summ.stats(ss.o, ss.wrgnum), throws_error())
+
+
+    ## check for multiple datasets
+    set.seed(1)
+    ss.o <- cbind.data.frame(rnorm(6), rnorm(6), rnorm(6),
+                             rnorm(6), rnorm(6), rnorm(6))
+    set.seed(42)
+    ss.s <- cbind.data.frame(rnorm(6), rnorm(6), rnorm(6),
+                             rnorm(6), rnorm(6), rnorm(6))
+    names(ss.o) <- names(ss.s) <- stats
+
+    cm <- compare.summ.stats(ss.o, ss.s)
+    expect_that(cm, is_a("phy.ss"))
+    expect_that(cm, is_a("list"))
+    el <- c("p.values", "summ.stats.obs", "summ.stats.sim")
+    expect_that(names(cm), equals(el))
+    expect_that(cm$p.values, is_a("numeric"))
+    expect_that(cm$summ.stats.obs, is_a("data.frame"))
+    expect_that(cm$summ.stats.sim, is_a("data.frame"))
+    expect_that(names(cm$p.values), equals(stats))
+    expect_that(names(cm$summ.stats.obs), equals(stats))
+    expect_that(names(cm$summ.stats.sim), equals(stats))
+    expect_that(nrow(cm$summ.stats.obs), equals(6))
+    expect_that(nrow(cm$summ.stats.sim), equals(6))
+
+    ex.p <- c(4/6, 4/6, 4/6, 4/6, 4/6, 1)
+    expect_that(as.numeric(cm$p.values), equals(ex.p))
+
+    ## if we provide different names
+    ss.s.wrgname <- ss.s
+    names(ss.s.wrgname) <- c("a", "b", "c", "d", "e", "f")
+    expect_that(compare.summ.stats(ss.o, ss.wrgname), throws_error())
+
+    ## if lengths of summary stats are not the same
+    ss.wrgnum <- ss.s[,c(1:5)]
+    expect_that(compare.summ.stats(ss.o, ss.wrgnum), throws_error())
+
+    ## if number of rows are not the same
+    ss.wrgrow <- ss.s[c(1:5),]
+    expect_that(compare.summ.stats(ss.o, ss.wrgnum), throws_error())
+
+})
+
+
+test_that("p values are properly extracted from phy.ss object",{
+    ss.o <- summ.stats(phy.unit)
+    stats <- names(ss.o)
+    sims <- sim.char.unit(phy.unit, nsim=6)
+    ss.s <- summ.stats(sims)
+    cc <- compare.summ.stats(ss.o, ss.s)
+
+    pv <- cc$p.values
+    expect_that(pval.summ.stats(cc), equals(pv))
+})
 
     
     
