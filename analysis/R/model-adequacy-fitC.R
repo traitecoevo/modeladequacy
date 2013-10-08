@@ -6,8 +6,11 @@
 
 require(geiger)
 require(arbutus)
-require(multicore)
-source("extract_subtree_functions.R")
+cd <- getwd()
+esf <- file.path(cd, "R", "extract_subtree_functions.R")
+rdf <- file.path(cd, "R", "read-data-functions.R")
+source(esf)
+source(rdf)
 
 
 ## Get bounds for OU
@@ -94,96 +97,34 @@ modelad.ml <- function(phy, states, SE){
 
 
 
-## READ IN THE DATA
+## function for doing time slice analyses
 
+modelad.ml.slice <- function(tree.states, age, sr.min, trait.name){
+    ## get list of sliced trees
+    trees <- time.slice.tree(time.slice=age, temp.tree=tree.states$phy, sr=sr.min)
 
-## read in bigtree
-t <- read.tree(file="tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
+    ## append correct data to each tree
+    ## do this so bounds are properly set within modelad.ml
+    td <- lapply(trees, function(x) treedata(phy=x, data=tree.states$states))
 
-## ANALYSIS OF SLA DATA
-sla.raw <- read.csv(file="species_mean_sla.csv")
-sla <- sla.raw[,"x"]
+    ## perform model adequacy using ml
+    res <- lapply(td, function(x) modelad.ml(phy=x$phy, states=x$data, SE=tree.states$SE))
+    tmp <- do.call(rbind, res)
 
-## log the sla using base 10
-## same units SE was calculated in
-sla <- log10(sla)
-names(sla) <- sla.raw[,"X"]
+    ## get age of taxa
+    age <- sapply(td, function(x) return(arbutus:::edge.height(x$phy)$start[Ntip(x$phy)+1]))
 
-## SE
-sla.se <- 0.1024202
+    taxa <- rank <- rep(NA, length(age))
 
+    trait <- rep(trait.name, length(age))
 
+    size <- sapply(td, function(x) Ntip(x$phy))
 
+    out <- cbind.data.frame(taxa, rank, trait, size, age, tmp)
+    colnames(out) <- c("taxa", "rank", "trait", "size", "age", colnames(tmp))
 
-
-
-
-
-### TIME SLICE ANALYSIS
-
-
-slice.and.model.select<-function(age,smaller.tree=smaller.tree,sr.min,trait.vec=l.sla){
-  tree.list<-time.slice.tree(age,smaller.tree,sr.min)
-  ms.out<-lapply(tree.list,modelad.ml, states=trait.vec, SE=0.1024202)
-  return(ms.out)
-} 
-
-
-l.sla<-log10(read.csv("../output/species_mean_sla.csv",row.names=1))
-tree<-read.tree("../data/tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
-smaller.tree<-geiger:::.drop.tip(tree,tree$tip.label[!tree$tip.label%in%row.names(l.sla)])
-
-#age of full tree is 400.7877 million years, and time slices measures from the root toward the tips
-#time.slices<-c(0.7877,50.7877,100.7877,150.7877,200.7877,250.7877,300.7877,350.7877,375.7877)
-time.slices<-c(0.7877,250.7877,350.7877)
-diff.out<-lapply(X=time.slices,FUN=slice.and.model.select,smaller.tree=smaller.tree,sr.min=50)
-
-
-
-
-
-
-
-
-## function which pulls out data sets by clade from
-## full tree and dataset
-## assume rownames of dataset are taxon labels
-## rank can be 'family' or 'order' (will add genus later)
-## min.size is the minimum clade size
-treedata.taxon <- function(phy, data, rank="family", min.size=20){
-    ## drop tips that are not in data set
-    ## to avoid dropping same tips over and over
-    tt <- phy$tip.label[-which(phy$tip.label %in% names(data))]
-    phy <- geiger:::.drop.tip(phy, tip=tt)
-
-    if (rank == "family"){
-        ## get all family nodes in tree
-        tax <- phy$node.label[grep("[A-z]+ceae", phy$node.label, perl=TRUE)]
-        ## extract subtrees
-        trees <- lapply(tax, function(x) extract.clade(phy, node=x))
-        ## use treedata to match to family level
-        td <- lapply(trees, function(x) treedata(phy=x, data=data))
-        names(td) <- tax
-        ## get number of tips
-        tips <- lapply(td, function(x) Ntip(x$phy))
-        ## extract those which meet threshold
-        dd <- td[tips >= min.size]
-    }
-    if (rank == "order"){
-        ## get all ordinal nodes in tree
-        tax <- phy$node.label[grep("[A-z]+ales", phy$node.label, perl=TRUE)]
-        ## extract subtrees
-        trees <- lapply(tax, function(x) extract.clade(phy, node=x))
-        ## use treedata to match to family level
-        td <- lapply(trees, function(x) treedata(phy=x, data=data))
-        names(td) <- tax
-        ## get number of tips
-        tips <- lapply(td, function(x) Ntip(x$phy))
-        ## extract those which meet threshold
-        dd <- td[tips >= min.size]
-    }
-
-    dd
+    out
+    
 }
 
 
@@ -192,35 +133,60 @@ treedata.taxon <- function(phy, data, rank="family", min.size=20){
 
 
 
+## function for doing cladewise analyses
+
+modelad.ml.clade <- function(tree.states, rank, min.size, trait.name){
+    ## get list of clade trees and data
+    td <- treedata.taxon(phy=tree.states$phy, data=tree.states$states,
+                         rank=rank, min.size=min.size)
+
+    ## perform model adequacy using ml
+    res <- lapply(td, function(x) modelad.ml(phy=x$phy, states=x$data, SE=tree.states$SE))
+    tmp <- do.call(rbind, res)
+
+    ## get age of taxa
+    age <- sapply(td, function(x) return(arbutus:::edge.height(x$phy)$start[Ntip(x$phy)+1]))
+
+    taxa <- names(td)
+
+    rank <- rep(rank, length(age))
+
+    trait <- rep(trait.name, length(age))
+
+    size <- sapply(td, function(x) Ntip(x$phy))
+
+    out <- cbind.data.frame(taxa, rank, trait, size, age, tmp)
+    colnames(out) <- c("taxa", "rank", "trait", "size", "age", colnames(tmp))
+    rownames(out) <- NULL
+
+    out
+}
+
+    
+
+    
 
 
+## ANALYSIS STARTS HERE
+
+## SLA
+## read in data
+sla <- get.sla.data(file.path(cd, "data", "tempo_scrubbed_CONSTRAINT_rooted.dated.tre"),
+                           file.path(cd, "data", "species_mean_sla.csv"))
 
 
+## clade analyses
+fam <- modelad.ml.clade(sla, rank="family", min.size=20, trait.name="sla")
+write.csv(fam, file=file.path(cd, "output", "results-ml-sla-family.csv"))
 
-## get family data
-fam.data <- treedata.taxon(phy=t, data=sla, rank="family", min.size = 20)
-
-## get order data
-ord.data <- treedata.taxon(phy=t, data=sla, rank="order", min.size = 20)
-
-
-## family level model adequacy
-
-res.fam <- lapply(fam.data, function(x) modelad.ml(x$phy, x$data, SE = sla.se))
-res.fam <- do.call(rbind, res.fam)
-trait <- rep("sla", nrow(res.fam))
-res.fam <- cbind.data.frame(trait, res.fam)
-write.csv(res.fam, file="sla-family-ml-res.csv")
-
-res.ord <- lapply(ord.data, function(x) modelad.ml(x$phy, x$data, SE = sla.se))
-res.ord <- do.call(rbind, res.ord)
-trait <- rep("sla", nrow(res.ord))
-res.ord <- cbind.data.frame(trait, res.ord)
-write.csv(res.ord, file="sla-order-ml-res.csv")
+ord <- modelad.ml.clade(sla, rank="order", min.size=20, trait.name="sla")
+write.csv(ord, file=file.path(cd, "output", "results-ml-sla-order.csv"))
 
 
-
-
-
-
-
+## time slice analysis
+time.slices <- c(0.7877, 50.7877, 100.7877, 150.7877, 200.7877,
+                 250.7877, 300.7877, 350.7877, 375.7877)
+ts <- lapply(time.slices, function(x) modelad.ml.slice(sla, age=x,
+                                                       sr.min=20, trait.name="sla"))
+ts.res <- do.call(rbind, ts)
+write.csv(ts.res, file=file.path(cd, "output", "results-ml-sla-timeslice.csv"))

@@ -56,7 +56,7 @@ extract.sub.trees<-function(tree,species.richness,poss.nodes){
 
 time.slice.tree<-function(time.slice,temp.tree,sr){
 edge.matrix.id<-where.to.cut(temp.tree,time.slice)
-node.label<-find.node.label(temp.tree,edge.matrix.id,TRUE)
+node.label<-find.node.label(temp.tree,edge.matrix.id,FALSE)
 extract.sub.trees(tree=temp.tree,species.richness=sr,poss.nodes=node.label)
 }
 
@@ -79,4 +79,46 @@ extract.relevant.nodes<-function(tree,sr,node.height.min,node.height.max){
   return(out.tree.list)
 }
 
+
+
+
+
+
+
+## function which pulls out data sets by clade from
+## full tree and dataset
+## assume rownames of dataset are taxon labels
+## rank can be 'family' or 'order' (will add genus later)
+## min.size is the minimum clade size
+treedata.taxon <- function(phy, data, rank="family", min.size=20){
+    
+    if (rank == "family"){
+        ## get all family nodes in tree
+        tax <- phy$node.label[grep("[A-z]+ceae", phy$node.label, perl=TRUE)]
+        ## extract subtrees
+        trees <- lapply(tax, function(x) extract.clade(phy, node=x))
+        ## use treedata to match to family level
+        td <- lapply(trees, function(x) treedata(phy=x, data=data))
+        names(td) <- tax
+        ## get number of tips
+        tips <- lapply(td, function(x) Ntip(x$phy))
+        ## extract those which meet threshold
+        dd <- td[tips >= min.size]
+    }
+    if (rank == "order"){
+        ## get all ordinal nodes in tree
+        tax <- phy$node.label[grep("[A-z]+ales", phy$node.label, perl=TRUE)]
+        ## extract subtrees
+        trees <- lapply(tax, function(x) extract.clade(phy, node=x))
+        ## use treedata to match to family level
+        td <- lapply(trees, function(x) treedata(phy=x, data=data))
+        names(td) <- tax
+        ## get number of tips
+        tips <- lapply(td, function(x) Ntip(x$phy))
+        ## extract those which meet threshold
+        dd <- td[tips >= min.size]
+    }
+
+    dd
+}
 
