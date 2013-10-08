@@ -15,7 +15,7 @@ data/leda.csv: data/leda.txt R/make-data-leda.csv.R
 
 data/kew-fetch: data/kew_apg_basal_dicots.html
 data/kew_apg_basal_dicots.html:
-	Rscript R/make-data-kew-fetch
+	Rscript R/make-data-kew-fetch.R
 data/kew.csv: data/kew_apg_basal_dicots.html
 	Rscript R/make-data-kew.csv.R
 
