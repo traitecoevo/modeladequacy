@@ -6,6 +6,8 @@
 
 require(geiger)
 require(arbutus)
+require(multicore)
+setwd("/Users/willcornwell/Documents/modeladequacy/analysis/R")
 source("extract_subtree_functions.R")
 
 
@@ -87,4 +89,19 @@ model.ad.angio.ml <- function(phy, states, SE){
     out
 }
                       
- 
+slice.and.model.select<-function(age,smaller.tree=smaller.tree,sr.min,trait.vec=l.sla){
+  tree.list<-time.slice.tree(age,smaller.tree,sr.min)
+  ms.out<-lapply(tree.list,model.ad.angio.ml, states=trait.vec, SE=0.1024202)
+  return(ms.out)
+} 
+
+
+l.sla<-log10(read.csv("../output/species_mean_sla.csv",row.names=1))
+tree<-read.tree("../data/tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
+smaller.tree<-drop.tip(tree,tree$tip.label[!tree$tip.label%in%row.names(l.sla)])
+
+#age of full tree is 400.7877 million years, and time slices measures from the root toward the tips
+#time.slices<-c(0.7877,50.7877,100.7877,150.7877,200.7877,250.7877,300.7877,350.7877,375.7877)
+time.slices<-c(0.7877,250.7877,350.7877)
+diff.out<-lapply(X=time.slices,FUN=slice.and.model.select,smaller.tree=smaller.tree,sr.min=50)
+
