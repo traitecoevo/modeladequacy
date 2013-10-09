@@ -247,3 +247,21 @@ pval.summ.stats <- function(x)
 
 
 
+
+
+## function for computing the multivariate mahalanobis distance
+## from the summary stats
+## here x is a phy.ss object
+mv.summ.stats <- function(x){
+    ## log ks dstatistic
+    if ("ks.dstat" %in% names(pval.summ.stats(x))){
+        x$summ.stats.obs[,"ks.dstat"] <- log(x$summ.stats.obs[,"ks.dstat"])
+        x$summ.stats.sim[,"ks.dstat"] <- log(x$summ.stats.sim[,"ks.dstat"])
+    }
+    obs <- as.matrix(x$summ.stats.obs)
+    sim <- as.matrix(x$summ.stats.sim)
+    cv <- cov(sim)
+
+    m <- mahalanobis(x=obs, center=colMeans(sim), cov=cv)
+    m
+}

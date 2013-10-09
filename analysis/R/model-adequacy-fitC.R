@@ -47,6 +47,15 @@ bounds.eb <- function(phy){
 
 
 
+
+## function for logging ks values
+log.ks <- function(x){
+    x$summ.stats.obs[,"ks.dstat"] <- log(x$summ.stats.obs[,"ks.dstat"])
+    x$summ.stats.sim[,"ks.dstat"] <- log(x$summ.stats.sim[,"ks.dstat"])
+    x
+}
+
+
 ## wrapper function which fits 3 fitContinuous models
 ## calculates aic weights
 ## applies model adequacy approach to best fit model
@@ -82,10 +91,18 @@ modelad.ml <- function(phy, states, SE){
 
     pval <- pval.summ.stats(pp)
 
+    ss <- log.ks(pp)
+
+    obs <- as.matrix(ss$summ.stats.obs)
+    sim <- as.matrix(ss$summ.stats.sim)
+    cv.sim <- cov(sim)
+
+    m <- mahalanobis(x=obs, center = colMeans(sim), cov=cv.sim)
+
     ## create output
     out <- c(aic.w["BM", "w"], aic.w["OU", "w"], aic.w["EB", "w"],
-             best.fit, pval)
-    tmp <- c("aic.w.bm", "aic.w.ou", "aic.w.eb", "model.used")
+             best.fit, m, pval)
+    tmp <- c("aic.w.bm", "aic.w.ou", "aic.w.eb", "model.used", "mv.modelad")
     names(out) <- c(tmp, names(pval))
 
     out
