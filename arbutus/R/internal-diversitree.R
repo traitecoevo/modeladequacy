@@ -21,38 +21,11 @@ model.pars.fit.mle <- function(fit, lik, ..., check=TRUE) {
   if (check)
     check.diversitree.lik.fit(fit, lik, error=TRUE, ...)
   model <- model.type(fit)
-  if (model %in% c("BM", "OU")) {
-    pars <- as.list(coef(fit))
-
-    ## Translate parameter names (ugly)
-    tr <- c(sigsq="s2", z0="theta")
-    idx <- match(names(pars), tr)
-    i <- !is.na(idx)
-    names(pars)[i] <- names(tr)[idx][i]
-
-    ## Reorder parameter names, and fill in missing ones.
-    if (model == "OU")
-      pars <- pars[c("alpha", "sigsq", "z0")]
-    else if (model == "BM")
-      ## At this point we don't have access to the root state.  Given
-      ## that different root treatments are possible in diversitree,
-      ## this is not actually very straightforward, either.
-      pars$z0 <- NA
-
-    ## Pull the standard error out.  Also ugly.
-    cache <- diversitree:::get.cache(lik)
-    sd <- cache$states.sd
-    if (length(unique(sd)) == 1)
-      pars$SE <- sd[[1]]
-    else
-      stop("Variable length states.sd -- cannot deal with this (yet)")
-
-    pars
-  } else {
-    stop(sprintf("Cannot extract from models of model %s", model))
-  }
+  pars <- as.list(coef(fit))
+  pars <- diversitree.to.arbutus.recast(pars, model)
+  pars <- diversitree.to.arbutus.se(pars, lik)
+  pars
 }
-
 
 ## As this will use the rescaling fxns from fitContinuous, I have
 ## called this an object of "model.fitC" class
@@ -91,36 +64,10 @@ model.pars.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
     check.diversitree.lik.fit.mcmcsamples(fit, lik, error=TRUE, ...)
   model <- model.type(fit, lik, check=FALSE) # don't check again.
 
-  if (model %in% c("BM", "OU")) {
-    pars <- as.data.frame(coef(fit))
-
-    ## Translate parameter names (ugly)
-    tr <- c(sigsq="s2", z0="theta")
-    idx <- match(names(pars), tr)
-    i <- !is.na(idx)
-    names(pars)[i] <- names(tr)[idx][i]
-
-    ## Reorder parameter names, and fill in missing ones.
-    if (model == "OU")
-      pars <- pars[c("alpha", "sigsq", "z0")]
-    else if (model == "BM")
-      ## At this point we don't have access to the root state.  Given
-      ## that different root treatments are possible in diversitree,
-      ## this is not actually very straightforward, either.
-      pars$z0 <- NA
-
-    ## Pull the standard error out.  Also ugly.
-    cache <- diversitree:::get.cache(lik)
-    sd <- cache$states.sd
-    if (length(unique(sd)) == 1)
-      pars$SE <- sd[[1]]
-    else
-      stop("Variable length states.sd -- cannot deal with this (yet)")
-
-    pars
-  } else {
-    stop(sprintf("Cannot extract from models of model %s", model))
-  }
+  pars <- as.data.frame(coef(fit))
+  pars <- diversitree.to.arbutus.recast(pars, model)
+  pars <- diversitree.to.arbutus.se(pars, lik)
+  pars
 }
 
 model.info.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
@@ -143,4 +90,39 @@ check.diversitree.lik.fit.mcmcsamples <- function(fit, lik, error=TRUE,
   if (error && !ok)
     stop("Likelihood function and fitted object do not agree")
   invisible(ok)
+}
+
+diversitree.to.arbutus.recast <- function(pars, model) {
+  if (!(model %in% c("BM", "OU", "EB")))
+    stop(sprintf("Cannot extract from models of model %s", model))
+
+  tr <- c(sigsq="s2", z0="theta")
+  idx <- match(names(pars), tr)
+  i <- !is.na(idx)
+  names(pars)[i] <- names(tr)[idx][i]
+
+  if (model == "OU") {
+    pars <- pars[c("alpha", "sigsq", "z0")]
+  } else if (model == "EB") {
+    pars <- pars[c("a", "sigsq")]
+    pars$z0 <- NA
+  } else if (model == "BM") {
+    ## At this point we don't have access to the root state.  Given
+    ## that different root treatments are possible in diversitree,
+    ## this is not actually very straightforward, either.
+    pars$z0 <- NA
+  }
+
+  pars
+}
+
+diversitree.to.arbutus.se <- function(pars, lik) {
+  ## Pull the standard error out.  Also ugly.
+  cache <- diversitree:::get.cache(lik)
+  sd <- cache$states.sd
+  if (length(unique(sd)) == 1)
+    pars$SE <- sd[[1]]
+  else
+    stop("Variable length states.sd -- cannot deal with this (yet)")
+  pars
 }

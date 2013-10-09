@@ -13,9 +13,11 @@ states <- dat$dat[,"wingL"]
 
 lik.bm <- make.bm(phy, states)
 lik.ou <- make.ou(phy, states)
+lik.eb <- make.eb(phy, states)
 
 fit.bm <- find.mle(lik.bm, .1)
 fit.ou <- find.mle(lik.ou, c(.1, .1, mean(states)))
+fit.eb <- find.mle(lik.eb, c(.1, 0))
 
 set.seed(1)
 samples.bm <- mcmc(lik.bm, coef(fit.bm), 100, w=0.1, print.every=0)
@@ -24,6 +26,10 @@ samples.ou <- mcmc(lik.ou, coef(fit.ou), 30,
                    w=c(0.1, 10, 10),
                    lower=c(0, 0, -10),
                    upper=c(Inf, 100, 10),
+                   print.every=0)
+set.seed(1)
+samples.eb <- mcmc(lik.eb, coef(fit.eb), 30,
+                   w=c(.2, 10), lower=c(0, -Inf), upper=c(Inf, 0),
                    print.every=0)
 
 ## Testing internal code; need some extra imports:
@@ -41,10 +47,12 @@ model.pars.mcmcsamples <- arbutus:::model.pars.mcmcsamples
 model.info.mcmcsamples <- arbutus:::model.info.mcmcsamples
 
 test_that("Model types are correct", {
-  model.type(fit.bm, is_identical_to("BM"))
-  model.type(fit.ou, is_identical_to("OU"))
+  expect_that(model.type(fit.bm), is_identical_to("BM"))
+  expect_that(model.type(fit.ou), is_identical_to("OU"))
+  expect_that(model.type(fit.eb), is_identical_to("EB"))
   expect_that(model.type(samples.bm, lik.bm), is_identical_to("BM"))
   expect_that(model.type(samples.ou, lik.ou), is_identical_to("OU"))
+  expect_that(model.type(samples.eb, lik.eb), is_identical_to("EB"))
 })
 
 test_that("Models return their source data", {
@@ -60,13 +68,16 @@ test_that("Giving incorrect likelihood function fails", {
   states.false <- states * 1.1
   lik.bm.false <- make.bm(phy, states.false)
   lik.ou.false <- make.ou(phy, states.false)
+  lik.eb.false <- make.eb(phy, states.false)
 
   expect_that(model.data(fit.bm, lik.bm.false), throws_error())
   expect_that(model.data(fit.ou, lik.ou.false), throws_error())
+  expect_that(model.data(fit.eb, lik.eb.false), throws_error())
 
   ## Ommitting the likelihood function is an error
   expect_that(model.data(fit.bm), throws_error())
   expect_that(model.data(fit.ou), throws_error())
+  expect_that(model.data(fit.eb), throws_error())
 
   ## But if we skip the checks, this should extract new false data:
   cmp.false <- list(phy=phy, data=states.false[phy$tip.label])
@@ -74,20 +85,26 @@ test_that("Giving incorrect likelihood function fails", {
               equals(cmp.false))
   expect_that(model.data(fit.ou, lik.ou.false, check=FALSE),
               equals(cmp.false))
+  expect_that(model.data(fit.eb, lik.eb.false, check=FALSE),
+              equals(cmp.false))
 
   ## MCMC:
   expect_that(model.data(samples.bm, lik.bm.false), throws_error())
   expect_that(model.data(samples.ou, lik.ou.false), throws_error())
+  expect_that(model.data(samples.eb, lik.eb.false), throws_error())
 
   ## Ommitting the likelihood function is an error
   expect_that(model.data(samples.bm), throws_error())
   expect_that(model.data(samples.ou), throws_error())
+  expect_that(model.data(samples.eb), throws_error())
 
   ## But if we skip the checks, this should extract new false data:
   cmp.false <- list(phy=phy, data=states.false[phy$tip.label])
   expect_that(model.data(samples.bm, lik.bm.false, check=FALSE),
               equals(cmp.false))
   expect_that(model.data(samples.ou, lik.ou.false, check=FALSE),
+              equals(cmp.false))
+  expect_that(model.data(samples.eb, lik.eb.false, check=FALSE),
               equals(cmp.false))
 })
 
@@ -96,33 +113,44 @@ test_that("Processed coefficient names are as expected", {
               is_identical_to(arbutus:::parnames.bm()))
   expect_that(names(model.pars(fit.ou, lik.ou)),
               is_identical_to(arbutus:::parnames.ou()))
+  expect_that(names(model.pars(fit.eb, lik.eb)),
+              is_identical_to(arbutus:::parnames.eb()))
 
   expect_that(model.pars(fit.bm, lik.bm)$SE, equals(0))
   expect_that(model.pars(fit.ou, lik.ou)$SE, equals(0))
+  expect_that(model.pars(fit.eb, lik.eb)$SE, equals(0))
 
   ## MCMC:
   expect_that(names(model.pars(samples.bm, lik.bm)),
               is_identical_to(arbutus:::parnames.bm()))
   expect_that(names(model.pars(samples.ou, lik.ou)),
               is_identical_to(arbutus:::parnames.ou()))
+  expect_that(names(model.pars(samples.eb, lik.eb)),
+              is_identical_to(arbutus:::parnames.eb()))
 
   expect_that(model.pars(samples.bm, lik.bm)$SE,
               equals(rep(0, nrow(samples.bm))))
   expect_that(model.pars(samples.ou, lik.ou)$SE,
               equals(rep(0, nrow(samples.ou))))
+  expect_that(model.pars(samples.eb, lik.eb)$SE,
+              equals(rep(0, nrow(samples.eb))))
 })
 
 test_that("Overall processed object looks legit", {
   obj.bm <- model.info(fit.bm, lik.bm)
   obj.ou <- model.info(fit.ou, lik.ou)
+  obj.eb <- model.info(fit.eb, lik.eb)
 
   obj.names <- c("data", "pars", "type")
   expect_that(names(obj.bm), is_identical_to(obj.names))
   expect_that(names(obj.ou), is_identical_to(obj.names))
+  expect_that(names(obj.eb), is_identical_to(obj.names))
 
   obj.bm <- model.info(samples.bm, lik.bm)
   obj.ou <- model.info(samples.ou, lik.ou)
+  obj.eb <- model.info(samples.eb, lik.eb)
 
   expect_that(names(obj.bm), is_identical_to(obj.names))
   expect_that(names(obj.ou), is_identical_to(obj.names))
+  expect_that(names(obj.eb), is_identical_to(obj.names))
 })
