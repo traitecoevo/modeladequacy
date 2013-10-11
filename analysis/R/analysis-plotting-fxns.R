@@ -116,6 +116,31 @@ modelad.size.plot(dat.sm)
 dev.off()
 
 
+## combine all the datasets together
+ml.res <- rbind(dat.sla, dat.sm)
+
+modelad.size.plot.alldata <- function(data){
+
+    trait <- unique(data[,"trait"])
+    
+    .e <- environment()
+
+    p <- ggplot(data, aes(log(size), mv.modelad), environment=.e)
+    p <- p + geom_point(aes(colour=rank, shape=trait), size=3, alpha=0.6)
+    p <- p + scale_colour_brewer(palette="Set1")
+    p <- p + theme_bw()
+    p <- p + xlab("Log number of taxa")
+    p <- p + ylab("Log mahalanobis distance")
+    p <- p + ggtitle("Model adequacy versus clade size")
+    print(p)
+}
+
+pdf("output/results-ml-alldata-taxa.pdf")
+modelad.size.plot.alldata(ml.res)
+dev.off()
+
+
+
 
 
 
