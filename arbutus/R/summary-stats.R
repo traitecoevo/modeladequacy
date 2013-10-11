@@ -169,7 +169,7 @@ ks.pic <- function(unit.tree){
     nd <- rnorm(10000, mean=0, sd=sd)
 
     ## KS test
-    ksbm <- ks.test(unit.tree$pics[,"contrasts"], nd)$statistic
+    ksbm <- suppressWarnings(ks.test(unit.tree$pics[,"contrasts"], nd)$statistic)
 
     unname(ksbm)
 }

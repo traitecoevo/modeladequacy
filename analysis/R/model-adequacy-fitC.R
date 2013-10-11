@@ -48,13 +48,6 @@ bounds.eb <- function(phy){
 
 
 
-## function for logging ks values
-log.ks <- function(x){
-    x$summ.stats.obs[,"ks.dstat"] <- log(x$summ.stats.obs[,"ks.dstat"])
-    x$summ.stats.sim[,"ks.dstat"] <- log(x$summ.stats.sim[,"ks.dstat"])
-    x
-}
-
 
 ## wrapper function which fits 3 fitContinuous models
 ## calculates aic weights
@@ -91,14 +84,8 @@ modelad.ml <- function(phy, states, SE){
 
     pval <- pval.summ.stats(pp)
 
-    ss <- log.ks(pp)
-
-    obs <- as.matrix(ss$summ.stats.obs)
-    sim <- as.matrix(ss$summ.stats.sim)
-    cv.sim <- cov(sim)
-
-    m <- mahalanobis(x=obs, center = colMeans(sim), cov=cv.sim)
-
+    m <- arbutus:::mv.summ.stats(pp)
+    
     ## create output
     out <- c(aic.w["BM", "w"], aic.w["OU", "w"], aic.w["EB", "w"],
              best.fit, m, pval)
@@ -188,9 +175,7 @@ modelad.ml.clade <- function(tree.states, rank, min.size, trait.name){
 
 ## SLA
 ## read in data
-sla <- get.sla.data(file.path(cd, "data", "tempo_scrubbed_CONSTRAINT_rooted.dated.tre"),
-                           file.path(cd, "data", "species_mean_sla.csv"))
-
+sla <- get.sla.data()
 
 ## clade analyses
 fam <- modelad.ml.clade(sla, rank="family", min.size=20, trait.name="sla")
@@ -207,3 +192,26 @@ ts <- lapply(time.slices, function(x) modelad.ml.slice(sla, age=x,
                                                        sr.min=20, trait.name="sla"))
 ts.res <- do.call(rbind, ts)
 write.csv(ts.res, file=file.path(cd, "output", "results-ml-sla-timeslice.csv"))
+
+
+
+## seedMass
+
+sm <- get.seedmass.data()
+
+## clade analyses
+fam.sm <- modelad.ml.clade(sm, rank="family", min.size=20, trait.name="seedMass")
+write.csv(fam.sm, file=file.path(cd, "output", "results-ml-seedMass-family.csv"))
+
+ord.sm <- modelad.ml.clade(sm, rank="order", min.size=20, trait.name="seedMass")
+write.csv(ord.sm, file=file.path(cd, "output", "results-ml-seedMass-order.csv"))
+
+## time slice analysis
+## something weird is happening in the time slices. add of the young clades are getting
+## pulled down with the older clades in the seedMass dataset
+## hmmm...
+time.slices <- c(0.7877, 50.7877, 100.7877, 150.7877, 200.7877)
+ts.sm <- lapply(time.slices, function(x) modelad.ml.slice(sm, age=x, sr.min=20, trait.name="seedMass"))
+
+ts.sm.res <- do.call(rbind, ts.sm)
+write.csv(ts.sm.res, file=file.path(cd, "output", "results-ml-seedMass-timeslice.csv"))

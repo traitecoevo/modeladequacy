@@ -2,15 +2,29 @@
 require(ggplot2)
 
 cd <- getwd()
-f <- file.path(cd, "output", "results-ml-sla-family.csv")
-o <- file.path(cd, "output", "results-ml-sla-order.csv")
-t <- file.path(cd, "output", "results-ml-sla-timeslice.csv")
 
-fam <- read.csv(f, header=TRUE, as.is=TRUE)
-ord <- read.csv(o, header=TRUE, as.is=TRUE)
-tim <- read.csv(t, header=TRUE, as.is=TRUE)
 
-res <- rbind(fam, ord, tim)
+## read in sla results
+sla.fam <- read.csv(file.path(cd, "output", "results-ml-sla-family.csv"),
+                header=TRUE, as.is=TRUE)
+sla.ord <- read.csv(file.path(cd, "output", "results-ml-sla-order.csv"),
+                header=TRUE, as.is=TRUE)
+sla.time <- read.csv(file.path(cd, "output", "results-ml-sla-timeslice.csv"),
+                header=TRUE, as.is=TRUE)
+
+sla <- rbind(sla.fam, sla.ord, sla.time)
+
+## read in seedMass results
+sm.fam <- read.csv(file.path(cd, "output", "results-ml-seedMass-family.csv"),
+                   header=TRUE, as.is=TRUE)
+sm.ord <- read.csv(file.path(cd, "output", "results-ml-seedMass-order.csv"),
+                   header=TRUE, as.is=TRUE)
+sm.time <- read.csv(file.path(cd, "output", "results-ml-seedMass-timeslice.csv"),
+                    header=TRUE, as.is=TRUE)
+
+sm <- rbind(sm.fam, sm.ord, sm.time)
+
+
 
 
 
@@ -75,13 +89,32 @@ modelad.size.plot <- function(data){
 
 
 ## Make plots
-dd <- clean.ml.results(res)
+
+## Clean data
+dat.sla <- clean.ml.results(sla)
+dat.sm <- clean.ml.results(sm)
 
 ## model adequacy versus age
-modelad.age.plot(dd)
+pdf(file.path(cd, "output", "results-ml-sla-adequacy-age.pdf"))
+modelad.age.plot(dat.sla)
+dev.off()
+
+
+pdf(file.path(cd, "output", "results-ml-seedMass-adequacy-age.pdf"))
+modelad.age.plot(dat.sm)
+dev.off()
+
 
 ## model adequacy versus size
-modelad.size.plot(dd)
+pdf(file.path(cd, "output", "results-ml-sla-adequacy-taxa.pdf"))
+modelad.size.plot(dat.sla)
+dev.off()
+
+
+pdf(file.path(cd, "output", "results-ml-seedMass-adequacy-taxa.pdf"))
+modelad.size.plot(dat.sm)
+dev.off()
+
 
 
 
