@@ -121,7 +121,7 @@ as.unit.tree.default <- function(x, ...) {
 #' @S3method as.unit.tree phylo
 as.unit.tree.phylo <- function(x, data, ...) {
   ## check tree and data to make sure they match
-  td <- treedata(phy=x, data=data)
+  td <- suppressWarnings(build.tree.data(phy=x, data=data))
   phy <- td$phy
   data <- td$data
 
@@ -191,3 +191,132 @@ assert.is.unit.tree <- function(x){
     if (!inherits(x, "unit.tree"))
         stop(deparse(substitute(x)), " must be a 'unit.tree'")
 }
+
+
+
+
+
+## treedata from geiger
+
+build.tree.data <- function(phy, data, sort=FALSE, warnings=TRUE) {
+	
+	dm=length(dim(data))
+	
+	if (is.vector(data)) {
+		data<-as.matrix(data)
+	}
+	if (is.factor(data)) {
+		data<-as.matrix(data)
+	}
+	if (is.array(data) & length(dim(data))==1) {
+		data<-as.matrix(data)
+	}
+	
+#	if (is.null(data.names)) {
+	if (is.null(rownames(data))) {
+		stop("names for 'data' must be supplied")
+#JME				data.names<-phy$tip.label
+#JME				if(warnings)
+#JME					cat("Warning: no tip labels, order assumed to be the same as in the tree\n")
+	} else {
+		data.names<-rownames(data)
+	}
+#	}
+	nc<-name.check(phy, data)
+	if (is.na(nc[[1]][1]) | nc[[1]][1]!="OK") {
+		if (length(nc[[1]]!=0)) {
+			phy=prune.phylo(phy, as.character(nc[[1]]))
+			if (warnings) {
+				warning(paste("The following tips were not found in 'data' and were dropped from 'phy':\n\t",
+							  paste(nc[[1]], collapse="\n\t"), sep=""))
+#JME			print(nc[[1]])
+#JME			cat("\n")
+			}
+		}
+		
+		if(length(nc[[2]]!=0)) {
+			m<-match(data.names, nc[[2]])
+			data=as.matrix(data[is.na(m),])
+			data.names<-data.names[is.na(m)]
+			if(warnings) {
+				warning(paste("The following tips were not found in 'phy' and were dropped from 'data':\n\t",
+							  paste(nc[[2]], collapse="\n\t"), sep=""))
+#JME			print(nc[[2]])
+#JME			cat("\n")
+			}
+		}
+ 	}
+	order<-match(data.names, phy$tip.label)	
+	
+	rownames(data)<-phy$tip.label[order]
+	
+	if (sort) {
+    	index <- match(phy$tip.label, rownames(data))
+   		data <- as.matrix(data[index,])
+	} 
+	if (dm==2){
+		data <- as.matrix(data)
+	}
+	
+	phy$node.label=NULL
+	
+	return(list(phy=phy, data=data))
+}
+
+
+
+
+## geiger and diversitree's drop.tip function
+prune.phylo <- function(phy, tip, trim.internal = TRUE, subtree = FALSE, root.edge = 0, rooted = is.rooted(phy)){
+  
+  
+  if(missing(tip)) return(phy)
+  if (is.character(tip)) tip <- which(phy$tip.label %in% tip)
+  if(!length(tip)) return(phy)
+    
+  phy=as.phylo(phy)
+  Ntip <- length(phy$tip.label)
+  tip=tip[tip%in%c(1:Ntip)]
+  if(!length(tip)) return(phy)
+
+
+  phy <- reorder(phy)
+  NEWROOT <- ROOT <- Ntip + 1
+  Nnode <- phy$Nnode
+  Nedge <- nrow(phy$edge)
+
+  wbl <- !is.null(phy$edge.length)
+  edge1 <- phy$edge[, 1]
+  edge2 <- phy$edge[, 2]
+  keep <- !(edge2 %in% tip)  
+
+  ints <- edge2 > Ntip
+  repeat {
+    sel <- !(edge2 %in% edge1[keep]) & ints & keep
+    if (!sum(sel)) 
+      break
+    keep[sel] <- FALSE
+  }
+
+  phy2 <- phy
+  phy2$edge <- phy2$edge[keep, ]
+  if (wbl) 
+    phy2$edge.length <- phy2$edge.length[keep]
+  TERMS <- !(phy2$edge[, 2] %in% phy2$edge[, 1])
+  oldNo.ofNewTips <- phy2$edge[TERMS, 2]
+  n <- length(oldNo.ofNewTips)
+  idx.old <- phy2$edge[TERMS, 2]
+  phy2$edge[TERMS, 2] <- rank(phy2$edge[TERMS, 2])
+  phy2$tip.label <- phy2$tip.label[-tip]
+  if (!is.null(phy2$node.label))
+    phy2$node.label <-
+      phy2$node.label[sort(unique(phy2$edge[, 1])) - Ntip]
+  phy2$Nnode <- nrow(phy2$edge) - n + 1L
+  i <- phy2$edge > n
+  phy2$edge[i] <- match(phy2$edge[i], sort(unique(phy2$edge[i]))) + n
+  storage.mode(phy2$edge) <- "integer"
+  collapse.singles(phy2)
+}
+
+
+
