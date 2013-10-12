@@ -51,21 +51,24 @@ model.pars.gls <- function(fit, ...){
     ## if model is not BM, need to rescale the tree first, before computing sigsq
     if (model == "OU"){
         alpha <- as.numeric(fit$modelStruct$corStruct)
-        rescalephy <- rescale(phy, model="OU", alpha=alpha, sigsq=1)
+        tmp <- list(sigsq=1, alpha=alpha, SE=0)
+        rescalephy <- model.phylo.ou(phy, pars=tmp)
         sigsq <- (rr %*% solve(vcv(rescalephy)) %*% rr) / (Ntip(phy)-1) 
         pars <- list(alpha=alpha, sigsq=sigsq, z0=NA, SE=0)
     }
 
     if (model == "EB"){
         a <- as.numeric(fit$modelStruct$corStruct)
-        rescalephy <- rescale(phy, model="EB", a=a, sigsq=1)
+        tmp <- list(sigsq=1, a=a, SE=0)
+        rescalephy <- model.phylo.eb(phy, pars=tmp)
         sigsq <- (rr %*% solve(vcv(rescalephy)) %*% rr) / (Ntip(phy)-1) 
         pars <- list(a=a, sigsq=sigsq, z0=NA, SE=0)
     }
 
     if (model == "lambda"){
         lambda <- as.numeric(fit$modelStruct$corStruct)
-        rescalephy <- rescale(phy, model="lambda", lambda=lambda, sigsq=1)
+        tmp <- list(sigsq=1, lambda=lambda, SE=0)
+        rescalephy <- model.phylo.lambda(phy, pars=tmp)
         sigsq <- (rr %*% solve(vcv(rescalephy)) %*% rr) / (Ntip(phy)-1) 
         pars <- list(lambda=lambda, sigsq=sigsq, z0=NA, SE=0)
     }

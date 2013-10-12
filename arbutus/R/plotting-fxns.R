@@ -31,11 +31,12 @@
 #'
 #' @examples
 #' ## finch data
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' data <- td$data[,"wingL"]
+#' data(finch)
+#' phy <- finch$phy
+#' data <- finch$data[,"wingL"]
 #'
+#' \dontrun{
+#' require(geiger)
 #' ## fit Brownian motion model
 #' ## using geiger's fitContinuous function
 #' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
@@ -43,6 +44,7 @@
 #'
 #' ## plot contrasts versus their variances
 #' contrast.var.plot(fit.bm)
+#' }
 #' 
 contrast.var.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
@@ -111,11 +113,12 @@ contrast.var.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #'
 #' @examples
 #' ## finch data
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' data <- td$data[,"wingL"]
+#' data(finch)
+#' phy <- finch$phy
+#' data <- finch$data[,"wingL"]
 #'
+#' \dontrun{
+#' require(geiger)
 #' ## fit Brownian motion model
 #' ## using geiger's fitContinuous function
 #' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
@@ -123,6 +126,7 @@ contrast.var.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #'
 #' ## plot contrasts versus their variances
 #' contrast.asr.plot(fit.bm)
+#' }
 #' 
 contrast.asr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
@@ -192,11 +196,12 @@ contrast.asr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #'
 #' @examples
 #' ## finch data
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' data <- td$data[,"wingL"]
+#' data(finch)
+#' phy <- finch$phy
+#' data <- finch$data[,"wingL"]
 #'
+#' \dontrun{
+#' require(geiger)
 #' ## fit Brownian motion model
 #' ## using geiger's fitContinuous function
 #' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
@@ -204,6 +209,7 @@ contrast.asr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #'
 #' ## plot contrasts versus their variances
 #' contrast.nh.plot(fit.bm)
+#' }
 #' 
 contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 
@@ -245,8 +251,10 @@ contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #' @param x a 'phy.ss' object inherited from \code{\link{phy.model.check}}
 #' (or, alternatively \code{\link{compare.summ.stats}})
 #'
-#' @param colour the colours used in the plot. The first is for the observed summary
+#' @param colour a vector of two colours to be used in the plot; the first is for the observed summary
 #' statistics and the second for the simulated summary statistics.
+#' 
+#' @param ... additional arguments to be passed to \code{plot}. This is currently non-functional. 
 #'
 #' @details This function is designed to give researchers a quick visual inspection of
 #' model adequacy by plotting the simulated distribution of summary statistics along
@@ -260,9 +268,7 @@ contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #' and \code{\link{compare.summ.stats}} and can be indexed by \code{x$summ.stats.obs} and
 #' \code{x$summ.stats.sim}.
 #'
-#' This plotting function using the \code{\link{ggplot2::ggplot2}} library in addition to
-#' the \code{\link{grid::grid}} and \code{\link{gridExtra::gridExtra}} libraries for arranging
-#' the plots.
+#' This plotting function using the \code{\link{ggplot2::ggplot2}} library.
 #'
 #' @method plot phy.ss
 #' @S3method plot phy.ss
@@ -270,17 +276,21 @@ contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #' @seealso \code{\link{phy.model.check}}, \code{\link{compare.summ.stats}}
 #'
 #' @examples
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' dat <- td$data[,"wingL"]
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
 #' 
 #' p <- phy.model.check(phy, data=dat, nsim=20)
 #'
 #' plot(p)
 #' 
-plot.phy.ss <- function(x, colour=c("darkblue", "dodgerblue4")){
+plot.phy.ss <- function(x, colour=NULL, ...){
 
+    ## check to see if colours were supplied
+    ## assigned defaults if not
+    if (is.null(colour))
+        colour <- c("darkblue", "dodgerblue4")
+    
     ## require grid and gridExtra
     require(grid)
     require(gridExtra)

@@ -7,6 +7,9 @@
 \arguments{
   \item{x}{an object inherited from
   \code{\link{model.info}}}
+
+  \item{...}{additional arguments to be passed to
+  \code{make.model.phylo}}
 }
 \value{
   a 'phylo' object that can be used to from a 'unit.tree'
@@ -31,15 +34,16 @@
 }
 \examples{
 ## finch data
-data(geospiza)
-td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-phy <- td$phy
-data <- td$data[,"wingL"]
+data(finch)
+phy <- finch$phy
+data <- finch$data[,"wingL"]
 
 
 ## using just the given phylogeny
-unit.tree.phy <- as.unit.tree(phy, data)
+unit.tree.phy <- as.unit.tree(phy, data=data)
 
+\dontrun{
+require(geiger)
 ## fit Brownian motion model
 ## using geiger's fitContinuous function
 fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
@@ -50,6 +54,7 @@ info.bm <- arbutus:::model.info(fit.bm)
 
 ## rescale phylogeny based on model info
 make.model.phylo(info.bm)
+}
 }
 \seealso{
   \code{\link{as.unit.tree}}

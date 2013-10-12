@@ -26,11 +26,12 @@
 #'
 #' @examples
 #' ## finch data
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' data <- td$data[,"wingL"]
+#' data(finch)
+#' phy <- finch$phy
+#' data <- finch$data[,"wingL"]
 #'
+#' \dontrun{
+#' require(geiger)
 #' ## fit Brownian motion model
 #' ## using geiger's fitContinuous function
 #' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
@@ -49,6 +50,7 @@
 #'
 #' ## check adequacy of OU model
 #' modelad.ou <- phy.model.check(fit.ou, nsim=10)
+#' }
 #' 
 phy.model.check <- function(x, nsim=1000, stats=NULL, ...){
 

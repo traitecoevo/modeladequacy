@@ -34,11 +34,10 @@
 #'
 #'
 #' @examples
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' dat <- td$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, dat)
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, data=dat)
 #'
 #' ## use default statistics
 #' summ.stat <- summ.stats(unit.tree, stats=NULL)
@@ -99,11 +98,10 @@ summ.stats <- function(unit.tree, stats=NULL){
 #'
 #'
 #' @examples
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' dat <- td$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, dat)
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, data=dat)
 #'
 #' ## Estimate sigsq from unit.tree
 #'
@@ -151,11 +149,10 @@ sigsq.reml <- function(unit.tree){
 #'
 #'
 #' @examples
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' dat <- td$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, dat)
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, data=dat)
 #'
 #' ## KS-D statistic
 #' ks.pic(unit.tree)
@@ -200,11 +197,10 @@ ks.pic <- function(unit.tree){
 #'
 #'
 #' @examples
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' dat <- td$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, dat)
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, data=dat)
 #'
 #' ## estimate variance of contrasts
 #' var.pic(unit.tree)
@@ -247,11 +243,10 @@ var.pic <- function(unit.tree) {
 #'
 #'
 #' @examples
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' dat <- td$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, dat)
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, data=dat)
 #'
 #' ## estimate slope
 #' slope.pic.var(unit.tree)
@@ -305,11 +300,10 @@ slope.pic.var <- function(unit.tree){
 #'
 #'
 #' @examples
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' dat <- td$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, dat)
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, data=dat)
 #'
 #' ## estimate slope
 #' slope.pic.nh(unit.tree)
@@ -371,11 +365,10 @@ slope.pic.nh <- function(unit.tree){
 #' @export slope.pic.asr
 #'
 #' @examples
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' dat <- td$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, dat)
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, data=dat)
 #'
 #' ## estimate slope
 #' slope.pic.asr(unit.tree)

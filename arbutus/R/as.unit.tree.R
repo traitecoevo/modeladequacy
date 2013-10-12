@@ -17,13 +17,13 @@
 #' the following object types have been implemented:
 #' \itemize{
 #'  \item a 'gfit' object returned from fitting a model of continuous character evolution using
-#'   \code{\link{geiger::fitContinuous}} in the 'geiger' package.
+#'   \code{fitContinuous} in the 'geiger' package.
 #'  \item a 'fit.mle' object returned from fitting a model of continuous character evolution
-#'   using \code{\link{diversitree::find.mle}} in the 'diversitree' package. As the 'fit.mle' object
+#'   using \code{find.mle} in the 'diversitree' package. As the 'fit.mle' object
 #'   does not include all of the information required for creating a 'unit.tree', a second argument
 #'   \code{lik} needs to be supplied, providing the likelihood function used in 'find.mle'.
 #'  \item a 'gls' object returned from fitting a phylogenetic generalized least squared model
-#'   of character correlation using \code{\link{nlme::gls}} in the 'nlme' package.
+#'   of character correlation using \code{gls} in the 'nlme' package.
 #'  \item a 'phylo' object. If a 'phylo' object is supplied, the tree is assumed to have been
 #'   rescaled previously. A second argument \code{data} must also be provided included the trait
 #'   data as a named vector with names equal to the tip.labels of the phylogeny.
@@ -48,15 +48,16 @@
 #'
 #' @examples
 #' ## finch data
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' data <- td$data[,"wingL"]
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
 #'
 #'
 #' ## using just the given phylogeny
-#' unit.tree.phy <- as.unit.tree(phy, data)
+#' unit.tree.phy <- as.unit.tree(phy, data=dat)
 #'
+#' \dontrun{
+#' require(geiger)
 #' ## fit Brownian motion model
 #' ## using geiger's fitContinuous function
 #' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
@@ -67,11 +68,10 @@
 #' unit.tree.geiger <- as.unit.tree(fit.bm)
 #' unit.tree.geiger
 #'
-#'
+#' require(diversitree)
 #' ## fit Brownian motion model
 #' ## using diversitree's find.mle function
 #' 
-#' ## library(diversitree)
 #' ## bmlik <- make.bm(phy, data)
 #' ## fit.bm.dt <- find.mle(bmlik, 0.1)
 #'
@@ -79,9 +79,9 @@
 #' ## in 'as.unit.tree()'
 #' ## unit.tree.dt <- as.unit.tree(fit.bm.dt)
 #'
-#'
+#' require(nlme)
 #' ## Use pgls to look for a correlation between two traits
-#' ## library(nlme)
+#'
 #' ## t1 <- data
 #' ## t2 <- td$data[,"tarsusL"]
 #' ## dd <- cbind.data.frame(t1, t2)
@@ -92,6 +92,8 @@
 #' ## this creates a 'gls' object which can be used
 #' ## in 'as.unit.tree()'
 #' ## unit.tree.gls <- as.unit.tree(fit.gls)
+#'
+#' }
 #' 
 as.unit.tree <- function(x, ...)
     UseMethod("as.unit.tree")
@@ -166,14 +168,13 @@ as.unit.tree.multiPhylo <- function(x, data, ...) {
 #'
 #' @examples
 #' ## finch data
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' data <- td$data[,"wingL"]
+#' data(finch)
+#' phy <- finch$phy
+#' data <- finch$data[,"wingL"]
 #'
 #'
 #' ## using just the given phylogeny
-#' unit.tree.phy <- as.unit.tree(phy, data)
+#' unit.tree.phy <- as.unit.tree(phy, data=data)
 #'
 #' is.unit.tree(unit.tree.phy)
 #' 
@@ -222,7 +223,7 @@ build.tree.data <- function(phy, data, sort=FALSE, warnings=TRUE) {
 		data.names<-rownames(data)
 	}
 #	}
-	nc<-name.check(phy, data)
+	nc<-check.names.phylo(phy, data)
 	if (is.na(nc[[1]][1]) | nc[[1]][1]!="OK") {
 		if (length(nc[[1]]!=0)) {
 			phy=prune.phylo(phy, as.character(nc[[1]]))
@@ -319,4 +320,28 @@ prune.phylo <- function(phy, tip, trim.internal = TRUE, subtree = FALSE, root.ed
 }
 
 
+
+
+check.names.phylo <- function(phy, data, data.names = NULL) {
+	
+	if (is.null(data.names)) {
+		if (is.vector(data)) {
+			data.names <- names(data);
+		} else {
+			data.names <- rownames(data);
+		}
+	}
+	t <- phy$tip.label;
+	r1 <- t[is.na(match(t, data.names))];
+	r2 <- data.names[is.na(match(data.names, t))];
+	
+	r <- list(sort(r1), sort(r2));
+	
+	names(r) <- cbind("tree_not_data", "data_not_tree")
+	if (length(r1) == 0 && length(r2) == 0) {
+		return("OK");
+	} else {
+		return(r);
+	}
+}
 

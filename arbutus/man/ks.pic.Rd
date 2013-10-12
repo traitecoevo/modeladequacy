@@ -37,11 +37,10 @@
   statistic in the function \code{\link{summ.stats}}.
 }
 \examples{
-data(geospiza)
-td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-phy <- td$phy
-dat <- td$data[,"wingL"]
-unit.tree <- as.unit.tree(phy, dat)
+data(finch)
+phy <- finch$phy
+dat <- finch$data[,"wingL"]
+unit.tree <- as.unit.tree(phy, data=dat)
 
 ## KS-D statistic
 ks.pic(unit.tree)

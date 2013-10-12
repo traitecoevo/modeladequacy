@@ -38,8 +38,30 @@
 #' Naturalist 125:1-15.
 #' 
 #' @docType package
-#' @import geiger ggplot2 grid gridExtra
+#' @import ape ggplot2
 #' @name arbutus
 #' @aliases arbutus-arbutus arbutus
 #'
+NULL
+
+
+
+
+
+
+
+#' Galapagos finch dataset
+#'
+#' A dataset including a phylogeny of 13 galapagos finches with
+#' trait data matched to the phylogeny.
+#'
+#' \itemize{
+#'  \item phy. the finch phylogeny
+#'  \item data. measured traits for each species in the phylogeny
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @format a list with two elements
+#' @name finch
 NULL

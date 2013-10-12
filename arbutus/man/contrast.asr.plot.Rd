@@ -42,11 +42,12 @@
 }
 \examples{
 ## finch data
-data(geospiza)
-td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-phy <- td$phy
-data <- td$data[,"wingL"]
+data(finch)
+phy <- finch$phy
+data <- finch$data[,"wingL"]
 
+\dontrun{
+require(geiger)
 ## fit Brownian motion model
 ## using geiger's fitContinuous function
 fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
@@ -54,6 +55,7 @@ fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
 
 ## plot contrasts versus their variances
 contrast.asr.plot(fit.bm)
+}
 }
 \seealso{
   \code{\link{as.unit.tree}}, \code{\link{summ.stats}},

@@ -2,17 +2,19 @@
 \alias{plot.phy.ss}
 \title{Plot summary statistics for model adequacy}
 \usage{
-  \method{plot}{phy.ss} (x,
-    colour = c("darkblue", "dodgerblue4"))
+  \method{plot}{phy.ss} (x, colour = NULL, ...)
 }
 \arguments{
   \item{x}{a 'phy.ss' object inherited from
   \code{\link{phy.model.check}} (or, alternatively
   \code{\link{compare.summ.stats}})}
 
-  \item{colour}{the colours used in the plot. The first is
-  for the observed summary statistics and the second for
-  the simulated summary statistics.}
+  \item{colour}{a vector of two colours to be used in the
+  plot; the first is for the observed summary statistics
+  and the second for the simulated summary statistics.}
+
+  \item{...}{additional arguments to be passed to
+  \code{plot}. This is currently non-functional.}
 }
 \description{
   Plots the distribution of simulated summary statistics
@@ -41,16 +43,12 @@
   \code{x$summ.stats.obs} and \code{x$summ.stats.sim}.
 
   This plotting function using the
-  \code{\link{ggplot2::ggplot2}} library in addition to the
-  \code{\link{grid::grid}} and
-  \code{\link{gridExtra::gridExtra}} libraries for
-  arranging the plots.
+  \code{\link{ggplot2::ggplot2}} library.
 }
 \examples{
-data(geospiza)
-td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-phy <- td$phy
-dat <- td$data[,"wingL"]
+data(finch)
+phy <- finch$phy
+dat <- finch$data[,"wingL"]
 
 p <- phy.model.check(phy, data=dat, nsim=20)
 

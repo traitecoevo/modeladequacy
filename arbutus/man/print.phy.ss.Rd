@@ -2,10 +2,12 @@
 \alias{print.phy.ss}
 \title{Print summary statistics}
 \usage{
-  \method{print}{phy.ss} (x)
+  \method{print}{phy.ss} (x, ...)
 }
 \arguments{
   \item{x}{a 'phy.ss' object}
+
+  \item{...}{additional arguments to be passed to print}
 }
 \value{
   prints p.values to screen
@@ -15,16 +17,13 @@
   \code{\link{compare.summ.stats}}
 }
 \examples{
-data(geospiza)
-td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-phy <- td$phy
-dat <- td$data[,"wingL"]
-
-## fit BM model using fitContinuous
-f <- fitContinuous(phy, dat, model="BM", control=list(niter=10))
+data(finch)
+phy <- finch$phy
+dat <- finch$data[,"wingL"]
 
 ## use phy.model.check to assess model adequacy
-p <- phy.model.check(f, nsim=10)
+## pretend as if tree has already been rescaled
+p <- phy.model.check(phy, data=dat, nsim=10)
 
 ## print output
 p
