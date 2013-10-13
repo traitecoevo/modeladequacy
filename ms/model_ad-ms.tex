@@ -1,14 +1,6 @@
-\documentclass[12pt]{article}
-
-
-%\usepackage{mathpazo}
-%\usepackage{ms}
-
-\usepackage{amsmath}
-\usepackage{lmodern}
-\usepackage[T1]{fontenc}
-
-
+\documentclass[a4paper,12pt]{article}
+\usepackage[osf]{mathpazo}
+\usepackage{ms}
 \usepackage{natbib}
 \usepackage{lineno}
 \usepackage{graphicx}
@@ -16,53 +8,46 @@
 \modulolinenumbers[5]
 \linenumbers
 
-%% text layout
-\topmargin 0.0cm
-\oddsidemargin 0.5cm
-\evensidemargin 0.5cm
-\textwidth 16cm
-\textheight 21cm
-
-\usepackage{setspace}
-
+\pdfminorversion=3
 
 \makeatletter
 \renewcommand{\@biblabel}[1]{\quad#1.}
 \makeatother
 
-\title{The adequacy of trait models and the rise of angiosperm functional diversity}
+\title{On the adequacy of phylogenetic trait models}
 \author{
 Matthew W. Pennell, Richard G. FitzJohn,\\
 William K. Cornwell \& Luke J. Harmon
 }
 
 \date{}
-% \affiliation{
-% \begin{center}
-% \textit{
-% $^{1}$ Department of Biological Sciences \& Institute for Bioinformatics and Evolutionary Studies, University of Idaho, Moscow, ID 83844, U.S.A.\\[0.5cm]
-% $^{2}$ Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia\\[0.5cm]
-% $^{3}$ School of Biological, Earth and Environmental Sciences, University of New South Wales, Sydney, NSW 2052, Australia\\[0.5cm]
-% Email for correspondence: mwpennell@gmail.com}
-% \end{center}
+\affiliation{
+ $^{1}$ Department of Biological Sciences \& Institute for Bioinformatics and Evolutionary Studies, University of Idaho, Moscow, ID 83844, U.S.A.\\
+ $^{2}$ Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia\\
+ $^{3}$ School of Biological, Earth and Environmental Sciences, University of New South Wales, Sydney, NSW 2052, Australia\\
+ Email for correspondence: \texttt{mwpennell@gmail.com}
+}
 
-%\runninghead{are macroevolutionary models adequate?}
+\runninghead{are macroevolutionary models adequate?}
 
 
 \begin{document}
-\maketitle
+
+\mstitlepage
 \parindent=1.5em
 \addtolength{\parskip}{.3em}
 \vfill
 
 
 \begin{abstract}
+\singlespacing
 Investigating evolutionary hypotheses about the tempo and mode of evolution using interspecific data requires a statistical model that describes the mode of trait evolution through time. A wide variety of such models have been proposed, all of which make necessary simplifying assumptions.  Testing the fit of these models to data is now a routine component of comparative studies. However, an often over--looked statistical question is whether commonly-used models capture the relevant variation in traits. A model may be the best fit  relative to a set of candidate models (using some model selection criterion) but it may still be a poor fit in an absolute sense. However, we lack methods to assess fit in an absolute sense.  Here we develop a general framework for assessing the fit (or, adequacy) of quantitative trait models, based on Felsenstein's Independent Contrasts method. Our framework can be applied to arbitrarily complex trait models for which the tip values are assumed to multivariate normally distributed. We then use this approach to assess whether simple models are reasonable descriptors of the macroevolutionary dynamics of three important angiosperm functional traits: seed size, specific leaf area, and nitrogen content. We analyzed 1xx comparative datasets across the angiosperm phylogeny and demonstrate that there is tremendous variability in the adequacy of simple models across groups, traits and time--scales. We argue that the assessment of model adequacy should be included in all comparative studies and that the approach we present can be generally applied to this end.
 \end{abstract}
 
 \vfill
 
 \newpage
+\doublespacing
 
 
 \begin{quotation}
