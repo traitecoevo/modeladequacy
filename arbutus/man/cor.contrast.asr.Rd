@@ -1,8 +1,8 @@
-\name{slope.pic.asr}
-\alias{slope.pic.asr}
+\name{cor.contrast.asr}
+\alias{cor.contrast.asr}
 \title{Relationship between contrasts and inferred ancestral state}
 \usage{
-  slope.pic.asr(unit.tree)
+  cor.contrast.asr(unit.tree)
 }
 \arguments{
   \item{unit.tree}{a 'unit.tree' object}
@@ -23,14 +23,15 @@
   the model is adequately capturing variation relative to
   ancestral state. The ancestral states are calculated
   using the contrast based approach and are not technically
-  ancestral state estimates (see Felsenstein 1985); this is
-  conceptually and statistically different from the maximum
-  likelihood approach to reconstructing ancestral states.
-  The contrast based approach is used here as there is a
-  clear expectation of the relationship between the the
-  contrasts and trait value. If the generating model is
-  correct, we expect there not to be a relationship between
-  the contrasts and their node height (i.e. slope ~ 0).
+  ancestral state estimates (see Felsenstein 1985 --
+  American Naturalist); this is conceptually and
+  statistically different from the maximum likelihood
+  approach to reconstructing ancestral states. The contrast
+  based approach is used here as there is a clear
+  expectation of the relationship between the the contrasts
+  and trait value. If the generating model is correct, we
+  expect there not to be a relationship between the
+  contrasts and their node height (i.e. slope ~ 0).
 
   The slope of the contrasts and their variances is
   included as a default summary statistic in the function
@@ -43,10 +44,10 @@ dat <- finch$data[,"wingL"]
 unit.tree <- as.unit.tree(phy, data=dat)
 
 ## estimate slope
-slope.pic.asr(unit.tree)
+cor.contrast.asr(unit.tree)
 }
 \seealso{
   \code{\link{summ.stats}}, \code{\link{def.summ.stats}},
-  \code{\link{stats::lm}}, \code{\link{ape::pic}}
+  \code{\link[stats]{lm}}, \code{\link[ape]{ace}}
 }
 

@@ -76,6 +76,8 @@ model.pars.gls <- function(fit, ...){
     pars
 }
 
+#' @method model.info gls
+#' @S3method model.info gls
 model.info.gls <- function(fit, ...){
     m <- list(data=model.data(fit),
          pars=model.pars(fit),

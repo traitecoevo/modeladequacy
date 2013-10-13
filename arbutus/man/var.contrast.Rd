@@ -1,8 +1,8 @@
-\name{var.pic}
-\alias{var.pic}
+\name{var.contrast}
+\alias{var.contrast}
 \title{Variance of contrasts}
 \usage{
-  var.pic(unit.tree)
+  var.contrast(unit.tree)
 }
 \arguments{
   \item{unit.tree}{a 'unit.tree' object}
@@ -31,7 +31,7 @@ dat <- finch$data[,"wingL"]
 unit.tree <- as.unit.tree(phy, data=dat)
 
 ## estimate variance of contrasts
-var.pic(unit.tree)
+var.contrast(unit.tree)
 }
 \seealso{
   \code{\link{summ.stats}}, \code{\link{def.summ.stats}}

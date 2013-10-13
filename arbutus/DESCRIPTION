@@ -15,7 +15,8 @@ Depends:
     ggplot2,
 Suggests:
     grid,
-    gridExtra
+    gridExtra,
+    diversitree
 Collate:
     'as.unit.tree.R'
     'compare.summStat.R'

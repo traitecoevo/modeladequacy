@@ -50,9 +50,8 @@
 }
 \references{
   Matthew W. Pennell, Richard G. FitzJohn, William K.
-  Cornwell and Luke J. Harmon (in prep.). The adequacy of
-  trait models and the rise of angiosperm functional
-  diversity.
+  Cornwell and Luke J. Harmon (in prep.).  On the adequacy
+  of phylogenetic trait models.
 
   Joseph Felsenstein (1985). Phylogenies and the
   comparative method. The American Naturalist 125:1-15.

@@ -106,6 +106,6 @@ require(nlme)
 }
 }
 \seealso{
-  \code{\link{ape::pic}}, \code{\link{phy.model.check}}
+  \code{\link[ape]{pic}}, \code{\link{phy.model.check}}
 }
 

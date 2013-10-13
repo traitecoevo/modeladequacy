@@ -1,8 +1,8 @@
-\name{sigsq.reml}
-\alias{sigsq.reml}
+\name{sigsq.est}
+\alias{sigsq.est}
 \title{REML estimate of BM parameter}
 \usage{
-  sigsq.reml(unit.tree)
+  sigsq.est(unit.tree)
 }
 \arguments{
   \item{unit.tree}{a 'unit.tree' object}
@@ -34,7 +34,7 @@ unit.tree <- as.unit.tree(phy, data=dat)
 
 ## Estimate sigsq from unit.tree
 
-sigsq.reml(unit.tree)
+sigsq.est(unit.tree)
 }
 \seealso{
   \code{\link{summ.stats}}, \code{\link{def.summ.stats}}

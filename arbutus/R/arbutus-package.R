@@ -32,7 +32,7 @@
 #' architecture is flexible such that additional packages can be incorporated relatively easily.
 #'
 #' @references Matthew W. Pennell, Richard G. FitzJohn, William K. Cornwell and Luke J. Harmon
-#' (in prep.). The adequacy of trait models and the rise of angiosperm functional diversity.
+#' (in prep.).  On the adequacy of phylogenetic trait models.
 #'
 #' @references Joseph Felsenstein (1985). Phylogenies and the comparative method. The American
 #' Naturalist 125:1-15.

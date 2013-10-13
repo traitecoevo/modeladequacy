@@ -5,8 +5,8 @@
   make.model.phylo(x, ...)
 }
 \arguments{
-  \item{x}{an object inherited from
-  \code{\link{model.info}}}
+  \item{x}{an object inherited from a \code{model.info}
+  function}
 
   \item{...}{additional arguments to be passed to
   \code{make.model.phylo}}
@@ -38,10 +38,6 @@ data(finch)
 phy <- finch$phy
 data <- finch$data[,"wingL"]
 
-
-## using just the given phylogeny
-unit.tree.phy <- as.unit.tree(phy, data=data)
-
 \dontrun{
 require(geiger)
 ## fit Brownian motion model
@@ -50,7 +46,7 @@ fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
                                  control=list(niter=10))
 
 ## get model info using internal arbutus function
-info.bm <- arbutus:::model.info(fit.bm)
+info.bm <- model.info(fit.bm)
 
 ## rescale phylogeny based on model info
 make.model.phylo(info.bm)

@@ -14,7 +14,7 @@
   and the second for the simulated summary statistics.}
 
   \item{...}{additional arguments to be passed to
-  \code{plot}. This is currently non-functional.}
+  \code{\link{plot}}. This is currently non-functional.}
 }
 \description{
   Plots the distribution of simulated summary statistics
@@ -43,7 +43,7 @@
   \code{x$summ.stats.obs} and \code{x$summ.stats.sim}.
 
   This plotting function using the
-  \code{\link{ggplot2::ggplot2}} library.
+  \code{\link[ggplot2]{ggplot2}} library.
 }
 \examples{
 data(finch)

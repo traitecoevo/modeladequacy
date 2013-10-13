@@ -1,8 +1,8 @@
-\name{ks.pic}
-\alias{ks.pic}
+\name{ks.contrast}
+\alias{ks.contrast}
 \title{Evaluate normality of contrasts}
 \usage{
-  ks.pic(unit.tree)
+  ks.contrast(unit.tree)
 }
 \arguments{
   \item{unit.tree}{a unit.tree object}
@@ -24,7 +24,7 @@
   to be equal to 1. The empirical estimate is used rather
   than assume a variance of 1 to reduce the overlap between
   this summary statistic and the REML estimate of
-  \eqn{sigma^2} (see \code{\link{reml.sigsq}}). The
+  \eqn{sigma^2} (see \code{\link{sigsq.est}}). The
   Kolmogorov-Smirnov (KS) test is a non-parameteric test
   which computes the maximum distance \eqn{D} between two
   cumulative distribution functions. Running the test
@@ -43,10 +43,10 @@ dat <- finch$data[,"wingL"]
 unit.tree <- as.unit.tree(phy, data=dat)
 
 ## KS-D statistic
-ks.pic(unit.tree)
+ks.contrast(unit.tree)
 }
 \seealso{
   \code{\link{summ.stats}}, \code{\link{def.summ.stats}},
-  \code{\link{stats::ks.test}}
+  \code{\link[stats]{ks.test}}
 }
 

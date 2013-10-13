@@ -10,8 +10,6 @@
 ## warning when things break.  Later on, we can look at rolling some
 ## interface into the different packages if people will let us.
 
-## Note that we depend on version 2.0 of geiger, and previous versions
-## *will not work*, here.
 
 model.type.gfit <- function(fit, ...) {
   ret <- attr(fit$lik, "model")
@@ -40,6 +38,8 @@ model.pars.gfit <- function(fit, ...) {
   pars[c(setdiff(names(pars), "SE"), "SE")]
 }
 
+#' @method model.info gfit
+#' @S3method model.info gfit
 model.info.gfit <- function(fit, ...) {
   m <- list(data=model.data(fit),
             pars=model.pars(fit),

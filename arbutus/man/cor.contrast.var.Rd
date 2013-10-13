@@ -1,8 +1,8 @@
-\name{slope.pic.var}
-\alias{slope.pic.var}
+\name{cor.contrast.var}
+\alias{cor.contrast.var}
 \title{Relationship between contrasts and their variances}
 \usage{
-  slope.pic.var(unit.tree)
+  cor.contrast.var(unit.tree)
 }
 \arguments{
   \item{unit.tree}{a unit.tree object}
@@ -34,10 +34,10 @@ dat <- finch$data[,"wingL"]
 unit.tree <- as.unit.tree(phy, data=dat)
 
 ## estimate slope
-slope.pic.var(unit.tree)
+cor.contrast.var(unit.tree)
 }
 \seealso{
   \code{\link{summ.stats}}, \code{\link{def.summ.stats}},
-  \code{\link{stats::lm}}
+  \code{\link[stats]{lm}}
 }
 
