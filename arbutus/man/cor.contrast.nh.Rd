@@ -1,8 +1,8 @@
-\name{slope.pic.nh}
-\alias{slope.pic.nh}
+\name{cor.contrast.nh}
+\alias{cor.contrast.nh}
 \title{Relationship between contrasts and node height}
 \usage{
-  slope.pic.nh(unit.tree)
+  cor.contrast.nh(unit.tree)
 }
 \arguments{
   \item{unit.tree}{a 'unit.tree' object}
@@ -30,17 +30,16 @@
   \code{\link{summ.stats}}
 }
 \examples{
-data(geospiza)
-td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-phy <- td$phy
-dat <- td$data[,"wingL"]
-unit.tree <- as.unit.tree(phy, dat)
+data(finch)
+phy <- finch$phy
+dat <- finch$data[,"wingL"]
+unit.tree <- as.unit.tree(phy, data=dat)
 
 ## estimate slope
-slope.pic.nh(unit.tree)
+cor.contrast.nh(unit.tree)
 }
 \seealso{
   \code{\link{summ.stats}}, \code{\link{def.summ.stats}},
-  \code{\link{stats::lm}}
+  \code{\link[stats]{lm}}
 }
 

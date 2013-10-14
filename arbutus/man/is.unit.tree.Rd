@@ -16,14 +16,13 @@
 }
 \examples{
 ## finch data
-data(geospiza)
-td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-phy <- td$phy
-data <- td$data[,"wingL"]
+data(finch)
+phy <- finch$phy
+data <- finch$data[,"wingL"]
 
 
 ## using just the given phylogeny
-unit.tree.phy <- as.unit.tree(phy, data)
+unit.tree.phy <- as.unit.tree(phy, data=data)
 
 is.unit.tree(unit.tree.phy)
 }

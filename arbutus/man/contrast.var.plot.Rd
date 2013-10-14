@@ -21,10 +21,10 @@
 \details{
   This function generates a plot of the observed contrasts
   versus their expected variances (see
-  \code{\link{ape::pic}}). The slope of this plot is equal
-  to the summary statistic 'slope.pic.var', calculated by
-  \code{\link{slope.pic.var}} and is used as a default
-  summary statistic in \code{\link{summ.stats}}.
+  \code{\link[ape]{pic}}). The slope of this plot is equal
+  to the summary statistic \code{\link{cor.contrast.var}}
+  and is used as a default summary statistic in
+  \code{\link{summ.stats}}.
 
   If the model is a good fit to the data (i.e. an adequate
   model), the slope ~ 0. The purpose of the plot is to get
@@ -35,15 +35,16 @@
   (does not integrate across multiple trees).
 
   \code{contrast.var.plot} uses the
-  \code{\link{ggplot2::ggplot2}} library.
+  \code{\link[ggplot2]{ggplot2}} library.
 }
 \examples{
 ## finch data
-data(geospiza)
-td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-phy <- td$phy
-data <- td$data[,"wingL"]
+data(finch)
+phy <- finch$phy
+data <- finch$data[,"wingL"]
 
+\dontrun{
+require(geiger)
 ## fit Brownian motion model
 ## using geiger's fitContinuous function
 fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
@@ -52,8 +53,9 @@ fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
 ## plot contrasts versus their variances
 contrast.var.plot(fit.bm)
 }
+}
 \seealso{
   \code{\link{as.unit.tree}}, \code{\link{summ.stats}},
-  \code{\link{slope.pic.var}}
+  \code{\link{cor.contrast.var}}
 }
 

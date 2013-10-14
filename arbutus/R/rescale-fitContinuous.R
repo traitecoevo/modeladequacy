@@ -310,7 +310,8 @@ make.model.phylo.fitC <- function(x, ...){
 #' @description Rescales phylogeny to form a 'unit.tree' using parameters
 #' from fitted model
 #'
-#' @param x an object inherited from \code{\link{model.info}}
+#' @param x an object inherited from a \code{model.info} function
+#' @param ... additional arguments to be passed to \code{make.model.phylo}
 #'
 #' @details This is a generic function which rescales the phylogeny based on the model
 #' specific information. While the class and information may differ, the object must include
@@ -329,25 +330,23 @@ make.model.phylo.fitC <- function(x, ...){
 #'
 #' @examples
 #' ## finch data
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' data <- td$data[,"wingL"]
+#' data(finch)
+#' phy <- finch$phy
+#' data <- finch$data[,"wingL"]
 #'
-#'
-#' ## using just the given phylogeny
-#' unit.tree.phy <- as.unit.tree(phy, data)
-#'
+#' \dontrun{
+#' require(geiger)
 #' ## fit Brownian motion model
 #' ## using geiger's fitContinuous function
 #' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
 #'                                  control=list(niter=10))
 #'
 #' ## get model info using internal arbutus function
-#' info.bm <- arbutus:::model.info(fit.bm)
+#' info.bm <- model.info(fit.bm)
 #'
 #' ## rescale phylogeny based on model info
 #' make.model.phylo(info.bm)
+#' }
 #' 
 make.model.phylo <- function(x, ...)
     UseMethod("make.model.phylo")

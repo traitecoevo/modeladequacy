@@ -39,35 +39,35 @@
   have been rescaled beforehand. Currently, the following
   object types have been implemented: \itemize{ \item a
   'gfit' object returned from fitting a model of continuous
-  character evolution using
-  \code{\link{geiger::fitContinuous}} in the 'geiger'
-  package.  \item a 'fit.mle' object returned from fitting
-  a model of continuous character evolution using
-  \code{\link{diversitree::find.mle}} in the 'diversitree'
-  package. As the 'fit.mle' object does not include all of
-  the information required for creating a 'unit.tree', a
-  second argument \code{lik} needs to be supplied,
-  providing the likelihood function used in 'find.mle'.
-  \item a 'gls' object returned from fitting a phylogenetic
-  generalized least squared model of character correlation
-  using \code{\link{nlme::gls}} in the 'nlme' package.
-  \item a 'phylo' object. If a 'phylo' object is supplied,
-  the tree is assumed to have been rescaled previously. A
-  second argument \code{data} must also be provided
-  included the trait data as a named vector with names
-  equal to the tip.labels of the phylogeny. }
+  character evolution using \code{fitContinuous} in the
+  'geiger' package.  \item a 'fit.mle' object returned from
+  fitting a model of continuous character evolution using
+  \code{find.mle} in the 'diversitree' package. As the
+  'fit.mle' object does not include all of the information
+  required for creating a 'unit.tree', a second argument
+  \code{lik} needs to be supplied, providing the likelihood
+  function used in 'find.mle'.  \item a 'gls' object
+  returned from fitting a phylogenetic generalized least
+  squared model of character correlation using \code{gls}
+  in the 'nlme' package.  \item a 'phylo' object. If a
+  'phylo' object is supplied, the tree is assumed to have
+  been rescaled previously. A second argument \code{data}
+  must also be provided included the trait data as a named
+  vector with names equal to the tip.labels of the
+  phylogeny. }
 }
 \examples{
 ## finch data
-data(geospiza)
-td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-phy <- td$phy
-data <- td$data[,"wingL"]
+data(finch)
+phy <- finch$phy
+dat <- finch$data[,"wingL"]
 
 
 ## using just the given phylogeny
-unit.tree.phy <- as.unit.tree(phy, data)
+unit.tree.phy <- as.unit.tree(phy, data=dat)
 
+\dontrun{
+require(geiger)
 ## fit Brownian motion model
 ## using geiger's fitContinuous function
 fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
@@ -78,11 +78,10 @@ fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
 unit.tree.geiger <- as.unit.tree(fit.bm)
 unit.tree.geiger
 
-
+require(diversitree)
 ## fit Brownian motion model
 ## using diversitree's find.mle function
 
-## library(diversitree)
 ## bmlik <- make.bm(phy, data)
 ## fit.bm.dt <- find.mle(bmlik, 0.1)
 
@@ -90,9 +89,9 @@ unit.tree.geiger
 ## in 'as.unit.tree()'
 ## unit.tree.dt <- as.unit.tree(fit.bm.dt)
 
-
+require(nlme)
 ## Use pgls to look for a correlation between two traits
-## library(nlme)
+
 ## t1 <- data
 ## t2 <- td$data[,"tarsusL"]
 ## dd <- cbind.data.frame(t1, t2)
@@ -103,8 +102,10 @@ unit.tree.geiger
 ## this creates a 'gls' object which can be used
 ## in 'as.unit.tree()'
 ## unit.tree.gls <- as.unit.tree(fit.gls)
+
+}
 }
 \seealso{
-  \code{\link{ape::pic}}, \code{\link{phy.model.check}}
+  \code{\link[ape]{pic}}, \code{\link{phy.model.check}}
 }
 

@@ -2,10 +2,11 @@
 
 require(geiger)
 
+
 ## get the data for the SLA
-get.sla.data <- function(tree.file, species.mean.file){
-    t <- read.tree(file=tree.file)
-    sla.raw <- read.csv(file=species.mean.file, header=TRUE)
+get.sla.data <- function(){
+    t <- read.tree(file=file.path(getwd(), "data", "tempo_scrubbed_CONSTRAINT_rooted.dated.tre"))
+    sla.raw <- read.csv(file=file.path(getwd(), "output", "species-mean-sla.csv"), header=TRUE)
 
     ## natural log
     sla <- log10(sla.raw[,"x"])
@@ -16,5 +17,42 @@ get.sla.data <- function(tree.file, species.mean.file){
     phy <- geiger:::.drop.tip(phy=t, tip = tmp)
 
     ## return tree and data
-    list(phy=phy, states=sla, SE=0.1024202)
+    list(phy=phy, states=sla, SE=0.1039405)
 }
+
+
+get.seedmass.data <- function(){
+    t <- read.tree(file=file.path(getwd(), "data", "tempo_scrubbed_CONSTRAINT_rooted.dated.tre"))
+    sm.raw <- read.csv(file=file.path(getwd(), "output", "species-mean-seedMass.csv"), header=TRUE)
+
+    ## natural log
+    sm <- log10(sm.raw[,"x"])
+    names(sm) <- sm.raw[,"X"]
+
+    ## drop all for which the value is -Inf
+    sm <- sm[-which(sm == -Inf)]
+
+    ## drop extra tips
+    tmp <- t$tip.label[!t$tip.label %in% names(sm)]
+    phy <- geiger:::.drop.tip(phy=t, tip = tmp)
+
+    ## drop one of any tips which has same value as sister species
+    cher <- geiger:::cherries(phy)
+
+    chck <- vector()
+    for (i in 1:nrow(cher)){
+        tmp1 <- sm[cher[i,1]]
+        tmp2 <- sm[cher[i,2]]
+        same <- tmp1 == tmp2
+        chck <- c(chck, same)
+    }
+
+    phy <- geiger:::.drop.tip(phy=phy, tip=names(which(chck)))
+    sm <- sm[phy$tip.label]
+        
+    
+
+    ## return tree and data
+    list(phy=phy, states=sm, SE=0.1551108)
+}
+

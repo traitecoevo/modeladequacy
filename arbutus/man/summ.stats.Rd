@@ -25,26 +25,26 @@
   'unit.tree' of object or a list of 'unit.tree' objects.
   If \code{stats=NULL} default summary statistics are used.
   The default summary statistics are the following:
-  \enumerate{ \item{reml.sigsq: }{The mean of the squared
+  \enumerate{ \item{sigsq.est: }{The mean of the squared
   contrasts. This is equivalent to the REML estimate of
   sigsq.}
 
-  \item{var.con: }{The variance of the absolute value of
-  the contrasts.}
+  \item{var.contrast: }{The variance of the absolute value
+  of the contrasts.}
 
-  \item{slope.con.var: }{The slope of a linear model fit
+  \item{cor.contrast.var: }{The slope of a linear model fit
   between the contrasts and their expected variances.}
 
-  \item{slope.con.asr: }{The slope of a linear model fit
+  \item{cor.contrast.asr: }{The slope of a linear model fit
   between the contrasts and their inferred ancestral
   state.}
 
-  \item{slope.con.nh: }{The slope of a linear model fit
+  \item{cor.contrast.nh: }{The slope of a linear model fit
   between the contrasts and the node height at which they
   were calculated.}
 
-  \item{ks.pic: }{The D-statistic from a KS test comparing
-  the distribution of the contrasts to a normal
+  \item{ks.contrast: }{The D-statistic from a KS test
+  comparing the distribution of the contrasts to a normal
   distribution with mean 0 and variance equal to the square
   root of the squared mean of the contrasts.} } User
   defined summary statistics can be supplied as a named
@@ -54,11 +54,10 @@
   (see \code{\link{as.unit.tree}} for details).
 }
 \examples{
-data(geospiza)
-td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-phy <- td$phy
-dat <- td$data[,"wingL"]
-unit.tree <- as.unit.tree(phy, dat)
+data(finch)
+phy <- finch$phy
+dat <- finch$data[,"wingL"]
+unit.tree <- as.unit.tree(phy, data=dat)
 
 ## use default statistics
 summ.stat <- summ.stats(unit.tree, stats=NULL)
@@ -73,9 +72,10 @@ summ.stat.user <- summ.stats(unit.tree,
 summ.stat.user
 }
 \seealso{
-  \code{\link{def.summ.stats}}, \code{\link{sigsq.reml}},
-  \code{\link{var.pic}}, \code{\link{slope.con.bl}},
-  \code{\link{slope.con.nh}}, \code{\link{slope.con.asr}},
-  \code{\link{ks.pic}}
+  \code{\link{def.summ.stats}}, \code{\link{sigsq.est}},
+  \code{\link{var.contrast}},
+  \code{\link{cor.contrast.var}},
+  \code{\link{cor.contrast.nh}},
+  \code{\link{cor.contrast.asr}}, \code{\link{ks.contrast}}
 }
 

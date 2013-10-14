@@ -30,20 +30,16 @@
   be ignored.
 }
 \examples{
-data(geospiza)
-td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-phy <- td$phy
-dat <- td$data[,"wingL"]
+data(finch)
+phy <- finch$phy
+dat <- finch$data[,"wingL"]
 
 ## build unit.tree object
-unit.tree <- as.unit.tree(phy, dat)
+unit.tree <- as.unit.tree(phy, data=dat)
 
 ## simulate 2 datasets on unit tree
 sims <- sim.char.unit(unit.tree, nsim=2)
 
 sims
-}
-\seealso{
-  \code{\link{geiger::sim.char}} which this function wraps
 }
 

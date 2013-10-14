@@ -51,11 +51,10 @@
 #' @export compare.summ.stats
 #'
 #' @examples
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' dat <- td$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, dat)
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, data=dat)
 #'
 #' ## calculate default summary stats on observed data
 #' ss.obs <- summ.stats(unit.tree, stats=NULL)
@@ -174,6 +173,7 @@ compare.summ.stats <- function(summ.stats.obs, summ.stats.sim){
 #' from \code{\link{compare.summ.stats}}
 #'
 #' @param x a 'phy.ss' object
+#' @param ... additional arguments to be passed to print
 #'
 #' @return prints p.values to screen
 #'
@@ -182,20 +182,18 @@ compare.summ.stats <- function(summ.stats.obs, summ.stats.sim){
 #' @S3method print phy.ss
 #'
 #' @examples
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' dat <- td$data[,"wingL"]
-#'
-#' ## fit BM model using fitContinuous
-#' f <- fitContinuous(phy, dat, model="BM", control=list(niter=10))
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
 #'
 #' ## use phy.model.check to assess model adequacy
-#' p <- phy.model.check(f, nsim=10)
+#' ## pretend as if tree has already been rescaled
+#' p <- phy.model.check(phy, data=dat, nsim=10)
 #'
 #' ## print output
 #' p
-print.phy.ss <- function(x){
+#' 
+print.phy.ss <- function(x, ...){
    cat("Two-tailed p-values for summary statistics: \n")
    cat("\n")
    print(unclass(x$p.values))
@@ -221,11 +219,10 @@ print.phy.ss <- function(x){
 #'
 #'
 #' @examples
-#' data(geospiza)
-#' td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
-#' phy <- td$phy
-#' dat <- td$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, dat)
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, data=dat)
 #'
 #' ## calculate default summary stats on observed data
 #' ss.obs <- summ.stats(unit.tree, stats=NULL)
@@ -249,14 +246,72 @@ pval.summ.stats <- function(x)
 
 
 
-## function for computing the multivariate mahalanobis distance
-## from the summary stats
-## here x is a phy.ss object
+#' @title Multivariate measure of model adequacy
+#'
+#' @description Computes Mahalanobis distance between the observed summary statistics and
+#' the simulated summary statistics as a multivariate measure of model fit
+#'
+#' @param x a 'phy.ss' object inherited from \code{\link{compare.summ.stats}}
+#'
+#' @details This function computes the Mahalanobis distance between the observed and simulated
+#' summary statistics. The Mahalanobis distance (see \code{\link[stats]{mahalanobis}} is a unit-less and
+#' scale-invariant of the distance
+#' between a single data point (our observed summary statistics) and a common point (here the mean of the
+#' simulated summary statistics), taking into account the covariance between the summary statistics from
+#' the simulated data. It assumes that the distribution of summary statistics is multivariate normal.
+#' For the default summary statistics (see \code{\link{def.summ.stats}}, this condition should be met -- the
+#' exception being the \code{\link{ks.contrast}} statistic, which as it is bounded at 0, will not be. As a result,
+#' if \code{\link{ks.contrast}} is included in the set of summary statistic, this function will take the
+#' natural log of the values before computing the Mahalanobis distance. All other summary statistics will
+#' be assumed to be normally distributed and used as is.
+#'
+#' While the Mahalanobis distance may be a useful summary measure in some circumstances, we recommend checking
+#' the summary statistics individually for a number of reasons. First, our procedure for calculating the p-values
+#' for the summary statistics is general and does not depend on assumptions regarding the distribution of values.
+#' Second, the interpretation from the individual p-values is much more clear from the perspective of either
+#' posterior predictive or parametric bootstrapping theory. Third, and most importantly, the fact that some summary
+#' statistics capture the variation in the data better than others provides useful information as to how and why the
+#' model is inadequate.
+#'
+#' If only one set of observed
+#' summary statistics are available (e.g. from fitting a model using maximum likelihood to a single tree), a single distance
+#' will be returned. If multiple sets of summary statistics are available (e.g. from fitting a model using a Bayesian MCMC),
+#' the function will return a distribution of distances.
+#'
+#' @return the Mahalanobis distance between the observed and simulated summary statistic. 
+#'
+#' @export mv.summ.stats
+#'
+#' @seealso \code{\link{compare.summ.stats}}, \code{\link[stats]{mahalanobis}}
+#'
+#' @examples
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, data=dat)
+#'
+#' ## calculate default summary stats on observed data
+#' ss.obs <- summ.stats(unit.tree, stats=NULL)
+#'
+#' ## simulate data on unit.tree
+#' sims <- sim.char.unit(unit.tree, nsim=10)
+#'
+#' ## calculate default summary stats on simulated data
+#' ss.sim <- summ.stats(sims, stats=NULL)
+#'
+#' ## compare simulated to observed summary statistics
+#' res <- compare.summ.stats(ss.obs, ss.sim)
+#'
+#' ## calculate Mahalanobis distance
+#' mv.summ.stats(res)
+#'
 mv.summ.stats <- function(x){
-    ## log ks dstatistic
-    if ("ks.dstat" %in% names(pval.summ.stats(x))){
-        x$summ.stats.obs[,"ks.dstat"] <- log(x$summ.stats.obs[,"ks.dstat"])
-        x$summ.stats.sim[,"ks.dstat"] <- log(x$summ.stats.sim[,"ks.dstat"])
+    if (!inherits(x, "phy.ss"))
+        stop("x must be a 'phy.ss' object")
+    ## log ks d-statistic
+    if ("ks.contrast" %in% names(pval.summ.stats(x))){
+        x$summ.stats.obs[,"ks.contrast"] <- log(x$summ.stats.obs[,"ks.contrast"])
+        x$summ.stats.sim[,"ks.contrast"] <- log(x$summ.stats.sim[,"ks.contrast"])
     }
     obs <- as.matrix(x$summ.stats.obs)
     sim <- as.matrix(x$summ.stats.sim)

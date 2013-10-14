@@ -11,7 +11,9 @@ model.type.fit.mle <- function(fit, ...) {
 }
 
 model.data.fit.mle <- function(fit, lik, ..., check=TRUE) {
-  if (check)
+   ## require diversitree
+   require(diversitree)
+   if (check)
     check.diversitree.lik.fit(fit, lik, error=TRUE, ...)
   cache <- diversitree:::get.cache(lik)
   list(phy=cache$info$phy, data=cache$states)
@@ -27,8 +29,8 @@ model.pars.fit.mle <- function(fit, lik, ..., check=TRUE) {
   pars
 }
 
-## As this will use the rescaling fxns from fitContinuous, I have
-## called this an object of "model.fitC" class
+#' @method model.info fit.mle
+#' @S3method model.info fit.mle
 model.info.fit.mle <- function(fit, lik, ..., check=TRUE) {
   m <- list(data=model.data(fit, lik, check=check),
             pars=model.pars(fit, lik, check=FALSE), # no need to check twice
@@ -53,7 +55,9 @@ model.type.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
 }
 
 model.data.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
-  if (check)
+   ## require diversitree
+   require(diversitree)
+   if (check)
     check.diversitree.lik.fit.mcmcsamples(fit, lik, error=TRUE, ...)
   cache <- diversitree:::get.cache(lik)
   list(phy=cache$info$phy, data=cache$states)
@@ -70,6 +74,8 @@ model.pars.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
   pars
 }
 
+#' @method model.info mcmcsamples
+#' @S3method model.info mcmcsamples
 model.info.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
   m <- list(data=model.data(fit, lik, check=check),
             pars=model.pars(fit, lik, check=FALSE), # no need to check twice
@@ -117,6 +123,8 @@ diversitree.to.arbutus.recast <- function(pars, model) {
 }
 
 diversitree.to.arbutus.se <- function(pars, lik) {
+  ## require diversitree
+  require(diversitree)
   ## Pull the standard error out.  Also ugly.
   cache <- diversitree:::get.cache(lik)
   sd <- cache$states.sd

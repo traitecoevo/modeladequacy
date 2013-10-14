@@ -20,7 +20,6 @@ test_that("Summary statistic wrapper function produces correct output", {
     ss.names <- names(ss)
     expect_that(ss.names, equals(names(stat.fxn)))
 
-
     ## Single tree:
     expect_that(ss, is_a("data.frame"))
     expect_that(nrow(ss), equals(1))
@@ -66,33 +65,33 @@ test_that("Custom supplied functions work correctly", {
 
 
 test_that("REML sigsq is being calculated correctly", {
-    ss <- round(sigsq.reml(phy.unit), 5)
+    ss <- round(sigsq.est(phy.unit), 5)
     expect_that(ss, equals(0.13036))
 })
 
 test_that("Variance of contrasts is being calculated correctly", {
-    ss <- round(var.pic(phy.unit), 5)
+    ss <- round(var.contrast(phy.unit), 5)
     expect_that(ss, equals(0.06456))
 })
 
 test_that("Slope of contrasts and variance is being calculated correctly", {
-    ss <- round(slope.pic.var(phy.unit), 5)
+    ss <- round(cor.contrast.var(phy.unit), 5)
     expect_that(ss, equals(-0.79589))
 })
 
 test_that("Slope of contrasts and asr is being calculated correctly", {
-    ss <- round(slope.pic.asr(phy.unit), 5)
+    ss <- round(cor.contrast.asr(phy.unit), 5)
     expect_that(ss, equals(-2.10474))
 })
 
 test_that("Slope of contrasts and node height is being calculated correctly", {
-    ss <- round(slope.pic.nh(phy.unit), 5)
+    ss <- round(cor.contrast.nh(phy.unit), 5)
     expect_that(ss, equals(-0.80493))
 })
 
 test_that("KS D-Statistic is being calculated correctly",{
     set.seed(1) ## simulates normal so need to set seed
-    ss <- round(ks.pic(phy.unit), 5)
+    ss <- round(ks.contrast(phy.unit), 5)
     expect_that(ss, equals(0.2936))
 })
 
@@ -189,6 +188,58 @@ test_that("p values are properly extracted from phy.ss object",{
 
     pv <- cc$p.values
     expect_that(pval.summ.stats(cc), equals(pv))
+})
+
+test_that("mahalanobis distance is calculated properly from summary stats",{
+    ## single set of summary stats supplied
+    ss.o <- summ.stats(phy.unit)
+    ## need to 100 to have enough info for covariance
+    sims <- sim.char.unit(phy.unit, nsim=100)
+    ss.s <- summ.stats(sims)
+    cc <- compare.summ.stats(ss.o, ss.s)
+
+    mv <- mv.summ.stats(cc)
+    expect_that(length(mv), equals(1))
+
+    ## calculated by hand
+    ## log ks.contrast
+    cc$summ.stats.obs[,"ks.contrast"] <- log(cc$summ.stats.obs[,"ks.contrast"])
+    cc$summ.stats.sim[,"ks.contrast"] <- log(cc$summ.stats.sim[,"ks.contrast"])
+
+    obs.ss <- as.matrix(cc$summ.stats.obs)
+    sim.ss <- as.matrix(cc$summ.stats.sim)
+    cv <- cov(sim.ss)
+
+    m <- mahalanobis(x=obs.ss, center=colMeans(sim.ss), cov=cv)
+
+    expect_that(mv, equals(m))
+
+    ## multiple set of summary statitics supplied
+    m.unit <- lapply(c(1:100), function(x) return(phy.unit))
+    ss.o <- summ.stats(m.unit)
+    sims <- sim.char.unit(m.unit)
+    ss.s <- summ.stats(sims)
+    cc <- compare.summ.stats(ss.o, ss.s)
+
+    mv <- mv.summ.stats(cc)
+    expect_that(length(mv), equals(100))
+
+    ## calculated by hand
+    ## log ks.contrast
+    cc$summ.stats.obs[,"ks.contrast"] <- log(cc$summ.stats.obs[,"ks.contrast"])
+    cc$summ.stats.sim[,"ks.contrast"] <- log(cc$summ.stats.sim[,"ks.contrast"])
+
+    obs.ss <- as.matrix(cc$summ.stats.obs)
+    sim.ss <- as.matrix(cc$summ.stats.sim)
+    cv <- cov(sim.ss)
+
+    m <- mahalanobis(x=obs.ss, center=colMeans(sim.ss), cov=cv)
+
+    expect_that(mv, equals(m))
+
+    ## check to make sure that if a non phy.ss object supplied
+    ## mv.summ.stats breaks
+    expect_that(mv.summ.stats(list()), throws_error())
 })
 
     
