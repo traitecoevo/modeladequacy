@@ -62,7 +62,6 @@ data(finch)
 phy <- finch$phy
 dat <- finch$data[,"wingL"]
 
-
 ## using just the given phylogeny
 unit.tree.phy <- as.unit.tree(phy, data=dat)
 
