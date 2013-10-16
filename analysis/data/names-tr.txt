@@ -5380,5 +5380,10 @@ Trachymene caerulea	Trachymene coerulea
 Vaccinium cespitosum	Vaccinium caespitosum
 Villarsia parnassifolia	Villarsia parnassiifolia
 Yucca whipplei	Hesperoyucca whipplei
-
-
+Meterosideros polymorpha	Metrosideros polymorpha
+Betula pumilla	Betula pumila
+Brussaisia arguta	Broussaisia arguta
+Comprosma ernodeoides	Coprosma ernodeoides
+Protea nerifolia	Protea neriifolia
+Saussurea gossypiphora	Saussurea gossipiphora
+Chamaecytisus proliferus	Cytisus proliferus
