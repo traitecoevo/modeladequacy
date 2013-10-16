@@ -86,7 +86,7 @@ get.leafn.data <- function(){
     ln <- ln[phy$tip.label]
 
     ## return tree and data
-    list(phy=phy, states=ln, SE=0) ## need to update SE
+    list(phy=phy, states=ln, SE=0.07626127) ## need to update SE
 }
 
     
