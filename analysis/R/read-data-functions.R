@@ -33,30 +33,29 @@ get.seedmass.data <- function(){
     ## only angiosperms
     t <- extract.clade(t, node="Angiospermae")
 
-
     ## base 10 log
     sm <- log10(sm.raw[,"x"])
     names(sm) <- sm.raw[,"X"]
 
     ## drop all for which the value is -Inf
-    sm <- sm[-which(sm == -Inf)]
+    # sm <- sm[-which(sm == -Inf)]
 
     ## drop extra tips
     tmp <- t$tip.label[!t$tip.label %in% names(sm)]
     phy <- geiger:::.drop.tip(phy=t, tip = tmp)
 
     ## drop one of any tips which has same value as sister species
-    cher <- geiger:::cherries(phy)
+ #   cher <- geiger:::cherries(phy)
 
-    chck <- vector()
-    for (i in 1:nrow(cher)){
-        tmp1 <- sm[cher[i,1]]
-        tmp2 <- sm[cher[i,2]]
-        same <- tmp1 == tmp2
-        chck <- c(chck, same)
-    }
+  #  chck <- vector()
+   # for (i in 1:nrow(cher)){
+    #    tmp1 <- sm[cher[i,1]]
+     #   tmp2 <- sm[cher[i,2]]
+      #  same <- tmp1 == tmp2
+       # chck <- c(chck, same)
+    #}
 
-    phy <- geiger:::.drop.tip(phy=phy, tip=names(which(chck)))
+    # phy <- geiger:::.drop.tip(phy=phy, tip=names(which(chck)))
     sm <- sm[phy$tip.label]
         
     
