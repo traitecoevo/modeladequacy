@@ -433,7 +433,7 @@ cor.contrast.asr <- function(unit.tree){
 #' stats <- def.summ.stats
 #' stats
 def.summ.stats <- function()
-    list("sigsq.est"=sigsq.est, "var.contrast"=var.contrast, "cor.constrast.var"=cor.contrast.var, "cor.contrast.asr"=cor.contrast.asr, "cor.contrast.nh"=cor.contrast.nh, "ks.contrast"=ks.contrast)
+    list("sigsq.est"=sigsq.est, "var.contrast"=var.contrast, "cor.contrast.var"=cor.contrast.var, "cor.contrast.asr"=cor.contrast.asr, "cor.contrast.nh"=cor.contrast.nh, "ks.contrast"=ks.contrast)
 
 
 

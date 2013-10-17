@@ -1,28 +1,37 @@
 ## Generate plots for analysis
 require(ggplot2)
 
-cd <- getwd()
 
 
 ## read in sla results
-sla.fam <- read.csv(file.path(cd, "output", "results-ml-sla-family.csv"),
+sla.fam <- read.csv("output/results-ml-angio-sla-family.csv",
                 header=TRUE, as.is=TRUE)
-sla.ord <- read.csv(file.path(cd, "output", "results-ml-sla-order.csv"),
+sla.ord <- read.csv("output/results-ml-angio-sla-order.csv",
                 header=TRUE, as.is=TRUE)
-sla.time <- read.csv(file.path(cd, "output", "results-ml-sla-timeslice.csv"),
+sla.time <- read.csv("output/results-ml-angio-sla-timeslice.csv",
                 header=TRUE, as.is=TRUE)
 
 sla <- rbind(sla.fam, sla.ord, sla.time)
 
 ## read in seedMass results
-sm.fam <- read.csv(file.path(cd, "output", "results-ml-seedMass-family.csv"),
+sm.fam <- read.csv("output/results-ml-angio-seedMass-family.csv",
                    header=TRUE, as.is=TRUE)
-sm.ord <- read.csv(file.path(cd, "output", "results-ml-seedMass-order.csv"),
+sm.ord <- read.csv("output/results-ml-angio-seedMass-order.csv",
                    header=TRUE, as.is=TRUE)
-sm.time <- read.csv(file.path(cd, "output", "results-ml-seedMass-timeslice.csv"),
+sm.time <- read.csv("output/results-ml-angio-seedMass-timeslice.csv",
                     header=TRUE, as.is=TRUE)
 
 sm <- rbind(sm.fam, sm.ord, sm.time)
+
+## read in the leaf n results
+ln.fam <- read.csv("output/results-ml-angio-leafN-family.csv",
+                   header=TRUE, as.is=TRUE)
+ln.ord <- read.csv("output/results-ml-angio-leafN-order.csv",
+                   header=TRUE, as.is=TRUE)
+ln.time <- read.csv("output/results-ml-angio-leafN-timeslice.csv",
+                    header=TRUE, as.is=TRUE)
+
+ln <- rbind(ln.fam, ln.ord, ln.time)
 
 
 
@@ -93,31 +102,32 @@ modelad.size.plot <- function(data){
 ## Clean data
 dat.sla <- clean.ml.results(sla)
 dat.sm <- clean.ml.results(sm)
+dat.ln <- clean.ml.results(ln)
 
 ## model adequacy versus age
-pdf(file.path(cd, "output", "results-ml-sla-adequacy-age.pdf"))
-modelad.age.plot(dat.sla)
-dev.off()
+#pdf(file.path(cd, "output", "results-ml-sla-adequacy-age.pdf"))
+#modelad.age.plot(dat.sla)
+#dev.off()
 
 
-pdf(file.path(cd, "output", "results-ml-seedMass-adequacy-age.pdf"))
-modelad.age.plot(dat.sm)
-dev.off()
+#pdf(file.path(cd, "output", "results-ml-seedMass-adequacy-age.pdf"))
+#modelad.age.plot(dat.sm)
+#dev.off()
 
 
 ## model adequacy versus size
-pdf(file.path(cd, "output", "results-ml-sla-adequacy-taxa.pdf"))
-modelad.size.plot(dat.sla)
-dev.off()
+#pdf(file.path(cd, "output", "results-ml-sla-adequacy-taxa.pdf"))
+#modelad.size.plot(dat.sla)
+#dev.off()
 
 
-pdf(file.path(cd, "output", "results-ml-seedMass-adequacy-taxa.pdf"))
-modelad.size.plot(dat.sm)
-dev.off()
+#pdf(file.path(cd, "output", "results-ml-seedMass-adequacy-taxa.pdf"))
+#modelad.size.plot(dat.sm)
+#dev.off()
 
 
 ## combine all the datasets together
-ml.res <- rbind(dat.sla, dat.sm)
+ml.res <- rbind(dat.sla, dat.sm, dat.ln)
 
 modelad.size.plot.alldata <- function(data){
     
@@ -133,7 +143,7 @@ modelad.size.plot.alldata <- function(data){
     print(p)
 }
 
-pdf("output/results-ml-alldata-taxa.pdf")
+pdf("output/results-ml-angio-alldata-taxa.pdf")
 modelad.size.plot.alldata(ml.res)
 dev.off()
 
@@ -333,7 +343,9 @@ build.pvalue.table <- function(res, summ.stat.names){
         for (j in 1:length(nm)){
             tmp <-cbind.data.frame(res[i, c("taxa", "rank", "trait", "size", "age")], nm[j], res[i, nm[j]])
             colnames(tmp) <- c(colnames(tmp[1:5]), "summ.stat", "p.value")
+            print(tmp)
             data <- rbind(data, tmp)
+            print(data)
         }
     }
     data
@@ -363,9 +375,16 @@ pval.histogram <- function(data){
 
 
 ## plot histogram
-res <- old2new.summ.stat.names(ml.res)
+# res <- old2new.summ.stat.names(ml.res) ## dont need to do this anymore
+
+
+## fix colnames due to misspelling in summstats
+cc <- colnames(ml.res)
+cc[cc == "cor.constrast.var"] <- "cor.contrast.var"
+colnames(ml.res) <- cc
+
 nm <- c("sigsq.est", "var.contrast", "cor.contrast.var", "cor.contrast.asr", "cor.contrast.nh", "ks.contrast")
-dd <- build.pvalue.table(res, nm)
+dd <- build.pvalue.table(ml.res, nm)
 
 pval.histogram(dd)
 ggsave("output/summ-stat-pvalue-dist.pdf")

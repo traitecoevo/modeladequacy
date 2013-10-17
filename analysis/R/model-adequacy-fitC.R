@@ -21,7 +21,7 @@ bounds.ou <- function(phy, states){
 
     ## quick and dirty estimate of sigsq
     unit.tree <- as.unit.tree(phy, data=states)
-    sigsq <- sigsq.reml(unit.tree)
+    sigsq <- sigsq.est(unit.tree)
 
     ## upper bound of alpha parameter
     alpha.up <- 2 * sigsq / sh.tip
@@ -179,19 +179,24 @@ sla <- get.sla.data()
 
 ## clade analyses
 fam <- modelad.ml.clade(sla, rank="family", min.size=20, trait.name="sla")
-write.csv(fam, file=file.path(cd, "output", "results-ml-sla-family.csv"))
+write.csv(fam, file=file.path(cd, "output", "results-ml-angio-sla-family.csv"))
 
 ord <- modelad.ml.clade(sla, rank="order", min.size=20, trait.name="sla")
-write.csv(ord, file=file.path(cd, "output", "results-ml-sla-order.csv"))
+write.csv(ord, file=file.path(cd, "output", "results-ml-angio-sla-order.csv"))
 
 
 ## time slice analysis
-time.slices <- c(0.7877, 50.7877, 100.7877, 150.7877, 200.7877,
-                 250.7877, 300.7877, 350.7877, 375.7877)
+#time.slices <- c(0.7877, 50.7877, 100.7877, 150.7877, 200.7877,
+ #                250.7877, 300.7877, 350.7877, 375.7877)
+
+## angiosperms only
+time.slices <- c(0.2697, 50.2697, 100.2697, 150.2697, 200.2697)
+
+
 ts <- lapply(time.slices, function(x) modelad.ml.slice(sla, age=x,
                                                        sr.min=20, trait.name="sla"))
 ts.res <- do.call(rbind, ts)
-write.csv(ts.res, file=file.path(cd, "output", "results-ml-sla-timeslice.csv"))
+write.csv(ts.res, file=file.path(cd, "output", "results-ml-angio-sla-timeslice.csv"))
 
 
 
@@ -201,17 +206,38 @@ sm <- get.seedmass.data()
 
 ## clade analyses
 fam.sm <- modelad.ml.clade(sm, rank="family", min.size=20, trait.name="seedMass")
-write.csv(fam.sm, file=file.path(cd, "output", "results-ml-seedMass-family.csv"))
+write.csv(fam.sm, file=file.path(cd, "output", "results-ml-angio-seedMass-family.csv"))
 
 ord.sm <- modelad.ml.clade(sm, rank="order", min.size=20, trait.name="seedMass")
-write.csv(ord.sm, file=file.path(cd, "output", "results-ml-seedMass-order.csv"))
+write.csv(ord.sm, file=file.path(cd, "output", "results-ml-angio-seedMass-order.csv"))
 
 ## time slice analysis
 ## something weird is happening in the time slices. add of the young clades are getting
 ## pulled down with the older clades in the seedMass dataset
 ## hmmm...
-time.slices <- c(0.7877, 50.7877, 100.7877, 150.7877, 200.7877)
+#time.slices <- c(0.7877, 50.7877, 100.7877, 150.7877, 200.7877)
+
+
+
 ts.sm <- lapply(time.slices, function(x) modelad.ml.slice(sm, age=x, sr.min=20, trait.name="seedMass"))
 
 ts.sm.res <- do.call(rbind, ts.sm)
-write.csv(ts.sm.res, file=file.path(cd, "output", "results-ml-seedMass-timeslice.csv"))
+write.csv(ts.sm.res, file=file.path(cd, "output", "results-ml-angio-seedMass-timeslice.csv"))
+
+
+
+
+## leafN
+ln <- get.leafn.data()
+
+## clade analysis
+fam.ln <- modelad.ml.clade(ln, rank="family", min.size = 20, trait.name = "leafN")
+write.csv(fam.ln, file="output/results-ml-angio-leafN-family.csv")
+
+ord.ln <- modelad.ml.clade(ln, rank="order", min.size = 20, trait.name = "leafN")
+write.csv(ord.ln, file="output/results-ml-angio-leafN-order.csv")
+
+## time slice
+ts.ln <- lapply(time.slices, function(x) modelad.ml.slice(ln, age=x, sr.min = 20, trait.name = "leafN"))
+ts.ln.res <- do.call(rbind, ts.ln)
+write.csv(ts.ln.res, file="output/results-ml-angio-leafN-timeslice.csv")
