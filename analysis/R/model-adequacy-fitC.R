@@ -6,11 +6,8 @@
 
 require(geiger)
 require(arbutus)
-cd <- getwd()
-esf <- file.path(cd, "R", "extract_subtree_functions.R")
-rdf <- file.path(cd, "R", "read-data-functions.R")
-source(esf)
-source(rdf)
+source("R/extract_subtree_functions.R")
+source("R/read-data-functions.R")
 
 
 ## Get bounds for OU
@@ -94,10 +91,6 @@ modelad.ml <- function(phy, states, SE){
 
     out
 }
-
-
-
-
 
 
 
@@ -241,3 +234,5 @@ write.csv(ord.ln, file="output/results-ml-angio-leafN-order.csv")
 ts.ln <- lapply(time.slices, function(x) modelad.ml.slice(ln, age=x, sr.min = 20, trait.name = "leafN"))
 ts.ln.res <- do.call(rbind, ts.ln)
 write.csv(ts.ln.res, file="output/results-ml-angio-leafN-timeslice.csv")
+
+

@@ -40,11 +40,13 @@ model.pars.gls <- function(fit, ...){
     phy <- model.data(fit)$phy
 
     ## pull out residuals
-    rr <- resid(fit)
+    rr <- as.numeric(resid(fit))
+    names(rr) <- names(resid(fit))
    
 
     if (model == "BM"){
-       sigsq <- (rr %*% solve(vcv(phy)) %*% rr) / (Ntip(phy)-1) 
+       ## use reml estimate of sigsq
+       sigsq <- sigsq.est(as.unit.tree(phy, data=rr)) 
        pars <- list(sigsq=sigsq, z0=NA, SE=0)
     }
     
@@ -53,7 +55,8 @@ model.pars.gls <- function(fit, ...){
         alpha <- as.numeric(fit$modelStruct$corStruct)
         tmp <- list(sigsq=1, alpha=alpha, SE=0)
         rescalephy <- model.phylo.ou(phy, pars=tmp)
-        sigsq <- (rr %*% solve(vcv(rescalephy)) %*% rr) / (Ntip(phy)-1) 
+        ## use reml estimate of sigsq
+        sigsq <- sigsq.est(as.unit.tree(rescalephy, data=rr)) 
         pars <- list(alpha=alpha, sigsq=sigsq, z0=NA, SE=0)
     }
 
@@ -61,7 +64,8 @@ model.pars.gls <- function(fit, ...){
         a <- as.numeric(fit$modelStruct$corStruct)
         tmp <- list(sigsq=1, a=a, SE=0)
         rescalephy <- model.phylo.eb(phy, pars=tmp)
-        sigsq <- (rr %*% solve(vcv(rescalephy)) %*% rr) / (Ntip(phy)-1) 
+        ## use reml estimate of sigsq
+        sigsq <- sigsq.est(as.unit.tree(rescalephy, data=rr)) 
         pars <- list(a=a, sigsq=sigsq, z0=NA, SE=0)
     }
 
@@ -69,7 +73,8 @@ model.pars.gls <- function(fit, ...){
         lambda <- as.numeric(fit$modelStruct$corStruct)
         tmp <- list(sigsq=1, lambda=lambda, SE=0)
         rescalephy <- model.phylo.lambda(phy, pars=tmp)
-        sigsq <- (rr %*% solve(vcv(rescalephy)) %*% rr) / (Ntip(phy)-1) 
+        ## use reml estimate of sigsq
+        sigsq <- sigsq.est(as.unit.tree(rescalephy, data=rr))  
         pars <- list(lambda=lambda, sigsq=sigsq, z0=NA, SE=0)
     }
     

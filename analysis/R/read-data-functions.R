@@ -89,6 +89,30 @@ get.leafn.data <- function(){
     list(phy=phy, states=ln, SE=0.07626127) ## need to update SE
 }
 
+
+
+get.sla.v.leafn.data <-function(){
+    sla <- get.sla.data()
+    ln <- get.leafn.data()
+
+    tmp <- sla$phy$tip.label[!(sla$phy$tip.label %in% ln$phy$tip.label)]
+    phy <- geiger:::.drop.tip(phy=sla$phy, tip=tmp)
+
+    states.sla <- sla$states[phy$tip.label] 
+    states.ln <- ln$states[phy$tip.label]
+    states <- cbind.data.frame(states.sla, states.ln)
+    colnames(states) <- c("sla", "leafN")
+
+    SE <- c(sla$SE, ln$SE)
+    names(SE) <- c("sla", "leafN")
+
+    list(phy=phy, states=states, SE=SE)
+}
+
+
+
+    
+    
     
 
 
