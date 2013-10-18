@@ -31,3 +31,4 @@ Collate:
     'tree-utilities.R'
     'wrapper-fxns.R'
     'arbutus-package.R'
+    'internal-phylolm.R'
