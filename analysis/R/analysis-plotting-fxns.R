@@ -34,6 +34,17 @@ ln.time <- read.csv("output/results-ml-angio-leafN-timeslice.csv",
 ln <- rbind(ln.fam, ln.ord, ln.time)
 
 
+## read in the pgls results
+gls.fam <- read.csv("output/results-ml-angio-pgls-family.csv",
+                   header=TRUE, as.is=TRUE)
+gls.ord <- read.csv("output/results-ml-angio-pgls-order.csv",
+                   header=TRUE, as.is=TRUE)
+gls.time <- read.csv("output/results-ml-angio-pgls-timeslice.csv",
+                     header=TRUE, as.is=TRUE)
+
+gls <- rbind(gls.fam, gls.ord, gls.time)
+
+
 
 
 
@@ -55,6 +66,14 @@ clean.ml.results <- function(x){
 
     ## make rank a factor
     x[,"rank"] <- as.factor(x[,"rank"])
+
+    ## fix misspelling
+    cc <- colnames(x)
+
+    if ("cor.constrast.var" %in% cc){
+        cc[cc == "cor.constrast.var"] <- "cor.contrast.var"
+        colnames(x) <- cc
+    }
 
     as.data.frame(x)
     
@@ -103,31 +122,26 @@ modelad.size.plot <- function(data){
 dat.sla <- clean.ml.results(sla)
 dat.sm <- clean.ml.results(sm)
 dat.ln <- clean.ml.results(ln)
-
-## model adequacy versus age
-#pdf(file.path(cd, "output", "results-ml-sla-adequacy-age.pdf"))
-#modelad.age.plot(dat.sla)
-#dev.off()
+dat.gls <- clean.ml.results(gls)
 
 
-#pdf(file.path(cd, "output", "results-ml-seedMass-adequacy-age.pdf"))
-#modelad.age.plot(dat.sm)
-#dev.off()
+## get only the essentials
+build.modelad.table <- function(dat){
+    out <- dat[,c("taxa", "rank", "trait", "size", "age", "mv.modelad",
+                  "sigsq.est", "var.contrast", "cor.contrast.var",
+                  "cor.contrast.asr", "cor.contrast.nh", "ks.contrast")]
+    out
+}
 
 
-## model adequacy versus size
-#pdf(file.path(cd, "output", "results-ml-sla-adequacy-taxa.pdf"))
-#modelad.size.plot(dat.sla)
-#dev.off()
-
-
-#pdf(file.path(cd, "output", "results-ml-seedMass-adequacy-taxa.pdf"))
-#modelad.size.plot(dat.sm)
-#dev.off()
+res.sla <- build.modelad.table(dat.sla)
+res.sm <- build.modelad.table(dat.sm)
+res.ln <- build.modelad.table(dat.ln)
+res.gls <- build.modelad.table(dat.gls)
 
 
 ## combine all the datasets together
-ml.res <- rbind(dat.sla, dat.sm, dat.ln)
+ml.res <- rbind(res.sla, res.sm, res.ln, res.gls)
 
 modelad.size.plot.alldata <- function(data){
     
@@ -374,14 +388,6 @@ pval.histogram <- function(data){
 
 
 
-## plot histogram
-# res <- old2new.summ.stat.names(ml.res) ## dont need to do this anymore
-
-
-## fix colnames due to misspelling in summstats
-cc <- colnames(ml.res)
-cc[cc == "cor.constrast.var"] <- "cor.contrast.var"
-colnames(ml.res) <- cc
 
 nm <- c("sigsq.est", "var.contrast", "cor.contrast.var", "cor.contrast.asr", "cor.contrast.nh", "ks.contrast")
 dd <- build.pvalue.table(ml.res, nm)
