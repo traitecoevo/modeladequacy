@@ -14,8 +14,9 @@ model.type.phylolm <- function(fit, ...){
 ## It does not appear that the original data and phy is included
 ## Must include them separately for now...
 
-model.data.phylolm <- function(fit, phy, data, ...){
-    list(phy=phy, data=data)
+model.data.phylolm <- function(fit, phy, ...){
+    res <- fit$residuals[,1]
+    list(phy=phy, data=res)
 }
 
 
@@ -40,8 +41,8 @@ model.pars.phylolm <- function(fit, ...){
 
 #' @method model.info phylolm
 #' @S3method model.info phylolm
-model.info.phylolm <- function(fit, phy, data, ...){
-    m <- list(data=model.data(fit, phy, data),
+model.info.phylolm <- function(fit, phy, ...){
+    m <- list(data=model.data(fit, phy),
               pars=model.pars(fit),
               type=model.type(fit))
     class(m) <- "fitC"
