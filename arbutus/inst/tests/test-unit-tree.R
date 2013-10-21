@@ -56,7 +56,7 @@ test_that("BM tree rescaling worked (diversitree, mcmc)", {
   set.seed(1)
   samples.bm <- mcmc(lik.bm, coef(fit.bm), 100, w=0.1, print.every=0)
 
-  phy.unit <- as.unit.tree(samples.bm, lik.bm)
+  phy.unit <- as.unit.tree(samples.bm, lik.bm, n.samples=NULL, burnin=NULL)
   expect_that(phy.unit, is_a("multiPhylo"))
   expect_that(phy.unit[[1]], is_a("unit.tree"))
 
@@ -103,7 +103,7 @@ test_that("OU tree rescaling worked (diversitree, mcmc)", {
                      upper=c(Inf, 100, 10),
                      print.every=0)
 
-  phy.unit <- as.unit.tree(samples.ou, lik.ou)
+  phy.unit <- as.unit.tree(samples.ou, lik.ou, n.samples=NULL, burnin=NULL)
   expect_that(phy.unit, is_a("multiPhylo"))
   expect_that(phy.unit[[1]], is_a("unit.tree"))
 

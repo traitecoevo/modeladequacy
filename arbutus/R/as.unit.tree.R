@@ -153,6 +153,30 @@ as.unit.tree.multiPhylo <- function(x, data, ...) {
 
 
 
+#' @method as.unit.tree mcmcsamples
+#' @S3method as.unit.tree mcmcsamples
+## NOTE [MWP]: I have built a version of as.unit.tree to handle mcmc samples
+## which allows specification of burnin and number of samples
+## would like to incorporate this into as.unit.tree.default
+## but dont know the best way to do this
+as.unit.tree.mcmcsamples <- function(x, n.samples=NULL, burnin=NULL, ...){
+    obj <- model.info(x, ...)
+
+    ## rescale phylogeny from sampled parameters
+    ## after removing burnin
+    phy <- make.model.phylo(obj, n.samples=n.samples, burnin=burnin)
+
+    ## create unit trees from multiPhylo object
+    as.unit.tree(phy, obj$data$data)
+}
+    
+
+
+
+
+
+
+
 #' @title Check if object is a unit.tree
 #'
 #' @description Utility function for checking if object is of class 'unit.tree'
