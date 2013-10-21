@@ -177,11 +177,11 @@ best.fit <- sample(names(dic[which(dic == min(dic))]), size=1)
 ## run model adequacy using best fit model
 pp <- switch(best.fit,
              BM=phy.model.check(res.bm, lik=lik.bm, n.samples=1000,
-                 prior=prior.bm, check=FALSE),
+                 check=FALSE),
              OU=phy.model.check(res.ou, lik=lik.ou, n.samples=1000,
-                 prior=prior.ou, check=FALSE),
+                 check=FALSE),
              EB=phy.model.check(res.eb, lik=lik.eb, n.samples=1000,
-                 prior=prior.eb, check=FALSE))
+                 check=FALSE))
 
 
 ## get pvalues
