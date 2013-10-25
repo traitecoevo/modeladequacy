@@ -1,9 +1,10 @@
 ## Script for performing model adequacy using a mcmc
 library(arbutus)
 library(LaplacesDemon)
-#source("R/extract_subtree_functions.R")
-#source("R/read-data-functions.R")
+source("R/extract_subtree_functions.R")
+source("R/read-data-functions.R")
 library(diversitree)
+library(multicore)
 
 ## function for calculating Deviance Information Criterion
 ## from mcmcsamples
@@ -76,14 +77,17 @@ make.prior.eb <- function(s2.low, s2.high, a.low, a.high){
 ## eventually to be wrapped for data analysis
 
 ## for now just simulate data
-phy <- tree.bd(pars=c(1,0), max.taxa=200)
-states <- sim.character(t, 1, x0=0)
+#phy <- tree.bd(pars=c(1,0), max.taxa=200)
+# states <- sim.character(t, 1, x0=0)
 
+
+
+modelad.bayes <- function(phy, states, SE){
 
 ## BM
 ## create likelihood fxn
 
-lik.bm <- make.bm(phy, states, control=list(method="pruning"))
+lik.bm <- make.bm(phy, states, states.sd = SE, control=list(method="pruning"))
 
 ## bm prior
 prior.bm <- make.prior.uniform(lower=0, upper=10)
@@ -105,14 +109,14 @@ samples.bm <- mcmc(lik.bm, fit.bm$par, w=w.bm, nsteps = 10000, prior=prior.bm,
 ## OU
 ## create likelihood fxn
 
-lik.ou <- make.ou(phy, states, control=list(method="pruning"))
+lik.ou <- make.ou(phy, states, states.sd = SE, control=list(method="pruning"))
 
 ## ou priors
 ## half cauchy with scale of 25 is used as a standard,
 ## weakly informative scale parameter prior
 ## can fiddle with this
 prior.ou <- make.prior.ou(s2.low=0, s2.high=10, scale=25,
-                          theta.low = min(states), theta.high = max(states))
+                          theta.low =0, theta.high = max(states))
 
 ## use find.mle to get reasonable starting values
 fit.ou <- find.mle(lik.ou, x.init = c(1,0.1,mean(states)))
@@ -131,7 +135,7 @@ samples.ou <- mcmc(lik.ou, fit.ou$par, nsteps = 10000, prior=prior.ou,
 ## EB
 ## create likelihood fxn
 
-lik.eb <- make.eb(phy, states, control=list(method="pruning"))
+lik.eb <- make.eb(phy, states, states.sd = SE, control=list(method="pruning"))
 
 ## eb priors.ou
 tmax <- max(branching.times(phy))
@@ -195,6 +199,179 @@ out <- c(dic.bm, dic.ou, dic.eb, best.fit, m.dist, pval)
 nam <- c("dic.bm", "dic.ou", "dic.eb", "model.used", "mv.modelad")
 names(out) <- c(nam, names(pval))
 out 
+
+}
+
+
+
+
+modelad.bayes.clade <- function(td, se, rank, trait){
+    states <- td$data[,1]
+    ## perform model adequacy using bayesian analysis
+    tmp <-  modelad.bayes(phy=td$phy, states=states, SE=se)
+
+    ## get age of taxa
+    age <- arbutus:::edge.height(td$phy)$start[Ntip(td$phy)+1]
+
+    size <- Ntip(td$phy)
+
+    out <- c(rank, trait, size, age, tmp)
+    names(out) <- c("rank", "trait", "size", "age", names(tmp))
+
+    out
+}
+
+
+
+# modelad.bayes.slice <- function(td, trait.name){
+    ## perform model adequacy using bayesian analysis
+  #  tmp <- modelad.bayes(phy=x$phy, states=x$data, SE=tree.states$SE)
+
+    ## get age of taxa
+  #  age <- sapply(td, function(x) return(arbutus:::edge.height(x$phy)$start[Ntip(x$phy)+1]))
+
+  #  taxa <- rank <- rep(NA, length(age))
+
+  #  trait <- rep(trait.name, length(age))
+
+  #  size <- sapply(td, function(x) Ntip(x$phy))
+
+  #  out <- cbind.data.frame(taxa, rank, trait, size, age, tmp)
+  #  colnames(out) <- c("taxa", "rank", "trait", "size", "age", colnames(tmp))
+
+  #  out
+    
+# }
+
+
+
+get.timeslice.treedata <- function(phy, states, age, min.size){
+     ## get list of sliced trees
+    trees <- time.slice.tree(time.slice=age, temp.tree=phy, sr=min.size)
+
+    ## append correct data to each tree
+    ## do this so bounds are properly set within modelad.ml
+    td <- lapply(trees, function(x) treedata(phy=x, data=states))
+
+    td
+}
+
+
+
+
+
+## detach geiger and coda to avoid conflict with mcmc
+
+# time.slices <- c(0.2697, 50.2697, 100.2697, 150.2697, 200.2697)
+
+## SLA
+## read in data
+sla <- get.sla.data()
+
+
+
+td.sla.fam <- treedata.taxon(phy=sla$phy, data=sla$states,
+                             rank="family", min.size = 20)
+sla.fam <- mclapply(td.sla.fam, function(x) modelad.bayes.clade(x, se=sla$SE, rank="family", trait="sla"),
+                    mc.preschedule = FALSE, mc.cores = 24)
+
+sla.fam <- do.call(rbind, sla.fam)
+rownames(sla.fam) <- names(td.sla.fam)
+sla.fam <- as.data.frame(sla.fam)
+
+write.csv(sla.fam, file="output/results-bayes-angio-sla-family.csv")
+
+
+
+
+
+td.sla.ord <- treedata.taxon(phy=sla$phy, data=sla$states,
+                             rank="order", min.size = 20)
+sla.ord <- mclapply(td.sla.ord, function(x) modelad.bayes.clade(x, se=sla$SE, rank="order", trait="sla"),
+                    mc.preschedule = FALSE, mc.cores = 24)
+
+sla.ord <- do.call(rbind, sla.ord)
+rownames(sla.ord) <- names(td.sla.ord)
+sla.ord <- as.data.frame(sla.ord)
+
+write.csv(sla.ord, file="output/results-bayes-angio-sla-order.csv")
+
+
+
+
+
+
+
+## seedmass
+
+sm <- get.seedmass.data()
+
+
+
+td.sm.fam <- treedata.taxon(phy=sm$phy, data=sm$states,
+                             rank="family", min.size = 20)
+sm.fam <- mclapply(td.sm.fam, function(x) modelad.bayes.clade(x, se=sm$SE rank="family", trait="seedMass"),
+                   mc.preschedule = FALSE, mc.cores = 24)
+
+sm.fam <- do.call(rbind, sm.fam)
+rownames(sm.fam) <- names(td.sm.fam)
+sm.fam <- as.data.frame(sm.fam)
+
+write.csv(sm.fam, file="output/results-bayes-angio-seedmass-family.csv")
+
+
+
+
+td.sm.ord <- treedata.taxon(phy=sm$phy, data=sm$states,
+                             rank="order", min.size = 20)
+sm.ord <- mclapply(td.sm.ord, function(x) modelad.bayes.clade(x, se=sm$SE, rank="order", trait="seedMass"),
+                   mc.preschedule = FALSE, mc.cores = 24)
+
+sm.ord <- do.call(rbind, sm.ord)
+rownames(sm.ord) <- names(td.sm.ord)
+sm.ord <- as.data.frame(sm.ord)
+
+write.csv(sm.ord, file="output/results-bayes-angio-seedmass-order.csv")
+
+
+
+
+
+
+## leafN
+
+ln <- get.leafn.data()
+
+
+
+td.ln.fam <- treedata.taxon(phy=ln$phy, data=ln$states,
+                             rank="family", min.size = 20)
+ln.fam <- mclapply(td.ln.fam, function(x) modelad.bayes.clade(x, se=ln$SE rank="family", trait="leafN"),
+                   mc.preschedule = FALSE, mc.cores = 24)
+
+ln.fam <- do.call(rbind, ln.fam)
+rownames(ln.fam) <- names(td.ln.fam)
+ln.fam <- as.data.frame(ln.fam)
+
+write.csv(ln.fam, file="output/results-bayes-angio-leafn-family.csv")
+
+
+
+
+td.ln.ord <- treedata.taxon(phy=ln$phy, data=ln$states,
+                             rank="order", min.size = 20)
+ln.ord <- mclapply(td.ln.ord, function(x) modelad.bayes.clade(x, se=ln$SE, rank="order", trait="leafN"),
+                   mc.preschedule = FALSE, mc.cores = 24)
+
+ln.ord <- do.call(rbind, ln.ord)
+rownames(ln.ord) <- names(td.ln.ord)
+ln.ord <- as.data.frame(ln.ord)
+
+write.csv(ln.ord, file="output/results-bayes-angio-leafn-order.csv")
+
+
+
+
 
 
 
