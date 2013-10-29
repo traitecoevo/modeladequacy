@@ -1,0 +1,48 @@
+\documentclass[a4paper,12pt]{article}
+
+\setlength{\parskip}{1ex plus1pt} % threequarters
+\RequirePackage[hmargin=3.5cm,vmargin=3cm]{geometry}
+\usepackage{graphicx}
+\pagestyle{empty}
+\usepackage{MnSymbol}
+\usepackage[mathlf,textlf,minionint]{MinionPro}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[numbers, sort&compress]{natbib}
+
+\begin{document}
+
+{\raggedleft
+  Matthew Pennell\\
+  Institute for Bioinformatics and Evolutionary Studies\\
+  University of Idaho\\
+ Moscow, ID 83844, U.S.A.\\[2ex]
+}
+
+\vspace{3ex}
+
+Dear Editors of PLOS Biology,
+
+I am writing on behalf of my collaborators (Richard FitzJohn, William Cornwell and Luke Harmon) to inquire whether you would be interested in considering our paper ``The adequacy of phylogenetic trait models'' as a submission for PLOS Biology. 
+
+Phylogenetic trees are increasingly used to ask a wide variety of questions in both evolutionary biology and ecology. For example, promising new approaches involve fitting evolutionary models to phylogenetic trees and data on the traits of extant species. These approaches have been applied to understand the tempo and mode of evolution, which in turn can explain phenomena like adaptive radiation, ``living fossils'', and convergent evolution (for a recent example, see \citep{Mahler2013}). Although dozens of such approaches have been invented, we still lack a way to determine whether the models that we are using in phylogenetic comparative biology actually capture relevant variation in a trait of interest. 
+
+In our paper, we develop approaches to ask whether models of trait evolution on trees are adequate. We develop a novel and general framework for assessing model adequacy for phylogenetic models of trait evolution.  Our framework, which is based on phylogenetic independent contrasts, can be applied to test the adequacy of a wide range of evolutionary models for traits on trees, and can suggest the reasons why models are inadequate. Our approach, which uses well-established statistical procedures (posterior predictive simulations), is innovative because it allows us to assessing the adequacy of arbitrarily complex models of trait evolution (including those that underlie evolutionary regression analysis).
+
+To provide evidence that our approach is useful and informative, we gathered data from the literature on three important plant functional trait, including specific leaf area, leaf nitrogen content and seed mass. Using a recently published phylogeny of Angiosperms \citep{Zanne2013}, we fit commonly used trait models to subsets of the data taken across many scales. We found that these models show surprisingly poor fits to data and that the fit tends to get much worse as tree size increases. These results raise some serious questions regarding many studies that have employed comparative analyses (including some of our own work; e.g. \citep{Harmon2010}). This is especially true for large--scale analyses; phylogenetic comparative analyses are increasingly being conducted on datasets consisting of hundreds, thousands and even tens of thousands of taxa (e.g. \citep{Venditti2011, Rabosky2013}). The simple models commonly employed in comparative biology are likely to be severely inadequate at this scale. 
+
+Our analysis of the Angiosperm functional trait data suggests that current models are not adequately capturing variation in species traits. We present a way forward, coupling model selection with assessment of model adequacy. Additionally, we have developed a flexible, open-source R package so that researchers can apply our approach to their data. We view our framework as a major innovation in comparative biology and one that is applicable to all fields that you phylogenetic trees to test evolutionary hypotheses. Consequently, we think that PLOS Biology is the best possible venue for our paper. 
+
+Thank you for considering this presubmission inquiry. We would be very happy to be able to submit our work to PLoS Biology. We look forward to hearing from you.
+
+\begin{flushright}
+\vspace{2ex}
+\hspace{.2\textwidth}Sincerely,\\
+\hspace*{.3\textwidth}
+Matthew Pennell
+\end{flushright}
+
+\bibliographystyle{plos}
+\bibliography{plos-presub}
+
+\end{document}

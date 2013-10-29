@@ -1,0 +1,36 @@
+\documentclass[a4paper,12pt]{article}
+
+\setlength{\parskip}{1ex plus1pt} % threequarters
+\RequirePackage[hmargin=3.5cm,vmargin=3cm]{geometry}
+\usepackage{graphicx}
+\pagestyle{empty}
+\usepackage{MnSymbol}
+\usepackage[mathlf,textlf,minionint]{MinionPro}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[numbers, sort&compress]{natbib}
+
+\begin{document}
+
+\begin{flushleft}
+\textsc{Referenced Abstract} for ``The adequacy of phylogenetic trait models''\\[0.5cm]
+Submitted by:\\
+M.W. Pennell, R.G. FitzJohn, W.K. Cornwell \& L.J. Harmon
+\end{flushleft}
+
+\section*{Background}
+
+Phylogenetic comparative analyses are now routinely applied to test evolutionary hypotheses in a variety of fields \citep{PennellHarmon}. Such analyses require the use of a statistical model of trait evolution. Over the last decade there has been an influx of statistical approaches for modeling trait evolution on phylogenies (e.g. \citep{ButlerKing2004, Omeara2006, Eastman2011, Beaulieu2012}). While we can compare the fit of alternative models \citep{Harmon2010}, we do not have any procedure for determining if a given model is a good fit (or, adequate) in an absolute sense. Trait model adequacy has serious implications for the inferences we are able to draw from comparative analyses \citep{Boettiger2012, SlaterPennell}. Here we present a unified and general statistical framework for assessing the adequacy of trait models.
+
+\section*{Methodology/Principal findings}
+
+Our framework is based on the statistical properties of phylogenetic independent contrasts \citep{Felsenstein1985}. To assess model adequacy, we rescale the branch lengths of a phylogeny according to model parameters such that if the model is indeed adequate, the contrasts will be independent and identically distributed (I.I.D.); we term such a phylogeny a ``unit tree''. We calculate a set of test statistics on the contrasts computed on the unit tree, then simulate a large number of datasets under the appropriate model, calculate the test statistics on the simulated data and compare the observed to simulated summary statistics. This allows us to assess whether a model is adequate. If the model is inadequate, our summary statistics provide insight into how the data deviate from the model. We apply our approach to a large number of comparative datasets of plant functional traits collected from the literature using a recently published megaphylogeny of Angiosperms \citep{Zanne2013}. We demonstrate that commonly applied models are seriously inadequate. Furthermore, model inadequacy scales very tightly with tree size, suggesting that simple models are especially poor fits to data on megaphylogenies.
+
+\section*{Conclusions/Significance}
+
+Our approach is generally applicable to almost all comparative analyses of continuous traits. The results of our study raise substantial questions regarding the interpretations of a large number of comparative studies, and suggest a simple way to diagnose potential problems in future studies. We believe that tests for model adequacy have the potential to fundamentally change how researchers use phylogenies to ask evolutionary questions. 
+
+\bibliographystyle{plos}
+\bibliography{plos-presub}
+
+\end{document}
