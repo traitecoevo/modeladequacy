@@ -87,7 +87,7 @@ modelad.bayes <- function(phy, states, SE){
 ## BM
 ## create likelihood fxn
 
-lik.bm <- make.bm(phy, states, states.sd = SE, control=list(method="pruning"))
+lik.bm <- make.bm(phy, states, states.sd = SE, control=list(method="pruning", backend="C"))
 
 ## bm prior
 prior.bm <- make.prior.uniform(lower=0, upper=10)
@@ -109,7 +109,7 @@ samples.bm <- mcmc(lik.bm, fit.bm$par, w=w.bm, nsteps = 10000, prior=prior.bm,
 ## OU
 ## create likelihood fxn
 
-lik.ou <- make.ou(phy, states, states.sd = SE, control=list(method="pruning"))
+lik.ou <- make.ou(phy, states, states.sd = SE, control=list(method="pruning", backend="C"))
 
 ## ou priors
 ## half cauchy with scale of 25 is used as a standard,
@@ -135,7 +135,7 @@ samples.ou <- mcmc(lik.ou, fit.ou$par, nsteps = 10000, prior=prior.ou,
 ## EB
 ## create likelihood fxn
 
-lik.eb <- make.eb(phy, states, states.sd = SE, control=list(method="pruning"))
+lik.eb <- make.eb(phy, states, states.sd = SE, control=list(method="pruning", backend="C"))
 
 ## eb priors.ou
 tmax <- max(branching.times(phy))
@@ -273,7 +273,7 @@ sla <- get.sla.data()
 td.sla.fam <- treedata.taxon(phy=sla$phy, data=sla$states,
                              rank="family", min.size = 20)
 sla.fam <- mclapply(td.sla.fam, function(x) modelad.bayes.clade(x, se=sla$SE, rank="family", trait="sla"),
-                    mc.preschedule = FALSE, mc.cores = 24)
+                    mc.preschedule = FALSE, mc.cores = 3)
 
 sla.fam <- do.call(rbind, sla.fam)
 rownames(sla.fam) <- names(td.sla.fam)
@@ -288,7 +288,7 @@ write.csv(sla.fam, file="output/results-bayes-angio-sla-family.csv")
 td.sla.ord <- treedata.taxon(phy=sla$phy, data=sla$states,
                              rank="order", min.size = 20)
 sla.ord <- mclapply(td.sla.ord, function(x) modelad.bayes.clade(x, se=sla$SE, rank="order", trait="sla"),
-                    mc.preschedule = FALSE, mc.cores = 24)
+                    mc.preschedule = FALSE, mc.cores = 3)
 
 sla.ord <- do.call(rbind, sla.ord)
 rownames(sla.ord) <- names(td.sla.ord)
@@ -310,8 +310,8 @@ sm <- get.seedmass.data()
 
 td.sm.fam <- treedata.taxon(phy=sm$phy, data=sm$states,
                              rank="family", min.size = 20)
-sm.fam <- mclapply(td.sm.fam, function(x) modelad.bayes.clade(x, se=sm$SE rank="family", trait="seedMass"),
-                   mc.preschedule = FALSE, mc.cores = 24)
+sm.fam <- mclapply(td.sm.fam, function(x) modelad.bayes.clade(x, se=sm$SE, rank="family", trait="seedMass"),
+                   mc.preschedule = FALSE, mc.cores = 3)
 
 sm.fam <- do.call(rbind, sm.fam)
 rownames(sm.fam) <- names(td.sm.fam)
@@ -325,7 +325,7 @@ write.csv(sm.fam, file="output/results-bayes-angio-seedmass-family.csv")
 td.sm.ord <- treedata.taxon(phy=sm$phy, data=sm$states,
                              rank="order", min.size = 20)
 sm.ord <- mclapply(td.sm.ord, function(x) modelad.bayes.clade(x, se=sm$SE, rank="order", trait="seedMass"),
-                   mc.preschedule = FALSE, mc.cores = 24)
+                   mc.preschedule = FALSE, mc.cores = 3)
 
 sm.ord <- do.call(rbind, sm.ord)
 rownames(sm.ord) <- names(td.sm.ord)
@@ -346,7 +346,7 @@ ln <- get.leafn.data()
 
 td.ln.fam <- treedata.taxon(phy=ln$phy, data=ln$states,
                              rank="family", min.size = 20)
-ln.fam <- mclapply(td.ln.fam, function(x) modelad.bayes.clade(x, se=ln$SE rank="family", trait="leafN"),
+ln.fam <- mclapply(td.ln.fam, function(x) modelad.bayes.clade(x, se=ln$SE, rank="family", trait="leafN"),
                    mc.preschedule = FALSE, mc.cores = 24)
 
 ln.fam <- do.call(rbind, ln.fam)
