@@ -23,7 +23,7 @@ model.pars.fit.mle <- function(fit, lik, ..., check=TRUE) {
   if (check)
     check.diversitree.lik.fit(fit, lik, error=TRUE, ...)
   model <- model.type(fit)
-  pars <- as.list(coef(fit))
+  pars <- as.list(coef(fit, full=TRUE))
   pars <- diversitree.to.arbutus.recast(pars, model)
   pars <- diversitree.to.arbutus.se(pars, lik)
   pars
@@ -51,7 +51,10 @@ check.diversitree.lik.fit <- function(fit, lik, error=TRUE, ...) {
 model.type.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
   if (check)
     check.diversitree.lik.fit.mcmcsamples(fit, lik, error=TRUE, ...)
-  toupper(class(lik)[[1]])
+  if (is.constrained(lik))
+    toupper(class(attr(lik, "func"))[[1]])
+  else
+    toupper(class(lik)[[1]])
 }
 
 model.data.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
@@ -68,7 +71,7 @@ model.pars.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
     check.diversitree.lik.fit.mcmcsamples(fit, lik, error=TRUE, ...)
   model <- model.type(fit, lik, check=FALSE) # don't check again.
 
-  pars <- as.data.frame(coef(fit))
+  pars <- as.data.frame(coef(fit, full=TRUE, lik=lik))
   pars <- diversitree.to.arbutus.recast(pars, model)
   pars <- diversitree.to.arbutus.se(pars, lik)
   pars

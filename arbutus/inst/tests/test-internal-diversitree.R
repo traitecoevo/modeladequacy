@@ -154,3 +154,36 @@ test_that("Overall processed object looks legit", {
   expect_that(names(obj.ou), is_identical_to(obj.names))
   expect_that(names(obj.eb), is_identical_to(obj.names))
 })
+
+## Constrained functions
+test_that("Constrained functions work", {
+  lik.ou.c <- constrain(lik.ou, theta ~ 0)
+  set.seed(1)
+  fit.ou.c <- find.mle(lik.ou.c, c(.1, .1))
+  samples.ou.c <- mcmc(lik.ou.c, coef(fit.ou.c), 30,
+                       w=c(0.1, 10),
+                       lower=c(0, 0),
+                       upper=c(Inf, 100),
+                       print.every=0)
+
+  ## Can get the type out:
+  expect_that(model.type(fit.ou.c), is_identical_to("OU"))
+  expect_that(model.type(samples.ou.c, lik.ou.c),
+              is_identical_to("OU"))
+
+  ## Underlying data:
+  cmp <- list(phy=phy, data=states[phy$tip.label])
+  expect_that(model.data(fit.ou.c, lik.ou.c), equals(cmp))
+  expect_that(model.data(samples.ou.c, lik.ou.c), equals(cmp))
+
+  ## Parameters -- these need to include all parameters:
+  p <- model.pars(fit.ou.c, lik.ou.c)
+  expect_that(names(p), is_identical_to(arbutus:::parnames.ou()))
+  expect_that(p$SE, equals(0))
+  expect_that(p$z0, equals(0)) # z0 is theta, translated
+
+  p <- model.pars(samples.ou.c, lik.ou.c)
+  expect_that(names(p), is_identical_to(arbutus:::parnames.ou()))
+  expect_that(p$SE, equals(rep(0, nrow(samples.ou))))
+  expect_that(p$z0, equals(rep(0, nrow(samples.ou))))
+})
