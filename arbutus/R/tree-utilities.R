@@ -26,19 +26,26 @@ edge.height <- function(phy){
 
 ## treedata from geiger
 
+## TODO: Can we get a test suite for this - there are lots of edge
+## cases that would benefit from testing here.  This particularly
+## needs doing in conjunction with check.names.phylo (this function is
+## the only place that that function is used).
+##
+## TODO: I don't get the logic around dm being computed at the
+## beginning of the function and used at the end.
 build.tree.data <- function(phy, data, sort=FALSE, warnings=TRUE) {
 	
 	dm=length(dim(data))
-	
-	if (is.vector(data)) {
-		data<-as.matrix(data)
-	}
-	if (is.factor(data)) {
-		data<-as.matrix(data)
-	}
-	if (is.array(data) & length(dim(data))==1) {
-		data<-as.matrix(data)
-	}
+
+        ## NOTE: is.vector() makes more sense here, but will fail
+        ## obscurely where 'data' has *any attribute except names*
+        ## (see ?is.vector); this is too restrictive!
+        ##
+        ## TODO: I believe that this removes the need for the
+        ## is.factor check, but not sure what will trigger the array
+        ## case below.
+	if (is.null(dim(data)) || (is.array(data) && length(dim(data))==1))
+            data<-as.matrix(data)
 	
 	if (is.null(rownames(data))) {
 		stop("names for 'data' must be supplied")
@@ -46,9 +53,14 @@ build.tree.data <- function(phy, data, sort=FALSE, warnings=TRUE) {
 	} else {
 		data.names<-rownames(data)
 	}
-        
+
+            ## TODO (RGF): This looks needlessly complicated.  Better
+            ## would be to have an 'warning' argument to
+            ## check.names.phylo that will produce the warnings
+            ## perhaps?  And have it filter the names?  Not sure.
+            ## Using the names for accessing 'nc'could help here.
 	nc<-check.names.phylo(phy, data)
-	if (is.na(nc[[1]][1]) | nc[[1]][1]!="OK") {
+	if (is.na(nc[[1]][1]) || nc[[1]][1]!="OK") {
 		if (length(nc[[1]]!=0)) {
 			phy=prune.phylo(phy, as.character(nc[[1]]))
 			if (warnings) {
