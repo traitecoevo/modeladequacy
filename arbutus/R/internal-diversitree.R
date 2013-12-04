@@ -1,76 +1,57 @@
 ## See internal-fitContinuous.R for general information about what is
 ## going on here.
 
-## So, despite what we spoke about earlier, diversitree does not
-## include the likelihood function within the fitted object -- see
-## issue #9.  This means that many of these require both the fitted
-## object and the likelihood function, but will by default check that
-## the likelihood function could plausibly been used to fit the model.
+## TODO: check issue #9.
+
 model.type.fit.mle <- function(fit, ...) {
   toupper(sub("^fit\\.mle\\.", "", class(fit)[[1]]))
 }
 
-model.data.fit.mle <- function(fit, lik, ..., check=TRUE) {
-   ## require diversitree
-   require(diversitree)
-   if (check)
-    check.diversitree.lik.fit(fit, lik, error=TRUE, ...)
-  cache <- diversitree:::get.cache(lik)
+model.data.fit.mle <- function(fit, ...) {
+  require(diversitree)
+  cache <- diversitree:::get.cache(get.likelihood(fit))
   list(phy=cache$info$phy, data=cache$states)
 }
 
-model.pars.fit.mle <- function(fit, lik, ..., check=TRUE) {
-  if (check)
-    check.diversitree.lik.fit(fit, lik, error=TRUE, ...)
+model.pars.fit.mle <- function(fit, ...) {
+  require(diversitree)
   model <- model.type(fit)
   pars <- as.list(coef(fit, full=TRUE))
   pars <- diversitree.to.arbutus.recast(pars, model)
-  pars <- diversitree.to.arbutus.se(pars, lik)
+  pars <- diversitree.to.arbutus.se(pars, get.likelihood(fit))
   pars
 }
 
 #' @method model.info fit.mle
 #' @S3method model.info fit.mle
-model.info.fit.mle <- function(fit, lik, ..., check=TRUE) {
-  m <- list(data=model.data(fit, lik, check=check),
-            pars=model.pars(fit, lik, check=FALSE), # no need to check twice
+model.info.fit.mle <- function(fit, ...) {
+  m <- list(data=model.data(fit),
+            pars=model.pars(fit),
             type=model.type(fit))
   class(m) <- "fitC"
   m
 }
 
-check.diversitree.lik.fit <- function(fit, lik, error=TRUE, ...) {
-  ll <- lik(coef(fit), ...)
-  ok <- isTRUE(all.equal(ll, fit$lnLik, check.attributes=FALSE))
-  if (error && !ok)
-    stop("Likelihood function and fitted object do not agree")
-  invisible(ok)
-}
-
 ## Similar, but for mcmcsamples:
-model.type.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
-  if (check)
-    check.diversitree.lik.fit.mcmcsamples(fit, lik, error=TRUE, ...)
+model.type.mcmcsamples <- function(fit, ...) {
+  require(diversitree)
+  lik <- get.likelihood(fit)
   if (is.constrained(lik))
-    toupper(class(attr(lik, "func"))[[1]])
+    toupper(class(get.likelihood(lik))[[1]])
   else
     toupper(class(lik)[[1]])
 }
 
-model.data.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
-   ## require diversitree
-   require(diversitree)
-   if (check)
-    check.diversitree.lik.fit.mcmcsamples(fit, lik, error=TRUE, ...)
-  cache <- diversitree:::get.cache(lik)
+model.data.mcmcsamples <- function(fit, ...) {
+  require(diversitree)
+  cache <- diversitree:::get.cache(get.likelihood(fit))
   list(phy=cache$info$phy, data=cache$states)
 }
 
-model.pars.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
-  if (check)
-    check.diversitree.lik.fit.mcmcsamples(fit, lik, error=TRUE, ...)
-  model <- model.type(fit, lik, check=FALSE) # don't check again.
-
+model.pars.mcmcsamples <- function(fit, ...) {
+  require(diversitree)
+  model <- model.type(fit)
+  lik <- get.likelihood(fit)
   pars <- as.data.frame(coef(fit, full=TRUE, lik=lik))
   pars <- diversitree.to.arbutus.recast(pars, model)
   pars <- diversitree.to.arbutus.se(pars, lik)
@@ -79,26 +60,12 @@ model.pars.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
 
 #' @method model.info mcmcsamples
 #' @S3method model.info mcmcsamples
-model.info.mcmcsamples <- function(fit, lik, ..., check=TRUE) {
-  m <- list(data=model.data(fit, lik, check=check),
-            pars=model.pars(fit, lik, check=FALSE), # no need to check twice
-            type=model.type(fit, lik, check=FALSE))
+model.info.mcmcsamples <- function(fit, ...) {
+  m <- list(data=model.data(fit),
+            pars=model.pars(fit),
+            type=model.type(fit))
   class(m) <- c("multiFitC", "fitC")
   m
-}
-
-## Bit of a hack.
-check.diversitree.lik.fit.mcmcsamples <- function(fit, lik, error=TRUE,
-                                                  ..., prior=NULL) {
-  idx <- 1
-  p <- coef(fit)[idx,]
-  ll <- lik(p, ...)
-  if (!is.null(prior))
-    ll <- ll + prior(p)
-  ok <- isTRUE(all.equal(ll, fit$p[idx], check.attributes=FALSE))
-  if (error && !ok)
-    stop("Likelihood function and fitted object do not agree")
-  invisible(ok)
 }
 
 diversitree.to.arbutus.recast <- function(pars, model) {
@@ -126,7 +93,6 @@ diversitree.to.arbutus.recast <- function(pars, model) {
 }
 
 diversitree.to.arbutus.se <- function(pars, lik) {
-  ## require diversitree
   require(diversitree)
   ## Pull the standard error out.  Also ugly.
   cache <- diversitree:::get.cache(lik)

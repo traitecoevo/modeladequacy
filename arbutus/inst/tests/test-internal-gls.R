@@ -103,11 +103,6 @@ test_that("Diffusion parameter is correct (REML)", {
               equals(get.sigma2.gls(fit.gls.la)))
 })
 
-is_less_than <- function(value) {
-  function(actual)
-    expectation(actual < value, paste("is not less than", value))
-}
-
 test_that("Diffusion parameter is correct (ML)", {
   expect_that(estimate.sigma2.gls(fit.gls.bm.ml),
               equals(get.sigma2.gls(fit.gls.bm.ml)))

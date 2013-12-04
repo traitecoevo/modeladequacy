@@ -103,6 +103,9 @@ model.pars.corStruct <- function(fit, ...) {
   translate.ape.arbutus(pars)
 }
 
+## TODO: Not completely sure about this, actually.  I think that we
+## are actually looking for (n - (k - 1)).  See
+## inst/tests/internal-gls-diversitree.R.
 reml.to.ml <- function(s2, n, k)
   s2 * (n - k) / n  
 ml.to.reml <- function(s2, n, k)

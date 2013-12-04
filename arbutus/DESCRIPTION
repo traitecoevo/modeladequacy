@@ -18,11 +18,14 @@ Suggests:
     gridExtra,
     diversitree
 Collate:
+    'arbutus-package.R'
     'as.unit.tree.R'
     'compare.summStat.R'
     'internal-diversitree.R'
     'internal-fitContinuous.R'
+    'internal-gls-diversitree.R'
     'internal-gls.R'
+    'internal-phylolm.R'
     'internal.R'
     'plotting-fxns.R'
     'rescale-fitContinuous.R'
@@ -30,5 +33,3 @@ Collate:
     'summary-stats.R'
     'tree-utilities.R'
     'wrapper-fxns.R'
-    'arbutus-package.R'
-    'internal-phylolm.R'
