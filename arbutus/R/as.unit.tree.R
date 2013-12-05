@@ -155,16 +155,13 @@ as.unit.tree.multiPhylo <- function(x, data, ...) {
 
 #' @method as.unit.tree mcmcsamples
 #' @S3method as.unit.tree mcmcsamples
-## NOTE [MWP]: I have built a version of as.unit.tree to handle mcmc samples
-## which allows specification of burnin and number of samples
-## would like to incorporate this into as.unit.tree.default
-## but dont know the best way to do this
-as.unit.tree.mcmcsamples <- function(x, n.samples=NULL, burnin=NULL, ...){
-    obj <- model.info(x, ...)
+# NOTE[RGF]: The arguments were n.samples and burnin in the original
+# version.
+as.unit.tree.mcmcsamples <- function(x, burnin=NA, thin=NA, sample=NA,
+                                     ...) {
+    obj <- model.info(x, burnin, thin, sample, ...)
 
-    ## rescale phylogeny from sampled parameters
-    ## after removing burnin
-    phy <- make.model.phylo(obj, n.samples=n.samples, burnin=burnin)
+    phy <- make.model.phylo(obj)
 
     ## create unit trees from multiPhylo object
     as.unit.tree(phy, obj$data$data)
@@ -211,8 +208,8 @@ is.unit.tree <- function(x)
 
 
 ## add function for producing error if unit.tree is expected and not provided
-assert.is.unit.tree <- function(x){
-    if (!inherits(x, "unit.tree"))
+assert.is.unit.tree <- function(x) {
+    if (!is.unit.tree(x))
         stop(deparse(substitute(x)), " must be a 'unit.tree'")
 }
 

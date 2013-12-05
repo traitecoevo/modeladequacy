@@ -56,9 +56,10 @@ test_that("BM tree rescaling worked (diversitree, mcmc)", {
   set.seed(1)
   samples.bm <- mcmc(lik.bm, coef(fit.bm), 100, w=0.1, print.every=0)
 
-  phy.unit <- as.unit.tree(samples.bm, n.samples=NULL, burnin=NULL)
+  phy.unit <- as.unit.tree(samples.bm)
   expect_that(phy.unit, is_a("multiPhylo"))
   expect_that(phy.unit[[1]], is_a("unit.tree"))
+  expect_that(length(phy.unit), equals(nrow(samples.bm)))
 
   ## Quick check:
   idx <- 5
@@ -66,6 +67,14 @@ test_that("BM tree rescaling worked (diversitree, mcmc)", {
   fit.bm$lnLik <- samples.bm$p[idx]
   cmp <- as.unit.tree(fit.bm)
   expect_that(phy.unit[[idx]], is_identical_to(cmp))
+
+  ## Check burn-in and samples work
+  nb <- 10
+  sample <- 20
+  expect_that(length(as.unit.tree(samples.bm, burnin=nb)),
+              equals(nrow(coef(samples.bm, burnin=nb))))
+  expect_that(length(as.unit.tree(samples.bm, sample=sample)),
+              equals(nrow(coef(samples.bm, sample=sample))))
 })
 
 test_that("OU tree rescaling worked (fitContinuous)", {
@@ -103,7 +112,7 @@ test_that("OU tree rescaling worked (diversitree, mcmc)", {
                      upper=c(Inf, 100, 10),
                      print.every=0)
 
-  phy.unit <- as.unit.tree(samples.ou, n.samples=NULL, burnin=NULL)
+  phy.unit <- as.unit.tree(samples.ou)
   expect_that(phy.unit, is_a("multiPhylo"))
   expect_that(phy.unit[[1]], is_a("unit.tree"))
 

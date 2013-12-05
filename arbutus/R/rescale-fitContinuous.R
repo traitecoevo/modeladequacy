@@ -1,6 +1,14 @@
 ## fxns for rescaling tree according to fitContinuous type models
 ## adopted from rescale.phylo in GEIGER (written by Jon Eastman)
 
+## TODO[RGF]: Pull out the tip SE bit into its own function:
+model.phylo.se <- function(phy, pars) {
+  if (pars$SE < 0)
+    stop("SE must be non-negative")
+  tips <- phy$edge[,2] <= Ntip(phy)
+  phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE
+  phy
+}
 
 model.phylo.bm <- function(phy, pars){
     ## check pars to make sure they are non-negative
@@ -45,6 +53,8 @@ model.phylo.ou <- function(phy, pars){
     ## rescale branch lengths according to alpha
     alpha <- pars$alpha
 
+    ## TODO [RGF]: Will we hit issues with `exp(x) - 1; |x| << 1` here
+    ## (as in the likelihood equations?)
     bl <- (1/(2 * alpha)) * exp(-2 * alpha * (Tmax - t2)) * (1 - exp(-2 * alpha * t2)) -
           (1/(2 * alpha)) * exp(-2 * alpha * (Tmax - t1)) * (1 - exp(-2 * alpha * t1))
 
@@ -269,7 +279,7 @@ model.phylo.white <- function(phy, pars){
 
 #' @method make.model.phylo fitC
 #' @S3method make.model.phylo fitC
-make.model.phylo.fitC <- function(x, n.samples, burnin, ...){
+make.model.phylo.fitC <- function(x, ...) {
     ## get model
     model <- x$type
 
@@ -291,20 +301,6 @@ make.model.phylo.fitC <- function(x, n.samples, burnin, ...){
                  white=model.phylo.white)
 
     if (is.data.frame(pars)) {
-        ## check if burnin required
-        if (!is.null(burnin)){
-            ## remove burnin
-            burn <- round(burnin*nrow(pars))
-            pars <- pars[-seq_len(burn), ]
-        }
-
-        ## check if samples required
-        if (!is.null(n.samples)){
-            ## sample a subset of parameters based on n.samples
-            samp <- sample(rownames(pars), size = n.samples, replace=TRUE)
-            pars <- pars[samp, ]
-        }
-      
       rphy <- lapply(seq_len(nrow(pars)), function(i)
                      tr(phy, pars[i,]))
       class(rphy) <- "multiPhylo"
