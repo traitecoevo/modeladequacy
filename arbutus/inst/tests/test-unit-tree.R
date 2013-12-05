@@ -37,6 +37,28 @@ test_that("BM tree rescaling worked (fitContinuous)", {
   expect_that(is.unit.tree(phy.unit), is_true())
 })
 
+## Work around - I don't see how to do this with geiger.
+rescale.se <- function(phy, ..., SE=0) {
+  phy <- rescale(phy, ...)
+  tips <- phy$edge[,2] <= Ntip(phy)
+  phy$edge.length[tips] <- phy$edge.length[tips] + SE
+  phy
+}
+
+## TODO: Need other SE functions added too!
+test_that("BM tree rescaling worked (fitContinuous, with SE)", {
+  se <- 0.01
+  fit.bm <- fitContinuousQuiet(phy=phy, dat=states, model="BM", SE=se,
+                               control=list(niter=10))
+  phy.unit <- as.unit.tree(fit.bm)
+
+  ## Manual rescaling using Geiger function
+  cmp <- rescale.se(phy, "BM", coef(fit.bm)[[1]], SE=se)
+
+  expect_that(phy.unit$phy, equals(cmp))
+  expect_that(is.unit.tree(phy.unit), is_true())
+})
+
 test_that("BM tree rescaling worked (diversitree)", {
   lik.bm <- make.bm(phy, states)
   fit.bm <- find.mle(lik.bm, .1)

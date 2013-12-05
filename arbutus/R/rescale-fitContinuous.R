@@ -1,18 +1,9 @@
 ## fxns for rescaling tree according to fitContinuous type models
 ## adopted from rescale.phylo in GEIGER (written by Jon Eastman)
 
-## TODO[RGF]: Pull out the tip SE bit into its own function:
-model.phylo.se <- function(phy, pars) {
-  if (pars$SE < 0)
-    stop("SE must be non-negative")
-  tips <- phy$edge[,2] <= Ntip(phy)
-  phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE
-  phy
-}
-
 model.phylo.bm <- function(phy, pars){
     ## check pars to make sure they are non-negative
-    if (pars$sigsq < 0 | pars$SE < 0)
+    if (pars$sigsq < 0)
         stop("Parameters need to be non-negative")
 
     ## rescale branch lengths according to sigsq
@@ -20,12 +11,8 @@ model.phylo.bm <- function(phy, pars){
 
     phy$edge.length <- phy$edge.length * sigsq
 
-    ## add on SE to tip branches
-    tips <- phy$edge[,2] <= Ntip(phy)
-    phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE
-
     ## return tree
-    phy
+    model.phylo.se(phy, pars)
 }
 
 
@@ -34,7 +21,7 @@ model.phylo.bm <- function(phy, pars){
 
 model.phylo.ou <- function(phy, pars){
     ## check pars to make sure they are non-negative
-    if (pars$sigsq < 0 || pars$alpha < 0 || pars$SE < 0)
+    if (pars$sigsq < 0 || pars$alpha < 0)
         stop("Parameters need to be non-negative")
 
     ## get all heights
@@ -65,12 +52,8 @@ model.phylo.ou <- function(phy, pars){
 
     phy$edge.length <- phy$edge.length * sigsq
 
-    ## add on SE to tip branches
-    tips <- phy$edge[,2] <= Ntip(phy)
-    phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE
-
     ## return phy
-    phy
+    model.phylo.se(phy, pars)
 }
 
 
@@ -79,7 +62,7 @@ model.phylo.ou <- function(phy, pars){
 ## Rescale phylogeny according to early burst model
 model.phylo.eb <- function(phy, pars){
     ## check pars to make sure they are non-negative
-    if (pars$sigsq < 0 || pars$SE < 0)
+    if (pars$sigsq < 0)
         stop("Parameters need to be non-negative")
 
     ## get all heights
@@ -108,12 +91,8 @@ model.phylo.eb <- function(phy, pars){
 
     phy$edge.length <- phy$edge.length * sigsq
 
-    ## add on SE to tip branches
-    tips <- phy$edge[,2] <= Ntip(phy)
-    phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE
-
     ## return phy
-    phy
+    model.phylo.se(phy, pars)
 }
 
 
@@ -123,7 +102,7 @@ model.phylo.eb <- function(phy, pars){
 ## lambda transformation
 model.phylo.lambda <- function(phy, pars){
     ## check pars to make sure they are non-negative
-    if (pars$sigsq < 0 || pars$SE < 0)
+    if (pars$sigsq < 0)
         stop("Parameters need to be non-negative")
 
     ## get all heights
@@ -159,11 +138,8 @@ model.phylo.lambda <- function(phy, pars){
 
     phy$edge.length <- phy$edge.length * sigsq
 
-    ## add on SE to tip branches
-    phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE
-
     ## return phy
-    phy
+    model.phylo.se(phy, pars)
 }
 
 
@@ -173,7 +149,7 @@ model.phylo.lambda <- function(phy, pars){
 ## kappa transformation
 model.phylo.kappa <- function(phy, pars){
     ## check pars to make sure they are non-negative
-    if (pars$sigsq < 0 || pars$kappa < 0 || pars$SE < 0)
+    if (pars$sigsq < 0 || pars$kappa < 0)
         stop("Parameters need to be non-negative")
 
     ## rescale branch lengths according to kappa
@@ -185,12 +161,8 @@ model.phylo.kappa <- function(phy, pars){
 
     phy$edge.length <- phy$edge.length * sigsq
 
-    ## add on SE to tip branches
-    tips <- phy$edge[,2] <= Ntip(phy)
-    phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE
-
     ## return phy
-    phy
+    model.phylo.se(phy, pars)
 }
 
 
@@ -200,7 +172,7 @@ model.phylo.kappa <- function(phy, pars){
 ## delta transformation
 model.phylo.delta <- function(phy, pars){
     ## check pars to make sure they are non-negative
-    if (pars$sigsq < 0 || pars$delta < 0 || pars$SE < 0)
+    if (pars$sigsq < 0 || pars$delta < 0)
         stop("Parameters need to be non-negative")
 
     ## get all heights
@@ -228,12 +200,8 @@ model.phylo.delta <- function(phy, pars){
 
     phy$edge.length <- phy$edge.length * sigsq
 
-    ## add on SE to tip branches
-    tips <- phy$edge[,2] <= N
-    phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE
-
     ## return phy
-    phy
+    model.phylo.se(phy, pars)
 }
 
 
@@ -362,3 +330,10 @@ make.model.phylo <- function(x, ...)
     UseMethod("make.model.phylo")
 
 
+model.phylo.se <- function(phy, pars) {
+  if (pars$SE < 0)
+    stop("SE must be non-negative")
+  tips <- phy$edge[,2] <= Ntip(phy)
+  phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE
+  phy
+}
