@@ -48,11 +48,12 @@ model.data.mcmcsamples <- function(fit, ...) {
   list(phy=cache$info$phy, data=cache$states)
 }
 
-model.pars.mcmcsamples <- function(fit, ...) {
+model.pars.mcmcsamples <- function(fit, burnin=NA, thin=NA, sample=NA, ...) {
   require(diversitree)
   model <- model.type(fit)
   lik <- get.likelihood(fit)
-  pars <- as.data.frame(coef(fit, full=TRUE, lik=lik))
+  pars <- as.data.frame(coef(fit, burnin=burnin, thin=thin,
+                             sample=sample, full=TRUE, lik=lik))
   pars <- diversitree.to.arbutus.recast(pars, model)
   pars <- diversitree.to.arbutus.se(pars, lik)
   pars
@@ -60,9 +61,9 @@ model.pars.mcmcsamples <- function(fit, ...) {
 
 #' @method model.info mcmcsamples
 #' @S3method model.info mcmcsamples
-model.info.mcmcsamples <- function(fit, ...) {
+model.info.mcmcsamples <- function(fit, burnin=NA, thin=NA, sample=NA, ...) {
   m <- list(data=model.data(fit),
-            pars=model.pars(fit),
+            pars=model.pars(fit, burnin, thin, sample),
             type=model.type(fit))
   class(m) <- c("multiFitC", "fitC")
   m

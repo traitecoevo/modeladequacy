@@ -17,7 +17,6 @@ model.info.fit.mle <- arbutus:::model.info.fit.mle
 model.type.fit.mle.pgls <- arbutus:::model.type.fit.mle.pgls
 model.data.fit.mle.pgls <- arbutus:::model.data.fit.mle.pgls
 model.pars.fit.mle.pgls <- arbutus:::model.pars.fit.mle.pgls
-# model.info.fit.mle.pgls <- arbutus:::model.info.fit.mle.pgls
 
 set.seed(1)
 phy <- tree.bd(pars=c(1,0), max.taxa=100)
@@ -36,9 +35,14 @@ lik.pgls.bm.con <- make.pgls(phy, y ~ x, data,
 s2.ml <- arbutus:::estimate.sigma2.gls(fit.gls.bm.ml)
 p.ml <- c(coef(fit.gls.bm.ml), s2=s2.ml)
 
-
 fit.pgls.bm.vcv <- find.mle(lik.pgls.bm.vcv, c(0, 0, 1))
 fit.pgls.bm.con <- find.mle(lik.pgls.bm.con, c(0, 0, 1))
+
+## Draw some mcmc samples, straight from the likelihood.
+samples <- mcmc(lik.pgls.bm.con, p.ml, 1000, w=1, print.every=100)
+
+
+
 
 test_that("The fits are sane", {
   expect_that(fit.pgls.bm.vcv, equals(fit.pgls.bm.con))

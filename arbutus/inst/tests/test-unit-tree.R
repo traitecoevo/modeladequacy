@@ -40,7 +40,7 @@ test_that("BM tree rescaling worked (fitContinuous)", {
 test_that("BM tree rescaling worked (diversitree)", {
   lik.bm <- make.bm(phy, states)
   fit.bm <- find.mle(lik.bm, .1)
-  phy.unit <- as.unit.tree(fit.bm, lik.bm)
+  phy.unit <- as.unit.tree(fit.bm)
 
   cmp <- rescale(phy, "BM", coef(fit.bm)[[1]])
 
@@ -56,7 +56,7 @@ test_that("BM tree rescaling worked (diversitree, mcmc)", {
   set.seed(1)
   samples.bm <- mcmc(lik.bm, coef(fit.bm), 100, w=0.1, print.every=0)
 
-  phy.unit <- as.unit.tree(samples.bm, lik.bm, n.samples=NULL, burnin=NULL)
+  phy.unit <- as.unit.tree(samples.bm, n.samples=NULL, burnin=NULL)
   expect_that(phy.unit, is_a("multiPhylo"))
   expect_that(phy.unit[[1]], is_a("unit.tree"))
 
@@ -64,7 +64,7 @@ test_that("BM tree rescaling worked (diversitree, mcmc)", {
   idx <- 5
   fit.bm$par <- coef(samples.bm)[idx,]
   fit.bm$lnLik <- samples.bm$p[idx]
-  cmp <- as.unit.tree(fit.bm, lik.bm)
+  cmp <- as.unit.tree(fit.bm)
   expect_that(phy.unit[[idx]], is_identical_to(cmp))
 })
 
@@ -84,7 +84,7 @@ test_that("OU tree rescaling worked (diversitree)", {
     lik.ou <- make.ou(phy, states)
     fit.ou <- find.mle(lik.ou, x.init=c(0.1,0.1, mean(states)))
 
-    phy.unit <- as.unit.tree(fit.ou, lik.ou)
+    phy.unit <- as.unit.tree(fit.ou)
 
     ## Manual rescaling using Geiger function
     cmp <- rescale(phy, "OU", alpha=coef(fit.ou)[[2]], sigsq=coef(fit.ou)[[1]])
@@ -103,7 +103,7 @@ test_that("OU tree rescaling worked (diversitree, mcmc)", {
                      upper=c(Inf, 100, 10),
                      print.every=0)
 
-  phy.unit <- as.unit.tree(samples.ou, lik.ou, n.samples=NULL, burnin=NULL)
+  phy.unit <- as.unit.tree(samples.ou, n.samples=NULL, burnin=NULL)
   expect_that(phy.unit, is_a("multiPhylo"))
   expect_that(phy.unit[[1]], is_a("unit.tree"))
 
@@ -111,7 +111,7 @@ test_that("OU tree rescaling worked (diversitree, mcmc)", {
   idx <- 5
   fit.ou$par <- coef(samples.ou)[idx,]
   fit.ou$lnLik <- samples.ou$p[idx]
-  cmp <- as.unit.tree(fit.ou, lik.ou)
+  cmp <- as.unit.tree(fit.ou)
   expect_that(phy.unit[[idx]], is_identical_to(cmp))
 })
 

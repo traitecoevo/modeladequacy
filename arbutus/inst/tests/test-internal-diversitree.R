@@ -94,23 +94,70 @@ test_that("Processed coefficient names are as expected", {
               equals(rep(0, nrow(samples.eb))))
 })
 
+test_that("MCMC extraction options are passed from model.pars", {
+  n <- nrow(samples.bm)
+  expect_that(nrow(model.pars(samples.bm)), equals(n))
+
+  nb <- 10
+  expect_that(nrow(model.pars(samples.bm, burnin=nb)),
+              equals(nrow(coef(samples.bm, burnin=nb))))
+  pb <- 0.14234
+  expect_that(nrow(model.pars(samples.bm, burnin=pb)),
+              equals(nrow(coef(samples.bm, burnin=pb))))
+  thin <- 7
+  expect_that(nrow(model.pars(samples.bm, thin=thin)),
+              equals(nrow(coef(samples.bm, thin=thin))))
+
+  sample <- 10
+  set.seed(1)
+  p1 <- model.pars(samples.bm, burnin=nb, thin=thin, sample=sample)
+  set.seed(1)
+  p2 <- coef(samples.bm, burnin=nb, thin=thin, sample=sample)
+  expect_that(nrow(p1), equals(nrow(p2)))
+  expect_that(p1$sigsq, is_identical_to(p2[,"s2"]))
+})
+
 test_that("Overall processed object looks legit", {
-  obj.bm <- model.info(fit.bm, lik.bm)
-  obj.ou <- model.info(fit.ou, lik.ou)
-  obj.eb <- model.info(fit.eb, lik.eb)
+  obj.bm <- model.info(fit.bm)
+  obj.ou <- model.info(fit.ou)
+  obj.eb <- model.info(fit.eb)
 
   obj.names <- c("data", "pars", "type")
   expect_that(names(obj.bm), is_identical_to(obj.names))
   expect_that(names(obj.ou), is_identical_to(obj.names))
   expect_that(names(obj.eb), is_identical_to(obj.names))
 
-  obj.bm <- model.info(samples.bm, lik.bm)
-  obj.ou <- model.info(samples.ou, lik.ou)
-  obj.eb <- model.info(samples.eb, lik.eb)
+  obj.bm <- model.info(samples.bm)
+  obj.ou <- model.info(samples.ou)
+  obj.eb <- model.info(samples.eb)
 
   expect_that(names(obj.bm), is_identical_to(obj.names))
   expect_that(names(obj.ou), is_identical_to(obj.names))
   expect_that(names(obj.eb), is_identical_to(obj.names))
+})
+
+test_that("MCMC extraction options are passed from model.info", {
+  n <- nrow(samples.bm)
+  
+  expect_that(nrow(model.info(samples.bm)$pars), equals(n))
+
+  nb <- 10
+  pb <- 0.14234
+  thin <- 7
+  sample <- 10
+
+  expect_that(nrow(model.info(samples.bm, burnin=nb)$pars),
+              equals(nrow(coef(samples.bm, burnin=nb))))
+  expect_that(nrow(model.info(samples.bm, burnin=pb)$pars),
+              equals(nrow(coef(samples.bm, burnin=pb))))
+  expect_that(nrow(model.info(samples.bm, thin=thin)$pars),
+              equals(nrow(coef(samples.bm, thin=thin))))
+  set.seed(1)
+  p1 <- model.info(samples.bm, burnin=nb, thin=thin, sample=sample)$pars
+  set.seed(1)
+  p2 <- coef(samples.bm, burnin=nb, thin=thin, sample=sample)
+  expect_that(nrow(p1), equals(nrow(p2)))
+  expect_that(p1$sigsq, is_identical_to(p2[,"s2"]))
 })
 
 ## Constrained functions
@@ -126,21 +173,21 @@ test_that("Constrained functions work", {
 
   ## Can get the type out:
   expect_that(model.type(fit.ou.c), is_identical_to("OU"))
-  expect_that(model.type(samples.ou.c, lik.ou.c),
+  expect_that(model.type(samples.ou.c),
               is_identical_to("OU"))
 
   ## Underlying data:
   cmp <- list(phy=phy, data=states[phy$tip.label])
-  expect_that(model.data(fit.ou.c, lik.ou.c), equals(cmp))
-  expect_that(model.data(samples.ou.c, lik.ou.c), equals(cmp))
+  expect_that(model.data(fit.ou.c), equals(cmp))
+  expect_that(model.data(samples.ou.c), equals(cmp))
 
   ## Parameters -- these need to include all parameters:
-  p <- model.pars(fit.ou.c, lik.ou.c)
+  p <- model.pars(fit.ou.c)
   expect_that(names(p), is_identical_to(arbutus:::parnames.ou()))
   expect_that(p$SE, equals(0))
   expect_that(p$z0, equals(0)) # z0 is theta, translated
 
-  p <- model.pars(samples.ou.c, lik.ou.c)
+  p <- model.pars(samples.ou.c)
   expect_that(names(p), is_identical_to(arbutus:::parnames.ou()))
   expect_that(p$SE, equals(rep(0, nrow(samples.ou))))
   expect_that(p$z0, equals(rep(0, nrow(samples.ou))))
