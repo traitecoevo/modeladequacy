@@ -236,7 +236,7 @@ model.phylo.white <- function(phy, pars){
     phy$edge.length <- phy$edge.length * sigsq
 
     ## return phy
-    phy
+    model.phylo.se(phy, pars)
 }
 
 
