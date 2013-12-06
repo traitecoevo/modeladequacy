@@ -39,7 +39,7 @@ fit.pgls.bm.vcv <- find.mle(lik.pgls.bm.vcv, c(0, 0, 1))
 fit.pgls.bm.con <- find.mle(lik.pgls.bm.con, c(0, 0, 1))
 
 ## Draw some mcmc samples, straight from the likelihood.
-samples <- mcmc(lik.pgls.bm.con, p.ml, 1000, w=1, print.every=100)
+# samples <- mcmc(lik.pgls.bm.con, p.ml, 1000, w=1, print.every=100)
 
 
 
