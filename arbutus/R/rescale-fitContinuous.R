@@ -2,42 +2,23 @@
 ## adopted from rescale.phylo in GEIGER (written by Jon Eastman)
 
 model.phylo.bm <- function(phy, pars){
-    ## check pars to make sure they are non-negative
     if (pars$sigsq < 0)
         stop("Parameters need to be non-negative")
-
-    ## rescale branch lengths according to sigsq
-    sigsq <- pars$sigsq
-
-    phy$edge.length <- phy$edge.length * sigsq
-
-    ## return tree
+    phy$edge.length <- phy$edge.length * pars$sigsq
     model.phylo.se(phy, pars)
 }
 
-
-
-
-
 model.phylo.ou <- function(phy, pars){
-    ## check pars to make sure they are non-negative
     if (pars$sigsq < 0 || pars$alpha < 0)
         stop("Parameters need to be non-negative")
 
-    ## get all heights
-    ht <- edge.height(phy)
+    tt <- branching.times.by.depth(phy)
+    t1 <- tt$t1
+    t2 <- tt$t2
+    Tmax <- tt$Tmax
 
-    ## get tree depth
-    ## same as max(branching.times(phy)) but works for non-ultrametric trees
-    N <- Ntip(phy)
-    Tmax <- ht$start[N+1]
-
-    ## get braching times in terms of tree depth
-    idx <- match(1:nrow(ht), phy$edge[,2])
-    t1 <- Tmax - ht$end[phy$edge[idx,1]]
-    t2 <- ht$start - ht$end + t1
-
-    ## rescale branch lengths according to alpha
+    ## rescale branch lengths according to alpha...
+    ## TODO: RGF: Edge condition needed for a = 0 (plus test)
     alpha <- pars$alpha
 
     ## TODO [RGF]: Will we hit issues with `exp(x) - 1; |x| << 1` here
@@ -47,86 +28,52 @@ model.phylo.ou <- function(phy, pars){
 
     phy$edge.length <- bl[phy$edge[,2]]
 
-    ## rescale branch lengths according to sigsq
-    sigsq <- pars$sigsq
-
-    phy$edge.length <- phy$edge.length * sigsq
-
-    ## return phy
+    ## ...and then by sigsq
+    phy$edge.length <- phy$edge.length * pars$sigsq
     model.phylo.se(phy, pars)
 }
 
-
-
-
-## Rescale phylogeny according to early burst model
 model.phylo.eb <- function(phy, pars){
-    ## check pars to make sure they are non-negative
     if (pars$sigsq < 0)
         stop("Parameters need to be non-negative")
 
-    ## get all heights
-    ht <- edge.height(phy)
-
-    ## get tree depth
-    ## same as max(branching.times(phy)) but works for non-ultrametric trees
-    N <- Ntip(phy)
-    Tmax <- ht$start[N+1]
-
-    ## get braching times in terms of tree depth
-    idx <- match(1:nrow(ht), phy$edge[,2])
-    t1 <- Tmax - ht$end[phy$edge[idx,1]]
-    t2 <- ht$start - ht$end + t1
-
-    ## rescale tree according to a parameter
+    ## rescale tree according to "a" parameter...
     a <- pars$a
-
     if (a != 0){
-        bl <- (exp(a * t2) - exp(a * t1)) / a
-        phy$edge.length <- bl[phy$edge[,2]]
+      tt <- branching.times.by.depth(phy)
+      bl <- (exp(a * tt$t2) - exp(a * tt$t1)) / a
+      phy$edge.length <- bl[phy$edge[,2]]
     }
 
-    ## rescale branch lengths according to sigsq
-    sigsq <- pars$sigsq
-
-    phy$edge.length <- phy$edge.length * sigsq
+    ## ...and then by sigsq
+    phy$edge.length <- phy$edge.length * pars$sigsq
 
     ## return phy
     model.phylo.se(phy, pars)
 }
-
-
-
 
 
 ## lambda transformation
+## NOTE [RGF]: This function seems too complicated; is there a simpler
+## way of writing it?
 model.phylo.lambda <- function(phy, pars){
-    ## check pars to make sure they are non-negative
     if (pars$sigsq < 0)
         stop("Parameters need to be non-negative")
 
-    ## get all heights
-    ht <- edge.height(phy)
-
-    ## get tree depth
-    ## same as max(branching.times(phy)) but works for non-ultrametric trees
-    N <- Ntip(phy)
-    Tmax <- ht$start[N+1]
+    heights <- edge.height(phy)
 
     ## index edge matrix by tips
-    tips <- match(1:N, phy$edge[,2])
+    N <- Ntip(phy)
+    tips <- match(seq_len(N), phy$edge[,2])
 
     ## get all path lengths
-    ## call internal geiger fxn
-    pp <- Tmax - ht$end[c(1:N)]
+    pp <- heights$start[N + 1] - heights$end[seq_len(N)]
 
     ## rescale all branches according to lambda value
-    lambda <- pars$lambda
-
-    bl <- phy$edge.length*lambda
+    bl <- phy$edge.length * pars$lambda
 
     ## readjust the tip branches
-    bl[tips] <- bl[tips] + (pp - (pp * lambda))
+    bl[tips] <- bl[tips] + (pp - (pp * pars$lambda))
     phy$edge.length <- bl
 
     ## check to make sure no negative branch lengths produced
@@ -134,60 +81,37 @@ model.phylo.lambda <- function(phy, pars){
         warning("negative branch lengths in tranformed tree. Lambda may be too large")
 
     ## rescale branch lengths according to sigsq
-    sigsq <- pars$sigsq
+    phy$edge.length <- phy$edge.length * pars$sigsq
 
-    phy$edge.length <- phy$edge.length * sigsq
-
-    ## return phy
     model.phylo.se(phy, pars)
 }
 
-
-
-
-
-## kappa transformation
 model.phylo.kappa <- function(phy, pars){
-    ## check pars to make sure they are non-negative
-    if (pars$sigsq < 0 || pars$kappa < 0)
-        stop("Parameters need to be non-negative")
-
-    ## rescale branch lengths according to kappa
-    kappa <- pars$kappa
-    phy$edge.length <- phy$edge.length^kappa
-
-    ## rescale branch lengths according to sigsq
-    sigsq <- pars$sigsq
-
-    phy$edge.length <- phy$edge.length * sigsq
-
-    ## return phy
-    model.phylo.se(phy, pars)
+  if (pars$sigsq < 0 || pars$kappa < 0)
+    stop("Parameters need to be non-negative")
+  phy$edge.length <- (phy$edge.length^pars$kappa) * pars$sigsq
+  model.phylo.se(phy, pars)
 }
 
-
-
-
-
-## delta transformation
+## NOTE [RGF]: I skipped the tidy-up here, because there is a good
+## chance that this doesn't work (see issue #58).
 model.phylo.delta <- function(phy, pars){
-    ## check pars to make sure they are non-negative
     if (pars$sigsq < 0 || pars$delta < 0)
         stop("Parameters need to be non-negative")
 
     ## get all heights
-    ht <- edge.height(phy)
+    heights <- edge.height(phy)
 
     ## get tree depth
     ## same as max(branching.times(phy)) but works for non-ultrametric trees
     N <- Ntip(phy)
-    Tmax <- ht$start[N+1]
+    Tmax <- heights$start[N+1]
 
     ## get braching times in terms of tree depth
     ## note: Geiger's delta transformation does not index the branches (like OU)
     ## need to check if this is correct
-    t <- Tmax - ht$start
-    l <- ht$start - ht$end
+    t <- Tmax - heights$start
+    l <- heights$start - heights$end
 
     ## rescale the branches according to delta
     delta <- pars$delta
@@ -205,44 +129,19 @@ model.phylo.delta <- function(phy, pars){
 }
 
 
-
-
-## trend transformation
-## NEED TO WRITE THIS FXN LATER
-## placeholder fxn
-
+## See issue #59
 model.phylo.trend <- function(phy, pars)
     stop("trend model is not currently implemented")
 
-
-
-
-
-## white noise transformation
-## turn tree into star phylogeny
+## NOTE: White noise transformation turns tree into star phylogeny.
 model.phylo.white <- function(phy, pars){
-    ## check pars to make sure they are non-negative
-    if (pars$sigsq < 0)
-        stop("Parameters need to be non-negative")
-
-    ## collapse to star phylogeny
-    tips <- Ntip(phy)
-    phy$edge.length[] <- 0
-    phy$edge.length[phy$edge[,2] <= tips] <- 1
-
-    ## rescale according to sigsq
-    sigsq <- pars$sigsq
-
-    phy$edge.length <- phy$edge.length * sigsq
-
-    ## return phy
-    model.phylo.se(phy, pars)
+  if (pars$sigsq < 0)
+    stop("Parameters need to be non-negative")
+  is.tip <- phy$edge[,2] <= Ntip(phy)
+  phy$edge.length[!is.tip] <- 0
+  phy$edge.length[ is.tip] <- pars$sigsq
+  model.phylo.se(phy, pars)
 }
-
-
-
-
-
 
 
 #' @method make.model.phylo fitC
@@ -336,4 +235,30 @@ model.phylo.se <- function(phy, pars) {
   tips <- phy$edge[,2] <= Ntip(phy)
   phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE
   phy
+}
+
+## Branching times in terms of tree depth
+branching.times.by.depth <- function(phy) {
+  N <- Ntip(phy)
+  heights <- edge.height(phy)
+
+  ## Total tree depth; same as as max(branching.times(phy)) but
+  ## works for non-ultrametric trees
+  Tmax <- heights$start[N+1]
+
+  idx <- match(1:nrow(heights), phy$edge[,2])
+  t1 <- Tmax - heights$end[phy$edge[idx,1]]
+  t2 <- heights$start - heights$end + t1
+  list(t1=t1, t2=t2, Tmax=Tmax)
+}
+
+## Total tree depth; same as as max(branching.times(phy)) but
+## works for non-ultrametric trees
+tree.depth <- function(phy) {
+  N <- Ntip(phy)
+  heights <- edge.height(phy)
+
+  ## Total tree depth; same as as max(branching.times(phy)) but
+  ## works for non-ultrametric trees
+  heights$start[N+1]
 }
