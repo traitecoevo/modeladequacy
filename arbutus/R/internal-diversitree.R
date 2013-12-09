@@ -36,7 +36,7 @@ model.info.fit.mle <- function(fit, ...) {
 model.type.mcmcsamples <- function(fit, ...) {
   require(diversitree)
   lik <- get.likelihood(fit)
-  if (is.constrained(lik))
+  if (diversitree:::is.constrained(lik))
     toupper(class(get.likelihood(lik))[[1]])
   else
     toupper(class(lik)[[1]])
@@ -98,6 +98,8 @@ diversitree.to.arbutus.se <- function(pars, lik) {
   ## Pull the standard error out.  Also ugly.
   cache <- diversitree:::get.cache(lik)
   sd <- cache$states.sd
+  if (is.null(sd)) # pgls
+    sd <- 0
   if (length(unique(sd)) == 1)
     pars$SE <- sd[[1]]
   else
