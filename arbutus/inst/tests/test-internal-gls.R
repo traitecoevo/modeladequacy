@@ -1,6 +1,4 @@
 source("helper-arbutus.R")
-library(nlme)
-
 
 context("GLS (internals)")
 
