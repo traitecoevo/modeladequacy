@@ -42,7 +42,7 @@ model.data.pgls <- function(fit, ...){
 ## Also note that REML estimators are not available for this pkg
 model.pars.pgls <- function(fit, ...){
     model <- model.type(fit)
-    if (model == BM){
+    if (model == "BM"){
         p <- NULL
     } else {
         p <- fit$param[model]
@@ -72,7 +72,7 @@ estimate.sigma2.pgls <- function(fit, ...){
     ## tree's VCV.
   
     rr <- as.numeric(resid(fit))
-    names(rr) <- names(resid(fit))
+    names(rr) <- phy$tip.label
     cmp <- resid(fit)
   
     phy.u <- as.unit.tree(phy, data=rr)

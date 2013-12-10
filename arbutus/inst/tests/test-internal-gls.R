@@ -1,6 +1,6 @@
-library(diversitree)
+source("helper-arbutus")
 library(nlme)
-library(testthat)
+
 
 context("GLS (internals)")
 
