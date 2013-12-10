@@ -1,4 +1,4 @@
-source("helper-arbutus")
+source("helper-arbutus.R")
 library(nlme)
 
 
@@ -142,4 +142,9 @@ test_that("Overall processed object looks legit", {
   expect_that(names(obj.ou), is_identical_to(obj.names))
   expect_that(names(obj.eb), is_identical_to(obj.names))
   expect_that(names(obj.la), is_identical_to(obj.names))
+
+  expect_that(class(obj.bm), is_identical_to("fitC"))
+  expect_that(class(obj.ou), is_identical_to("fitC"))
+  expect_that(class(obj.eb), is_identical_to("fitC"))
+  expect_that(class(obj.la), is_identical_to("fitC"))
 })
