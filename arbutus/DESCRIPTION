@@ -26,6 +26,7 @@ Collate:
     'internal-gls-diversitree.R'
     'internal-gls.R'
     'internal-phylolm.R'
+    'internal-caper.R'
     'internal.R'
     'plotting-fxns.R'
     'rescale-fitContinuous.R'

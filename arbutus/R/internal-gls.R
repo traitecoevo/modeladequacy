@@ -62,18 +62,21 @@ translate.ape.arbutus <- function(x) {
 ## chosen with the 'method' argument to gls().  The parameters are
 ## extracted from the correlation structure, though the parameters
 ## need a little tweaking to get.
+##
+## Note: I (MWP) changed rescale variable name to tree.rescale to
+## avoid confusion with similar rescale.phylo fxn in geiger
 estimate.sigma2.gls <- function(fit) {
   phy <- model.data(fit)$phy
   pars <- model.pars(fit$modelStruct$corStruct)
 
   ## Appropriately rescale the tree:
-  rescale <- switch(model.type(fit),
+  tree.rescale <- switch(model.type(fit),
                     BM=model.phylo.bm,
                     OU=model.phylo.ou,
                     EB=model.phylo.eb,
                     lambda=model.phylo.lambda,
                     stop("Unknown model type ", model.type(fit)))
-  phy <- rescale(phy, pars)
+  phy <- tree.rescale(phy, pars)
 
   ## The data that we care about are the residuals of the model fit;
   ## it is these that are assumed to be distributed according to the
