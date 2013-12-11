@@ -179,8 +179,18 @@ make.model.phylo.fitC <- function(x, ...) {
     rphy
 }
 
-
-
+model.phylo.rescale <- function(type) {
+  switch(type,
+         BM=model.phylo.bm,
+         OU=model.phylo.ou,
+         EB=model.phylo.eb,
+         lambda=model.phylo.lambda,
+         kappa=model.phylo.kappa,
+         delta=model.phylo.delta,
+         trend=model.phylo.trend,
+         white=model.phylo.white,
+         stop("Unknown model type ", type))
+}
 
 #' @title Rescale phylogeny based on fitted model parameters
 #'

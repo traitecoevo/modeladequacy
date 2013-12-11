@@ -54,18 +54,9 @@ model.pars.pgls <- function(fit, ...){
 
 estimate.sigma2.pgls <- function(fit, ...){
     phy <- model.data(fit)$phy
-    model <- model.type(fit)
 
-    pars <- get.pgls.pars.unity(fit, model)
-    
-    tree.rescale <- switch(model.type(fit),
-                           BM=model.phylo.bm,
-                           lambda=model.phylo.lambda,
-                           kappa=model.phylo.kappa,
-                           delta=model.phylo.delta,
-                           stop("Unknown model type", model.type(fit)))
-
-    phy <- tree.rescale(phy, pars)
+    pars <- get.pgls.pars.unity(fit)
+    phy <- model.phylo.rescale(model.type(fit))(phy, pars)
 
     ## The data that we care about are the residuals of the model fit;
     ## it is these that are assumed to be distributed according to the
@@ -82,6 +73,8 @@ estimate.sigma2.pgls <- function(fit, ...){
     s2 <- mean(phy.u$pics[,"contrasts"]^2) # REML estimate
 
     ## now convert to ml
+    ## NOTE: In contrast with gls, caper::pgls always fits ML rather
+    ## than REML.
     s2 <- reml.to.ml(s2, Ntip(phy), length(coef(fit)))
 
     s2
@@ -89,7 +82,8 @@ estimate.sigma2.pgls <- function(fit, ...){
 
 
 ## helper function for pulling out parameters for estimate sigma2.pgls
-get.pgls.pars.unity <- function(fit, model){
+get.pgls.pars.unity <- function(fit){
+    model <- model.type(fit)
     if (model == "BM"){
         pars <- c(list(sigsq=1), list(SE=0))
     } else {
