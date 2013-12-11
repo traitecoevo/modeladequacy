@@ -122,15 +122,13 @@ as.unit.tree.default <- function(x, ...) {
 #' @S3method as.unit.tree phylo
 as.unit.tree.phylo <- function(x, data, ...) {
   ## check tree and data to make sure they match
-  td <- suppressWarnings(build.tree.data(phy=x, data=data))
-  phy <- td$phy
-  data <- td$data
+  check.tree.data(x, data)
 
   ## calculate pics
-  pics <- pic(data, phy, var.contrasts=TRUE)
+  pics <- pic(data, x, var.contrasts=TRUE)
 
   ## append all the object together
-  unit.tree <- list(phy=phy, data=data, pics=pics)
+  unit.tree <- list(phy=x, data=data, pics=pics)
 
   ## change the class of the unit.tree
   class(unit.tree) <- "unit.tree"
@@ -166,8 +164,19 @@ as.unit.tree.mcmcsamples <- function(x, burnin=NA, thin=NA, sample=NA,
     ## create unit trees from multiPhylo object
     as.unit.tree(phy, obj$data$data)
 }
-    
 
+as.unit.tree.mcmcsamples.pgls <- function(x, burnin=NA, thin=NA, sample=NA,
+                                          ...) {
+  obj <- model.info(x, burnin, thin, sample, ...)
+  phy <- make.model.phylo(obj)
+
+  data <- obj$data$data
+
+  res <- lapply(seq_along(phy), function(i)
+                as.unit.tree(phy, data[,i,drop=FALSE]))
+  class(res) <- "multiPhylo"
+  res
+}
 
 
 

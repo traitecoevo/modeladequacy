@@ -6,21 +6,20 @@ data(geospiza)
 dat <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
 
 phy <- dat$phy
-states <- dat$dat[,"wingL"]
+states <- dat$dat[phy$tip.label,"wingL"]
 
 test_that("Unit tree construction works", {
   phy.unit <- as.unit.tree(phy, states)
   expect_that(names(phy.unit),
               is_identical_to(c("phy", "data", "pics")))
   expect_that(phy.unit$phy, is_a("phylo"))
-  expect_that(phy.unit$data, is_a("matrix"))
+  expect_that(phy.unit$data, is_a("numeric"))
   expect_that(phy.unit$pics, is_a("matrix"))
 
   expect_that(phy.unit$phy, is_identical_to(phy))
-  expect_that(phy.unit$data,
-              equals(cbind(states, deparse.level=0)))
+  expect_that(phy.unit$data, equals(states))
   expect_that(phy.unit$pics,
-              equals(pic(cbind(states), phy, var.contrasts=TRUE)))
+              equals(pic(states, phy, var.contrasts=TRUE)))
 })
 
 test_that("BM tree rescaling worked (fitContinuous)", {
@@ -204,3 +203,56 @@ test_that("white noise rescaling worked (fitContinuous)", {
 })
                 
 
+## PGLS
+set.seed(1)
+phy <- tree.bd(pars=c(1,0), max.taxa=100)
+tx <- sim.character(phy, 1)
+ty <- sim.character(phy, 1) + 3
+data <- data.frame(x=tx, y=ty, row.names=names(tx))
+
+## NLME:
+fit.gls.bm.ml   <- gls(y ~ x, data, corBrownian(1, phy), method="ML")
+fit.gls.bm.reml <- gls(y ~ x, data, corBrownian(1, phy), method="REML")
+
+## Diversitree, ML
+lik.pgls.bm.vcv <- make.pgls(phy, y ~ x, data,
+                             control=list(method="vcv"))
+lik.pgls.bm.con <- make.pgls(phy, y ~ x, data,
+                             control=list(method="contrasts"))
+
+s2.ml <- arbutus:::estimate.sigma2.gls(fit.gls.bm.ml)
+p.ml <- c(coef(fit.gls.bm.ml), s2=s2.ml)
+
+fit.pgls.bm.vcv <- find.mle(lik.pgls.bm.vcv, c(0, 0, 1))
+fit.pgls.bm.con <- find.mle(lik.pgls.bm.con, c(0, 0, 1))
+
+## Draw some mcmc samples, straight from the likelihood.
+set.seed(1)
+samples <- mcmc(lik.pgls.bm.con, p.ml, 100, w=1, print.every=0)
+
+phy.u.gls.bm.ml   <- as.unit.tree(fit.gls.bm.ml)
+phy.u.gls.bm.reml <- as.unit.tree(fit.gls.bm.reml)
+
+## TODO (RGF) This is really ugly.  Part of the reason that this is
+## ugly is that as.unit.tree.phylo is doing potentially quite a lot
+## (especially with regard to reordering states).  I think we might
+## want to *not* do that, as I'm not sure what the logic is behind
+## filtering and reordering data that has been successfully fit from
+## one of the previous models.  In any case we need to determine that
+## the correct thing is happening if we want to rely on this.
+test_that("Unit tree is correct for GLS", {
+  cmp <- rescale(phy, "BM",
+                 arbutus:::estimate.sigma2.gls(fit.gls.bm.ml))
+  info <- model.info(fit.gls.bm.ml)
+  phy.u <- as.unit.tree(fit.gls.bm.ml)
+  expect_that(phy.u$phy, equals(cmp))
+  expect_that(phy.u$data, equals(info$data$data))
+  expect_that(phy.u$pics,
+              equals(pic(info$data$data, phy.u$phy, var.contrasts=TRUE)))
+})
+
+
+## phy.u.gls.bm.vcv  <- as.unit.tree(fit.pgls.bm.vcv)
+## phy.u.gls.bm.con  <- as.unit.tree(fit.pgls.bm.con)
+
+## phy.u.samples     <- as.unit.tree(samples)

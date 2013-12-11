@@ -6,7 +6,7 @@ data(geospiza)
 dat <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
 
 phy <- dat$phy
-states <- dat$dat[,"wingL"]
+states <- dat$dat[phy$tip.label,"wingL"]
 phy.unit <- as.unit.tree(phy, states)
 
 test_that("Summary statistic wrapper function produces correct output", {
@@ -64,40 +64,34 @@ test_that("Custom supplied functions work correctly", {
 
 
 
+## Numbers here computed using make_expectation()
 test_that("REML sigsq is being calculated correctly", {
-    ss <- round(sigsq.est(phy.unit), 5)
-    expect_that(ss, equals(0.13036))
+  expect_that(sigsq.est(phy.unit), equals(0.0764244853752198))
 })
 
 test_that("Variance of contrasts is being calculated correctly", {
-    ss <- round(var.contrast(phy.unit), 5)
-    expect_that(ss, equals(0.06456))
+  expect_that(var.contrast(phy.unit), equals(0.0276760842911352))
 })
 
 test_that("Slope of contrasts and variance is being calculated correctly", {
-    ss <- round(cor.contrast.var(phy.unit), 5)
-    expect_that(ss, equals(-0.79589))
+  expect_that(cor.contrast.var(phy.unit), equals(-0.29076711665925))
 })
 
 test_that("Slope of contrasts and asr is being calculated correctly", {
-    ss <- round(cor.contrast.asr(phy.unit), 5)
-    expect_that(ss, equals(-2.10474))
+  expect_that(cor.contrast.asr(phy.unit), equals(-1.22336966244042))
 })
 
 test_that("Slope of contrasts and node height is being calculated correctly", {
-    ss <- round(cor.contrast.nh(phy.unit), 5)
-    expect_that(ss, equals(-0.80493))
+  expect_that(cor.contrast.nh(phy.unit), equals(-0.306687992622041))
 })
 
 test_that("KS D-Statistic is being calculated correctly",{
     set.seed(1) ## simulates normal so need to set seed
-    ss <- round(ks.contrast(phy.unit), 5)
-    expect_that(ss, equals(0.2936))
+    expect_that(ks.contrast(phy.unit), equals(0.198466666666667))
 })
 
 
 test_that("Summary statistic comparison is working properly",{
-
     ## single observed summary stat
     set.seed(1)
     ss.o <- summ.stats(phy.unit)
@@ -124,8 +118,9 @@ test_that("Summary statistic comparison is working properly",{
     expect_that(nrow(cc$summ.stats.sim), equals(6))
 
     ## check if values are correct
-    ex.p <- c(0,0,0,0,0,4/7)
-    expect_that(as.numeric(cc$p.values), equals(ex.p))
+    expect_that(as.numeric(cc$p.values),
+                equals(c(0, 0, 0.285714285714286,
+                         0, 0.285714285714286, 0.285714285714286)))
 
     ## if we provide different names
     ss.s.wrgname <- ss.s

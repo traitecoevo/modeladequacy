@@ -68,7 +68,7 @@ test_that("High level interface works", {
   data(geospiza)
   td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
   phy <- td$phy
-  dat <- td$data[,"wingL"]
+  dat <- td$data[phy$tip.label,"wingL"]
   unit.tree <- as.unit.tree(phy, dat)
 
   nsim <- 2
