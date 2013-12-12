@@ -165,6 +165,8 @@ as.unit.tree.mcmcsamples <- function(x, burnin=NA, thin=NA, sample=NA,
     as.unit.tree(phy, obj$data$data)
 }
 
+#' @method as.unit.tree mcmcsamples.pgls
+#' @S3method as.unit.tree mcmcsamples.pgls
 as.unit.tree.mcmcsamples.pgls <- function(x, burnin=NA, thin=NA, sample=NA,
                                           ...) {
   obj <- model.info(x, burnin, thin, sample, ...)
@@ -173,7 +175,7 @@ as.unit.tree.mcmcsamples.pgls <- function(x, burnin=NA, thin=NA, sample=NA,
   data <- obj$data$data
 
   res <- lapply(seq_along(phy), function(i)
-                as.unit.tree(phy, data[,i,drop=FALSE]))
+                as.unit.tree(phy[[i]], data[,i]))
   class(res) <- "multiPhylo"
   res
 }
