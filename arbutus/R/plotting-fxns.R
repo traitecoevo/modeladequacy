@@ -6,7 +6,7 @@
 #' @description Plot the contrasts derived from a rescaled 'unit.tree' against
 #' their expected variances.
 #'
-#' @param x a model fitted object or 'phylo' object that can be passed to \code{\link{as.unit.tree}}.
+#' @param x a model fitted object or \code{phylo} object that can be passed to \code{\link{as.unit.tree}}.
 #'
 #' @param col colours used for plotting
 #'
@@ -85,7 +85,7 @@ contrast.var.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #' @description Plot the contrasts derived from a rescaled 'unit.tree' against
 #' their inferred ancestral state.
 #'
-#' @param x a model fitted object or 'phylo' object that can be passed to \code{\link{as.unit.tree}}.
+#' @param x a model fitted object or \code{phylo} object that can be passed to \code{\link{as.unit.tree}}.
 #'
 #' @param col colours used for plotting
 #'
@@ -170,7 +170,7 @@ contrast.asr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #' @description Plot the contrasts derived from a rescaled 'unit.tree' against
 #' the node height (i.e. depth) at which they are computed
 #'
-#' @param x a model fitted object or 'phylo' object that can be passed to \code{\link{as.unit.tree}}.
+#' @param x a model fitted object or \code{phylo} object that can be passed to \code{\link{as.unit.tree}}.
 #'
 #' @param col colours used for plotting
 #'

@@ -6,8 +6,8 @@
     ...)
 }
 \arguments{
-  \item{x}{a model fitted object or 'phylo' object that can
-  be passed to \code{\link{as.unit.tree}}.}
+  \item{x}{a model fitted object or \code{phylo} object
+  that can be passed to \code{\link{as.unit.tree}}.}
 
   \item{col}{colours used for plotting}
 

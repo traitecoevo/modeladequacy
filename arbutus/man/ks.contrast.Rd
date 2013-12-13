@@ -5,7 +5,7 @@
   ks.contrast(unit.tree)
 }
 \arguments{
-  \item{unit.tree}{a unit.tree object}
+  \item{unit.tree}{a \code{unit.tree} object}
 }
 \value{
   the D-statistic from a KS-test
@@ -23,15 +23,14 @@
   we expect the square root ofthe mean of squared contrasts
   to be equal to 1. The empirical estimate is used rather
   than assume a variance of 1 to reduce the overlap between
-  this summary statistic and the REML estimate of
-  \eqn{sigma^2} (see \code{\link{sigsq.est}}). The
-  Kolmogorov-Smirnov (KS) test is a non-parameteric test
-  which computes the maximum distance \eqn{D} between two
-  cumulative distribution functions. Running the test
-  multiple times on the same data will produce slightly
-  different values due to the fact that the null
-  distribution is produced by randomly drawing from a
-  normal distribution.
+  this summary statistic and the REML estimate of sigma2
+  (see \code{\link{sigsq.est}}). The Kolmogorov-Smirnov
+  (KS) test is a non-parameteric test which computes the
+  maximum distance \eqn{D} between two cumulative
+  distribution functions. Running the test multiple times
+  on the same data will produce slightly different values
+  due to the fact that the null distribution is produced by
+  randomly drawing from a normal distribution.
 
   The KS-D statistic is included as a default summary
   statistic in the function \code{\link{summ.stats}}.

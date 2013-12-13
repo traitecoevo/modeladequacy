@@ -207,9 +207,9 @@ model.phylo.rescale <- function(type) {
 #'
 #' To include additional types of models, researchers will need to build a new \code{\link{model.info}}
 #' function for the given model type. The output should be assigned a novel class.
-#' A \code{make.model.phylo.classX} object will need to be created to perform the rescaling.
+#' A \code{make.model.phylo.class} object will need to be created to perform the rescaling.
 #'
-#' @return a 'phylo' object that can be used to from a 'unit.tree' object
+#' @return a \code{phylo} object that can be used to from a \code{unit.tree} object
 #'
 #' @seealso \code{\link{as.unit.tree}}
 #'

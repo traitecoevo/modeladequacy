@@ -2,7 +2,7 @@
 #'
 #' @description Calculates a set of summary statistics on the contrasts included with a 'unit.tree' object.
 #'
-#' @param unit.tree a 'unit.tree' object or list of unit.trees
+#' @param unit.tree a \code{unit.tree} object or list of unit.trees
 #' @param stats a named list of summary statistics to calculate on the unit.tree.
 #'   If no \code{stats} argument supplied, default summary statistics are used.
 #'
@@ -81,16 +81,16 @@ summ.stats <- function(unit.tree, stats=NULL){
 #' which is equal to the REML estimate of the BM rate parameter.
 #' Used as a summary statistic to evaluate model adequacy
 #'
-#' @param unit.tree a 'unit.tree' object
+#' @param unit.tree a \code{unit.tree} object
 #'
 #' @details This summary statistic is used to assess the ability of the model
 #' to adequate estimate the rate of evolution. On datasets simulated on a unit.tree (see \code{\link{sim.char.unit}}),
 #' the expected value is equal to 1.
 #'
-#' The REML estimate of \eqn{sigma^2} is included as a default
+#' The REML estimate of sigma2 is included as a default
 #' summary statistic in the function \code{\link{summ.stats}}
 #'
-#' @return estimate of \eqn{sigma^2}
+#' @return estimate of sigma2
 #'
 #' @export sigsq.est
 #'
@@ -127,13 +127,13 @@ sigsq.est <- function(unit.tree){
 #' of contrasts with that of a normal distribution with mean 0 and variance
 #' equal to the square root of the mean of squared contrasts
 #'
-#' @param unit.tree a unit.tree object
+#' @param unit.tree a \code{unit.tree} object
 #'
 #' @details This summary statistics is used to evaluate whether the assumption of multivariate normailty
 #' is appropriate. If the model which generated the data is the fitted model, we expect the
 #' square root ofthe mean of squared contrasts to be equal to 1. The empirical estimate is used
 #' rather than assume a variance of 1 to reduce the overlap between this summary statistic and the
-#' REML estimate of \eqn{sigma^2} (see \code{\link{sigsq.est}}). The Kolmogorov-Smirnov (KS) test is a
+#' REML estimate of sigma2 (see \code{\link{sigsq.est}}). The Kolmogorov-Smirnov (KS) test is a
 #' non-parameteric test which computes the maximum distance \eqn{D} between two cumulative distribution functions.
 #' Running the test multiple times on the same data will produce slightly different values due to the fact
 #' that the null distribution is produced by randomly drawing from a normal distribution.
@@ -181,7 +181,7 @@ ks.contrast <- function(unit.tree){
 #'
 #' @description Calculates the variance of the absolute value of the contrasts
 #'
-#' @param unit.tree a 'unit.tree' object
+#' @param unit.tree a \code{unit.tree} object
 #'
 #' @details This summary is used to evaluate whether the model is sufficiently
 #' capturing the variation in rates across the tree.
@@ -224,12 +224,12 @@ var.contrast <- function(unit.tree) {
 #' @description Fits a linear model between the absolute value of constrasts
 #' and their expected variances
 #'
-#' @param unit.tree a unit.tree object
+#' @param unit.tree a \code{unit.tree} object
 #'
 #' @details This summary statistic is the estimate of the slope from fitting
 #' a linear model between the contrasts and their expected variance. It is used
 #' to evaluate whether the model is adequately capturing variation relative to branch
-#' lengths. If the generating model is correct, we expect there not to be a relationship
+#' lengths. If the model is adequate, we expect there not to be a relationship
 #' between the contrasts and their variances (i.e. slope ~ 0).
 #'
 #' The slope of the contrasts and their variances is included as a default summary statistic
@@ -280,14 +280,16 @@ cor.contrast.var <- function(unit.tree){
 #' @description Fits a linear model between the absolute value of the contrasts
 #' and the node height at which they were calculated
 #'
-#' @param unit.tree a 'unit.tree' object
+#' @param unit.tree a \code{unit.tree} object
 #'
 #' @details This summary statistic is the estimate of the slope from fitting
 #' a linear model between the contrasts and the node height (i.e. tree depth)
 #' at which they were calculated. It is used
 #' to evaluate whether the model is adequately capturing variation relative to tree depth.
-#' If the generating model is correct, we expect there not to be a relationship
-#' between the contrasts and their node height (i.e. slope ~ 0).
+#' If the model is adequate, we expect there not to be a relationship
+#' between the contrasts and their node height (i.e. slope ~ 0). Note that the node heights
+#' being used here are the absolute node ages from the original phylogeny and not the adjusted
+#' node ages obtained from computing contrasts (see \code{\link{pic}}).
 #'
 #' The slope of the contrasts and their variances is included as a default summary statistic
 #' in the function \code{\link{summ.stats}} 
@@ -340,7 +342,7 @@ cor.contrast.nh <- function(unit.tree){
 #' @description Fits a linear model between the absolute value of the contrasts
 #' and the ancestral state inferred at the node at which the contrast was calculated
 #'
-#' @param unit.tree a 'unit.tree' object
+#' @param unit.tree a \code{unit.tree} object
 #'
 #' @details This summary statistic is the estimate of the slope from fitting
 #' a linear model between the contrasts and the inferred ancestral state at the node
@@ -351,7 +353,7 @@ cor.contrast.nh <- function(unit.tree){
 #' different from the maximum likelihood approach to reconstructing ancestral states.
 #' The contrast based approach is
 #' used here as there is a clear expectation of the relationship between the the contrasts and
-#' trait value. If the generating model is correct, we expect there not to be a relationship
+#' trait value. If the model is adequate, we expect there not to be a relationship
 #' between the contrasts and their node height (i.e. slope ~ 0).
 #'
 #' The slope of the contrasts and their variances is included as a default summary statistic

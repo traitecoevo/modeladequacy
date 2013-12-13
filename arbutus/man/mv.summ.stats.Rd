@@ -5,7 +5,7 @@
   mv.summ.stats(x)
 }
 \arguments{
-  \item{x}{a 'phy.ss' object inherited from
+  \item{x}{a \code{phy.ss} object inherited from
   \code{\link{compare.summ.stats}}}
 }
 \value{

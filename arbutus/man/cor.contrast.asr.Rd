@@ -5,7 +5,7 @@
   cor.contrast.asr(unit.tree)
 }
 \arguments{
-  \item{unit.tree}{a 'unit.tree' object}
+  \item{unit.tree}{a \code{unit.tree} object}
 }
 \value{
   the estimated slope parameter
@@ -29,9 +29,9 @@
   approach to reconstructing ancestral states. The contrast
   based approach is used here as there is a clear
   expectation of the relationship between the the contrasts
-  and trait value. If the generating model is correct, we
-  expect there not to be a relationship between the
-  contrasts and their node height (i.e. slope ~ 0).
+  and trait value. If the model is adequate, we expect
+  there not to be a relationship between the contrasts and
+  their node height (i.e. slope ~ 0).
 
   The slope of the contrasts and their variances is
   included as a default summary statistic in the function

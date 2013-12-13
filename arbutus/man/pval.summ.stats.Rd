@@ -5,7 +5,7 @@
   pval.summ.stats(x)
 }
 \arguments{
-  \item{x}{a 'phy.ss' object from the function
+  \item{x}{a \code{phy.ss} object from the function
   \code{\link{compare.summ.stats}}}
 }
 \value{

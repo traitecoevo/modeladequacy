@@ -14,8 +14,8 @@
   denoting the names of the statistics used.}
 }
 \value{
-  an object of class 'phy.ss' which is a list containing
-  the following objects: \describe{
+  an object of class \code{phy.ss} which is a list
+  containing the following objects: \describe{
   \item{p.values}{Two--tailed p-values for all summary
   statistics} \item{summ.stats.obs}{The input data frame of
   observed summary statistics} \item{summ.stats.sim}{The
@@ -64,7 +64,7 @@
   p-values.
 
   The p-values can be extracted from the output of
-  \code{compare.summ.stats} using the function
+  \code{\link{compare.summ.stats}} using the function
   \code{\link{pval.summ.stats}}
 }
 \examples{

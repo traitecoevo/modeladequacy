@@ -5,7 +5,7 @@
   var.contrast(unit.tree)
 }
 \arguments{
-  \item{unit.tree}{a 'unit.tree' object}
+  \item{unit.tree}{a \code{unit.tree} object}
 }
 \value{
   the estimate of the variance of the absolute value of the

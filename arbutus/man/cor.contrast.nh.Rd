@@ -5,7 +5,7 @@
   cor.contrast.nh(unit.tree)
 }
 \arguments{
-  \item{unit.tree}{a 'unit.tree' object}
+  \item{unit.tree}{a \code{unit.tree} object}
 }
 \value{
   the estimated slope parameter
@@ -20,10 +20,13 @@
   fitting a linear model between the contrasts and the node
   height (i.e. tree depth) at which they were calculated.
   It is used to evaluate whether the model is adequately
-  capturing variation relative to tree depth. If the
-  generating model is correct, we expect there not to be a
-  relationship between the contrasts and their node height
-  (i.e. slope ~ 0).
+  capturing variation relative to tree depth. If the model
+  is adequate, we expect there not to be a relationship
+  between the contrasts and their node height (i.e. slope ~
+  0). Note that the node heights being used here are the
+  absolute node ages from the original phylogeny and not
+  the adjusted node ages obtained from computing contrasts
+  (see \code{\link{pic}}).
 
   The slope of the contrasts and their variances is
   included as a default summary statistic in the function

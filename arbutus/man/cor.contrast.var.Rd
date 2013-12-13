@@ -5,7 +5,7 @@
   cor.contrast.var(unit.tree)
 }
 \arguments{
-  \item{unit.tree}{a unit.tree object}
+  \item{unit.tree}{a \code{unit.tree} object}
 }
 \value{
   the estimated slope paramter
@@ -19,9 +19,9 @@
   fitting a linear model between the contrasts and their
   expected variance. It is used to evaluate whether the
   model is adequately capturing variation relative to
-  branch lengths. If the generating model is correct, we
-  expect there not to be a relationship between the
-  contrasts and their variances (i.e. slope ~ 0).
+  branch lengths. If the model is adequate, we expect there
+  not to be a relationship between the contrasts and their
+  variances (i.e. slope ~ 0).
 
   The slope of the contrasts and their variances is
   included as a default summary statistic in the function

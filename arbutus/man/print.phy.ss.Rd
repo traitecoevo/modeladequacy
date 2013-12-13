@@ -5,7 +5,7 @@
   \method{print}{phy.ss} (x, ...)
 }
 \arguments{
-  \item{x}{a 'phy.ss' object}
+  \item{x}{a \code{phy.ss} object}
 
   \item{...}{additional arguments to be passed to print}
 }

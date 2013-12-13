@@ -5,7 +5,7 @@
   summ.stats(unit.tree, stats = NULL)
 }
 \arguments{
-  \item{unit.tree}{a 'unit.tree' object or list of
+  \item{unit.tree}{a \code{unit.tree} object or list of
   unit.trees}
 
   \item{stats}{a named list of summary statistics to

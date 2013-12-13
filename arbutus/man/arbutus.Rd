@@ -12,12 +12,13 @@
   is a Brownian motion process, the contrasts (sensu
   Felsenstein, 1985) will be independent and identically
   distributed (I.I.D.). We can evaluate this condition by
-  calculating a set of summary statistics on our observed
-  data, then simulating datasets under a Brownian motion
-  process along the phylogeny and calculating the summary
-  statistics on each simulated data set. We can then
-  compare our observed summary statistics to the simulated
-  distribution of summary statistics.
+  calculating a set of summary statistics the contrasts on
+  our observed data, then simulating datasets under a
+  Brownian motion process along the phylogeny and
+  calculating the summary statistics on the contrasts of
+  each simulated data set. We can then compare our observed
+  summary statistics to the simulated distribution of
+  summary statistics.
 
   The I.I.D. property of the contrasts will hold only for
   the case of Brownian motion. However, the approach can be
@@ -26,9 +27,8 @@
   multivariate normal distribution) by first rescaling the
   phylogeny based on the fitted parameter estimates,
   creating what we refer to as a 'unit.tree'. Once the
-  rescaling is done, the contrasts will again be I.I.D. if
-  the model that was fit is a good fit to the data; which
-  again we can evaluate with the use of summary statistics.
+  rescaling is done, the contrasts will be I.I.D. if the
+  model that was fit is a adequate one.
 
   The basic functionality of arbutus can be employed using
   the function \code{\link{phy.model.check}}. This function

@@ -35,10 +35,10 @@
 #' for more details. For the purposes of plotting, the observed and simulated summary
 #' statistics used as arguments are returned with the p-values.
 #'
-#' The p-values can be extracted from the output of \code{compare.summ.stats} using the
+#' The p-values can be extracted from the output of \code{\link{compare.summ.stats}} using the
 #' function \code{\link{pval.summ.stats}}
 #'
-#' @return an object of class 'phy.ss' which is a list containing the following objects:
+#' @return an object of class \code{phy.ss} which is a list containing the following objects:
 #' \describe{
 #'  \item{p.values}{Two--tailed p-values for all summary statistics}
 #'  \item{summ.stats.obs}{The input data frame of observed summary statistics}
@@ -172,7 +172,7 @@ compare.summ.stats <- function(summ.stats.obs, summ.stats.sim){
 #' @description Generic function for printing 'phy.ss' objects
 #' from \code{\link{compare.summ.stats}}
 #'
-#' @param x a 'phy.ss' object
+#' @param x a \code{phy.ss} object
 #' @param ... additional arguments to be passed to print
 #'
 #' @return prints p.values to screen
@@ -209,7 +209,7 @@ print.phy.ss <- function(x, ...){
 #' @description Utility function for extracting p-values from the output
 #' of \code{\link{compare.summ.stats}}
 #'
-#' @param x a 'phy.ss' object from the function \code{\link{compare.summ.stats}}
+#' @param x a \code{phy.ss} object from the function \code{\link{compare.summ.stats}}
 #'
 #' @return a named vector of two-tailed p-values
 #'
@@ -251,7 +251,7 @@ pval.summ.stats <- function(x)
 #' @description Computes Mahalanobis distance between the observed summary statistics and
 #' the simulated summary statistics as a multivariate measure of model fit
 #'
-#' @param x a 'phy.ss' object inherited from \code{\link{compare.summ.stats}}
+#' @param x a \code{phy.ss} object inherited from \code{\link{compare.summ.stats}}
 #'
 #' @details This function computes the Mahalanobis distance between the observed and simulated
 #' summary statistics. The Mahalanobis distance (see \code{\link[stats]{mahalanobis}} is a unit-less and

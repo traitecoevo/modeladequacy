@@ -12,8 +12,8 @@
   \code{make.model.phylo}}
 }
 \value{
-  a 'phylo' object that can be used to from a 'unit.tree'
-  object
+  a \code{phylo} object that can be used to from a
+  \code{unit.tree} object
 }
 \description{
   Rescales phylogeny to form a 'unit.tree' using parameters
@@ -29,7 +29,7 @@
   To include additional types of models, researchers will
   need to build a new \code{\link{model.info}} function for
   the given model type. The output should be assigned a
-  novel class. A \code{make.model.phylo.classX} object will
+  novel class. A \code{make.model.phylo.class} object will
   need to be created to perform the rescaling.
 }
 \examples{

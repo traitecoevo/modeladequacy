@@ -5,10 +5,10 @@
   sigsq.est(unit.tree)
 }
 \arguments{
-  \item{unit.tree}{a 'unit.tree' object}
+  \item{unit.tree}{a \code{unit.tree} object}
 }
 \value{
-  estimate of \eqn{sigma^2}
+  estimate of sigma2
 }
 \description{
   Calculates the mean of the squared contrasts, which is
@@ -22,8 +22,8 @@
   \code{\link{sim.char.unit}}), the expected value is equal
   to 1.
 
-  The REML estimate of \eqn{sigma^2} is included as a
-  default summary statistic in the function
+  The REML estimate of sigma2 is included as a default
+  summary statistic in the function
   \code{\link{summ.stats}}
 }
 \examples{
