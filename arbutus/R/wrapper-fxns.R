@@ -53,9 +53,7 @@
 #'   \code{fitContinuous} in the \code{geiger} package.
 #' 
 #'  \item a \code{fit.mle} object returned from fitting a model of continuous character evolution
-#'   using \code{find.mle} in the \code{diversitree} package. As the \code{fit.mle} object
-#'   does not include all of the information required for creating a \code{unit.tree}, a second argument
-#'   \code{lik} needs to be supplied, providing the likelihood function used in \code{find.mle}.
+#'   using \code{find.mle} in the \code{diversitree} package. 
 #' 
 #'  \item a \code{mcmcsamples} object returned from fitting a model of continuous character evolution
 #'   using MCMC methods in the \code{diversitree} package. \code{as.unit.tree} will apply the same
@@ -65,10 +63,7 @@
 #'   \code{thin} specifies the thinning interval (e.g. if \code{thin=5}, the function will create a unit
 #'   tree from every fifth parameter set sampled.
 #'   \code{sample} specifies how many samples to draw from the MCMC run.
-#'   As the \code{mcmcsamples} object
-#'   does not include all of the information required for creating a \code{unit.tree}, a second argument
-#'   \code{lik} needs to be supplied, providing the likelihood function used in \code{mcmcsamples}.
-#' 
+#'   
 #'  \item a \code{gls} object returned from fitting a phylogenetic generalized least squares model
 #'   of character correlation using \code{gls} in the \code{nlme} package.
 #' 
@@ -121,6 +116,41 @@
 #'
 #' ## check adequacy of OU model
 #' modelad.ou <- phy.model.check(fit.ou, nsim=10)
+#' require(diversitree)
+#' ## fit Brownian motion model using ML
+#' ## using diversitree's find.mle function
+#' 
+#' bmlik <- make.bm(phy, data)
+#' fit.bm.dt <- find.mle(bmlik, 0.1)
+#'
+#' ## this creates a 'fit.mle' object which can be used
+#' ## in 'as.unit.tree()'
+#' unit.tree.dt <- as.unit.tree(fit.bm.dt)
+#'
+#' ## fit Brownian motion model using MCMC
+#' mcmc.bm.dt <- mcmc(bmlik, x.init=1, nsteps=1000, w=1)
+#'
+#' ## construct a unit tree object from mcmcsamples
+#' ## removing 100 samples as burnin
+#' ## and sampling 10 parameter sets
+#' unit.tree.mcmc <- as.unit.tree(mcmc.bm.dt,
+#'                        burnin=100, samples=10)
+#' 
+#'
+#' require(nlme)
+#' ## Use pgls to look for a correlation between two traits
+#'
+#' t1 <- data
+#' t2 <- td$data[,"tarsusL"]
+#' dd <- cbind.data.frame(t1, t2)
+#'
+#' ## fit gls model with corPagel correlation structure
+#' fit.gls <- gls(t1~t2, data=dd, correlation=corPagel(phy=phy, value=1))
+#'
+#' ## this creates a 'gls' object which can be used
+#' ## in 'as.unit.tree()'
+#' unit.tree.gls <- as.unit.tree(fit.gls)
+#'
 #' }
 #' 
 phy.model.check <- function(x, nsim=1000, stats=NULL, ...){

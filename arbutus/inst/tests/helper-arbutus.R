@@ -8,7 +8,8 @@ suppressMessages(library(geiger))
 ## between diversitree and coda
 suppressMessages(library(diversitree))
 library(nlme) # for gls
-library(phylolm) 
+library(phylolm)
+library(caper) 
 
 library(parallel)
 
