@@ -131,5 +131,54 @@ test_that("if incomplete data is supplied, method fails",{
 })
 
 
+test_that("stats are passed from wrapper to internals", {
+    ## define some function
+    foo <- function(x)
+        mean(x$pics[,"contrasts"])
+ 
+
+    ## create a named list with function
+    new.stat <- list(mean=foo)
+    
+    mc.fitc <- phy.model.check(fitc.res, nsim=10, stats=new.stat)
+    mc.bm.mle <- phy.model.check(bm.mle.res, nsim=10, stats=new.stat)
+    mc.bm.mcmc <- phy.model.check(bm.mcmc.res, nsim=10, stats=new.stat)
+    mc.gls <- phy.model.check(gls.res, nsim=10, stats=new.stat)
+    mc.caper <- phy.model.check(caper.res, nsim=10, stats=new.stat)
+    mc.phylolm <- phy.model.check(phylolm.res, nsim=10, stats=new.stat, phy=phy)
+    mc.pgls.mle <- phy.model.check(pgls.mle.res, nsim=10, stats=new.stat)
+    mc.pgls.mcmc <- phy.model.check(pgls.mcmc.res, nsim=10, stats=new.stat)
+    mc.phy <- phy.model.check(phy, data=dat1, nsim=10, stats=new.stat)
+    mc.multiphy <- phy.model.check(multiphy, data=dat1, nsim=10, stats=new.stat)
+
+    st.fitc <- names(pval.summ.stats(mc.fitc))
+    st.bm.mle <- names(pval.summ.stats(mc.bm.mle))
+    st.bm.mcmc <- names(pval.summ.stats(mc.bm.mcmc))
+    st.gls <- names(pval.summ.stats(mc.gls))
+    st.caper <- names(pval.summ.stats(mc.caper))
+    st.phylolm <- names(pval.summ.stats(mc.phylolm))
+    st.pgls.mle <- names(pval.summ.stats(mc.pgls.mle))
+    st.pgls.mcmc <- names(pval.summ.stats(mc.pgls.mcmc))
+    st.phy <- names(pval.summ.stats(mc.phy))
+    st.multiphy <- names(pval.summ.stats(mc.multiphy))
+
+    stats <- "mean"
+    
+    expect_that(st.fitc, equals(stats))
+    expect_that(st.bm.mle, equals(stats))
+    expect_that(st.bm.mcmc, equals(stats))
+    expect_that(st.gls, equals(stats))
+    expect_that(st.caper, equals(stats))
+    expect_that(st.phylolm, equals(stats))
+    expect_that(st.pgls.mle, equals(stats))
+    expect_that(st.pgls.mcmc, equals(stats))
+    expect_that(st.phy, equals(stats))
+    expect_that(st.multiphy, equals(stats))
+})
+
+
+    
+
+
     
     
