@@ -79,7 +79,21 @@ diversitree.to.arbutus.recast <- function(pars, model) {
   names(pars)[i] <- names(tr)[idx][i]
 
   if (model == "OU") {
-    pars <- pars[c("alpha", "sigsq", "z0")]
+    # NOTE: This is a workaround for the with.optimum=FALSE OU model.
+    # Ideally we'd get the root state, but that requires one extra
+    # likelihood evaluation because we don't save it; it's not even
+    # always available anyway under the vcv method (but that should
+    # change)
+    #   attr(get.likelihood(fit)(coef(fit), intermediates=TRUE),
+    #        "vals")[[1]]
+    # but also assumes a bunch of internal things about how the model
+    # works.
+    if (length(pars) == 2) {
+      pars <- pars[c("alpha", "sigsq")]
+      pars$z0 <- NA
+    } else {
+      pars <- pars[c("alpha", "sigsq", "z0")]
+    }
   } else if (model == "EB") {
     pars <- pars[c("a", "sigsq")]
     pars$z0 <- NA

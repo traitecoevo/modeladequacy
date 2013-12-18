@@ -14,22 +14,34 @@ states <- dat$dat[,"wingL"]
 lik.bm <- make.bm(phy, states)
 lik.ou <- make.ou(phy, states)
 lik.eb <- make.eb(phy, states)
+lik.ou.opt <- make.ou(phy, states, with.optimum=TRUE,
+                      control=list(method="pruning"))
 
 fit.bm <- find.mle(lik.bm, .1)
-fit.ou <- find.mle(lik.ou, c(.1, .1, mean(states)))
+fit.ou <- find.mle(lik.ou, c(.1, .1))
 fit.eb <- find.mle(lik.eb, c(.1, 0))
+## TODO: Potential problem when dealing with renamed names; won't
+## translate properly.  Potentially, find.mle should have dealt with
+## this for us.
+fit.ou.opt <- find.mle(lik.ou.opt, c(coef(fit.ou), theta=mean(states)))
 
 set.seed(1)
 samples.bm <- mcmc(lik.bm, coef(fit.bm), 100, w=0.1, print.every=0)
 set.seed(1)
 samples.ou <- mcmc(lik.ou, coef(fit.ou), 30,
-                   w=c(0.1, 10, 10),
-                   lower=c(0, 0, -10),
-                   upper=c(Inf, 100, 10),
+                   w=c(0.1, 10),
+                   lower=c(0, 0),
+                   upper=c(Inf, 100),
                    print.every=0)
 set.seed(1)
 samples.eb <- mcmc(lik.eb, coef(fit.eb), 30,
                    w=c(.2, 10), lower=c(0, -Inf), upper=c(Inf, 0),
+                   print.every=0)
+set.seed(1)
+samples.ou.opt <- mcmc(lik.ou.opt, coef(fit.ou.opt), 30,
+                   w=c(0.1, 10, 10),
+                   lower=c(0, 0, -10),
+                   upper=c(Inf, 100, 10),
                    print.every=0)
 
 ## Testing internal code; need some extra imports:
@@ -50,9 +62,11 @@ test_that("Model types are correct", {
   expect_that(model.type(fit.bm), is_identical_to("BM"))
   expect_that(model.type(fit.ou), is_identical_to("OU"))
   expect_that(model.type(fit.eb), is_identical_to("EB"))
+  expect_that(model.type(fit.ou.opt), is_identical_to("OU"))
   expect_that(model.type(samples.bm), is_identical_to("BM"))
   expect_that(model.type(samples.ou), is_identical_to("OU"))
   expect_that(model.type(samples.eb), is_identical_to("EB"))
+  expect_that(model.type(samples.ou.opt), is_identical_to("OU"))
 })
 
 test_that("Models return their source data", {
@@ -60,10 +74,12 @@ test_that("Models return their source data", {
   expect_that(model.data(fit.bm), equals(cmp))
   expect_that(model.data(fit.ou), equals(cmp))
   expect_that(model.data(fit.eb), equals(cmp))
+  expect_that(model.data(fit.ou.opt), equals(cmp))
 
   expect_that(model.data(samples.bm), equals(cmp))
   expect_that(model.data(samples.ou), equals(cmp))
   expect_that(model.data(samples.eb), equals(cmp))
+  expect_that(model.data(samples.ou.opt), equals(cmp))
 })
 
 test_that("Processed coefficient names are as expected", {
@@ -73,6 +89,8 @@ test_that("Processed coefficient names are as expected", {
               is_identical_to(arbutus:::parnames.ou()))
   expect_that(names(model.pars(fit.eb)),
               is_identical_to(arbutus:::parnames.eb()))
+  expect_that(names(model.pars(fit.ou.opt)),
+              is_identical_to(arbutus:::parnames.ou()))
 
   expect_that(model.pars(fit.bm)$SE, equals(0))
   expect_that(model.pars(fit.ou)$SE, equals(0))
@@ -85,6 +103,8 @@ test_that("Processed coefficient names are as expected", {
               is_identical_to(arbutus:::parnames.ou()))
   expect_that(names(model.pars(samples.eb)),
               is_identical_to(arbutus:::parnames.eb()))
+  expect_that(names(model.pars(samples.ou.opt)),
+              is_identical_to(arbutus:::parnames.ou()))
 
   expect_that(model.pars(samples.bm)$SE,
               equals(rep(0, nrow(samples.bm))))
@@ -162,7 +182,7 @@ test_that("MCMC extraction options are passed from model.info", {
 
 ## Constrained functions
 test_that("Constrained functions work", {
-  lik.ou.c <- constrain(lik.ou, theta ~ 0)
+  lik.ou.c <- constrain(lik.ou.opt, theta ~ 0)
   set.seed(1)
   fit.ou.c <- find.mle(lik.ou.c, c(.1, .1))
   samples.ou.c <- mcmc(lik.ou.c, coef(fit.ou.c), 30,
