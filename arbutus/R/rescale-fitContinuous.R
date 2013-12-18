@@ -12,21 +12,17 @@ model.phylo.ou <- function(phy, pars){
     if (pars$sigsq < 0 || pars$alpha < 0)
         stop("Parameters need to be non-negative")
 
-    tt <- branching.times.by.depth(phy)
-    t1 <- tt$t1
-    t2 <- tt$t2
-    Tmax <- tt$Tmax
-
     ## rescale branch lengths according to alpha...
-    ## TODO: RGF: Edge condition needed for a = 0 (plus test)
     alpha <- pars$alpha
-
-    ## TODO [RGF]: Will we hit issues with `exp(x) - 1; |x| << 1` here
-    ## (as in the likelihood equations?)
-    bl <- (1/(2 * alpha)) * exp(-2 * alpha * (Tmax - t2)) * (1 - exp(-2 * alpha * t2)) -
-          (1/(2 * alpha)) * exp(-2 * alpha * (Tmax - t1)) * (1 - exp(-2 * alpha * t1))
-
-    phy$edge.length <- bl[phy$edge[,2]]
+    ## Note that this is more similar to the rescaling in diversitree
+    ## than to geiger.
+    if (alpha > 0) {
+      tt <- branching.times.by.depth(phy)
+      t0  <- tt$Tmax - tt$t2
+      len <- tt$t2 - tt$t1
+      bl <- -exp(-2 * alpha * t0) * expm1(-2 * alpha * len) / (2*alpha)
+      phy$edge.length <- bl[phy$edge[,2]]
+    }
 
     ## ...and then by sigsq
     phy$edge.length <- phy$edge.length * pars$sigsq
