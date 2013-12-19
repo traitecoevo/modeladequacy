@@ -160,7 +160,7 @@ model.ad.wrap <- function(x){
 ## # Run analyses across all clades
 
 ## define number of cores for parallelization
-max.cores <- 24
+max.cores <- 3
 all.res <- mclapply(all.dat, function(x) model.ad.wrap(x),
                     mc.cores=max.cores, mc.preschedule=FALSE)
 

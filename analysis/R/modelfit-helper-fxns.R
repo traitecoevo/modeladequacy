@@ -86,7 +86,7 @@ make.prior.eb <- function(s2.lower, s2.upper, a.lower, a.upper){
 
 ## function for reading in data from source
 get.angio.data <- function(){
-    x <- readRDS(file="output/angio-trait-data-all.rds")
+    x <- readRDS(file="data/angio-trait-data-all.rds")
     x
 }
 
