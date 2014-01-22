@@ -75,6 +75,7 @@
 #' dat <- finch$data[,"wingL"]
 #'
 #' ## using just the given phylogeny
+#' ## without rescaling
 #' unit.tree.phy <- as.unit.tree(phy, data=dat)
 #'
 #' \dontrun{

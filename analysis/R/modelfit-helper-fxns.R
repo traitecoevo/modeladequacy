@@ -85,9 +85,19 @@ make.prior.eb <- function(s2.lower, s2.upper, a.lower, a.upper){
     
 
 ## function for reading in data from source
+## and additing an index variable
+
+add.index.to.list <- function(trait.list, i){
+    trait.list$index=i
+    trait.list
+}
+
 get.angio.data <- function(){
     x <- readRDS(file="data/angio-trait-data-all.rds")
-    x
+
+    ## add index
+    xi <- lapply(seq_len(length(x)), function(z) add.index.to.list(x[[z]], z))
+    xi
 }
 
     
