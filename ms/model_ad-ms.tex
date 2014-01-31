@@ -72,15 +72,15 @@ Many models for describing the evolution of phenotypic traits along a phylogeny 
 In this paper we seek to (at least somewhat) rectify this situation. We address two major outstanding problems in comparative biology. First, we develop a general framework for assessing the adequacy of phylogenetic models of trait change, specifically those for quantitative characters. Second, we assess the adequacy of simple models of trait evolution across scales, using a recently published mega--phylogeny of Angiosperms (flowering plants) \citep{Zanne2013} and data on three important functional traits --- specific leaf area, seed mass, and leaf nitrogen content --- compiled from the literature. 
 
 \section{A general framework for assessing model adequacy}
-The basic concept of our approach is straightforward. We have a phylogenetic tree consisting of $n$ lineages. We have data on the the trait values observed at each tip $X$ ($X= X_1, X_2, \ldots, X_n$). In order to make inferences from the distribution of traits at the tips, we fit a model $\mathcal{M}$ describing the evolution of the trait along the phylogeny. In most analyses using comparative data, the aim is to ask: what $\mathcal{M}$ maximizes the probability of observing $X$?; what is the posterior distribution of $\mathcal{M}|X$?; or, does $\mathcal{M}_1$ explain the data better than $\mathcal{M}_0$? Our approach is conceptually distinct in that we are asking: how likely is it that $\mathcal{M}$ would produce a dataset similar to $X$ if we re--ran evolution?
+The basic concept of our approach is straightforward. We have a phylogenetic tree consisting of $n$ lineages. We have data on the the trait values observed at each tip $X$ ($X= X_1, X_2, \ldots, X_n$). In order to make inferences from the distribution of traits at the tips, we fit a model $\mathcal{M}$, describing the evolution of the trait along the phylogeny, and estimate a set of parameters $\Theta_{\mathcal{M}}$. In most analyses using comparative data, the aim is to ask: what $\Theta_{\mathcal{M}}$  maximizes the probability of observing $X|\mathcal{M}$?; what is the posterior distribution of $\Theta_{\mathcal{M}}|X, \mathcal{M}$?; or, does $\mathcal{M}_1$ explain the data better than $\mathcal{M}_0$? Our approach is conceptually distinct in that we are asking: how likely is it that $\mathcal{M}$ would produce a dataset similar to $X$ if we re--ran evolution?
 
-We have developed two separate ways to ask this question --- one frequentist, the other Bayesian. While these approaches are philosophically different from one another, in practice, they are very similar. In a frequentist paradigm, we can assess model adequacy by performing parametric bootstrapping. We estimate $\mathcal{M}$ using maximum likelihood, restricted maximum likelihood, least--squares, etc. We then simulate new datasets $Y$ by evolving a trait along the phylogeny according to $\mathcal{M}$. We can then compare $X$ and $Y$. However, In order to make any sort of comparison, we must first summarize $X$ and $Y$ using a meaningful summary statistic or a set of summary statistics $\mathcal{S}$. If $\mathcal{S}_X$ is more extreme than most of the distribution of $\mathcal{S}_Y$, we can conclude that $\mathcal{M}$ is not a good explanation for $X$. Parametric bootstrapping is likely familiar to phylogenetic biologists in the form of the Goldman--Cox test \citep{Goldman} for the adequacy of sequence evolution models, and the Shimodaira--Hasegawa (SH) test \citep{SH} for comparing topologies. 
+We have developed two separate ways to ask this question --- one frequentist, the other Bayesian. While these approaches are philosophically different from one another, in practice, they are very similar. In a frequentist paradigm, we can assess model adequacy by performing parametric bootstrapping. We estimate $\Theta_{\mathcal{M}}$ using maximum likelihood, restricted maximum likelihood, least--squares, etc. We then simulate new datasets $Y$ by evolving a trait along the phylogeny according to $\mathcal{M}(\Theta_{\mathcal{M}})$. We can then compare $X$ and $Y$. However, In order to make any sort of comparison, we must first summarize $X$ and $Y$ using a meaningful summary statistic or a set of summary statistics $\mathcal{S}$. If $\mathcal{S}_X$ is more extreme than most of the distribution of $\mathcal{S}_Y$, we can conclude that $\mathcal{M}(\Theta_{\mathcal{M}})$ is not a good explanation for $X$. Parametric bootstrapping is likely familiar to phylogenetic biologists in the form of the Goldman--Cox test \citep{Goldman} for the adequacy of sequence evolution models, and the Shimodaira--Hasegawa (SH) test \citep{SH} for comparing topologies. 
 
-Alternatively, one may adopt a Bayesian perspective and estimate the posterior distribution of $\mathcal{M}$, $\mathbb{P}(\mathcal{M}|X)$ using Bayes theorem
-\[\mathbb{P}(\mathcal{M}|X) = \frac{\mathbb{P}(X|\mathcal{M})\mathbb{P}(\mathcal{M})}{\mathbb{P}(X)} \]
+Alternatively, one may adopt a Bayesian perspective and estimate the posterior distribution of $\mathcal{M}$, $\mathbb{P}(\Theta_{\mathcal{M}}|X,\mathcal{M})$ using Bayes theorem
+\[\mathbb{P}(\Theta_{\mathcal{M}}|X,\mathcal{M}) = \frac{\mathbb{P}(X|\Theta_{\mathcal{M}}, \mathcal{M})\mathbb{P}(\Theta_\mathcal{M}, \mathcal{M})}{\mathbb{P}(X|\mathcal{M})} \]
 and Markov chain Monte Carlo (MCMC) machinery. To assess the adequacy of the model we perform posterior predictive simulations \citep{Rubin1984, Gelman1996}. The posterior predictive distribution is defined as
-\[\mathbb{P}(Y|X,\mathcal{M}) = \int \mathbb{P}(Y|\mathcal{M})\mathbb{P}(\mathcal{M}|X)d\mathcal{M}. \]
-where $\mathbb{P}(Y|X,\mathcal{M})$ is simply the probability of getting a new dataset $Y$ given $X$ and $\mathcal{M}$. We obtain this distribution by drawing repeated samples from $\mathbb{P}(\mathcal{M}|X)$ and simulating datasets from the sampled parameters. We can compute the $\mathcal{S}$ over the distributions of $\mathcal{M}|X$ and $Y|\mathcal{M},X$ and compare the two. Posterior predictive simulation appraoches have also been developed for molecular phylogenetics \citep{Bollback2002, Reid2013, Lewis2013, Brown2013} but have unfortunately not been widely adopted \citep{Brown2013}.
+\[\mathbb{P}(Y|X,\mathcal{M}) = \int \mathbb{P}(Y|\Theta_{\mathcal{M}}, \mathcal{M})\mathbb{P}(\Theta_{\mathcal{M}}|X,\mathcal{M})d\Theta_{\mathcal{M}}. \]
+where $\mathbb{P}(Y|X,\mathcal{M})$ is simply the probability of getting a new dataset $Y$ given $X$ and $\mathcal{M}$. We obtain this distribution by drawing repeated samples from $\mathbb{P}(\Theta_{\mathcal{M}}|X,\mathcal{M})$ and simulating datasets from the sampled parameters. We can compute the $\mathcal{S}$ over the distributions of $\Theta_{\mathcal{M}}|X,\mathcal{M}$ and $Y|\mathcal{M},X$ and compare the two. Posterior predictive simulation appraoches have also been developed for molecular phylogenetics \citep{Bollback2002, Reid2013, Lewis2013, Brown2013} but have unfortunately not been widely adopted \citep{Brown2013}.
 
 
 \subsection{Summary statistics}
@@ -189,7 +189,29 @@ We would like to thank the members of the Tempo and Mode of Trait Evolution Work
 
 \newpage
 \section{Box 1: Creating a unit tree}
-\vfill
+
+Our approach to model adequacy relies on creating a ''unit tree'', which is a phylogenetic tree transformation that captures the dynamics of trait change under a particular evolutionary model. More formally, for a particular evolutionary model $\mathcal{M}$ (with parameter values $\Theta_{\mathcal{M}}$), we define a unit tree as a phylogenetic tree that has the following property: the length of branch $i$, $\nu_i ^\prime$, is equal to the amount of variance expected to accumulate over $i$ under $\mathcal{M}(\Theta_{\mathcal{M}})$. The variance is standardized, such that the expected distribution of the trait data on the unit tree is equal to that of a Brownian Motion (BM) model with a rate $\sigma^2$ equal to 1. 
+
+As stated in the main text, standard independent contrasts calculated on a phylogenetic tree will be independent and identically distributed (i.i.d.) if we assume a BM model. We use unit trees for assessing model adequacy because under any model for which we can make a unit tree, independent contrasts on the unit tree from that model are expected to be i.i.d. $\sim \mathcal{N}(0,1)$.
+
+One can construct a unit tree by recognizing that many models of evolution can be represented via transformations of the branch lengths of a phylogenetic tree. Specifically, we create unit trees by transforming branch lengths using the following general formula:
+\begin{equation}
+\nu_i^\prime = \mathrm{E}[Cov(A,B)|\mathcal{M}] - \mathrm{E}[Cov(A,C)|\mathcal{M}]
+\end{equation}
+where $\nu_i^\prime$ is the transformed length of a branch $i$, $A$ and $C$ are two lineages subtended by the node at the rootward end of $i$, and $A$ and $B$ are two lineages subtended by the tipward end of $i$ (see Figure \ref{fig:unit-tree}). One can choose any pair of species that fits this property and then transverse the phylogeny so that each branch in the tree is transformed. 
+
+For example, Figure \ref{fig:unit-tree} shows a tree transformation for an OU model with $\sigma^2=$ 0.5 and $\alpha =$ 0.1. The original phylogenetic tree (presumably, with branches in units of time) in panel A can be represented by a variance--covariance (vcv) matrix $\mathbf{C}$. The elements $C_{j,k}$ are the shared path--length from the root to the most recent common ancestor of $j$ and $k$. The diagonal elements ($j = k$) are simply the total distance from the root to the tips \citep{Omeara2006}. Given $\mathcal{M}$ and $\Theta_{\mathcal{M}}$, the expected vcv of the trait values is described by a second matrix $\mathbf{\Sigma}$. For the case of a general OU model,
+\begin{equation}
+\Sigma_{j,k} = \frac{\sigma^2}{2\alpha} e^{-2\alpha (T_{max} - C_{j,k})} (1 - e^{-2\alpha C_{j,k}})
+\end{equation} 
+where $T_{max}$ is the depth of the tree \citep{Hansen1997, ButlerKing2004}. Therefore, for our example, 
+\begin{equation}
+  \nu_i^\prime = \frac{\sigma^2}{2\alpha} \lbrack e^{-2\alpha (T_{max} - C_{A,B})} (1 - e^{-2\alpha C_{A,B}})
+- e^{-2\alpha (T_{max} - C_{A,C})} (1 - e^{-2\alpha C_{A,C}}) \rbrack
+\end{equation}
+
+By simulating evolution on this unit tree under a BM model with a rate of 1, we can create data that have the exact statistical distribution as data simulated under an OU model on the original phylogenetic tree.
+
 
 \newpage
 \bibliographystyle{plos}
@@ -223,8 +245,7 @@ We would like to thank the members of the Tempo and Mode of Trait Evolution Work
 
 \begin{figure}[p]
   \centering
-  \includegraphics{figs/pvalue-hist-ML}
-  \caption{pvalues}
+  \includegraphics[angle=90, origin=c]{figs/pvalue-hist-ML}
   \label{fig:pvalues}
 \end{figure}
 
