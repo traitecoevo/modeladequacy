@@ -9,17 +9,17 @@
 #' @details This function can be applied to either a single 'unit.tree' of object or a list of 'unit.tree' objects.
 #' If \code{stats=NULL} default summary statistics are used. The default summary statistics are the following:
 #'  \enumerate{
-#'   \item{sigsq.est: }{The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.}
+#'   \item{m.pic: }{The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.}
 #'
-#'   \item{var.contrast: }{The variance of the absolute value of the contrasts.}
+#'   \item{v.pic: }{The coefficient of variation of the absolute value of the contrasts.}
 #'
-#'   \item{cor.contrast.var: }{The slope of a linear model fit between the contrasts and their expected variances.}
+#'   \item{s.var: }{The slope of a linear model fit between the contrasts and their expected variances.}
 #'
-#'   \item{cor.contrast.asr: }{The slope of a linear model fit between the contrasts and their inferred ancestral state.}
+#'   \item{s.anc: }{The slope of a linear model fit between the contrasts and their inferred ancestral state.}
 #'
-#'   \item{cor.contrast.nh: }{The slope of a linear model fit between the contrasts and the node height at which they were calculated.}
+#'   \item{s.hgt: }{The slope of a linear model fit between the contrasts and the node height at which they were calculated.}
 #'
-#'   \item{ks.contrast: }{The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.}
+#'   \item{d.ks: }{The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.}
 #'  }
 #' User defined summary statistics can be supplied as a named list of functions (see examples). The functions supplied
 #' must take a unit.tree as argument and perform an operation on at least one of the elements of the object
@@ -90,7 +90,7 @@ summ.stats <- function(unit.tree, stats=NULL){
 #' The REML estimate of sigma2 is included as a default
 #' summary statistic in the function \code{\link{summ.stats}}
 #'
-#' @return estimate of sigma2
+#' @return \code{m.pic} estimate of sigma2
 #'
 #' @export sigsq.est
 #'
@@ -141,7 +141,7 @@ sigsq.est <- function(unit.tree){
 #' The KS-D statistic is included as a default summary statistic
 #' in the function \code{\link{summ.stats}}.
 #'
-#' @return the D-statistic from a KS-test
+#' @return \code{d.ks} the D-statistic from a KS-test
 #'
 #' @export ks.contrast
 #'
@@ -186,12 +186,10 @@ ks.contrast <- function(unit.tree){
 #' @details This summary is used to evaluate whether the model is sufficiently
 #' capturing the variation in rates across the tree.
 #'
-#' The variance of contrasts is included as a default summary statistic
+#' The variance of contrasts is NOT included as a default summary statistic
 #' in the function \code{\link{summ.stats}}
 #'
 #' @return the estimate of the variance of the absolute value of the contrasts
-#'
-#' @export var.contrast
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
 #'
@@ -235,7 +233,7 @@ var.contrast <- function(unit.tree) {
 #' The slope of the contrasts and their variances is included as a default summary statistic
 #' in the function \code{\link{summ.stats}}
 #'
-#' @return the estimated slope paramter
+#' @return \code{s.var} the estimated slope paramter
 #'
 #' @export cor.contrast.var
 #'
@@ -294,7 +292,7 @@ cor.contrast.var <- function(unit.tree){
 #' The slope of the contrasts and their variances is included as a default summary statistic
 #' in the function \code{\link{summ.stats}} 
 #' 
-#' @return the estimated slope parameter
+#' @return \code{s.hgt} the estimated slope parameter
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link[stats]{lm}}
 #'
@@ -359,7 +357,7 @@ cor.contrast.nh <- function(unit.tree){
 #' The slope of the contrasts and their variances is included as a default summary statistic
 #' in the function \code{\link{summ.stats}} 
 #' 
-#' @return the estimated slope parameter
+#' @return \code{s.anc} the estimated slope parameter
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link[stats]{lm}}, \code{\link[ape]{ace}}
 #'
@@ -396,6 +394,44 @@ cor.contrast.asr <- function(unit.tree){
 
 
 
+#' @title Coefficient of variation of contrasts
+#'
+#' @description Calculates the coefficient of variation on a set of contrasts
+#'
+#' @param unit.tree a \code{unit.tree} object
+#'
+#' @details This summary is used to evaluate whether the model is sufficiently
+#' capturing the variation in rates across the tree.
+#'
+#' The coefficient of variation is the sd/mean. The coefficient of variation of the contrasts is included as a default summary statistic
+#' in the function \code{\link{summ.stats}}
+#'
+#' @return \code{v.pic} the coefficient of variation of the contrasts
+#'
+#' @export cv.contrast
+#'
+#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
+#'
+#'
+#' @examples
+#' data(finch)
+#' phy <- finch$phy
+#' dat <- finch$data[,"wingL"]
+#' unit.tree <- as.unit.tree(phy, data=dat)
+#'
+#' ## estimate variance of contrasts
+#' cv.contrast(unit.tree)
+#'
+cv.contrast <- function(unit.tree){
+    ## make sure the unit.tree is of class 'unit.tree'
+    assert.is.unit.tree(unit.tree)
+
+    con <- abs(unit.tree$pics[,"contrasts"])
+    sd(con)/mean(con)
+}
+
+
+
 
 
 
@@ -407,17 +443,17 @@ cor.contrast.asr <- function(unit.tree){
 #'
 #' @details The following summary statistics are produced by this function:
 #'  \enumerate{
-#'   \item{sigsq.est: }{The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.}
+#'   \item{m.pic: }{The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.}
 #'
-#'   \item{var.contrast: }{The variance of the absolute value of the contrasts.}
+#'   \item{v.pic: }{The coefficient of variation of the absolute value of the contrasts.}
 #'
-#'   \item{cor.contrast.var: }{The slope of a linear model fit between the contrasts and their expected variances.}
+#'   \item{s.var: }{The slope of a linear model fit between the contrasts and their expected variances.}
 #'
-#'   \item{cor.contrast.asr: }{The slope of a linear model fit between the contrasts and their inferred ancestral state.}
+#'   \item{s.anc: }{The slope of a linear model fit between the contrasts and their inferred ancestral state.}
 #'
-#'   \item{cor.contrast.nh: }{The slope of a linear model fit between the contrasts and the node height at which they were calculated.}
+#'   \item{s.hgt: }{The slope of a linear model fit between the contrasts and the node height at which they were calculated.}
 #'
-#'   \item{ks.contrast: }{The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.}
+#'   \item{d.ks: }{The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.}
 #'  }
 #'
 #' @return a named list of functions
@@ -426,7 +462,7 @@ cor.contrast.asr <- function(unit.tree){
 #'
 #' @keywords internal
 #'
-#' @seealso \code{\link{summ.stats}}, \code{\link{sigsq.est}}, \code{\link{var.contrast}}, \code{\link{cor.contrast.var}},
+#' @seealso \code{\link{summ.stats}}, \code{\link{sigsq.est}}, \code{\link{cv.contrast}}, \code{\link{cor.contrast.var}},
 #' \code{\link{cor.contrast.nh}}, \code{\link{cor.contrast.nh}}, \code{\link{ks.contrast}}
 #'
 #'
@@ -435,7 +471,7 @@ cor.contrast.asr <- function(unit.tree){
 #' stats <- def.summ.stats
 #' stats
 def.summ.stats <- function()
-    list("sigsq.est"=sigsq.est, "var.contrast"=var.contrast, "cor.contrast.var"=cor.contrast.var, "cor.contrast.asr"=cor.contrast.asr, "cor.contrast.nh"=cor.contrast.nh, "ks.contrast"=ks.contrast)
+    list("m.pic"=sigsq.est, "v.pic"=var.contrast, "s.var"=cor.contrast.var, "s.anc"=cor.contrast.asr, "s.hgt"=cor.contrast.nh, "d.ks"=ks.contrast)
 
 
 

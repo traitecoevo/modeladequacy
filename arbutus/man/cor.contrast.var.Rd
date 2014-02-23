@@ -8,7 +8,7 @@
   \item{unit.tree}{a \code{unit.tree} object}
 }
 \value{
-  the estimated slope paramter
+  \code{s.var} the estimated slope paramter
 }
 \description{
   Fits a linear model between the absolute value of

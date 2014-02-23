@@ -194,7 +194,7 @@ test_that("OU tree rescaling worked (fitContinuous)", {
 
 test_that("OU tree rescaling worked (diversitree)", {
     lik.ou <- make.ou(phy, states)
-    fit.ou <- find.mle(lik.ou, x.init=c(0.1,0.1, mean(states)))
+    fit.ou <- find.mle(lik.ou, x.init=c(0.1,0.1))
 
     phy.unit <- as.unit.tree(fit.ou)
 
@@ -207,12 +207,12 @@ test_that("OU tree rescaling worked (diversitree)", {
 
 test_that("OU tree rescaling worked (diversitree, mcmc)", {
   lik.ou <- make.ou(phy, states)
-  fit.ou <- find.mle(lik.ou, x.init=c(0.1,0.1, mean(states)))
+  fit.ou <- find.mle(lik.ou, x.init=c(0.1,0.1))
   set.seed(1)
   samples.ou <- mcmc(lik.ou, coef(fit.ou), 30,
-                     w=c(0.1, 10, 10),
-                     lower=c(0, 0, -10),
-                     upper=c(Inf, 100, 10),
+                     w=c(0.1, 10),
+                     lower=c(0, 0),
+                     upper=c(Inf, 100),
                      print.every=0)
 
   phy.unit <- as.unit.tree(samples.ou)

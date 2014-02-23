@@ -25,26 +25,25 @@
   'unit.tree' of object or a list of 'unit.tree' objects.
   If \code{stats=NULL} default summary statistics are used.
   The default summary statistics are the following:
-  \enumerate{ \item{sigsq.est: }{The mean of the squared
+  \enumerate{ \item{m.pic: }{The mean of the squared
   contrasts. This is equivalent to the REML estimate of
   sigsq.}
 
-  \item{var.contrast: }{The variance of the absolute value
-  of the contrasts.}
+  \item{v.pic: }{The coefficient of variation of the
+  absolute value of the contrasts.}
 
-  \item{cor.contrast.var: }{The slope of a linear model fit
-  between the contrasts and their expected variances.}
+  \item{s.var: }{The slope of a linear model fit between
+  the contrasts and their expected variances.}
 
-  \item{cor.contrast.asr: }{The slope of a linear model fit
-  between the contrasts and their inferred ancestral
-  state.}
+  \item{s.anc: }{The slope of a linear model fit between
+  the contrasts and their inferred ancestral state.}
 
-  \item{cor.contrast.nh: }{The slope of a linear model fit
-  between the contrasts and the node height at which they
-  were calculated.}
+  \item{s.hgt: }{The slope of a linear model fit between
+  the contrasts and the node height at which they were
+  calculated.}
 
-  \item{ks.contrast: }{The D-statistic from a KS test
-  comparing the distribution of the contrasts to a normal
+  \item{d.ks: }{The D-statistic from a KS test comparing
+  the distribution of the contrasts to a normal
   distribution with mean 0 and variance equal to the square
   root of the squared mean of the contrasts.} } User
   defined summary statistics can be supplied as a named

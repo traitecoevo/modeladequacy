@@ -69,8 +69,8 @@ test_that("REML sigsq is being calculated correctly", {
   expect_that(sigsq.est(phy.unit), equals(0.0764244853752198))
 })
 
-test_that("Variance of contrasts is being calculated correctly", {
-  expect_that(var.contrast(phy.unit), equals(0.0276760842911352))
+test_that("Coefficient of variation of contrasts is being calculated correctly", {
+  expect_that(cv.contrast(phy.unit), equals(0.7362652135189863))
 })
 
 test_that("Slope of contrasts and variance is being calculated correctly", {
@@ -197,9 +197,9 @@ test_that("mahalanobis distance is calculated properly from summary stats",{
     expect_that(length(mv), equals(1))
 
     ## calculated by hand
-    ## log ks.contrast
-    cc$summ.stats.obs[,"ks.contrast"] <- log(cc$summ.stats.obs[,"ks.contrast"])
-    cc$summ.stats.sim[,"ks.contrast"] <- log(cc$summ.stats.sim[,"ks.contrast"])
+    ## log d.ks
+    cc$summ.stats.obs[,"d.ks"] <- log(cc$summ.stats.obs[,"d.ks"])
+    cc$summ.stats.sim[,"d.ks"] <- log(cc$summ.stats.sim[,"d.ks"])
 
     obs.ss <- as.matrix(cc$summ.stats.obs)
     sim.ss <- as.matrix(cc$summ.stats.sim)
@@ -221,8 +221,8 @@ test_that("mahalanobis distance is calculated properly from summary stats",{
 
     ## calculated by hand
     ## log ks.contrast
-    cc$summ.stats.obs[,"ks.contrast"] <- log(cc$summ.stats.obs[,"ks.contrast"])
-    cc$summ.stats.sim[,"ks.contrast"] <- log(cc$summ.stats.sim[,"ks.contrast"])
+    cc$summ.stats.obs[,"d.ks"] <- log(cc$summ.stats.obs[,"d.ks"])
+    cc$summ.stats.sim[,"d.ks"] <- log(cc$summ.stats.sim[,"d.ks"])
 
     obs.ss <- as.matrix(cc$summ.stats.obs)
     sim.ss <- as.matrix(cc$summ.stats.sim)

@@ -309,9 +309,9 @@ mv.summ.stats <- function(x){
     if (!inherits(x, "phy.ss"))
         stop("x must be a 'phy.ss' object")
     ## log ks d-statistic
-    if ("ks.contrast" %in% names(pval.summ.stats(x))){
-        x$summ.stats.obs[,"ks.contrast"] <- log(x$summ.stats.obs[,"ks.contrast"])
-        x$summ.stats.sim[,"ks.contrast"] <- log(x$summ.stats.sim[,"ks.contrast"])
+    if ("d.ks" %in% names(pval.summ.stats(x))){
+        x$summ.stats.obs[,"d.ks"] <- log(x$summ.stats.obs[,"d.ks"])
+        x$summ.stats.sim[,"d.ks"] <- log(x$summ.stats.sim[,"d.ks"])
     }
     obs <- as.matrix(x$summ.stats.obs)
     sim <- as.matrix(x$summ.stats.sim)

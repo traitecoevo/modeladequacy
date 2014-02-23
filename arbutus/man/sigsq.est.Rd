@@ -8,7 +8,7 @@
   \item{unit.tree}{a \code{unit.tree} object}
 }
 \value{
-  estimate of sigma2
+  \code{m.pic} estimate of sigma2
 }
 \description{
   Calculates the mean of the squared contrasts, which is

@@ -8,7 +8,7 @@
   \item{unit.tree}{a \code{unit.tree} object}
 }
 \value{
-  the D-statistic from a KS-test
+  \code{d.ks} the D-statistic from a KS-test
 }
 \description{
   Performs Kolmogorov-Smirnov test comparing distribution

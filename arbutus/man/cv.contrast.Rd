@@ -1,18 +1,18 @@
-\name{var.contrast}
-\alias{var.contrast}
-\title{Variance of contrasts}
+\name{cv.contrast}
+\alias{cv.contrast}
+\title{Coefficient of variation of contrasts}
 \usage{
-  var.contrast(unit.tree)
+  cv.contrast(unit.tree)
 }
 \arguments{
   \item{unit.tree}{a \code{unit.tree} object}
 }
 \value{
-  the estimate of the variance of the absolute value of the
+  \code{v.pic} the coefficient of variation of the
   contrasts
 }
 \description{
-  Calculates the variance of the absolute value of the
+  Calculates the coefficient of variation on a set of
   contrasts
 }
 \details{
@@ -20,8 +20,9 @@
   sufficiently capturing the variation in rates across the
   tree.
 
-  The variance of contrasts is NOT included as a default
-  summary statistic in the function
+  The coefficient of variation is the sd/mean. The
+  coefficient of variation of the contrasts is included as
+  a default summary statistic in the function
   \code{\link{summ.stats}}
 }
 \examples{
@@ -31,7 +32,7 @@ dat <- finch$data[,"wingL"]
 unit.tree <- as.unit.tree(phy, data=dat)
 
 ## estimate variance of contrasts
-var.contrast(unit.tree)
+cv.contrast(unit.tree)
 }
 \seealso{
   \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
