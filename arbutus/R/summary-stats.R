@@ -471,7 +471,7 @@ cv.contrast <- function(unit.tree){
 #' stats <- def.summ.stats
 #' stats
 def.summ.stats <- function()
-    list("m.pic"=sigsq.est, "v.pic"=var.contrast, "s.var"=cor.contrast.var, "s.anc"=cor.contrast.asr, "s.hgt"=cor.contrast.nh, "d.ks"=ks.contrast)
+    list("m.pic"=sigsq.est, "v.pic"=cv.contrast, "s.var"=cor.contrast.var, "s.anc"=cor.contrast.asr, "s.hgt"=cor.contrast.nh, "d.ks"=ks.contrast)
 
 
 

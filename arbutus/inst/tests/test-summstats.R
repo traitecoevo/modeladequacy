@@ -119,7 +119,7 @@ test_that("Summary statistic comparison is working properly",{
 
     ## check if values are correct
     expect_that(as.numeric(cc$p.values),
-                equals(c(0, 0, 0.285714285714286,
+                equals(c(0, 0.5714285714285714, 0.285714285714286,
                          0, 0.285714285714286, 0.285714285714286)))
 
     ## if we provide different names
