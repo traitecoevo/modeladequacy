@@ -2,16 +2,17 @@
 library(xlsx, quietly=TRUE)
 library(digest, quietly=TRUE)
 
-url <-
-  "http://www.nature.com/nature/journal/v428/n6985/extref/nature02403-s2.xls"
 file.csv <- "data/wright-2004.csv"
-hash.obj.sha <- "bed368ae45761b0b4c4be142b016271b3e61d369"
 
 ## There are severl strategies for reading in an excel file, but this
 ## one works quite well.
 d <- read.xlsx2("data/wright-2004.xls", sheetIndex=1, startRow=11,
                 stringsAsFactors=FALSE, check.names=FALSE)
 
+## A change here may cause a false positive warning.  I think changes
+## in xlsx, among other things, can cause minor changes to the file
+## and that causes the hash to change.
+hash.obj.sha <- "8817c8f1adf28d41e7b138238e2ac11b0f540d2a"
 if (digest(d, algo="sha1") != hash.obj.sha)
   warning("Imported data did not match expected hash")
 
