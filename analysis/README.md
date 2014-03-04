@@ -12,9 +12,11 @@ Most of these files are downloaded from elsewhere, but a few are local:
 * `names-tr.txt`: Species name translations to fix spelling errors, etc (see `R/load-scrubbing-tools.R`)
 * `spermatophyta_synonyms_PLANTLIST.csv` list of synonyms derived from the Plant List.  This will change to use the woodiness data shortly.
 
+Data downloaded from other sources::
 
-
-
+* `kew.csv`, `kew/`: Seed weight data from kew (CITATION)
+* `leda.csv` (and `leda.txt`): SLA data (CITATION)
+* `wright-2004.csv` (and `wright-2004.xls`): SLA data (CITATION)
 
 ---
 

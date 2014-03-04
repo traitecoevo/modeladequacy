@@ -1,3 +1,5 @@
+library(XML)
+
 kew.url <- function(family=NULL, clade=NULL) {
   if (is.null(family) && is.null(clade))
     stop("One of family or clade must be given")
@@ -33,7 +35,7 @@ kew.clades.tr <- function(x)
 kew.fetch.clades <- function(timeout=60) {
   for (clade in kew.clades()) {
     message(sprintf("Fetching %s", clade))
-    dest <- sprintf("data/kew_apg_%s.html", kew.clades.tr(clade))
+    dest <- sprintf("data/kew/kew_apg_%s.html", kew.clades.tr(clade))
     did.download <- kew.fetch(dest, clade=clade)
     if (did.download && timeout > 0) {
       message("...resting")
@@ -49,7 +51,6 @@ kew.html.to.csv <- function(filename) {
 }
 
 kew.load.html <- function(filename) {
-  require(XML)
   html <- htmlParse(filename)
 
   ## Get the data container:
