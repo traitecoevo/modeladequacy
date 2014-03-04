@@ -1,3 +1,23 @@
+# Common phylogenetic trait models are widely inadequate: Analysis
+
+If you have time on your hands and `make` is installed, you only have to run `make` and everything will run.
+
+# Contents:
+
+## The `data` directory.
+
+Most of these files are downloaded from elsewhere, but a few are local:
+
+* `errors.csv`: Data value error fixing (see `R/load-scrubbing-tools.R`)
+* `names-tr.txt`: Species name translations to fix spelling errors, etc (see `R/load-scrubbing-tools.R`)
+* `spermatophyta_synonyms_PLANTLIST.csv` list of synonyms derived from the Plant List.  This will change to use the woodiness data shortly.
+
+
+
+
+
+---
+
 I'd (RGF) suggest that the final directory structure could look like
 this:
 
