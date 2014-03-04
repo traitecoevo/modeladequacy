@@ -2,6 +2,20 @@
 
 If you have time on your hands and `make` is installed, you only have to run `make` and everything will run.
 
+Required packages (in addition to arbutus)
+
+* LaplacesDemon (currently not on CRAN?)
+* XML
+* ape
+* cwhmisc
+* digest
+* diversitree
+* geiger
+* ggplot2
+* phytools
+* scales
+* xlsx
+
 # Contents:
 
 ## The `data` directory.
