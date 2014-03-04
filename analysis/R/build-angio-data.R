@@ -5,7 +5,7 @@ require(phytools)
 
 ## get the data for the SLA
 get.sla.data <- function(){
-    t <- read.tree(file="data/tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
+    t <- read.tree(file="data/vascular_plant_phylogeny.tre")
     sla.raw <- read.csv(file="output/species-mean-sla.csv", header=TRUE)
 
     ## only angiosperms
@@ -27,7 +27,7 @@ get.sla.data <- function(){
 
 ## get the data for seedmass
 get.seedmass.data <- function(){
-    t <- read.tree(file="data/tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
+    t <- read.tree(file="data/vascular_plant_phylogeny.tre")
     sm.raw <- read.csv(file="output/species-mean-seedMass.csv", header=TRUE)
 
     ## only angiosperms
@@ -53,7 +53,7 @@ get.seedmass.data <- function(){
 
 ## get the data for leafn
 get.leafn.data <- function(){
-    t <- read.tree("data/tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
+    t <- read.tree("data/vascular_plant_phylogeny.tre")
     ln.raw <- read.csv("output/species-mean-leafN.csv")
 
     ## only angiosperms

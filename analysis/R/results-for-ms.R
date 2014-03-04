@@ -217,7 +217,7 @@ length(which(mpic$mean.diag < 500))
 
 ## OVERALL DATA NUMBERS FOR METHODS SECTION
 ## import big tree
-tree <- read.tree(file="data/tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
+tree <- read.tree(file="data/vascular_plant_phylogeny.tre")
 
 ## extract angiosperms
 t <- extract.clade(tree, node="Angiospermae")

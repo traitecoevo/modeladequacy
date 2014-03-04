@@ -5,7 +5,7 @@ require(geiger)
 
 ## get the data for the SLA
 get.sla.data <- function(){
-    t <- read.tree(file=file.path(getwd(), "data", "tempo_scrubbed_CONSTRAINT_rooted.dated.tre"))
+    t <- read.tree(file=file.path(getwd(), "data", "vascular_plant_phylogeny.tre"))
     sla.raw <- read.csv(file=file.path(getwd(), "output", "species-mean-sla.csv"), header=TRUE)
 
     ## only angiosperms
@@ -27,7 +27,7 @@ get.sla.data <- function(){
 
 
 get.seedmass.data <- function(){
-    t <- read.tree(file=file.path(getwd(), "data", "tempo_scrubbed_CONSTRAINT_rooted.dated.tre"))
+    t <- read.tree(file=file.path(getwd(), "data", "vascular_plant_phylogeny.tre"))
     sm.raw <- read.csv(file=file.path(getwd(), "output", "species-mean-seedMass.csv"), header=TRUE)
 
     ## only angiosperms
@@ -69,7 +69,7 @@ get.seedmass.data <- function(){
 
 
 get.leafn.data <- function(){
-    t <- read.tree("data/tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
+    t <- read.tree("data/vascular_plant_phylogeny.tre")
     ln.raw <- read.csv("output/species-mean-leafN.csv")
 
     ## only angiosperms

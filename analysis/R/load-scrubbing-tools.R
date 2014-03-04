@@ -2,7 +2,7 @@ require(ape)
 
 #loading tools
 corrections<-read.delim("data/names-tr.txt",as.is=TRUE)
-tree<-read.tree("data/tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
+tree<-read.tree("data/vascular_plant_phylogeny.tre")
 errors<-read.csv("data/errors.csv",as.is=TRUE)
 plantList<-read.csv("data/spermatophyta_synonyms_PLANTLIST.csv",as.is=TRUE)
 source("R/import-scrub.R")
