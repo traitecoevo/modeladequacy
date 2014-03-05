@@ -1,4 +1,4 @@
-# Common phylogenetic trait models are widely inadequate: Analysis
+# Model adequacy and the macroevolution of angiosperm functional traits: Analysis
 
 If you have time on your hands and `make` is installed, you only have to run `make` and everything will run.
 
@@ -25,7 +25,6 @@ Currently:
 
 Required packages (in addition to arbutus)
 
-* LaplacesDemon (currently not on CRAN?)
 * XML
 * ape
 * cwhmisc
