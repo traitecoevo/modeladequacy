@@ -62,7 +62,7 @@ output/data-sla.rds: output/species-mean-sla.csv R/read-data-functions.R
 output/data-seedMass.rds: output/species-mean-seedMass.csv R/read-data-functions.R
 	Rscript make/output-data-seedMass.rds.R
 
-output/angio-trait-data-all.rds: ${DATA_PHY}
+output/angio-trait-data-all.rds: ${DATA_PHY} make/output-angio-trait-data-all.rds.R
 	Rscript make/output-angio-trait-data-all.rds.R
 
 .PHONY: all data data-fetch data-preprocess data-species-mean kew-fetch zae-fetch

@@ -30,5 +30,9 @@ all.trait.data <- c(sla.fam, sla.ord, unlist(sla.tt, FALSE),
                     sdm.fam, sdm.ord, unlist(sdm.tt, FALSE),
                     lfn.fam, lfn.ord, unlist(lfn.tt, FALSE))
 
+for (i in seq_along(all.trait.data)) {
+  all.trait.data[[i]]$index <- i
+}
+
 ## write to rds
 saveRDS(all.trait.data, "output/angio-trait-data-all.rds")
