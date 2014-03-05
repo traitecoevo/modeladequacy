@@ -2,12 +2,34 @@
 
 If you have time on your hands and `make` is installed, you only have to run `make` and everything will run.
 
+In slightly more detail:
+
+1. Download the required data sets and do some initial data cleaning:
+
+```
+make data-preprocess
+```
+
+2. Clean up data sets taxonomically and generate simple data sets by species (in the `output` directory).
+
+```
+make data-process
+```
+
+
+
+Currently:
+* `leafN-process.R`: `data/wright-2004.csv` ->  `output/species-mean-leafN.csv`
+* `seedMass-process.R`: `data/kew.csv` -> `output/species-mean-seedMass.csv`
+* `sla-process.R:trait`: {`data/wright-2004`, `data/leda.csv`} -> `output/species-mean-sla.csv`
+
 Required packages (in addition to arbutus)
 
 * LaplacesDemon (currently not on CRAN?)
 * XML
 * ape
 * cwhmisc
+* ddply
 * digest
 * diversitree
 * geiger
@@ -31,6 +53,18 @@ Data downloaded from other sources::
 * `kew.csv`, `kew/`: Seed weight data from kew (CITATION)
 * `leda.csv` (and `leda.txt`): SLA data (CITATION)
 * `wright-2004.csv` (and `wright-2004.xls`): SLA data (CITATION)
+
+## The `R` directory.
+
+Everything beginning with `make-` is used for preliminary data processing.  These files are a bit weird because they're in the R directory but they're run as if they were in the analysis directory.  I'm going to move these into another directory soon, separate from the R scripts.
+
+The big ones seem to be:
+* `model-adequacy-angio-analysis.R`
+* `model-adequacy-bayes.R`
+* `model-adequacy-fitC.R`
+
+These largely belong at the top level, or at least the non-function definition parts.
+
 
 ---
 
