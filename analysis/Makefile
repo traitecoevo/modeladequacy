@@ -1,12 +1,14 @@
-all: data-preprocess
+all: data
 
 data-fetch: data/wright-2004.xls data/leda.txt kew-fetch zae-fetch
 data-preprocess: data/wright-2004.csv data/leda.csv data/kew.csv \
 	data/genus_order_lookup.csv data/vascular_plant_phylogeny.tre
 data-species-mean: output/species-mean-leafN.csv \
 	output/species-mean-sla.csv output/species-mean-seedMass.csv
-data-with-trees: output/data-leafN.rds output/data-sla.rds \
-	output/data-seedMass.rds
+
+DATA_PHY = output/data-leafN.rds output/data-sla.rds output/data-seedMass.rds
+data-with-trees: ${DATA_PHY}
+data: output/angio-trait-data-all.rds
 
 # Little helpers:
 kew-fetch: data/kew/kew_apg_uncertain.html
@@ -60,4 +62,7 @@ output/data-sla.rds: output/species-mean-sla.csv R/read-data-functions.R
 output/data-seedMass.rds: output/species-mean-seedMass.csv R/read-data-functions.R
 	Rscript make/output-data-seedMass.rds.R
 
-.PHONY: all data-fetch data-preprocess data-species-mean kew-fetch zae-fetch
+output/angio-trait-data-all.rds: ${DATA_PHY}
+	Rscript make/output-angio-trait-data-all.rds.R
+
+.PHONY: all data data-fetch data-preprocess data-species-mean kew-fetch zae-fetch
