@@ -35,7 +35,7 @@ model.ad.ml <- function(x){
 
     ## Start at REML estimate of sigsq for all models
     ## use function sigst.est to estimate this
-    s2 <- sigst.est(as.unit.tree(phy, data=states))
+    s2 <- sigsq.est(as.unit.tree(phy, data=states))
     
     ## get upper bounds for OU model
     upbnd.ou <- bnds.ou(phy, states)
@@ -130,22 +130,11 @@ tmp <- dir("output")
 ## pull out only the file names with allres_ml
 ml <- tmp[grep("allres_ml", tmp)]
 
-## function for reading in individual ml results
-build.adequacy.results.ml <- function(x){
-    f <- read.csv(paste("output", x, sep="/"), as.is=TRUE, row.names=1)
-    d <- as.data.frame(t(f))
-    rownames(d) <- NULL
-    d
-}
-
 ## read in all results individually and bind them together
-ml.res <- lapply(ml, function(x) build.adequacy.results.ml(x))
+ml.res <- lapply(ml, function(x) build.adequacy.results(x))
 ml.res <- do.call(rbind, ml.res)
 
 ## unfactor all numeric columns
-unfactor <- function(x)
-    as.numeric(levels(x))[x]
-
 ml.res[,c(4:ncol(ml.res))] <- sapply(c(4:ncol(ml.res)), function(x)
                                      unfactor(ml.res[,x]))
 

@@ -123,3 +123,19 @@ dt.con <- list(method="pruning", backend="C")
 get.angio.data <- function(){
   readRDS(file="output/angio-trait-data-all.rds")
 }
+
+
+## data processing fxns
+## function for reading in individual results
+build.adequacy.results <- function(x){
+    f <- read.csv(paste("output", x, sep="/"), as.is=TRUE, row.names=1)
+    d <- as.data.frame(t(f))
+    rownames(d) <- NULL
+    d
+}
+
+
+## simple function for unfactoring
+## why is this not in base??
+unfactor <- function(x)
+    as.numeric(levels(x))[x]
