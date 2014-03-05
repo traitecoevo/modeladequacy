@@ -36,4 +36,8 @@ data/genus_order_lookup.csv: data/zae/Spermatophyta_Genera.csv
 data/vascular_plant_phylogeny.tre: data/zae/PhylogeneticResources.zip
 	Rscript R/make-data-vascular_plant_phylogeny.tre.R
 
+# Data processing
+output/species-mean-leafN.csv: data/wright-2004.csv R/make-output-species-mean-leafN.csv.R
+	Rscript R/make-output-species-mean-leafN.csv.R
+
 .PHONY: all data-fetch data-preprocess kew-fetch zae-fetch
