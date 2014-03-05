@@ -45,5 +45,7 @@ output/species-mean-sla.csv: data/wright-2004.csv data/leda.csv make/make-output
 	Rscript make/make-output-species-mean-sla.csv.R
 output/species-mean-seedMass.csv: data/kew.csv make/make-output-species-mean-seedMass.csv.R
 	Rscript make/make-output-species-mean-seedMass.csv.R
+output/vascular_plant_phylogeny.rds: data/vascular_plant_phylogeny.tre
+	Rscript make/make-output-vascular_plant_phylogeny.rds.R
 
 .PHONY: all data-fetch data-preprocess data-species-mean kew-fetch zae-fetch
