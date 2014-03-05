@@ -15,13 +15,13 @@ all.dat <- get.angio.data()
 ## Assess model adequacy
 ##
 ## Function takes one of the elements of angio-trait-data-all.rds
-model.ad.bayes <- function(x){
+## and an index value for naming the file
+model.ad.bayes <- function(x, idx){
 
     ## Define objects
     phy    <- x$phy
     states <- x$states
     SE     <- x$SE
-    idx    <- x$index
     taxa   <- x$taxa
     trait  <- x$trait
     rank   <- x$rank
@@ -30,6 +30,9 @@ model.ad.bayes <- function(x){
     
     
     ## Create likelihood fxns
+    ## just for clarity, define the control arguments here
+    dt.con <- list(method="pruning", backend="C")
+
     lik.bm <- make.bm(phy, states, SE, control=dt.con)
     lik.ou <- make.ou(phy, states, SE, control=dt.con)
     lik.eb <- make.eb(phy, states, SE, control=dt.con)
@@ -107,6 +110,7 @@ model.ad.bayes <- function(x){
              dic.eb, unname(dic.w["EB"]), pv.mcmc.eb, mv.mcmc.eb)
 
     out.bayes <- as.data.frame(out.bayes)
+    ss <- names(pval.summ.stats(mcmc.bm))
     rownames(out.bayes) <- c("taxa", "rank", "trait", "size", "age",
                     "dic.bm", "dicw.bm", paste(ss, "mcmc.bm", sep="."), "mv.mcmc.bm",
                     "dic.ou", "dicw.ou", paste(ss, "mcmc.ou", sep="."), "mv.mcmc.ou",
@@ -131,11 +135,11 @@ model.ad.bayes <- function(x){
 
 
 ## define number of cores for parallelization
-max.cores <- 32
+max.cores <- 24
 
 
 ## Run analyses across all clades
-all.res <- mclapply(all.dat, function(x) model.ad.bayes(x),
+all.res <- mclapply(seq_len(length(all.dat)), function(x) model.ad.bayes(all.dat[[x]], x),
                     mc.cores=max.cores, mc.preschedule=FALSE)
 
 

@@ -115,9 +115,6 @@ bnds.ou <- function(phy, states){
 }
 
 
-## just for clarity, define the control arguments here
-dt.con <- list(method="pruning", backend="C")
-
 
 ## simple function for reading in angiosperm dataset
 get.angio.data <- function(){
