@@ -39,5 +39,7 @@ data/vascular_plant_phylogeny.tre: data/zae/PhylogeneticResources.zip
 # Data processing
 output/species-mean-leafN.csv: data/wright-2004.csv R/make-output-species-mean-leafN.csv.R
 	Rscript R/make-output-species-mean-leafN.csv.R
+output/species-mean-sla.csv: data/wright-2004.csv data/leda.csv R/make-output-species-mean-sla.csv.R
+	Rscript R/make-output-species-mean-sla.csv.R
 
 .PHONY: all data-fetch data-preprocess kew-fetch zae-fetch
