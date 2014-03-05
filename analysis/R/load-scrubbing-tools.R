@@ -1,11 +1,12 @@
 require(ape)
 source("R/import-scrub.R")
+source("R/read-data-functions.R")
 
 ## TODO: This needs not to be global.
 
 #loading tools
 corrections<-read.delim("data/names-tr.txt",as.is=TRUE)
-tree<-read.tree("data/vascular_plant_phylogeny.tre")
+tree<-get.tree()
 errors<-read.csv("data/errors.csv",as.is=TRUE)
 plantList<-read.csv("data/spermatophyta_synonyms_PLANTLIST.csv",as.is=TRUE)
 

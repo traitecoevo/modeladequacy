@@ -3,76 +3,7 @@
 require(geiger)
 require(phytools)
 
-## get the data for the SLA
-get.sla.data <- function(){
-    t <- read.tree(file="data/vascular_plant_phylogeny.tre")
-    sla.raw <- read.csv(file="output/species-mean-sla.csv", header=TRUE)
-
-    ## only angiosperms
-    t <- extract.clade(t, node="Angiospermae")
-
-    ## base 10 log
-    sla <- log10(sla.raw[,"x"])
-    names(sla) <- sla.raw[,"X"]
-
-    ## drop extra tips
-    tmp <- t$tip.label[!t$tip.label %in% names(sla)]
-    phy <- geiger:::.drop.tip(phy=t, tip = tmp)
-
-    sla <- sla[phy$tip.label]
-
-    ## return tree and data
-    list(phy=phy, states=sla, SE=0.1039405)
-}
-
-## get the data for seedmass
-get.seedmass.data <- function(){
-    t <- read.tree(file="data/vascular_plant_phylogeny.tre")
-    sm.raw <- read.csv(file="output/species-mean-seedMass.csv", header=TRUE)
-
-    ## only angiosperms
-    t <- extract.clade(t, node="Angiospermae")
-
-    ## base 10 log
-    sm <- log10(sm.raw[,"x"])
-    names(sm) <- sm.raw[,"X"]
-
-    ## drop all for which the value is -Inf
-    # sm <- sm[-which(sm == -Inf)]
-
-    ## drop extra tips
-    tmp <- t$tip.label[!t$tip.label %in% names(sm)]
-    phy <- geiger:::.drop.tip(phy=t, tip = tmp)
-
-    sm <- sm[phy$tip.label]
-        
-    ## return tree and data
-    list(phy=phy, states=sm, SE=0.1551108)
-}
-
-
-## get the data for leafn
-get.leafn.data <- function(){
-    t <- read.tree("data/vascular_plant_phylogeny.tre")
-    ln.raw <- read.csv("output/species-mean-leafN.csv")
-
-    ## only angiosperms
-    t <- extract.clade(t, node="Angiospermae")
-
-    ## log base 10
-    ln <- log10(ln.raw[,"x"])
-    names(ln) <- ln.raw[,"X"]
-
-    ## drop extra tips
-    tmp <- t$tip.label[!t$tip.label %in% names(ln)]
-    phy <- geiger:::.drop.tip(phy=t, tip = tmp)
-
-    ln <- ln[phy$tip.label]
-
-    ## return tree and data
-    list(phy=phy, states=ln, SE=0.07626127) ## need to update SE
-}
-
+source("R/read-data-functions.R")
 
 ## functions for extracting subtrees
 ## TODO: NEED TO SEE WHICH OF THESE I ACTUALLY NEED

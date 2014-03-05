@@ -1,2 +1,4 @@
 # Happy to merge into a top level gitignore if you'd rather.
 data
+output/ref
+output/vascular_plant_phylogeny.rds

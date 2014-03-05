@@ -39,13 +39,16 @@ data/vascular_plant_phylogeny.tre: data/zae/PhylogeneticResources.zip
 	Rscript make/make-data-vascular_plant_phylogeny.tre.R
 
 # Data processing
-output/species-mean-leafN.csv: data/wright-2004.csv make/make-output-species-mean-leafN.csv.R
-	Rscript make/make-output-species-mean-leafN.csv.R
-output/species-mean-sla.csv: data/wright-2004.csv data/leda.csv make/make-output-species-mean-sla.csv.R
-	Rscript make/make-output-species-mean-sla.csv.R
-output/species-mean-seedMass.csv: data/kew.csv make/make-output-species-mean-seedMass.csv.R
-	Rscript make/make-output-species-mean-seedMass.csv.R
 output/vascular_plant_phylogeny.rds: data/vascular_plant_phylogeny.tre
 	Rscript make/make-output-vascular_plant_phylogeny.rds.R
+## We'll refer to this a bunch, so shortcut:
+TREE = output/vascular_plant_phylogeny.rds
+
+output/species-mean-leafN.csv: ${TREE} data/wright-2004.csv make/make-output-species-mean-leafN.csv.R
+	Rscript make/make-output-species-mean-leafN.csv.R
+output/species-mean-sla.csv: ${TREE} data/wright-2004.csv data/leda.csv make/make-output-species-mean-sla.csv.R
+	Rscript make/make-output-species-mean-sla.csv.R
+output/species-mean-seedMass.csv: ${TREE} data/kew.csv make/make-output-species-mean-seedMass.csv.R
+	Rscript make/make-output-species-mean-seedMass.csv.R
 
 .PHONY: all data-fetch data-preprocess data-species-mean kew-fetch zae-fetch

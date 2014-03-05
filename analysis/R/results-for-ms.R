@@ -1,3 +1,5 @@
+source("R/read-data-functions.R")
+
 ## read in ml data
 ml <- read.csv("output/ml-results.csv", row.names=1, as.is=TRUE)
 
@@ -217,7 +219,7 @@ length(which(mpic$mean.diag < 500))
 
 ## OVERALL DATA NUMBERS FOR METHODS SECTION
 ## import big tree
-tree <- read.tree(file="data/vascular_plant_phylogeny.tre")
+tree <- get.tree()
 
 ## extract angiosperms
 t <- extract.clade(tree, node="Angiospermae")
@@ -227,39 +229,22 @@ Ntip(t)
 ## age of tree
 max(branching.times(t))
 
-## read in SLA data
-sla <- read.csv(file="output/species-mean-sla.csv", header=TRUE, row.names=1)
+## read in the three data sets:
+sla <- read.csv("output/species-mean-sla.csv", stringsAsFactors=FALSE)
+sdm <- read.csv("output/species-mean-seedMass.csv", stringsAsFactors=FALSE)
+lfn <- read.csv("output/species-mean-leafN.csv", stringsAsFactors=FALSE)
 
 ## number of species for which we have sla
 nrow(sla)
-
-tmp.sla <-  t$tip.label[!t$tip.label %in% rownames(sla)]
-
 ## overlap between tree and sla
-Ntip(t) - length(tmp.sla)
-
-
-## read in seedmass data
-sdm <- read.csv(file="output/species-mean-seedMass.csv", row.names=1, header=TRUE)
+length(intersect(t$tip.label, sla$gs))
 
 ## number of species for which we have seedmass data
 nrow(sdm)
-
-tmp.sdm <- t$tip.label[!t$tip.label %in% rownames(sdm)]
-
 ## overlap between tree and seedmass
-Ntip(t) - length(tmp.sdm)
-
-
-## read in leafn data
-lfn <- read.csv("output/species-mean-leafN.csv", row.names=1, as.is=TRUE)
+length(intersect(t$tip.label, sdm$gs))
 
 ## number of species for which we have leafn data
 nrow(lfn)
-
-tmp.lfn <- t$tip.label[!t$tip.label %in% rownames(lfn)]
-
-## overlap between tree and leafn
-Ntip(t) - length(tmp.lfn)
-
-   
+## overlap between tree and leafN
+length(intersect(t$tip.label, lfn$gs))
