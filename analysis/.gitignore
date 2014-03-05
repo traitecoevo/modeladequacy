@@ -2,3 +2,4 @@
 data
 output/ref
 output/vascular_plant_phylogeny.rds
+output/data-*.rds

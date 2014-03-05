@@ -1,11 +1,7 @@
 ## These functions are designed to read and process the data
-require(geiger)
+require(geiger, quietly=TRUE)
 
-get.tree <- function() {
-  readRDS("output/vascular_plant_phylogeny.rds")
-}
-
-get.data <- function(dataset) {
+build.data <- function(dataset) {
   dataset <- match.arg(dataset, c("sla", "seedMass", "leafN"))
 
   t <- get.tree()
@@ -28,16 +24,20 @@ get.data <- function(dataset) {
   list(phy=phy, states=dat, SE=se)
 }
 
+get.tree <- function() {
+  readRDS("output/vascular_plant_phylogeny.rds")
+}
+
 get.sla.data <- function() {
-  get.data("sla")
+  readRDS("output/data-sla.rds")
 }
 
 get.seedmass.data <- function() {
-  get.data("seedMass")
+  readRDS("output/data-seedMass.rds")
 }
 
 get.leafn.data <- function() {
-  get.data("leafN")
+  readRDS("output/data-leafN.rds")
 }
 
 get.sla.v.leafn.data <-function(){

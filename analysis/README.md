@@ -14,9 +14,9 @@ make data-preprocess
 
 ```
 make data-process
+make data-species-mean
+make data-with-trees
 ```
-
-
 
 Currently:
 * `leafN-process.R`: `data/wright-2004.csv` ->  `output/species-mean-leafN.csv`
