@@ -1,8 +1,13 @@
+## Functions used in analyses
+## But not part of main analyses
+
+## Load in all packages used 
 library(arbutus)
 library(diversitree)
 library(multicore)
 
-## function to calculate aic (or other weights) given a vector of aic scores
+## Compute weights for AIC or DIC
+## takes a named vector of AIC/DIC values
 ic.weights <- function(x){
     
     d.x <- x - min(x)
@@ -13,7 +18,7 @@ ic.weights <- function(x){
 }
 
 
-## Define function for calculating dic from mcmcsamples
+## Compute deviance information criterion from mcmcsamples
 dic.mcmcsamples <- function(x, burnin=NULL){
     if (!inherits(x, "mcmcsamples"))
         stop("this function is only designed for diversitrees mcmcsamples object")
@@ -22,7 +27,7 @@ dic.mcmcsamples <- function(x, burnin=NULL){
 
     if (!is.null(burnin)){
         if (burnin == 0)
-            stop("if burnin supplied, it cannot be 0")
+            stop("if burnin supplied, it cannot be 0, leave as NULL")
         
         x <- x[-seq_len(burnin), ]
     }
@@ -54,14 +59,20 @@ make.prior.bm <- function(s2.lower, s2.upper){
     f <- make.prior.uniform(lower=s2.lower, upper=s2.upper)
     f
 }
-    
-## function for making prior for ou
-## define function make.prior.lognormal
+
+
+
+## define function to create a lognormal prior
+## to be used in make.prior.ou
 make.prior.lognormal <- function(ln.mean, ln.sd){
     function(x) sum(dlnorm(x, meanlog=ln.mean, sdlog = ln.sd, log=TRUE))
 }
 
 
+
+## function for making ou prior
+## s2 is given a uniform prior
+## alpha is given a lognormal prior
 make.prior.ou <- function(s2.lower, s2.upper, ln.mean, ln.sd){
     p.s2 <- make.prior.uniform(lower=s2.lower, upper=s2.upper)
     p.al <- make.prior.lognormal(ln.mean=ln.mean, ln.sd=ln.sd)
@@ -72,7 +83,12 @@ make.prior.ou <- function(s2.lower, s2.upper, ln.mean, ln.sd){
 }
 
 
-## make prior for early burst
+
+## function for making eb prior
+## s2 is given a uniform prior
+## a is givne a uniform prior
+## the prior on s2 should be different than that of a
+## s2 > 0 and a < 0
 make.prior.eb <- function(s2.lower, s2.upper, a.lower, a.upper){
     p.s2 <- make.prior.uniform(lower=s2.lower, upper=s2.upper)
     p.a  <- make.prior.uniform(lower=a.lower, upper=a.upper)
@@ -82,6 +98,28 @@ make.prior.eb <- function(s2.lower, s2.upper, a.lower, a.upper){
     }
 }
 
+
+## create function for setting OU bounds for ML analyses
+## this is the only one where bounds to be necessary
+bnds.ou <- function(phy, states){
+    ## index the terminal branches
+    tips <- phy$edge[,2] <= Ntip(phy)
+    ## find the shortest branch
+    sht <- min(phy$edge.length[tips])
+    ## upper bound for alpha
+    ## half-life should be greater than shortest branch
+    bnd.a <- log(2)/sht
+    ## setting upper bound for sigsq at 2
+    bnd <- c(2, bnd.a)
+    bnd
+}
+
+
+## just for clarity, define the control arguments here
+dt.con <- list(method="pruning", backend="C")
+
+
+## simple function for reading in angiosperm dataset
 get.angio.data <- function(){
   readRDS(file="output/angio-trait-data-all.rds")
 }
