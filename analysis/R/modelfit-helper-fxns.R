@@ -125,7 +125,7 @@ get.angio.data <- function(){
 ## data processing fxns
 ## function for reading in individual results
 build.adequacy.results <- function(x){
-    f <- read.csv(paste("output", x, sep="/"), as.is=TRUE, row.names=1)
+    f <- read.csv(paste("output/temp", x, sep="/"), as.is=TRUE, row.names=1)
     d <- as.data.frame(t(f))
     rownames(d) <- NULL
     d
