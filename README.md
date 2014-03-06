@@ -16,5 +16,6 @@ Scripts to reproduce all analyses done in the paper
 
 Manuscript files for our forthcoming paper: 
 
-"Model adequacy and the macroevolution of angiosperm functional traits"
+### "Model adequacy and the macroevolution of angiosperm functional traits"
+
 Matthew W. Pennell, Richard G. FitzJohn, William K. Cornwell, and Luke J. Harmon
