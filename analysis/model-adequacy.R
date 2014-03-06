@@ -544,3 +544,35 @@ fig.modelad.age(ml.best)
 fig.modelad.age(bay.best)
 
 
+## produce figures
+if (!interactive()){
+
+    ## create a directory for the figures
+    dir.create("output/figs", FALSE)
+    
+    to.pdf("output/figs/aic-support.pdf", width=9, height=6,
+           fig.model.support.aic(aic))
+
+    to.pdf("output/figs/dic-support.pdf", width=9, height=6,
+           fig.model.support.dic(dic))
+
+    to.pdf("output/figs/pval-hist-ml.pdf", width=9, height=5,
+           fig.pval.histogram.ml(ml.best), onefile=FALSE)
+
+    to.pdf("output/figs/pval-hist-bayes.pdf", width=9, height=5,
+           fig.pval.histogram.bayes(bay.best), onefile=FALSE)
+
+    to.pdf("output/figs/ad-size-ml.pdf", width=7, height=6,
+           fig.modelad.size(ml.best))
+
+    to.pdf("output/figs/ad-size-bayes.pdf", width=7, height=6,
+           fig.modelad.size(bay.best))
+
+    to.pdf("output/figs/ad-age-ml.pdf", width=7, height=6,
+           fig.modelad.age(ml.best))
+
+    to.pdf("output/figs/ad-age-bayes.pdf", width=7, height=6,
+           fig.modelad.age(bay.best))
+
+}
+

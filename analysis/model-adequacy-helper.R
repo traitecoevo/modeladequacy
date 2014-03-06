@@ -125,3 +125,15 @@ cap.ranks <- function(x){
 
     y
 }
+
+
+## Evaluate expression 'expr' that produces a figure as a side effect,
+## saving the result in a pdf file.
+to.pdf <- function(filename, width, height, expr,
+                   ..., pointsize=12, verbose=TRUE) {
+  if (verbose)
+    cat(sprintf("Creating %s\n", filename))
+  pdf(filename, width=width, height=height, pointsize=pointsize, ...)
+  on.exit(dev.off())
+  eval.parent(substitute(expr))
+}
