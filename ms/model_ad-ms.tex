@@ -204,8 +204,8 @@ Some summary statistics were much more likely to detect model violations than ot
 %% The number of datasets which were adequately modeled: 41
 Across all 337 datasets, only 41 are adequately modeled by either BM, OU or EB --- all of these are seed mass datasets. This is extremely worrisome as these are some of the most commonly used models in comparative biology. 
 
-As the subclades are not independent (overlapping sets of taxa are present in family, order and time--slice phylogenies), conventional statistics, such as linear regression, are not straightforward to apply across datasets. Nonetheless, the trend is clear: the larger the phylogeny, the more likely OU is to be highly supported and the more likely the model is to be inadequate. There is a strong relationship between the size of a subclade and the overall distance between observed and simulated summary statistics, as measured by the Mahanalobis distance (Figure \ref{fig:size-adequacy}). This is not simply an artifact of conducting the analyses using a larger number of contrasts for the summary statistics --- if the model was adequate at all scales, there would be no relationship between the Mahalanobis distance and the size of the phylogeny. There appears to be a much weaker relationship between clade age and model adequacy (Supplemental Figure xx).
-% If you account for the size/age correlation does that persist?
+As the subclades are not independent (overlapping sets of taxa are present in family, order and time--slice phylogenies), conventional statistics, such as linear regression, are not straightforward to apply across datasets. Nonetheless, the trend is clear: the larger the phylogeny, the more likely OU is to be highly supported and the more likely the model is to be inadequate. There is a strong relationship between the size of a subclade and the overall distance between observed and simulated summary statistics, as measured by the Mahanalobis distance (Figure \ref{fig:size-adequacy}). This is not simply an artifact of conducting the analyses using a larger number of contrasts for the summary statistics --- if the model was adequate at all scales, there would be no relationship between the Mahalanobis distance and the size of the phylogeny. There is no such relationship between clade age and model adequacy (Figure \ref{fig:supp-age-ml}).
+
 
 \section{Discussion}
 
@@ -320,6 +320,11 @@ By simulating evolution on this unit tree under a BM model with a rate of 1, we 
 
 
 \newpage
+\section{Supplementary material}
+\subsection{Empirical results from Bayesian analyses}
+
+
+\newpage
 \bibliographystyle{plos}
 \bibliography{model_ad.bib}
 
@@ -345,21 +350,21 @@ By simulating evolution on this unit tree under a BM model with a rate of 1, we 
 
 \begin{figure}[p]
   \centering
-  \includegraphics[angle=90, origin=c, scale=0.8]{figs/AIC-support}
+  \includegraphics[angle=90, origin=c, scale=0.8]{figs/aic-support}
   \caption{\textbf{The relative support, as measured by AIC weight, for the three models used in our study (BM, OU, and EB) across all 337 datasets.} An OU model is highly supported for a majority of the datasets.}
   \label{fig:aic-support}
 \end{figure}
 
 \begin{figure}[p]
   \centering
-  \includegraphics[angle=90, origin=c, scale=0.85]{figs/pvalue-hist-ML}
+  \includegraphics[angle=90, origin=c, scale=0.85]{figs/pval-hist-ml}
   \caption{\textbf{The distribution of $p$--values for our six summary statistics over all 337 datasets in our study.} This is from the results of fitting the models using ML. The $p$--values are from applying our model adequacy approach to the best supported of the three models (as evaluated with AIC). For both the rate estimate $M_{PIC}$ and the coefficient of variation $V_{PIC}$, the vast majority of datasets would reject the best of the three models (at $p<$ 0.05).}
   \label{fig:pvalues}
 \end{figure}
 
 \begin{figure}[p]
   \centering
-  \includegraphics[scale=0.9]{figs/Size-adequacy-ML-bestonly}
+  \includegraphics[scale=0.9]{figs/ad-size-ml}
   \caption{\textbf{The relationship between clade size and a multivariate measure of model adequacy.} The Mahalanobis distance is a scale--invariant metric that measures the distance between the observed and simulated summary statistics, taking into account the covariance between summary statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. There is a striking relationship between the two --- the larger the dataset, the worse the models performed (note the logarithmic scale). If the models were equally likely to be adequate at all scales, we would expect no relationship.}
   \label{fig:size-adequacy}
 \end{figure}
@@ -375,6 +380,48 @@ By simulating evolution on this unit tree under a BM model with a rate of 1, we 
   \caption{\textbf{Illustration of creating a unit tree from model parameters.} The original tree is in red. The unit tree constructed from an OU model with parameters $\sigma^2$ = 0.5 and $\alpha=$ 1 is in blue. The length of branch $i$, $\nu_i$ is rescaled to $v_i^\prime$ using Equation 3. Not only have the branch lengths changed relative to one another but the total tree depth $T$ has decreased as well. While the tree on the left had branch lengths in units of time, the unit tree has branch lengths in units of expected (standardized) variance.}
   \label{fig:box1}
 \end{figure}
+
+%% Suppmat figures
+\renewcommand\thefigure{S\arabic{figure}}
+\renewcommand\thetable{S \arabic{table}}
+\setcounter{figure}{0}    
+\setcounter{table}{0} 
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[scale=0.9]{figs/ad-age-ml}
+  \caption{Model adequacy vs. age (ML)}
+  \label{fig:supp-age-ml}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[angle=90, origin=c, scale=0.8]{figs/dic-support}
+  \caption{dic support for 3 models}
+  \label{fig:supp-dic}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[angle=90, origin=c, scale=0.85]{figs/pval-hist-bayes}
+  \caption{p values (bayesian)}
+  \label{fig:supp-pvalues}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[scale=0.9]{figs/ad-size-bayes}
+  \caption{size adequacy (bayesian)}
+  \label{fig:supp-size-adequacy}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[scale=0.9]{figs/ad-age-ml}
+  \caption{Model adequacy vs. age (ML)}
+  \label{fig:supp-age-bayes}
+\end{figure}
+
 
 \end{document}
 

@@ -5,7 +5,7 @@ library(gridExtra)
 library(reshape2)
 
 ## Load in helper functions for analysis
-source("model-adequacy-helper.R")
+source("R/model-adequacy-helper.R")
 
 ### Set options
 ##+ echo=FALSE, results=FALSE
@@ -295,14 +295,14 @@ length(which(lfn.p.ml >= 3))
 
 
 # Plotting the distribution of p-values for all three traits
-fig.pval.histogram.ml <- function(ml.best){
+fig.pval.histogram <- function(best){
     ## prune out irrelevant categories
-    ml.best <- cbind(rownames(ml.best), ml.best[,c("trait", "m.pic", "v.pic", "s.var",
+    best <- cbind(rownames(best), best[,c("trait", "m.pic", "v.pic", "s.var",
                                     "s.anc", "s.hgt", "d.ks")])
 
  
     ## melt
-    df <- melt(ml.best)
+    df <- melt(best)
 
     ## set the order and the labels
     df$trait <- factor(df$trait, levels=c("SLA", "seedmass", "leafn"),
@@ -329,7 +329,7 @@ fig.pval.histogram.ml <- function(ml.best){
     p
 }
 
-fig.pval.histogram.ml(ml.best)
+fig.pval.histogram(ml.best)
 
 
 
@@ -420,41 +420,7 @@ length(which(lfn.p.bay >= 3))
 
 
 # Plotting the distribution of p-values for all three traits
-fig.pval.histogram.bayes <- function(bay.best){
-    ## prune out irrelevant categories
-    ml.best <- cbind(rownames(ml.best), ml.best[,c("trait", "m.pic", "v.pic", "s.var",
-                                    "s.anc", "s.hgt", "d.ks")])
-
- 
-    ## melt
-    df <- melt(bay.best)
-
-    ## set the order and the labels
-    df$trait <- factor(df$trait, levels=c("SLA", "seedmass", "leafn"),
-                       labels=c("SLA", "SeedMass", "LeafN"))
-                        
-    df$variable <- factor(df$variable,
-                          labels=c("italic(M[PIC])", "italic(V[PIC])", "italic(S[VAR])", "italic(S[ANC])", "italic(S[HGT])", "italic(D[KS])"))
-    .e <- environment()
-
-    p <- ggplot(df, aes(x=value), environment = .e)
-    p <- p + geom_histogram(binwidth=0.025, alpha=0.8, aes(y=..density.., fill=factor(trait)))
-    p <- p + scale_fill_manual(values=col)
-    p <- p + theme_bw()
-    p <- p + xlab("p-value")
-    p <- p + facet_grid(trait~variable, labeller = label_parsed)
-    p <- p + theme(strip.background=element_rect(fill="white"),
-                   plot.background=element_blank(),
-                   panel.grid.major=element_blank(),
-                   panel.grid.minor=element_blank(),
-                   axis.text=element_text(size=8),
-                   axis.ticks.y=element_blank(),
-                   axis.text.y=element_blank(),
-                   legend.position="none")
-    p
-}
-
-fig.pval.histogram.bayes(bay.best)
+fig.pval.histogram(bay.best)
 
 
 
@@ -545,6 +511,7 @@ fig.modelad.age(bay.best)
 
 
 ## produce figures
+## TODO: THIS CURRENTLY DOES WORK TO PRODUCE PDFs. I AM PROBABY MISSING A FUNCTION
 if (!interactive()){
 
     ## create a directory for the figures
@@ -557,10 +524,10 @@ if (!interactive()){
            fig.model.support.dic(dic))
 
     to.pdf("output/figs/pval-hist-ml.pdf", width=9, height=5,
-           fig.pval.histogram.ml(ml.best), onefile=FALSE)
+           fig.pval.histogram(ml.best), onefile=FALSE)
 
     to.pdf("output/figs/pval-hist-bayes.pdf", width=9, height=5,
-           fig.pval.histogram.bayes(bay.best), onefile=FALSE)
+           fig.pval.histogram(bay.best), onefile=FALSE)
 
     to.pdf("output/figs/ad-size-ml.pdf", width=7, height=6,
            fig.modelad.size(ml.best))

@@ -69,7 +69,7 @@ prune.dataset.best.bayes <- function(x){
     ## find best model
     dic <- c("dic.bm", "dic.ou", "dic.eb")
     mm <- sapply(seq_len(nrow(x)), function(y)
-                 return(aic[which(x[y,dic] == min(x[y,dic]))]))
+                 return(dic[which(x[y,dic] == min(x[y,dic]))]))
     model <- sapply(mm, function(y) get.model.suffix(y))
 
     ## build new dataframe inlcuding only the best model
