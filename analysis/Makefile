@@ -65,4 +65,40 @@ output/data-seedMass.rds: output/species-mean-seedMass.csv R/read-data-functions
 output/angio-trait-data-all.rds: ${DATA_PHY} make/output-angio-trait-data-all.rds.R
 	Rscript make/output-angio-trait-data-all.rds.R
 
-.PHONY: all data data-fetch data-preprocess data-species-mean kew-fetch zae-fetch
+# Save on some farting about with data:
+DOWNLOADED_DATA = 		\
+	data/kew/*.html 	\
+	data/leda.txt		\
+	data/wright-2004.xls 	\
+	data/zae/PhylogeneticResources.zip data/zae/Spermatophyta_Genera.csv
+DOWNLOADED_DATA_SAVE = .downloaded_data.tar.gz
+
+downloaded-data-delete:
+	rm -f ${DOWNLOADED_DATA}
+downloaded-data-save:
+	tar -zcvf .downloaded_data.tar.gz ${DOWNLOADED_DATA}
+downloaded-data-unpack:
+	tar -zxvf .downloaded_data.tar.gz
+downloaded-data-bulk-fetch:
+	curl -o .downloaded_data.tar.gz http://www.zoology.ubc.ca/~fitzjohn/files/modeladequacy_data.tar.gz
+
+clean-data: clean-processed
+	rm -rf data/kew data/kew.csv
+	rm -f data/leda.csv
+	rm -f data/vascular_plant_phylogeny.tre
+	rm -f data/genus_order_lookup.csv
+	rm -f data/wright-2004.csv
+	rm -rf data/zae
+
+## More to add here, perhaps
+clean-processed:
+	rm -f output/angio-trait-data-all.rds
+	rm -f output/data-*rds
+	rm -f output/species-mean-*csv
+	rm -f output/vascular_plant_phylogeny.rds
+
+.PHONY: all data data-fetch data-preprocess data-species-mean \
+	kew-fetch zae-fetch \
+	downloaded-data-delete downloaded-data-save \
+	downloaded-data-unpack downloaded-data-bulk-fetch \
+	clean-data clean-processed

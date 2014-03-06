@@ -1,4 +1,4 @@
-require(ape)
+require(ape, quietly=TRUE)
 source("R/import-scrub.R")
 source("R/read-data-functions.R")
 

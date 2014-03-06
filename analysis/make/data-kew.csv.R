@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+library(methods)
 source("R/kew.R")
 
 clades <- kew.clades.tr(kew.clades())

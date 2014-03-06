@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+library(methods)
 library(xlsx, quietly=TRUE)
 library(digest, quietly=TRUE)
 

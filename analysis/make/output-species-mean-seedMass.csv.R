@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
 ## TODO: What is the slow step here?
+library(methods)
 suppressMessages(library(dplyr))
 source("R/load-scrubbing-tools.R")
 

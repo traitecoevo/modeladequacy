@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+library(methods)
 suppressMessages(library(dplyr))
 source("R/load-scrubbing-tools.R")
 
