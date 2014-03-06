@@ -48,11 +48,15 @@ output/vascular_plant_phylogeny.rds: data/vascular_plant_phylogeny.tre
 ## We'll refer to this a bunch, so shortcut:
 TREE = output/vascular_plant_phylogeny.rds
 
-output/species-mean-leafN.csv: ${TREE} data/wright-2004.csv make/output-species-mean-leafN.csv.R
+output/synonyms.rds: data/spermatophyta_synonyms_PLANTLIST.csv
+	Rscript make/output-synonyms.rds.R
+SYN  = output/synonyms.rds
+
+output/species-mean-leafN.csv: ${TREE} ${SYN} data/wright-2004.csv make/output-species-mean-leafN.csv.R
 	Rscript make/output-species-mean-leafN.csv.R
-output/species-mean-sla.csv: ${TREE} data/wright-2004.csv data/leda.csv make/output-species-mean-sla.csv.R
+output/species-mean-sla.csv: ${TREE} ${SYN} data/wright-2004.csv data/leda.csv make/output-species-mean-sla.csv.R
 	Rscript make/output-species-mean-sla.csv.R
-output/species-mean-seedMass.csv: ${TREE} data/kew.csv make/output-species-mean-seedMass.csv.R
+output/species-mean-seedMass.csv: ${TREE} ${SYN} data/kew.csv make/output-species-mean-seedMass.csv.R
 	Rscript make/output-species-mean-seedMass.csv.R
 
 output/data-leafN.rds: output/species-mean-leafN.csv R/read-data-functions.R
