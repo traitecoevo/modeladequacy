@@ -116,7 +116,7 @@ model.ad.bayes <- function(x, idx){
                     "dic.ou", "dicw.ou", paste(ss, "mcmc.ou", sep="."), "mv.mcmc.ou",
                     "dic.eb", "dicw.eb", paste(ss, "mcmc.eb", sep="."), "mv.mcmc.eb")
 
-    write.csv(out.bayes, file=paste(paste("output/allres", "bayes", trait, idx, sep="_"),
+    write.csv(out.bayes, file=paste(paste("output/temp/allres", "bayes", trait, idx, sep="_"),
                              ".csv", sep=""))
     
 }
@@ -131,6 +131,10 @@ model.ad.bayes <- function(x, idx){
 ## results with do.call() after the fact.
 ## This is not ideal or elegant -- it creates a lot files in the output folder
 ## but was a way of ensuring the analyses all worked.
+
+
+## create temporary directory to hold individual results
+dir.create("output/temp", FALSE)
 
 
 
@@ -148,7 +152,7 @@ all.res <- mclapply(seq_len(length(all.dat)), function(x) model.ad.bayes(all.dat
 ## Process results
 
 ## Gather all the files together and produce a single output file
-tmp <- dir("output")
+tmp <- dir("output/temp")
 
 ## pull out only the file names with allres_ml
 bay <- tmp[grep("allres_bayes", tmp)]

@@ -96,7 +96,7 @@ model.ad.ml <- function(x, idx){
                        "aic.ou", "aicw.ou", paste(ss, "ml.ou", sep="."), "mv.ml.ou", "mean.diag.ou",
                        "aic.eb", "aicw.eb", paste(ss, "ml.eb", sep="."), "mv.ml.eb", "mean.diag.eb")
 
-    write.csv(out.ml, file=paste(paste("output/allres", "ml", trait, idx, sep="_"), ".csv", sep=""))
+    write.csv(out.ml, file=paste(paste("output/temp/allres", "ml", trait, idx, sep="_"), ".csv", sep=""))
 }
 
 
@@ -114,6 +114,8 @@ model.ad.ml <- function(x, idx){
 ## parameters and optimizer conditions in order to ensure convergence.
 
 
+## create temporary directory to hold individual results
+dir.create("output/temp", FALSE)
 
 
 ## define number of cores for parallelization
@@ -130,7 +132,7 @@ all.res <- mclapply(seq_len(length(all.dat)), function(x) model.ad.ml(all.dat[[x
 ## Process results
 
 ## Gather all the files together and produce a single output file
-tmp <- dir("output")
+tmp <- dir("output/temp")
 
 ## pull out only the file names with allres_ml
 ml <- tmp[grep("allres_ml", tmp)]
