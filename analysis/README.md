@@ -33,7 +33,6 @@ Required packages (in addition to arbutus)
 * diversitree
 * geiger
 * ggplot2
-* phytools
 * scales
 * xlsx
 

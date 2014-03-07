@@ -1,6 +1,5 @@
 ## functions for building rds file for all data and all traits
 require(geiger, quietly=TRUE)
-require(phytools, quietly=TRUE)
 
 source("R/read-data-functions.R")
 
@@ -8,12 +7,23 @@ treedata.q <- function(...)
   geiger::treedata(..., warnings=FALSE)
 
 ## functions for extracting subtrees
-## TODO: NEED TO SEE WHICH OF THESE I ACTUALLY NEED
+## some of this code was written by Jon M. Eastman
+
+get.node.heights <- function(t){
+    edg <- arbutus:::edge.height(t)
+    edg <- max(edg$start) - edg 
+    rr <- reorder(t, "cladewise")
+    edg[rr$edge[,2], ]
+    rownames(edg) <- NULL
+    as.matrix(edg) 
+}
+    
+
 extract.all.nodes<-function(tree,node.height.min,node.height.max){
   #note that this returns a matrix of the same dimensions as tree$edge 
   #containing the height above the root of each node in edge
   tree$node.label<-rep("",length(tree$node.label))
-  a<-nodeHeights(tree)
+  a<-get.node.heights(tree)
   interesting.nodes<-tree$edge[which(a[,2]>node.height.min&a[,2]<node.height.max)] #these are edges which pass through a certain age
   non.terminal.interesting.nodes<-interesting.nodes[interesting.nodes>length(tree$node.label)+2]
   return(non.terminal.interesting.nodes)
@@ -23,7 +33,7 @@ where.to.cut<-function(tree,age){
   #note that this returns a matrix of the same dimensions as tree$edge 
   #containing the height above the root of each node in edge
   tree$node.label<-rep("",length(tree$node.label))
-  a<-nodeHeights(tree)
+  a<-get.node.heights(tree)
   interesting.nodes<-tree$edge[which(a[,1]<age&a[,2]>age),2] #these are edges which pass through a certain age
   non.terminal.interesting.nodes<-interesting.nodes[interesting.nodes>length(tree$node.label)+2]
   return(non.terminal.interesting.nodes)
