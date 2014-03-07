@@ -152,10 +152,10 @@ length(which(dic.best == "OU"))
 ## How many clades support OU with 100% of DICw
 length(which(dic$OU == 1))
 
-## How many clades support OU with >75% of AICw
+## How many clades support OU with >75% of DICw
 length(which(dic$OU > 0.75))
 
-## How many clades support EB with >75% of AICw
+## How many clades support EB with >75% of DICw
 length(which(dic$EB > 0.75))
 
 ## Now subsetting the taxa to only look at trees with at least 100 taxa
@@ -386,7 +386,7 @@ length(which(sla.p.bay >= 3))
 
 
 ## Results from seed mass data
-bay.best.sdm <- ml.best[which(bay.best$trait == "seedmass"),]
+bay.best.sdm <- bay.best[which(bay.best$trait == "seedmass"),]
 
 ## Number of datasets with seed mass data
 nrow(bay.best.sdm)

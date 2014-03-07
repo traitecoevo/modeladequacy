@@ -96,7 +96,7 @@ If we have a posterior probability distribution $\mathbb{P}(\Theta_{\mathcal{M}}
 \begin{equation}
 \mathbb{P}(Y|X,\mathcal{M}) = \int \mathbb{P}(Y|\Theta_{\mathcal{M}}, \mathcal{M})\mathbb{P}(\Theta_{\mathcal{M}}|X,\mathcal{M})d\Theta_{\mathcal{M}}
 \end{equation}
-where $\mathbb{P}(Y|X,\mathcal{M})$ is the probability of a new dataset $Y$ given $X$ and $\mathcal{M}$. In practice, sampling from $\mathbb{P}(Y|X,\mathcal{M})$ entails drawing samples from $\mathbb{P}(\Theta_{\mathcal{M}}|X, \mathcal{M})$ and simulating data on the phylogeny according to the sampled parameter values. Therefore, the datasets $Y_1, Y_2, \ldots, Y_m$ are each generated from different values of $\Theta_{\mathcal{M}}$.
+where $\mathbb{P}(Y|X,\mathcal{M})$ is the probability of a new dataset $Y$ given $X$ and $\mathcal{M}$. In practice, sampling from $\mathbb{P}(Y|X,\mathcal{M})$ entails drawing samples from the joint posterior distribution of parameters $\mathbb{P}(\Theta_{\mathcal{M}}|X, \mathcal{M})$ and simulating data on the phylogeny according to the sampled parameter values. Therefore, the datasets $Y_1, Y_2, \ldots, Y_m$ are each generated from different values of $\Theta_{\mathcal{M}}$.
 
 If the chosen summary statistics were properties of the data alone, such as the mean of observed trait values at the tips, we would have a single estimate of $\mathcal{S}_X$ and we could compare $\mathcal{S}_X$ to the distribution of values for $\mathcal{S}_Y$ (just as we did in the parametric bootstrapping approach described above). However, in our approach to posterior predictive simulation, the summary statistics depend on \emph{both the data and the parameter estimates}, for reasons detailed below. Therefore we also obtain a distribution of observed summary statistics $\mathcal{S}_{X,1}, \mathcal{S}_{X,2}, \ldots, \mathcal{S}_{X,m}$, each $\mathcal{S}_{X,i}$ calculated using the same data but a different set of parameter values sampled from $\mathbb{P}(\Theta_{\mathcal{M}}|X, \mathcal{M})$. We can then compare the distribution of values of $\mathcal{S}_X$ to the distribution of values of $\mathcal{S}_Y$. As with parametric bootstrapping, posterior predictive simulation approaches have also been developed for models in molecular phylogenetics \citep{Bollback2002, Reid2013, Lewis2013, Brown2013}, and recently for PCMs \citep{SlaterPennell}, but have not been widely adopted in either field.
 
@@ -139,7 +139,6 @@ Once we have created the unit tree from the estimated parameters, new datasets c
 
 \section{The adequacy of models for the evolution of plant functional traits}
 
-% Hmm, not sure about the motivation here, but at a loss to do better.
 We used the approach we developed to address an outstanding question in comparative biology: how well do commonly used models explain the evolution of traits along a phylogeny and when are more complex models required? We addressed this question by studying Angiosperm functional traits using a recently published a megaphylogeny containing 30,535 species \citep{Zanne2013}. This phylogeny is exceptional in terms of scope and allowed us to evaluate the adequacy of models through time and across many groups.  
 
 We compiled data on three traits from the literature: specific leaf area (SLA, defined as fresh area/dry mass); seed mass; and leaf nitrogen content (\% mass) (see Methods for details on datasets). SLA and leaf nitrogen content are important and widely measured components of the leaf economic spectrum, which relates to a plant's ecological strategy (i.e., how it balances photosynthetic capabilities and water cycling) \citep{Wright2004}. Seed mass is a good proxy for many life--history traits \citep{Westoby2002, Moles2005}. Understanding the macroevolutionary patterns of these three traits can provide key insights into the evolutionary processes that have shaped much of plant diversity \citep{ksi}.  
@@ -164,8 +163,11 @@ Examining model adequacy provides an alternative perspective. We took the MLE of
 
 \section{Empirical Results}
 
-% Worth a comment about where, if anywhere, you'd expect a difference between ML and Bayesian approaches from the point of adequacy?  I feel like in cases where ML is picking stupid parameter estimates it might give quite a different picture.
-All analyses were performed using both maximum likelihood and Bayesian methods (see Methods). For the sake of clarity, we present only the results from maximum likelihood analyses here. Results from Bayesian inference were qualitatively similar and are presented in full in the Supplementary Material. Across the 337 subclades, we found widespread support for OU
+All of the analyses conducted in this paper were done in both a frequentist/likelihood and a Bayesian framework. We did this for two reasons: first, we wanted to demonstrate the scope of our approach to emphasize that it is not tied to any single statistical paradigm; and second, we thought that there might be important differences between the adequacy of models depending on whether the parameters were estimated with likelihood or Bayesian inference. We know that the parameters of models of quantitative trait evolution are often difficult to estimate accurately \citep{Ane2008, HoAne2012}. Poorly estimated parameter values will have downstream effects for model adequacy. Constructing the unit trees from a distribution of parameter values should be less prone to such problems. 
+
+Despite the potential for important differences in the adequacy of models fit with likelihood versus Bayesian inference, we find the results to be broadly similar. For clarity and conciseness, we present only the results from the likelihood analyses here. Results from the Bayesian analysis are presented in full in the Supplemental Material. 
+
+Across the 337 subclades, we found widespread support for OU
 %% n. clades OU best supported model: 236
 models. For 236 of clades, OU had the highest AICw.
 %% n. clades OU supported with 100% aicw: 25
@@ -217,8 +219,6 @@ In our analyses of the evolution of three key Angiosperm functional traits, the 
 We are far from the the first to point this out. Many researchers have expressed concern that the models used in comparative biology are often inappropriate, for either biological or statistical reasons \citep{Felsenstein1985, Felsenstein1988, HarveyPagel1991, Garland1992, Pagel1993, Diaz1996, HansenMartins1996, Price1997, Garland1999, GarlandIves2000, HansenOrzack2005, Hansen2012, Felsenstein2012, Boettiger2012, SlaterPennell}; indeed, many of these issues were raised in the early days of the field.
 In this paper we have developed an approach to actually quantify when a model provides a poor explanation for the data and demonstrate that the concerns about model adequacy are just not theoretical but have real implications for real data.
 
-% At some point there was a nice triangle plot with the AIC values for BM, OU and EB that makes it a bit clearer what is going on.  Can we add that as SI?
-%% MWP: Sure I can make this again but it seems redundant with the barchart
 The 337 comparative datasets we analyzed varied in terms of traits, size, age and placement in the Angiosperm phylogeny. Nonetheless, several general patterns emerge. An OU model, was by and large, the most supported of the three we examined. In an analysis of 67 comparative datasets consisting of size and shape data from a variety of animal taxa, Harmon et al. \citep{Harmon2010} also found substantial support for OU models, though for their datasets, BM was more commonly chosen by AIC (we note, however, that many of their datasets were quite small; see \citep{SlaterPennell}). Since their paper, a number of studies conducted in a diverse array of groups have also found OU models to be preferred over BM models (e.g., \citep{Burbrink2012, Wiens2013, Lopez2013}). Various evolutionary explanations have been proposed to explain these results \citep{HansenMartins1996, ButlerKing2004, Hansen2012book, PennellHarmon}. Our results suggest a statistical explanation for the widespread support of OU models. OU models predict higher variance near the tips of the phylogeny (i.e., between closely related taxa) than do BM or EB models (e.g., see Figure 1 in \citep{Harmon2010}). Heterogeneous evolutionary processes, phylogenetic mis--estimation and measurement error \citep{Houle2011, Hansen2012} could all produce such a pattern. In light of our results from model adequacy, it is likely that OU is widely supported because it is able to accommodate more ``slop'' than the other models. This is not to say that the processes captured by OU models --- rapid evolution of traits, occuring within bounds --- are unimportant in macroevolution (see below), but rather that the reason OU models in our analyses are favored may not have anything to do with them
 
 This statistical explanation for why OU is so widely favored is further suggested by how the observed summary statistics deviate from the simulated summary statistics. Model violations were most frequently detected by the global rate estimate $M_{PIC}$, in all cases $M_{PIC}$ calculated from the observed contrasts was less than the mean of $M_{PIC}$ calculated from the contrasts of the data simulated on the unit tree. If the evolutionary process (or, alternatively, phylogenetic/measurement error) is heterogeneous across the tree, the lineages in some parts of the clade will be much more divergent than in others. The only way for the model to account for the highly divergent groups is to estimate a large $\sigma^2$ (and/or a small $\alpha$ parameter for the OU model). The unit tree formed by these parameter estimates will have long branches across the entire tree. In the less divergent parts of the tree, the contrasts calculated on this unit tree will be small, relative to what we expect under BM. So perhaps counter--intuitvely, when heterogeneity in processes across taxa cause the estimated global rates of divergence to be inflated, this will result in a lower value for $M_{PIC}$. For similar reasons, model inadequacy was also commonly detected with $V_{PIC}$, the coefficient of variation of the contrasts. For this summary statistic, the observed values tend to be \emph{larger} than the simulated values, though not as consistently as $M_{PIC}$ is smaller. 
@@ -284,10 +284,10 @@ For both types of analyses, we report two--tailed $p$--values (i.e., the probabi
 \section{Arbutus}
 
 % For the initial release, I suggest we hold off on CRAN and just link it off github using devtools to install.
-We have implemented our approach in a new R package \texttt{arbutus}. It is available on CRAN \texttt{http://cran.r-project.org/web/packages/arbutus/index.html} and at \texttt{www.github.com/mwpennell/arbutus}. For this project, we have also adopted code from the \texttt{ape} \citep{ape}, \texttt{geiger} \citep{geiger2}, \texttt{diversitree} \citep{FitzJohn2012} and \texttt{ggplot2} \citep{ggplot2} libraries. We have written functions to parse the output of a number of different programs for fitting trait evolution models (see \texttt{arbutus} help files for an up--to--date list of supported models and packages). As this approach was developed to be general, we have written the code in such a way that users can include their own summary statistics and trait models in the analyses; we include demonstrations of how this can be done on the project website.
+We have implemented our approach in a new R package \texttt{arbutus}. It is available on github \texttt{www.github.com/mwpennell/arbutus}. For this project, we have also adopted code from the \texttt{ape} \citep{ape}, \texttt{geiger} \citep{geiger2}, \texttt{diversitree} \citep{FitzJohn2012} and \texttt{ggplot2} \citep{ggplot2} libraries. We have written functions to parse the output of a number of different programs for fitting trait evolution models (see \texttt{arbutus} help files for an up--to--date list of supported models and packages). As this approach was developed to be general, we have written the code in such a way that users can include their own summary statistics and trait models in the analyses; we include demonstrations of how this can be done on the project website.
 
 \section{Acknowledgments}
-We would like to thank the members of the Tempo and Mode of Trait Evolution Working Group at the National Evolutionary Synthesis Center (NESCent) for their comments as well as NESCent for funding our group. We thank Josef Uyeda, Daniel Caetano and Will Pearse for their thoughtful comments on the manuscript. Paul Joyce and Graham Slater also provided valuable insight into this project. MWP was funded by a NSERC postgraduate fellowship. This work was also supported by NSF (DEB 0919499 and 1208912)
+We would like to thank the members of the Tempo and Mode of Trait Evolution Working Group at the National Evolutionary Synthesis Center (NESCent) for their comments as well as NESCent for funding our group. We thank Josef Uyeda, Daniel Caetano and Will Pearse for their thoughtful comments on the manuscript. Paul Joyce and Graham Slater also provided valuable insights into this project. MWP was funded by a NSERC postgraduate fellowship. This work was also supported by NSF (DEB 0919499 and 1208912)
 
 \newpage
 \section{Box 1: Creating a unit tree}
@@ -321,8 +321,32 @@ By simulating evolution on this unit tree under a BM model with a rate of 1, we 
 
 \newpage
 \section{Supplementary material}
-\subsection{Empirical results from Bayesian analyses}
+\subsection{Empirical results from the Bayesian analyses}
+As with the likelihood results (described in main text), OU models were highly supported across many datasets; 
+%% Number of datasets for which OU was best supported model: 178
+178/337 clades had the highest DIC weight (DICw) on an OU model; 155 of them with greater than 75\% of the total DICw (see Figure \ref{fig:supp-dic-support}). While the a generally similar pattern of model support holds for both likelihood and Bayesian inference, the likelihood analyses are much cleaner (compare Figure \ref{fig:aic-support} and Figure \ref{fig:supp-dic-support}). This differnce can be explained by the fact that there is a tight statistical relationship between the AIC values for these three models. (If two models have identical likelihoods, the AIC scores, defined as $-2\mathcal{L} + 2k$ [where $\mathcal{L}$ is the log-likelihood of the model and $k$ is the number of parameters] will differ by $2$. As BM is a special case of both OU and EB, in opposite directions in model space, the highest AICw possible for BM is $\sim$ 0.731 (see \citep{SlaterPennell}). The rare clades were both OU and EB have higher support than BM likely reflect problems in optimization.) Calculating DIC values from posterior samples is inherently more stochastic; if there is little information in data, the best DIC model will depend on the values sampled by the chain. 
 
+For the model adequacy results, the results were also very similar to that of the likelihood analyses (compare to Empirical results section). The adequacy of these simple models was woefully poor across most of the datasets (Figure \ref{fig:supp-pval-hist-bayes}). Again, we limit our analyses of model adequacy to only the most highly supported model in the candidate set.
+
+%% SLA data 
+%% rejected by at least one ss: 71
+%% rejected by at least two ss: 29
+%% rejected by at least three ss: 17
+Of the 72 comparative datasets of SLA, the best supported model was rejected by at least one sommary statistic in 71 cases, 29 by at least two, and 17 by three or more.
+%% Seed mass data 
+%% rejected by at least one ss: 189
+%% rejected by at least two ss: 129
+%% rejected by at least three ss: 72
+For the seed mass data, the model was rejected by one or mor of the summary statistics in 189 datasets (by two or more in 129 datasets and by at least three in 64 cases).
+%% Leaf nitrogen data
+%% rejected by at least one ss: 39
+%% rejected by at least two ss: 17
+%% rejected by at least three ss: 8
+All 39 leaf nitrogen datasets again rejected the best supported model with at least one summary statistic (17 by at least two and 8 by at least three).
+
+Also, similar to the likelihood analyses, the frequency of rejection differed between the summary statistic. $M_{PIC}$ rejected the model in 248 datasets, and $V_{PIC}$ in 168 ($S_{VAR}$: 73, $S_{ANC}$: 71, $S_{HGT}$: 33, $D_{KS}$: 69). There was a strong relationship between model (in)adequacy and clade size \ref{fig:supp-size-adequacy}, but not for clade age \ref{fig:supp-age-bayes}.
+ 
+All data, results, and figures can be completely reproduced with scripts located in the github repository \texttt{www.github.com/mwpennell/arbutus/analysis}
 
 \newpage
 \bibliographystyle{plos}
@@ -365,7 +389,7 @@ By simulating evolution on this unit tree under a BM model with a rate of 1, we 
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.9]{figs/ad-size-ml}
-  \caption{\textbf{The relationship between clade size and a multivariate measure of model adequacy.} The Mahalanobis distance is a scale--invariant metric that measures the distance between the observed and simulated summary statistics, taking into account the covariance between summary statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. There is a striking relationship between the two --- the larger the dataset, the worse the models performed (note the logarithmic scale). If the models were equally likely to be adequate at all scales, we would expect no relationship.}
+  \caption{\textbf{The relationship between clade size and a multivariate measure of model adequacy.} The Mahalanobis distance is a scale--invariant metric that measures the distance between the observed and simulated summary statistics, taking into account the covariance between summary statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by AIC), there is a striking relationship between the two --- the larger the dataset, the worse the models performed (note the logarithmic scale). If the models were equally likely to be adequate at all scales, we would expect no relationship.}
   \label{fig:size-adequacy}
 \end{figure}
 
@@ -390,35 +414,35 @@ By simulating evolution on this unit tree under a BM model with a rate of 1, we 
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.9]{figs/ad-age-ml}
-  \caption{Model adequacy vs. age (ML)}
+  \caption{\textbf{The relationship between clade age and a multivariate measure of model adequacy}. Considering only the best supported of the three models (as selected by AIC, after fitting the models using ML), there is no  apparent relationship between the age of clade and the distance of the observed and simulated summary statistics, as measured by the Mahalanobis distance. Contrast this figure with Figure \ref{fig:size-adequacy}, which demonstrates a very tight relationship between clade size and model inadequacy.}
   \label{fig:supp-age-ml}
 \end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[angle=90, origin=c, scale=0.8]{figs/dic-support}
-  \caption{dic support for 3 models}
-  \label{fig:supp-dic}
+  \caption{\textbf{The relative support, as measured by DIC weight, for the three models used in our study (BM, OU, and EB) across all 337 datasets.} All models were fit with MCMC. Like the model comparisons done with AIC, an OU model is highly supported for a majority of the datasets.}
+  \label{fig:supp-dic-support}
 \end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[angle=90, origin=c, scale=0.85]{figs/pval-hist-bayes}
-  \caption{p values (bayesian)}
+  \caption{\textbf{The distribution of $p$--values for our six summary statistics over all 337 datasets in our study.} This is from the results of fitting the models using MCMC. The $p$--values are from applying our model adequacy approach to the best supported of the three models (as evaluated with DIC). For both the rate estimate $M_{PIC}$ and the coefficient of variation $V_{PIC}$, the vast majority of datasets would reject the best of the three models (at $p<$ 0.05).}
   \label{fig:supp-pvalues}
 \end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.9]{figs/ad-size-bayes}
-  \caption{size adequacy (bayesian)}
+  \caption{\textbf{The relationship between clade size and a multivariate measure of model adequacy from the Bayesian analysis.} The Mahalanobis distance is a scale--invariant metric that measures the distance between the observed and simulated summary statistics, taking into account the covariance between summary statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by DIC), there is a striking relationship between the two --- the larger the dataset, the worse the models performed (note the logarithmic scale). If the models were equally likely to be adequate at all scales, we would expect no relationship.}
   \label{fig:supp-size-adequacy}
 \end{figure}
 
 \begin{figure}[p]
   \centering
-  \includegraphics[scale=0.9]{figs/ad-age-ml}
-  \caption{Model adequacy vs. age (ML)}
+  \includegraphics[scale=0.9]{figs/ad-age-bayes}
+  \caption{\textbf{The relationship between clade age and a multivariate measure of model adequacy}. Considering only the best supported of the three models (as selected by AIC, after fitting the models using MCMC), there is no  apparent relationship between the age of clade and the distance of the observed and simulated summary statistics, as measured by the Mahalanobis distance. Contrast this figure with Figure \ref{fig:supp-size-adequacy}, which demonstrates a very tight relationship between clade size and model inadequacy.}
   \label{fig:supp-age-bayes}
 \end{figure}
 
