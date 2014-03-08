@@ -1,21 +1,18 @@
-# Model adequacy for continuous trait models
+# Adequacy for phylogenetic trait models
 
-This is the repo for our project on assessing the adequacy of continuous trait models.
+This is the repo for our project on assessing the adequacy of continuous trait models. This is a collaborative effort between Matt Pennell, Rich FitzJohn, Will Cornwell and Luke Harmon.
 
 ## Contents
 
-### `arbutus`
+### `/arbutus`
 
 The R package we have developed as part of this project
 
-### `analysis`
+### `/analysis`
 
 Scripts to reproduce all analyses done in the paper
 
-### `ms`
+### `/ms`
 
-Manuscript files for our forthcoming paper: 
+Manuscript files for our forthcoming paper: "Model adequacy and the macroevolution of angiosperm functional traits"
 
-### "Model adequacy and the macroevolution of angiosperm functional traits"
-
-Matthew W. Pennell, Richard G. FitzJohn, William K. Cornwell, and Luke J. Harmon
