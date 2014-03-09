@@ -3,6 +3,7 @@
 library(methods)
 suppressMessages(library(dplyr))
 source("R/load-scrubbing-tools.R")
+source("R/util.R")
 
 kew <- read.csv("data/kew.csv", stringsAsFactors=FALSE)
 

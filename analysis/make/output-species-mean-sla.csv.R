@@ -2,6 +2,7 @@
 library(methods)
 suppressMessages(library(dplyr))
 source("R/load-scrubbing-tools.R")
+source("R/util.R")
 
 ## Two data sets
 wright <- read.csv("data/wright-2004.csv",
