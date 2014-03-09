@@ -5,24 +5,20 @@ source("R/read-data-functions.R")
 ## TODO: This needs not to be global.
 
 #loading tools
-tree<-get.tree()
-errors<-read.csv("data/errors.csv",as.is=TRUE)
-
+tree <- get.tree()
+errors <- get.errors()
 pl.mod <- get.synonyms()
 
-corrections<-read.delim("data/names-tr.txt",as.is=TRUE)
-corrections[,1][which(corrections[,1]%in%sub("_"," ",tree$tip.label))]<-NA
-corrections<-subset(corrections,!is.na(corrections[,1]))
-
-scrub.wrapper<-function(names,corrections.inside=corrections){
+scrub.wrapper<-function(names){
+  corrections <- get.corrections()
   #saves time by only looking for unique species names
   sp.list<-unique(names)
   sp_list<-gsub(" ","_",sp.list)
-  out.spp<-scrub(sp.list,corrections.inside) #correcting names and dropping to binomial
+  out.spp<-scrub(sp.list,corrections) #correcting names and dropping to binomial
   out_spp<-gsub(" ","_",out.spp) 
   temp<-out_spp[match(names,sp.list)] #working out the many-to-one mapping
   names[names%in%sp.list]<-as.character(temp)
-  return(names)
+  names
 }
 
 agrep.for.names<-function(good.names,bad.name){

@@ -32,6 +32,14 @@ get.synonyms <- function() {
   readRDS("output/synonyms.rds")
 }
 
+get.corrections <- function() {
+  readRDS("output/corrections.rds")
+}
+
+get.errors <- function() {
+  read.csv("data/errors.csv", stringsAsFactors=FALSE)
+}
+
 get.sla.data <- function() {
   readRDS("output/data-sla.rds")
 }

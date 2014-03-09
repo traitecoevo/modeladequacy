@@ -48,9 +48,11 @@ output/vascular_plant_phylogeny.rds: data/vascular_plant_phylogeny.tre
 ## We'll refer to this a bunch, so shortcut:
 TREE = output/vascular_plant_phylogeny.rds
 
-output/synonyms.rds: data/spermatophyta_synonyms_PLANTLIST.csv
+output/synonyms.rds: ${TREE} data/spermatophyta_synonyms_PLANTLIST.csv
 	Rscript make/output-synonyms.rds.R
-SYN  = output/synonyms.rds
+output/corrections.rds: ${TREE} data/names-tr.txt
+	Rscript make/output-corrections.rds.R
+SYN  = output/synonyms.rds output/corrections.rds
 
 output/species-mean-leafN.csv: ${TREE} ${SYN} data/wright-2004.csv make/output-species-mean-leafN.csv.R
 	Rscript make/output-species-mean-leafN.csv.R
