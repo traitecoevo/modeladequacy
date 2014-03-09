@@ -18,6 +18,7 @@ dat$gs <- scrub.wrapper(dat$gs)
 ## TODO: pl.mod should not be global
 ## TODO: wrap this into a function.
 ## using modified plant list synonmy
+pl.mod <- get.synonyms()
 temp <- pl.mod$species[match(dat$gs, pl.mod$synonym)]
 dat$gs[dat$gs%in%pl.mod$synonym] <- temp[!is.na(temp)]
 

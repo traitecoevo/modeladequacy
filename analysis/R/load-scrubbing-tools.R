@@ -2,13 +2,6 @@ require(ape, quietly=TRUE)
 source("R/import-scrub.R")
 source("R/read-data-functions.R")
 
-## TODO: This needs not to be global.
-
-#loading tools
-tree <- get.tree()
-errors <- get.errors()
-pl.mod <- get.synonyms()
-
 scrub.wrapper<-function(names){
   corrections <- get.corrections()
   #saves time by only looking for unique species names

@@ -10,6 +10,7 @@ dat <- data.frame(gs=scrub.wrapper(kew$species),
                   seedMass=kew$value,
                   stringsAsFactors=FALSE)
 
+errors <- get.errors()
 kew.errors <- errors[errors$Dataset=="kewSeed" &
                      errors$trait=="seedMass",]
 kew.errors$Original <- as.numeric(kew.errors$Original)
@@ -25,6 +26,7 @@ dat$seedMass[replace.matrix[,2]] <-
   kew.errors$Changed[replace.matrix[,1]]
 
 #using modified plant list synonmy
+pl.mod <- get.synonyms()
 temp <- pl.mod$species[match(dat$gs, pl.mod$synonym)]
 dat$gs[dat$gs %in% pl.mod$synonym] <- temp[!is.na(temp)]
 

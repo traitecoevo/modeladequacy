@@ -30,7 +30,7 @@ dat$gs <- scrub.wrapper(dat$gs)
 
 ## Correct errors:
 ##
-## TODO: remove dependence on global 'errors', move into function.
+errors <- get.errors()
 leda.errors <- errors[errors$Dataset=="LEDA" & errors$trait=="sla",]
 leda.errors$Original <- as.numeric(leda.errors$Original)
 leda.errors$Changed  <- as.numeric(leda.errors$Changed)
@@ -53,6 +53,7 @@ dat$sla[replace.matrix[,2]] <-
 
 ## TODO: See mean-leafN
 ## using modified plant list synonmy
+pl.mod <- get.synonyms()
 temp <- pl.mod$species[match(dat$gs, pl.mod$synonym)]
 dat$gs[dat$gs %in% pl.mod$synonym] <- temp[!is.na(temp)]
 
