@@ -24,6 +24,14 @@ agrep.for.names<-function(good.names,bad.name){
   }
 }
 
+update.synonomy <- function(dat) {
+  ## TODO: What is going on here?
+  pl.mod <- get.synonyms()
+  temp <- pl.mod$species[match(dat$gs, pl.mod$synonym)]
+  dat$gs[dat$gs %in% pl.mod$synonym] <- temp[!is.na(temp)]
+  dat
+}
+
 ## This code was written by Ginger Jui -- original header below.
 ## Slight modifications by Rich and Will
 

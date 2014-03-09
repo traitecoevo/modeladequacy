@@ -52,11 +52,7 @@ replace.matrix <- which(
 dat$sla[replace.matrix[,2]] <-
   leda.errors$Changed[replace.matrix[,1]]
 
-## TODO: See mean-leafN
-## using modified plant list synonmy
-pl.mod <- get.synonyms()
-temp <- pl.mod$species[match(dat$gs, pl.mod$synonym)]
-dat$gs[dat$gs %in% pl.mod$synonym] <- temp[!is.na(temp)]
+dat <- update.synonomy(dat)
 
 ## Build a little data frame with the species names and geometric mean
 ## of the trait:

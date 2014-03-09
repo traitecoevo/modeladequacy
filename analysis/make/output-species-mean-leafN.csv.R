@@ -15,13 +15,7 @@ dat$gs <- scrub.wrapper(dat$gs)
 ##
 ## [no known errors in glopnet, so nothing here]
 
-## TODO: What is going on here?
-## TODO: pl.mod should not be global
-## TODO: wrap this into a function.
-## using modified plant list synonmy
-pl.mod <- get.synonyms()
-temp <- pl.mod$species[match(dat$gs, pl.mod$synonym)]
-dat$gs[dat$gs%in%pl.mod$synonym] <- temp[!is.na(temp)]
+dat <- update.synonomy(dat)
 
 ## Build a little data frame with the species names and geometric mean
 ## of the trait:

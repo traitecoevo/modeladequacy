@@ -1,5 +1,4 @@
 #!/usr/bin/env Rscript
-## TODO: What is the slow step here?
 library(methods)
 suppressMessages(library(dplyr))
 source("R/load-scrubbing-tools.R")
@@ -27,9 +26,7 @@ dat$seedMass[replace.matrix[,2]] <-
   kew.errors$Changed[replace.matrix[,1]]
 
 #using modified plant list synonmy
-pl.mod <- get.synonyms()
-temp <- pl.mod$species[match(dat$gs, pl.mod$synonym)]
-dat$gs[dat$gs %in% pl.mod$synonym] <- temp[!is.na(temp)]
+dat <- update.synonomy(dat)
 
 ## Build a little data frame with the species names and geometric mean
 ## of the trait:
