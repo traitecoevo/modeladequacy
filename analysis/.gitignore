@@ -2,4 +2,5 @@
 data
 output/ref
 output/*.rds
+output/species-mean*csv
 .downloaded_data.tar.gz
