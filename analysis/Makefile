@@ -99,7 +99,8 @@ clean-processed:
 	rm -f output/angio-trait-data-all.rds
 	rm -f output/data-*rds
 	rm -f output/species-mean-*csv
-	rm -f output/vascular_plant_phylogeny.rds
+	rm -f ${TREE}
+	rm -f ${SYN}
 
 .PHONY: all data data-fetch data-preprocess data-species-mean \
 	kew-fetch zae-fetch \

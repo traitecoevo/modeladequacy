@@ -28,6 +28,10 @@ get.tree <- function() {
   readRDS("output/vascular_plant_phylogeny.rds")
 }
 
+get.synonyms <- function() {
+  readRDS("output/synonyms.rds")
+}
+
 get.sla.data <- function() {
   readRDS("output/data-sla.rds")
 }
