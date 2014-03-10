@@ -23,17 +23,16 @@ Currently:
 * `seedMass-process.R`: `data/kew.csv` -> `output/species-mean-seedMass.csv`
 * `sla-process.R:trait`: {`data/wright-2004`, `data/leda.csv`} -> `output/species-mean-sla.csv`
 
-Required packages (in addition to arbutus)
+Required packages
 
 * XML
+* arbutus
 * ape
-* cwhmisc
-* ddply
+* ddply (>= 0.1.2)
 * digest
 * diversitree
 * geiger
 * ggplot2
-* scales
 * xlsx
 
 # Contents:
