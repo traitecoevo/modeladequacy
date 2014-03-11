@@ -4,10 +4,6 @@ This is the repo for our project on assessing the adequacy of continuous trait m
 
 ## Contents
 
-### `/arbutus`
-
-The R package we have developed as part of this project
-
 ### `/analysis`
 
 Scripts to reproduce all analyses done in the paper
