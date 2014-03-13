@@ -4,11 +4,11 @@ This is the repo for our project on assessing the adequacy of continuous trait m
 
 ## Contents
 
-### `/analysis`
+### The `analysis` directory
 
 Scripts to reproduce all analyses done in the paper
 
-### `/ms`
+### The `ms` directory
 
-Manuscript files for our forthcoming paper: "Model adequacy and the macroevolution of angiosperm functional traits"
+Manuscript files for our forthcoming paper: "Model adequacy and the macroevolution of angiosperm functional traits". Includes all tex files and figures.
 
