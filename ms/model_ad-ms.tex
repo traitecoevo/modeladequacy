@@ -133,7 +133,7 @@ Once we have created the unit tree from the estimated parameters, new datasets c
 
 We used the approach we developed to address an outstanding question in comparative biology: how well do commonly used models explain the evolution of traits along a phylogeny and when are more complex models required? We addressed this question by studying Angiosperm functional traits using a recently published a megaphylogeny containing 30,535 species \citep{Zanne2013}. This phylogeny is exceptional in terms of scope and allowed us to evaluate the adequacy of models through time and across many groups.  
 
-We compiled data on three traits from the literature: specific leaf area (SLA, defined as fresh area/dry mass); seed mass; and leaf nitrogen content (\% mass) (see Methods for details on datasets). SLA and leaf nitrogen content are important and widely measured components of the leaf economic spectrum, which relates to a plant's ecological strategy (i.e., how it balances photosynthetic capabilities and water cycling) \citep{Wright2004}. Seed mass is a good proxy for many life--history traits \citep{Westoby2002, Moles2005}. Understanding the macroevolutionary patterns of these three traits can provide key insights into the evolutionary processes that have shaped much of plant diversity \citep{ksi}.  
+We compiled data on three traits from the literature: specific leaf area (SLA, defined as fresh area/dry mass); seed mass; and leaf nitrogen content (\% mass) (see Methods for details on datasets). Seed mass is a crucial part of species' life--history strategy \citep{Leishman2000, Westoby2002} and SLA and leaf nitrogen content are important and widely measured components of species' carbon capture strategies \citep{Wright2004}. Understanding the macroevolutionary patterns of these three traits can provide key insights into the evolutionary processes that have shaped much of plant diversity \citep{ksi}.  
 
 We matched these data to the phylogeny and then extracted many subclades, pulling out all families and orders as well as unnamed clades obtained by time--slicing the tree at 50my intervals and collecting the most inclusive groups whose common ancestor was younger than the time--slice. This gave us 337 comparative datasets containing at least 20 species.
 %% Number of clades -- 337
@@ -232,10 +232,11 @@ While we describe this as a novel approach, much of it stems directly from earli
 
 \section{Methods}
 
+\subsection{Data}
 %% Number of Angiosperms in big tree: 30535
 We used a mega--phylogeny of Angiosperms, containing 30,535 species, from a recent study by Zanne et al. \citep{Zanne2013}. We refer interested readers to the original publication for details on the phylogeny. For the purposes of this study, we conducted all analyses on the MLE of the phylogeny (available on \textsc{dryad}, doi:10.5061/dryad.63q27/3).
 
-We collected large datasets on three functionally important plant traits: 1) specific leaf area (SLA), seed mass, and leaf nitrogen content. All data are previously published (see \texttt{https://github/richfitz/modeladequacy/analysis} for specific locations and scripts to access and process the original data). The specific leaf area (SLA) and leaf nitrogen data comes from Wright et al. \citep{Wright2004} with additional SLA data from the LEDA project \citep{Kleyer2008}. Seed mass data comes the Kew database \citep{Kew2008}. As these three traits are log--normally distributed both within and among species, geometric species means were used for all three traits. 
+We assembled large datasets on three functionally important plant traits: 1) specific leaf area (SLA), seed mass, and leaf nitrogen content. All data are previously published (see \texttt{https://github/richfitz/modeladequacy/analysis} for specific locations and scripts to access and process the original data). The specific leaf area (SLA) and leaf nitrogen data comes from Wright et al. \citep{Wright2004} with additional SLA data from the LEDA project \citep{Kleyer2008}. Seed mass data comes the Kew database \citep{Kew2008}. We used an approximate grepping approach to find and correct spelling mistakes and synonymy tools from The Plant List \citep{plantlist} to math the trait databases to the Zanne et al. phylogeny. 
 %% Full data stats
 %% SLA
 %% in dataset: 3295
@@ -248,7 +249,16 @@ We collected large datasets on three functionally important plant traits: 1) spe
 %% matched to tree: 936
 The full data set includes 3295 species for SLA, of which 2196 match species in the Zanne et al. tree. For seed mass, the dataset included 22,789 species with 11,093 matched the phylogeny. For leaf nitrogen content, we have data for 1574 species with 936 included in the tree. All data was log transformed prior to analyses.
 
-To account for some of the measurement error, we estimated the standard error (SE) for each of the three traits by calculating the mean SE for all species for which we had multiple measurements. For practical purposes, we assumed that the SE was constant across the phylogeny as we only had within--species sampling for a subset of the taxa. This assumption is likely unwarranted but even a somewhat inaccurate estimate of measurement error is better than assuming none at all \citep{Hansen2012}.
+Because the vast majority of the species are only represented by a single
+record, it was not possible to use a species--specific estimate of
+trait standard error (SE) to account for either measurement error or
+intraspecific variation.  As an alternative, we estimated a single SE for each trait
+by calculating the mean
+standard deviation for all species for which we had multiple
+measurements. The assumption of a constant SE across all species is
+unlikely to hold up to closer examination, but even a somewhat
+inaccurate estimate of error is better than assuming none at all
+\citep{Hansen2012}.
 
 \subsection{Analysis}
 
@@ -261,7 +271,7 @@ We first matched our trait data to the whole phylogeny and then extracted subcla
 %% leaf n: 
 For SLA, this left us with 72 clades, seed mass, 226 clades, and leaf nitrogen content, 39 clades. We note that these datasets are not independent as many of the same taxa were included in family, order and multiple time--slice subtrees. 
 
-For each subtree and each trait, we performed all analyses using both the likelihood and Bayesian approaches described above. For the likelihood analyses, we fit the three models (BM, OU, and EB) using ML with the \texttt{diversitree} package \citep{FitzJohn2012}. We calculated the AIC score for each model. We then constructed a unit tree for each subtree, trait and model combination using the maximum likelihood estimates of the parameters. We calculated the six summary statistics described above ($M_{PIC}, V_{PIC}, S_{VAR}, S_{ANC}, S_{HGT}, D_{KS}$) on the contrasts of the data. We simulated 1000 datasets on each unit tree using a BM model with $\sigma^2=1$ and calculated the summary statistics on the contrasts of each simulated data set. 
+For each subtree and each trait, we performed all analyses using both the likelihood and Bayesian approaches described above. For the likelihood analyses, we fit the three models (BM, OU, and EB) using ML with the \texttt{diversitree} package \citep{FitzJohn2012}. We calculated the AIC score for each model. We then constructed a unit tree for each subtree, trait and model combination using the maximum likelihood estimates of the parameters. We calculated the six summary statistics described above ($M_{PIC}$, $V_{PIC}$, $S_{VAR}$, $S_{ANC}$, $S_{HGT}$, $D_{KS}$) on the contrasts of the data. We simulated 1000 datasets on each unit tree using a BM model with $\sigma^2=1$ and calculated the summary statistics on the contrasts of each simulated data set. 
 
 For the Bayesian analysis, we fit the same models as above using a MCMC approach, sampling paramter values using slice sampling \citep{Nealslice}, as implemented in  \texttt{diversitree} \citep{FitzJohn2012}. For the BM model we set a broad uniform prior on $\sigma^2 \sim \mathcal{U}[0, 2]$, the upper bound being substantially larger than the ML estimate of $\sigma^2$ for any clade. For the OU model, we used the same prior for $\sigma^2$ and drew $\alpha$ values from a Lognormal$(\log(0.5), \log(1.5))$ distribution \citep{UyedaBayou}. A complication involved in fitting OU models is deciding what assumptions to make about the state at the root $z_0$. Harmon et al. \citep{Harmon2010} stated that the MLE of $z_0$ is equal to that of $\theta$; however this statement is not correct as $\hat{\theta}$ and $\hat{z_0}$ can diverge under some conditions \citep{HoAne2012}. But as allowing $\theta$ and $z_0$ to be estimated separately can lead to serious problems of identifiability \citep{HoAne2012}, we follow other authors \citep{ButlerKing2004, Beaulieu2012} and assume that $z_0$ is at the optimum. For the EB model, we again used the same prior for $\sigma^2$ and a uniform prior on $a$, the exponential rate of decrease in $\sigma^2$, such that $a \sim \mathcal{U}[-1, 0]$ (the minimum value is much less than we would typicaly expect \citep{SlaterPennell}).
 
