@@ -87,9 +87,9 @@ While likelihood and Bayesian approaches to model--fitting are philosophically d
 If we have a point estimate of the model parameters $\hat{\theta}$, we simulate $Y_1, Y_2, \ldots, Y_m$ on the phylogeny accoridng to $\hat{\theta}$ and $\mathcal{M}$. We then compare a single set of summary statistics $\mathcal{S}_X$ calculated from our observed data to the distribution of values for $\mathcal{S}_Y$ computed across all $m$ simulated datasets. In statistical terminology, this procedure is known as parametric bootstrapping. Parametric bootstrapping is likely familiar to phylogenetic biologists in the form of the Goldman--Cox test \citep{Goldman} for assessing the adequacy of sequence evolution models.
 
 %% Bayesian inference
-If we have a posterior probability distribution $\Pr(\Theta_{\mathcal{M}}|X, \mathcal{M})$, we can assess model adequacy using posterior predictive simulation \citep{Rubin1984, Gelman1996}. We obtain new datasets by sampling from a second distribution, the posterior predictive distribution
+If we have a posterior probability distribution $\Pr(\theta|X, \mathcal{M})$, we can assess model adequacy using posterior predictive simulation \citep{Rubin1984, Gelman1996}. We obtain new datasets by sampling from a second distribution, the posterior predictive distribution
 \begin{equation}
-\Pr(Y|X,\mathcal{M}) = \int \Pr(Y|\Theta_{\mathcal{M}}, \mathcal{M})\Pr(\Theta_{\mathcal{M}}|X,\mathcal{M})d\Theta_{\mathcal{M}}
+\Pr(Y|X,\mathcal{M}) = \int \Pr(Y|\theta, \mathcal{M})\Pr(\theta |X,\mathcal{M})d\theta
 \end{equation}
 where $\Pr(Y|X,\mathcal{M})$ is the probability of a new dataset $Y$ given $X$ and $\mathcal{M}$, averaged over hthe distribution of the parameters. In practice, sampling from $\Pr(Y|X,\mathcal{M})$ entails drawing samples from the joint posterior distribution of parameters $\Pr(\theta|X, \mathcal{M})$ and simulating data on the phylogeny according to the sampled parameter values. Therefore, the datasets $Y_1, Y_2, \ldots, Y_m$ are each generated from different values of $\theta$.  
 Posterior predictive simulation approaches have been previously developed for models in molecular phylogenetics \citep{Bollback2002, Reid2013, Lewis2013, Brown2013}, and recently for PCMs \citep{SlaterPennell}, but have not been widely adopted in either field.
