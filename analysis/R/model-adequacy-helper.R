@@ -87,6 +87,97 @@ prune.dataset.best.bayes <- function(x){
 }
 
 
+
+## Build table for plotting AIC support versus model adequacy
+## Find difference in AIC between best model and BM
+## Excluding datasets where BM is best supported model
+build.table.adequacy.aic <- function(x){
+    ## colnames to ignore
+    ign <- c("taxa", "rank", "trait", "size", "age")
+    tmp <- colnames(x)[-which(colnames(x) %in% ign)]
+    tmp.df <- x[,tmp]
+
+    ## get model for each column
+    suf <- sapply(tmp, function(y) get.model.suffix(y))
+
+    ## find best model
+    aic <- c("aic.bm", "aic.ou", "aic.eb")
+    mm <- sapply(seq_len(nrow(x)), function(y)
+                 return(aic[which(x[y,aic] == min(x[y,aic]))]))
+    model <- sapply(mm, function(y) get.model.suffix(y))
+
+    ## difference in AIC between best supported model and BM
+    diff.bm <- sapply(seq_len(nrow(tmp.df)), function(x)
+                      return(tmp.df[x,"aic.bm"] - tmp.df[x,names(model)[x]]))
+
+    ## build new dataframe inlcuding only the best model
+    dd <- lapply(seq_len(nrow(tmp.df)), function(y)
+                 return(tmp.df[y,which(suf == model[y])]))
+
+    ## strip column names of last element
+    dd <- lapply(dd, function(y) rm.model.suffix.colnames(y))
+
+    df <- do.call(rbind, dd)
+
+    df <- cbind.data.frame(x[,ign], df, diff.bm)
+    rownames(df) <- NULL
+
+    ## drop cases where bm is the best
+    df[-which(df$diff.bm == 0),]
+   
+}
+
+
+
+
+## Build table for plotting DIC support versus model adequacy
+## Find difference in DIC between best model and BM
+## Excluding datasets where BM is best supported model
+build.table.adequacy.dic <- function(x){
+    ## colnames to ignore
+    ign <- c("taxa", "rank", "trait", "size", "age")
+    tmp <- colnames(x)[-which(colnames(x) %in% ign)]
+    tmp.df <- x[,tmp]
+
+    ## get model for each column
+    suf <- sapply(tmp, function(y) get.model.suffix(y))
+
+    ## find best model
+    dic <- c("dic.bm", "dic.ou", "dic.eb")
+    mm <- sapply(seq_len(nrow(x)), function(y)
+                 return(dic[which(x[y,dic] == min(x[y,dic]))]))
+    model <- sapply(mm, function(y) get.model.suffix(y))
+
+    ## difference in AIC between best supported model and BM
+    diff.bm <- sapply(seq_len(nrow(tmp.df)), function(x)
+                      return(tmp.df[x,"dic.bm"] - tmp.df[x,names(model)[x]]))
+
+    ## build new dataframe inlcuding only the best model
+    dd <- lapply(seq_len(nrow(tmp.df)), function(y)
+                 return(tmp.df[y,which(suf == model[y])]))
+
+    ## strip column names of last element
+    dd <- lapply(dd, function(y) rm.model.suffix.colnames(y))
+
+    df <- do.call(rbind, dd)
+
+    df <- cbind.data.frame(x[,ign], df, diff.bm)
+    rownames(df) <- NULL
+
+    ## drop cases where bm is the best
+    df[-which(df$diff.bm == 0),]
+   
+}
+
+
+
+
+
+
+
+
+
+
 ## function for counting the number of p-values below a threshold
 count.pvalues <- function(dat, threshold){
     dd <- dat[,c("m.pic", "v.pic", "s.var", "s.anc", "s.hgt", "d.ks")]

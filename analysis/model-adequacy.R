@@ -425,6 +425,90 @@ fig.pval.histogram(bay.best)
 
 
 
+## Model support versus multivariate model adequacy
+## Excluding datasets where BM has highest support,
+## plot the difference between best supported model and bm
+## versus mahalanobis ditance
+
+## from ml results
+fig.modelad.aic <- function(df){
+    
+    ## Capitalize ranks
+    df$rank <- sapply(df$rank, function(x) cap.ranks(x))
+    ## rename and reorder trait
+    df$trait <- sapply(df$trait, function(x) rename.traits(x))
+    df$trait <- factor(df$trait, c("SLA", "SeedMass", "LeafN"))
+    
+   .e <- environment()
+
+    ## the occasional dataset may have NA for Mahalanobis distance
+    ## remove this for the plot
+    df <- na.omit(df)
+
+    p <- ggplot(df, aes(diff.bm, mv), environment=.e)
+    p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.6)
+
+    p <- p + scale_colour_manual(values=col)
+    p <- p + theme_bw()
+    p <- p + theme(plot.background = element_blank(),
+                   panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   panel.border=element_blank(),
+                   axis.line = element_line(color = 'black'))
+    p <- p + scale_y_log10()
+    p <- p + scale_x_log10()
+    p <- p + xlab("AIC(BM) - AIC(OU/EB)")
+    p <- p + ylab("Mahalanobis distance")
+    p
+}
+
+aic.df <- build.table.adequacy.aic(ml)
+
+fig.modelad.aic(aic.df)
+
+
+
+## from bayesian results
+fig.modelad.dic <- function(df){
+    
+    ## Capitalize ranks
+    df$rank <- sapply(df$rank, function(x) cap.ranks(x))
+    ## rename and reorder trait
+    df$trait <- sapply(df$trait, function(x) rename.traits(x))
+    df$trait <- factor(df$trait, c("SLA", "SeedMass", "LeafN"))
+    
+   .e <- environment()
+
+    ## the occasional dataset may have NA for Mahalanobis distance
+    ## remove this for the plot
+    df <- na.omit(df)
+
+    p <- ggplot(df, aes(diff.bm, mv), environment=.e)
+    p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.6)
+
+    p <- p + scale_colour_manual(values=col)
+    p <- p + theme_bw()
+    p <- p + theme(plot.background = element_blank(),
+                   panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   panel.border=element_blank(),
+                   axis.line = element_line(color = 'black'))
+    p <- p + scale_y_log10()
+    p <- p + scale_x_log10()
+    p <- p + xlab("DIC(BM) - DIC(OU/EB)")
+    p <- p + ylab("Mahalanobis distance")
+    p
+}
+
+dic.df <- build.table.adequacy.dic(bay)
+
+fig.modelad.dic(dic.df)
+
+
+
+
+
+
 
 # Model adequacy versus size
 ## Plot a multivariate measure of model adequacy (Mahalanobis distance) against clade size
@@ -528,6 +612,12 @@ if (!interactive()){
 
     to.pdf("output/figs/pval-hist-bayes.pdf", width=9, height=5,
            fig.pval.histogram(bay.best), onefile=FALSE)
+
+    to.pdf("output/figs/ad-aic.pdf", width=7, height=6,
+           fig.modelad.aic(aic.df))
+
+    to.pdf("output/figs/ad-dic.pdf", width=7, height=6,
+           fig.modelad.dic(dic.df))
 
     to.pdf("output/figs/ad-size-ml.pdf", width=7, height=6,
            fig.modelad.size(ml.best))
