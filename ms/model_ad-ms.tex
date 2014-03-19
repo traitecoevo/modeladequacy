@@ -175,9 +175,6 @@ OU had $\sim$100\% of the AICw in 25 clades and $>$75\% of the weight in 186 cla
 likely to have high support for a single model (of the 101 clades consisting of more than 100 taxa, 58 had $>$90 of the AIC weight on a single model),
 %% of these 58, how many were OU: 56
 and that was overwhelmingly likely to be an OU model (56/58 clades). 
-% RGF: So large clades have bigger delta-AIC *and* worse model adequacy.  This is something worth playing up.  I've always felt that big AIC improvements were indicative of a poor model fit more than the alternative model being awesome.  I'd be interested in seeing a plot of deltaAIC (BM vs best of OU/EB) vs the Mahanalobis distance for the OU/EB model.  I bet the correlation there is quite strong.
-%
-% MWP: Yes, this will be quite strong for sure. I will play with plotting this and maybe include it as a suppmat
 
 We limit our analyses of model adequacy to only the most highly supported model in the candidate set, as supported by AIC. We did this to present a best--case scenario; if a model had very little relative support, it would be unremarkable if it also had poor adequacy (but see \citep{Ripplinger2010}). Even considering only the best of the set, in general, the models had strikingly poor adequacy (Figure \ref{fig:pvalues}). 
 %% SLA data for 72 clades
@@ -206,7 +203,7 @@ Some summary statistics were much more likely to detect model violations than ot
 %% The number of datasets which were adequately modeled: 41
 Across all 337 datasets, only 41 are adequately modeled by either BM, OU or EB --- all of these are seed mass datasets. This is extremely worrisome as these are the most commonly used models for quantitative traits in comparative biology. 
 
-As the subclades are not independent (overlapping sets of taxa are present in family, order and time--slice phylogenies), conventional statistics, such as linear regression, are not straightforward to apply across datasets. Nonetheless, the trend is clear: the larger the phylogeny, the more likely OU is to be highly supported and the more likely the model is to be inadequate. There is a strong relationship between the size of a subclade and the overall distance between observed and simulated summary statistics, as measured by the Mahanalobis distance (Figure \ref{fig:size-adequacy}). This is not simply an artifact of conducting the analyses using a larger number of contrasts for the summary statistics --- if the model was adequate at all scales, there would be no relationship between the Mahalanobis distance and the size of the phylogeny. There was no relationship between clade age and model adequacy (Figure \ref{fig:supp-age-ml}).
+As the subclades are not independent (overlapping sets of taxa are present in family, order and time--slice phylogenies), conventional statistics, such as linear regression, are not straightforward to apply across datasets. Nonetheless, the trend is clear: the larger the phylogeny, the more likely OU is to be highly supported and the more likely the model is to be inadequate. There is a strong relationship between the size of a subclade and the overall distance between observed and simulated summary statistics, as measured by the Mahanalobis distance (Figure \ref{fig:size-adequacy}). This is not simply an artifact of conducting the analyses using a larger number of contrasts for the summary statistics --- if the model was adequate at all scales, there would be no relationship between the Mahalanobis distance and the size of the phylogeny. As stated above, larger clades also tended to support a single model, meaning that the datasets for which the best model had a very poor absolute fit also had the most substantial difference between the relative fits of the three models (Figure \ref{fig:supp-ad-aic}). There was no relationship between clade age and model adequacy (Figure \ref{fig:supp-age-ml}).
 % RGF: Thinking more about this, I do want to know: are large clades inadequate because they include an inadequate clade?  So, suppose that clade X is inadequate, presumably (a,X) is also inadequate for a single taxon a.  And even as you move down the tree, even if all other lineages fit well, then any clade containing X is also inadequate.
 %
 % MWP: will have to think of the best way to address tihs.
@@ -425,7 +422,7 @@ Also, similar to the likelihood analyses, the frequency of rejection differed be
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.9]{figs/ad-aic}
-  \caption{to be added}
+  \caption{\textbf{The relationship between relative and absolute fit}. For every clade for which a more complex model (OU, EB) was favored over BM using AIC, the Mahalanobis distance between the observed summary and simulated summary statistics is plotted against the improvement in AIC for the more complex model compared to BM. (Note that as all AIC values were negative, larger differences mean greater relative support). The greater the relative fit of a more complex model, the more likely the model was to be inadequate. This result in primarily driven by clade size but serves to emphasize the distinction between relative and absolute fit.}
   \label{fig:supp-ad-aic}
 \end{figure} 
 
@@ -456,13 +453,6 @@ Also, similar to the likelihood analyses, the frequency of rejection differed be
   \caption{\textbf{The relationship between clade size and a multivariate measure of model adequacy from the Bayesian analysis.} The Mahalanobis distance is a scale--invariant metric that measures the distance between the observed and simulated summary statistics, taking into account the covariance between summary statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by DIC), there is a striking relationship between the two --- the larger the dataset, the worse the models performed (note the logarithmic scale). If the models were equally likely to be adequate at all scales, we would expect no relationship.}
   \label{fig:supp-size-adequacy}
 \end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics[scale=0.9]{figs/ad-dic}
-  \caption{to be added}
-  \label{fig:supp-ad-dic}
-\end{figure} 
 
 \begin{figure}[p]
   \centering

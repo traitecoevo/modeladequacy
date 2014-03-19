@@ -441,6 +441,9 @@ fig.modelad.aic <- function(df){
     
    .e <- environment()
 
+    ## need to set options for scientific notation
+    options(scipen=1000)
+    
     ## the occasional dataset may have NA for Mahalanobis distance
     ## remove this for the plot
     df <- na.omit(df)
@@ -463,6 +466,7 @@ fig.modelad.aic <- function(df){
 }
 
 aic.df <- build.table.adequacy.aic(ml)
+
 
 fig.modelad.aic(aic.df)
 
