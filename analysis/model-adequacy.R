@@ -1,62 +1,53 @@
-# Analysis of model adequacy for angiosperm functional traits
-library(ggplot2)
-library(grid)
-library(gridExtra)
-library(reshape2)
+## # Model adequacy and the macroevolution of angiosperm functional traits -- Analysis
 
-## Load in helper functions for analysis
+## Load packages and helper functions
 source("R/model-adequacy-helper.R")
 
 ### Set options
 ##+ echo=FALSE, results=FALSE
 knitr::opts_chunk$set(tidy=FALSE)
 
-## Colours used throughout
+## Define colours used throughout
 col <- c("#a63813", "#4d697f", "gray15")
 
-
-# Trait data across the angiosperm phylogeny
-## import big tree
+## ## Trait data across the angiosperm phylogeny
+## Import tree
 tree <- get.tree()
 
-## extract angiosperms
+## Extract angiosperms
 t <- extract.clade(tree, node="Angiospermae")
-## number of total angiosperms in tree
+## Number of taxa in angiosperm tree
 Ntip(t)
 
-## age of tree
+## Age of tree
 max(branching.times(t))
 
-## read in the three data sets:
+## Read in the three data sets:
 sla <- read.csv("output/species-mean-sla.csv", stringsAsFactors=FALSE)
 sdm <- read.csv("output/species-mean-seedMass.csv", stringsAsFactors=FALSE)
 lfn <- read.csv("output/species-mean-leafN.csv", stringsAsFactors=FALSE)
 
-## number of species for which we have sla
+## Number of species for which we have sla
 nrow(sla)
-## overlap between tree and sla
+## Overlap between tree and sla
 length(intersect(t$tip.label, sla$gs))
 
-## number of species for which we have seedmass data
+## Number of species for which we have seedmass data
 nrow(sdm)
-## overlap between tree and seedmass
+## Overlap between tree and seedmass
 length(intersect(t$tip.label, sdm$gs))
 
-## number of species for which we have leafn data
+## Number of species for which we have leafn data
 nrow(lfn)
-## overlap between tree and leafN
+## Overlap between tree and leafN
 length(intersect(t$tip.label, lfn$gs))
 
 
-## TODO: Add function for making tree plots!!!
-
-
-
-
-## Read in results from fitting models using maximum likelihood
+## Read in results from model fitting
+## Maximum likelihood
 ml <- read.csv("output/ml-results.csv", as.is=TRUE, row.names=1)
 
-## Read in results from fitting models using MCMC
+## MCMC
 bay <- read.csv("output/bayes-results.csv", as.is=TRUE, row.names=1)
 
 ## Number of clades in dataset
@@ -65,7 +56,7 @@ nrow(ml)
 
 
 
-# Results from conventional model comparison using AIC:
+## ## Results from conventional model comparison using AIC:
 
 ## Get AIC support for each model
 aic.names <- c("aicw.bm", "aicw.ou", "aicw.eb")
@@ -101,7 +92,7 @@ length(which(aic.lg.90))
 length(which(aic.lg$OU > 0.9))
 
 
-# Plotting the relative AIC support for the different models
+## ### Code for plotting the relative AIC support for the different models
 fig.model.support.aic <- function(aic){
     ## add dummy variable
     dd <- cbind(rownames(aic), aic)
@@ -129,13 +120,14 @@ fig.model.support.aic <- function(aic){
     p
 }
 
+## Plot AIC model support
 fig.model.support.aic(aic)
 
 
 
 
 
-# Results from conventional model comparison using DIC (Bayesian analysis):
+## ## Results from conventional model comparison using DIC (Bayesian analysis):
 
 ## Get DIC support for each model
 dic.names <- c("dicw.bm", "dicw.ou", "dicw.eb")
@@ -171,7 +163,7 @@ length(which(dic.lg.90))
 length(which(dic.lg$OU > 0.9))
 
 
-# Plotting the relative DIC support for the different models
+## ### Code for plotting the relative DIC support for the different models
 fig.model.support.dic <- function(dic){
     ## add dummy variable
     dd <- cbind(rownames(dic), dic)
@@ -199,6 +191,7 @@ fig.model.support.dic <- function(dic){
     p
 }
 
+## Plot DIC model support
 fig.model.support.dic(dic)
 
 
@@ -207,13 +200,14 @@ fig.model.support.dic(dic)
 
 
 
-# Model adequacy results from fitting models with ML
+## ## Model adequacy results from fitting models with ML
 
-## Only use the best supported model
+## Use function prune.dataset.best.ml() to compile dataset of only the best supported of
+## the three models for each dataset
 ml.best <- prune.dataset.best.ml(ml)
 
 
-## Across all three traits
+## ### Overall model adequacy statistics
 
 ## For each dataset, how many summary statistics detected model violations
 all.p.ml <- count.pvalues(ml.best, 0.05)
@@ -241,7 +235,7 @@ length(which(ml.best$s.hgt <= 0.05))
 length(which(ml.best$d.ks <= 0.05))
 
 
-## Looking at each trait independently
+## ### Model adequacy by trait
 
 ## Results from SLA data
 ml.best.sla <- ml.best[which(ml.best$trait == "SLA"),]
@@ -294,7 +288,7 @@ length(which(lfn.p.ml >= 2))
 length(which(lfn.p.ml >= 3))
 
 
-# Plotting the distribution of p-values for all three traits
+## ### Code for plotting the distribution of p-values for all three traits
 fig.pval.histogram <- function(best){
     ## prune out irrelevant categories
     best <- cbind(rownames(best), best[,c("trait", "m.pic", "v.pic", "s.var",
@@ -329,23 +323,19 @@ fig.pval.histogram <- function(best){
     p
 }
 
+## Generate the plot
 fig.pval.histogram(ml.best)
 
 
 
+## ## Model adequacy results from fitting models with MCMC
 
-
-
-
-
-
-# Model adequacy results from fitting models with MCMC
-
-## Only use the best supported model
+## Use function prune.dataset.best.bayes() to compile a dataset of only the best
+## supported model for each clade
 bay.best <- prune.dataset.best.bayes(bay)
 
 
-## Across all three traits
+## ### Overall model adequacy statistics
 
 ## For each dataset, how many summary statistics detected model violations
 all.p.bay <- count.pvalues(bay.best, 0.05)
@@ -353,11 +343,11 @@ all.p.bay <- count.pvalues(bay.best, 0.05)
 ## How many datasets did not violate any of the summary statistics
 length(which(all.p.bay == 0))
 
-## Number of datasets rejected by M_pic
+## Number of datasets rejected by M.pic
 length(which(bay.best$m.pic <= 0.05))
 
 
-## Number of datasets rejected by V_pic
+## Number of datasets rejected by V.pic
 length(which(bay.best$v.pic <= 0.05))
 ## Number of datasets rejected by S.var
 length(which(bay.best$s.var <= 0.05))
@@ -369,7 +359,7 @@ length(which(bay.best$s.hgt <= 0.05))
 length(which(bay.best$d.ks <= 0.05))
 
 
-## Looking at each trait independently
+## ### Model adequacy by trait
 
 ## Results from SLA data
 bay.best.sla <- bay.best[which(bay.best$trait == "SLA"),]
@@ -419,18 +409,13 @@ length(which(lfn.p.bay >= 2))
 length(which(lfn.p.bay >= 3))
 
 
-# Plotting the distribution of p-values for all three traits
+## Plotting the distribution of p-values for all three traits
 fig.pval.histogram(bay.best)
 
 
 
 
-## Model support versus multivariate model adequacy
-## Excluding datasets where BM has highest support,
-## plot the difference between best supported model and bm
-## versus mahalanobis ditance
-
-## from ml results
+## ### Code for plotting the relative support (AIC) for the best model (compared to BM) vs. a multivariate measure of model adequacy
 fig.modelad.aic <- function(df){
     
     ## Capitalize ranks
@@ -465,14 +450,16 @@ fig.modelad.aic <- function(df){
     p
 }
 
+## Compile table with the best model only, excluding datasets where BM is the
+## best supported model. Calculate difference in AIC score between best supported
+## alternate model and BM.
 aic.df <- build.table.adequacy.aic(ml)
-
 
 fig.modelad.aic(aic.df)
 
 
 
-## from bayesian results
+## ### Code for plotting the relative support (DIC) for the best model (compared to BM) vs. a multivariate measure of model adequacy
 fig.modelad.dic <- function(df){
     
     ## Capitalize ranks
@@ -504,6 +491,9 @@ fig.modelad.dic <- function(df){
     p
 }
 
+## Compile table with the best model only, excluding datasets where BM is the
+## best supported model. Calculate difference in DIC score between best supported
+## alternate model and BM.
 dic.df <- build.table.adequacy.dic(bay)
 
 fig.modelad.dic(dic.df)
@@ -514,9 +504,9 @@ fig.modelad.dic(dic.df)
 
 
 
-# Model adequacy versus size
-## Plot a multivariate measure of model adequacy (Mahalanobis distance) against clade size
+## ## Model adequacy versus size
 
+## ### Code to plot a multivariate measure of model adequacy (Mahalanobis distance) against clade size
 fig.modelad.size <- function(df){
 
     ## Capitalize ranks
@@ -556,9 +546,9 @@ fig.modelad.size(ml.best)
 fig.modelad.size(bay.best)
 
 
-# Model adequacy versus age
-## Plot a multivariate measure of model adequacy (Mahalanobis distance) against clade age
+## ## Model adequacy versus age
 
+## ### Code to plot a multivariate measure of model adequacy (Mahalanobis distance) against clade age
 fig.modelad.age <- function(df){
 
     ## Capitalize ranks
@@ -598,7 +588,8 @@ fig.modelad.age(ml.best)
 fig.modelad.age(bay.best)
 
 
-## produce figures
+## ## Produce figures
+
 ## TODO: THIS CURRENTLY DOES WORK TO PRODUCE PDFs. I AM PROBABY MISSING A FUNCTION
 if (!interactive()){
 

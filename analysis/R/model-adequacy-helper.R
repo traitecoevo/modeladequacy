@@ -1,5 +1,13 @@
 ## Assorted functions for helping analysis of adequacy results
 
+## Load in all packages used in model-adequacy.R
+library(ggplot2)
+library(grid)
+library(gridExtra)
+library(reshape2)
+library(ape)
+library(geiger)
+
 ## Functions for making a dataframe with results from only the best model
 get.model.suffix <- function(x){
     st <- strsplit(x, split=".", fixed=TRUE)
