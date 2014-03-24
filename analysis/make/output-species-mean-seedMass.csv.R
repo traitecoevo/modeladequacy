@@ -40,21 +40,3 @@ write.csv(dat.spp, "output/species-mean-seedMass.csv", row.names=FALSE)
 
 ## TODO: Same issues as leafN.
 sd <- mean(log10(dat.spp$sd[log10(dat.spp$sd) > 0.0001]), na.rm=TRUE)
-
-## NOTE: Temporary checking section:
-##
-## Here I'm reading from data created by the old script, rather than
-## the previous set of data; we agree with the generated set using the
-## previous script, even if not with the previous data set.  I suspect
-## new data are the cause there.
-dat <- read.csv("output/species-mean-seedMass.csv",
-                stringsAsFactors=FALSE)
-ref <- read.csv("output/ref/species-mean-seedMass-oldscript.csv",
-                stringsAsFactors=FALSE)
-names(ref) <- c("gs", "mean")
-
-library(testthat)
-expect_that(dim(dat[1:2]), equals(dim(ref)))
-expect_that(dat$gs,        equals(ref$gs))
-expect_that(dat$mean,      equals(ref$mean))
-expect_that(rownames(dat), equals(rownames(ref)))

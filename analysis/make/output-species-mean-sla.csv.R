@@ -67,23 +67,3 @@ write.csv(dat.spp, "output/species-mean-sla.csv", row.names=FALSE)
 ## TODO: Same issues as leafN.  However, because I could not run the
 ## SLA code, this value is unchecked.
 sd <- mean(log10(dat.spp$sd[log10(dat.spp$sd) > 0.0001]), na.rm=TRUE)
-
-## NOTE: Temporary checking section:
-##
-## TODO: This differs very very slightly.  We've lost two species, but
-## the numbers largely look right.  Look into this later once I've
-## spoken with Matt, but this really requires that the original
-## version can run.
-dat <- read.csv("output/species-mean-sla.csv",
-                stringsAsFactors=FALSE)
-ref <- read.csv("output/ref/species-mean-sla.csv",
-                stringsAsFactors=FALSE)
-names(ref) <- c("gs", "mean")
-
-if (FALSE) {
-  library(testthat)
-  expect_that(dim(dat[1:2]), equals(dim(ref)))
-  expect_that(dat$gs,        equals(ref$gs))
-  expect_that(dat$mean,      equals(ref$mean))
-  expect_that(rownames(dat), equals(rownames(ref)))
-}
