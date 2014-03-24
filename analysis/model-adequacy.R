@@ -2,6 +2,7 @@
 
 ## Load packages and helper functions
 source("R/model-adequacy-helper.R")
+source("R/read-data-functions.R")
 
 ### Set options
 ##+ echo=FALSE, results=FALSE
@@ -16,13 +17,22 @@ tree <- get.tree()
 
 ## Extract angiosperms
 t <- extract.clade(tree, node="Angiospermae")
+
 ## Number of taxa in angiosperm tree
 Ntip(t)
 
 ## Age of tree
 max(branching.times(t))
 
-## Read in the three data sets:
+### TODO: For the bits of code like those above, we could write things
+### like this instead:
+
+## There are `r Ntip(t)` taxa in the tree, which has a crown age of
+## `r max(branching.times(t))`.
+
+## Read in the three data sets; these specific leaf area (metres
+## square per gram), leaf mass (gram), and leaf nitrogen (grams per
+## gram) by species.
 sla <- read.csv("output/species-mean-sla.csv", stringsAsFactors=FALSE)
 sdm <- read.csv("output/species-mean-seedMass.csv", stringsAsFactors=FALSE)
 lfn <- read.csv("output/species-mean-leafN.csv", stringsAsFactors=FALSE)
