@@ -8,16 +8,15 @@ treedata.q <- function(...)
 
 ## functions for extracting subtrees
 ## some of this code was written by Jon M. Eastman
-
 get.node.heights <- function(t){
-    edg <- arbutus:::edge.height(t)
-    edg <- max(edg$start) - edg 
-    rr <- reorder(t, "cladewise")
-    edg[rr$edge[,2], ]
-    rownames(edg) <- NULL
-    as.matrix(edg) 
+  edg <- as.matrix(arbutus:::edge.height(t))
+  edg <- max(edg[,"start"]) - edg
+  dimnames(edg) <- NULL
+  # This is the height of the start and end of each node (so the first
+  # row is tip 1, row Ntip(tree)+1 is the root, etc, so put it into
+  # edge matrix order:
+  edg[t$edge[,2],]
 }
-    
 
 extract.all.nodes<-function(tree,node.height.min,node.height.max){
   #note that this returns a matrix of the same dimensions as tree$edge 
@@ -29,11 +28,9 @@ extract.all.nodes<-function(tree,node.height.min,node.height.max){
   return(non.terminal.interesting.nodes)
 }
 
-where.to.cut<-function(tree,age){
-  #note that this returns a matrix of the same dimensions as tree$edge 
-  #containing the height above the root of each node in edge
-  tree$node.label<-rep("",length(tree$node.label))
-  a<-get.node.heights(tree)
+where.to.cut<-function(tree, age) {
+  tree$node.label <- rep("", tree$Nnode)
+  a <- get.node.heights(tree)
   interesting.nodes<-tree$edge[which(a[,1]<age&a[,2]>age),2] #these are edges which pass through a certain age
   non.terminal.interesting.nodes<-interesting.nodes[interesting.nodes>length(tree$node.label)+2]
   return(non.terminal.interesting.nodes)
@@ -69,6 +66,7 @@ extract.sub.trees<-function(tree,species.richness,poss.nodes){
   return(out.tree.list)
 }
 
+# TODO(RGF): Why is this 'temp.tree'?  Clean this up.
 time.slice.tree<-function(time.slice,temp.tree,sr){
   edge.matrix.id<-where.to.cut(temp.tree,time.slice)
   node.label<-find.node.label(temp.tree,edge.matrix.id,FALSE)
