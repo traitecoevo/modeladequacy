@@ -40,21 +40,17 @@ get.errors <- function() {
   read.csv("data/errors.csv", stringsAsFactors=FALSE)
 }
 
-get.sla.data <- function() {
-  readRDS("output/data-sla.rds")
-}
-
-get.seedmass.data <- function() {
-  readRDS("output/data-seedMass.rds")
-}
-
-get.leafn.data <- function() {
-  readRDS("output/data-leafN.rds")
+get.data <- function(trait) {
+  trait <- match.arg(trait, c("SLA", "leafn", "seedmass"))
+  # TODO: This needs dealing with throughout.  One capitalisation for
+  # each please.
+  tr <- c(SLA="sla", leafn="leafN", seedmass="seedMass")
+  readRDS(sprintf("output/data-%s.rds", tr[[trait]]))
 }
 
 get.sla.v.leafn.data <-function(){
-    sla <- get.sla.data()
-    ln <- get.leafn.data()
+    sla <- get.data("SLA")
+    ln <- get.data("leafn")
 
     tmp <- sla$phy$tip.label[!(sla$phy$tip.label %in% ln$phy$tip.label)]
     phy <- geiger:::.drop.tip(phy=sla$phy, tip=tmp)
@@ -68,4 +64,15 @@ get.sla.v.leafn.data <-function(){
     names(SE) <- c("sla", "leafN")
 
     list(phy=phy, states=states, SE=SE)
+}
+
+filename.analysis <- function(trait, type, age=NULL, idx=NULL) {
+  if (type == "timeslice") {
+    if (is.null(age) || is.null(idx))
+      stop('age and idx must be provided for type="timeslice"')
+    type <- paste(type, age, idx, sep="_")
+  } else {
+    type <- paste("clade", type, sep="_")
+  }
+  sprintf("%s_%s.rds", trait, type)
 }

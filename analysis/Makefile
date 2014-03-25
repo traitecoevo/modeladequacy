@@ -8,7 +8,7 @@ data-species-mean: output/species-mean-leafN.csv \
 
 DATA_PHY = output/data-leafN.rds output/data-sla.rds output/data-seedMass.rds
 data-with-trees: ${DATA_PHY}
-data: output/angio-trait-data-all.rds
+data: output/angio-data
 
 # Little helpers:
 kew-fetch: data/kew/kew_apg_uncertain.html
@@ -68,8 +68,8 @@ output/data-sla.rds: output/species-mean-sla.csv R/read-data-functions.R
 output/data-seedMass.rds: output/species-mean-seedMass.csv R/read-data-functions.R
 	Rscript make/output-data-seedMass.rds.R
 
-output/angio-trait-data-all.rds: ${DATA_PHY} make/output-angio-trait-data-all.rds.R
-	Rscript make/output-angio-trait-data-all.rds.R
+output/angio-data: ${DATA_PHY} make/output-angio-trait-data-all.rds.R
+	Rscript make/output-angio-data.R
 
 # Save on some farting about with data:
 DOWNLOADED_DATA = 		\
@@ -98,7 +98,7 @@ clean-data: clean-processed
 
 ## More to add here, perhaps
 clean-processed:
-	rm -f output/angio-trait-data-all.rds
+	rm -rf output/angio-data
 	rm -f output/data-*rds
 	rm -f output/species-mean-*csv
 	rm -f ${TREE}

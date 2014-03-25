@@ -118,7 +118,7 @@ bnds.ou <- function(phy, states){
 
 ## simple function for reading in angiosperm dataset
 get.angio.data <- function(){
-  readRDS(file="output/angio-trait-data-all.rds")
+  lapply(dir("output/angio-data", full.names=TRUE), readRDS)
 }
 
 
