@@ -234,5 +234,9 @@ to.pdf <- function(filename, width, height, expr,
     cat(sprintf("Creating %s\n", filename))
   pdf(filename, width=width, height=height, pointsize=pointsize, ...)
   on.exit(dev.off())
-  eval.parent(substitute(expr))
+  res <- eval.parent(substitute(expr))
+  # Workaround for ggplot figures:
+  if (inherits(res, "gg")) {
+    print(res)
+  }
 }

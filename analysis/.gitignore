@@ -3,5 +3,6 @@ output/angio-data
 output/results-ml
 output/results-bayes
 output/*.rds
+output/figs
 output/species-mean*csv
 .downloaded_data.tar.gz

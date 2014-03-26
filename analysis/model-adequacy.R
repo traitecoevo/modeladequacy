@@ -600,9 +600,7 @@ fig.modelad.age(bay.best)
 
 ## ## Produce figures
 
-## TODO: THIS CURRENTLY DOES WORK TO PRODUCE PDFs. I AM PROBABY MISSING A FUNCTION
 if (!interactive()){
-
     ## create a directory for the figures
     dir.create("output/figs", FALSE)
     
