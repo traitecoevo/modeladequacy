@@ -10,6 +10,8 @@ DATA_PHY = output/data-leafN.rds output/data-sla.rds output/data-seedMass.rds
 data-with-trees: ${DATA_PHY}
 data: output/angio-data
 
+run: output/results-ml.csv output/results-mcmc.csv
+
 # Little helpers:
 kew-fetch: data/kew/kew_apg_uncertain.html
 zae-fetch: data/zae/PhylogeneticResources.zip data/zae/Spermatophyta_Genera.csv
@@ -68,8 +70,14 @@ output/data-sla.rds: output/species-mean-sla.csv R/read-data-functions.R
 output/data-seedMass.rds: output/species-mean-seedMass.csv R/read-data-functions.R
 	Rscript make/output-data-seedMass.rds.R
 
-output/angio-data: ${DATA_PHY} make/output-angio-trait-data-all.rds.R
-	Rscript make/output-angio-data.R
+output/angio-data: make/output-angio-data.R ${DATA_PHY}
+	Rscript $<
+
+output/results-ml.csv: model-adequacy-ml.R output/angio-data
+	Rscript $<
+
+output/results-bayes.csv: model-adequacy-bayes.R output/angio-data
+	Rscript $<
 
 # Save on some farting about with data:
 DOWNLOADED_DATA = 		\

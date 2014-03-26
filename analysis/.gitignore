@@ -1,6 +1,7 @@
-# Happy to merge into a top level gitignore if you'd rather.
 data
-output/ref
+output/angio-data
+output/results-ml
+output/results-bayes
 output/*.rds
 output/species-mean*csv
 .downloaded_data.tar.gz

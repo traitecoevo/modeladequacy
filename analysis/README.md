@@ -35,6 +35,8 @@ Required packages
 * ggplot2
 * xlsx
 
+Running the analysis.  Because of the length of time this takes, there are two steps.  First, fit models and run the model adequacy assessment on each data set (there are 337 of these, and each takes a few minutes or more).  This is done in the files `model-adequacy-ml.R` and `model-adequacy-bayes.R`.
+
 # Contents:
 
 ## The `data` directory.
