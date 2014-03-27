@@ -55,10 +55,10 @@ length(intersect(t$tip.label, lfn$gs))
 
 ## Read in results from model fitting
 ## Maximum likelihood
-ml <- read.csv("output/ml-results.csv", as.is=TRUE, row.names=1)
+ml <- read.csv("output/results-ml.csv", as.is=TRUE)
 
 ## MCMC
-bay <- read.csv("output/bayes-results.csv", as.is=TRUE, row.names=1)
+bay <- read.csv("output/results-bayes.csv", as.is=TRUE)
 
 ## Number of clades in dataset
 nrow(ml)
