@@ -4,7 +4,7 @@
 ## Load in all packages used 
 library(arbutus)
 library(diversitree)
-library(multicore)
+library(parallel)
 
 # TODO: Find and replace manual uses of angio-data with this.
 path.data <- function() {
@@ -17,6 +17,101 @@ path.bayes <- function() {
   "output/results-bayes"
 }
 
+
+# This function does all the ML or Bayesian analysis, depending on the
+# 'type' argument.  It takes a data set (which contains a tree,
+# character states, and standard errors for the character states),
+# fits a model using ML and then assesses the adequacy of that model.
+#
+# Most of the ugliness is putting (hopefully) sensible bounds on the
+# parameters to avoid ridges in likelihood space that can happen with
+# OU and EB.
+#
+# Note that the entire adequacy part of the function is the line
+#      ma <- phy.model.check(fit)
+# or
+#     ma <- phy.model.check(samples)
+model.ad <- function(data, model, type) {
+  model <- match.arg(model, c("BM", "OU", "EB"))
+  type  <- match.arg(type,  c("ml", "bayes"))
+  ## Extract components from the pre-prepared data object.
+  phy    <- data$phy
+  states <- drop(data$states)
+  SE     <- data$SE
+
+  make.lik <- switch(model, BM=make.bm, OU=make.ou, EB=make.eb)
+  lik <- make.lik(phy, states, SE,
+                  control=list(method="pruning", backend="C"))
+
+  # Start at REML estimate of sigsq for all models, using arbutus'
+  # function to estiate this.
+  s2 <- sigsq.est(as.unit.tree(phy, data=drop(states)))
+
+  # ML bounds, starting points and priors (priors only used in the
+  # Bayesian analysis)
+  lower <- 0
+  upper <- Inf
+  if (model == "BM") {
+    start <- s2
+    prior <- make.prior.bm(s2.lower=0, s2.upper=2)
+  } else if (model == "OU") {
+    upper <- bounds.ou(phy, states)
+    start <- c(s2, 0.05)
+    prior <- make.prior.ou(s2.lower=0, s2.upper=2,
+                           ln.mean=log(0.5), ln.sd=log(1.5))
+  } else if (model == "EB") {
+    lower <- c(0, -1)
+    start <- c(s2, -0.1)
+    prior <- make.prior.eb(s2.lower=0, s2.upper=2,
+                           a.lower=-1, a.upper=0)
+  }
+
+  if (type == "ml") {
+    fit <- find.mle(lik, x.init=start)
+    ic  <- AIC(fit)
+    ic.name <- "aic"
+
+    # Assess adequacy of all models
+    ma <- phy.model.check(fit)
+  } else if (type == "bayes") {
+    # Some general parameters
+    pilot  <- 100
+    burnin <- 1000
+    nsteps <- 10000
+
+    # Make the analyses recomputable by using the same seed each time:
+    set.seed(1)
+    
+    # Run short chain to obtain appropriate step size for MCMC
+    tmp <- mcmc(lik, x.init=start, nsteps=pilot, prior=prior, w=1,
+                print.every=0)
+
+    w <- diff(apply(coef(tmp), 2, range))
+
+    # Full chain:
+    samples <- mcmc(lik, x.init=start, nsteps=nsteps, prior=prior, w=w,
+                    print.every=0)
+
+    ic <- dic.mcmcsamples(samples, burnin=burnin)
+    ic.name <- "dic"
+
+    # Assess adequacy of all models    
+    ma <- phy.model.check(samples, burnin=burnin, sample=1000)
+  }
+
+  # For all cases, the general information about three we want is the same:
+  info       <- data[c("taxa", "rank", "trait")]
+  info$size  <- Ntip(phy)
+  info$age   <- max(branching.times(phy))
+  info$model <- model
+  info$type  <- type
+  info[[ic.name]] <- ic
+
+  # Returning information about the tree, the assessment of model
+  # adequacy and the fit (either the ML object or the MCMC samples).
+  list(info=info, ma=ma, fit=if(type == "ml") fit else samples)
+}
+
 # Little wrapper function that loads data, fits a model (ML or MCMC),
 # checks the model adequacy, and then saves the results in a file.  If
 # the output file exists, this is skipped.
@@ -25,10 +120,8 @@ run.model.ad <- function(filename, type=c("ml", "bayes"),
   type <- match.arg(type)
   if (type == "ml") {
     path.out <- path.ml()
-    model.ad <- model.ad.ml
   } else {
     path.out <- path.bayes()
-    model.ad <- model.ad.bayes
   }
 
   filename.out <- file.path(path.out, filename)
@@ -40,12 +133,13 @@ run.model.ad <- function(filename, type=c("ml", "bayes"),
     if (verbose) {
       message(sprintf("%s: %s", type, sub(".rds$", "", filename)))
     }
-    res <- lapply(models, function(m) model.ad(dat, m))
+    res <- lapply(models, function(m) model.ad(dat, m, type))
     names(res) <- models
     saveRDS(res, filename.out)
     invisible(TRUE)
   }
 }
+
 
 combine <- function(fits) {
   do.call(rbind, lapply(fits, process))

@@ -98,10 +98,10 @@ downloaded-data-bulk-fetch:
 
 clean-data: clean-processed
 	rm -rf data/kew data/kew.csv
-	rm -f data/leda.csv
+	rm -f data/leda.txt data/leda.csv
 	rm -f data/vascular_plant_phylogeny.tre
 	rm -f data/genus_order_lookup.csv
-	rm -f data/wright-2004.csv
+	rm -f data/wright-2004.xls data/wright-2004.csv
 	rm -rf data/zae
 
 ## More to add here, perhaps
@@ -111,6 +111,11 @@ clean-processed:
 	rm -f output/species-mean-*csv
 	rm -f ${TREE}
 	rm -f ${SYN}
+
+clean-outputs:
+	rm -rf output/figs
+	rm -rf output/results-ml
+	rm -rf output/results-bayes
 
 .PHONY: all data data-fetch data-preprocess data-species-mean \
 	kew-fetch zae-fetch \
