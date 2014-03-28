@@ -5,8 +5,7 @@ source("R/modelfit-helper-fxns.R")
 dir.create(path.ml(), FALSE)
 options(mc.cores=2) # Adjust accordingly
 files <- dir(path.data())
-# ok <- mclapply(files, run.model.ad, "ml", mc.preschedule=FALSE)
-ok <- lapply(files, run.model.ad, "ml")
+ok <- mclapply(files, run.model.ad, "ml", mc.preschedule=FALSE)
 
 # All the fits can be read in like this, but it takes a while and
 # results in objects that are large.

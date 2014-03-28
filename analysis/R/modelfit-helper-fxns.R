@@ -31,7 +31,7 @@ path.bayes <- function() {
 #      ma <- phy.model.check(fit)
 # or
 #     ma <- phy.model.check(samples)
-model.ad <- function(data, model, type) {
+model.ad <- function(data, model, type, seed=1) {
   model <- match.arg(model, c("BM", "OU", "EB"))
   type  <- match.arg(type,  c("ml", "bayes"))
   ## Extract components from the pre-prepared data object.
@@ -40,7 +40,7 @@ model.ad <- function(data, model, type) {
   SE     <- data$SE
 
   # Make the analyses recomputable by using the same seed each time:
-  set.seed(1)
+  set.seed(seed)
 
   make.lik <- switch(model, BM=make.bm, OU=make.ou, EB=make.eb)
   lik <- make.lik(phy, states, SE,
