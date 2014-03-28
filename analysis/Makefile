@@ -10,7 +10,8 @@ DATA_PHY = output/data-leafN.rds output/data-sla.rds output/data-seedMass.rds
 data-with-trees: ${DATA_PHY}
 data: output/angio-data
 
-run: output/results-ml.csv output/results-mcmc.csv
+fits: output/results-ml.csv output/results-bayes.csv
+analysis: model-adequacy.html
 
 # Little helpers:
 kew-fetch: data/kew/kew_apg_uncertain.html
@@ -78,6 +79,15 @@ output/results-ml.csv: model-adequacy-ml.R output/angio-data
 
 output/results-bayes.csv: model-adequacy-bayes.R output/angio-data
 	Rscript $<
+
+model-adequacy.Rmd: model-adequacy.R
+	Rscript -e "library(sowsear); sowsear('$<', 'Rmd')"
+model-adequacy.md: model-adequacy.Rmd
+	Rscript -e "library(knitr); knit('$<')"
+model-adequacy.html: model-adequacy.md
+	Rscript -e "library(markdown);\
+	 opts <- setdiff(markdownHTMLOptions(TRUE), 'base64_images');\
+	 markdownToHTML('$<', '$@', options=opts)"
 
 # Save on some farting about with data:
 DOWNLOADED_DATA = 		\

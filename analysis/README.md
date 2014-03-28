@@ -34,11 +34,28 @@ Currently:
 
 3. Run the analyses
 
-At the moment, manually run the `model-adequacy-ml.R` and `model-adequacy-bayes.R`
+```
+make fits
+```
+
+This runs the code in `model-adequacy-ml.R` and `model-adequacy-bayes.R`, which goes through and fits models using ML or MCMC (respectively) and assesses adequacy using arbutus' `phy.model.check` function.
+
+Individual fits are stored in `data/results-ml` and `data/results-bayes` and then summarised together in `data/results-ml.csv` and `data/results-bayes.csv`.
 
 4. Process the analysis
 
-Run the `model-analysis.R` file.  The workflow from wood needs copying over for doing the R->Rmd->md translation.
+```
+make analysis
+```
+
+This will run all the code in `model-analysis.R`, creating figures (in `output/figs`).  It also creates the file `model-adequacy.html` which shows the process of running all the code.  This makes use of knitr.
+
+**Note**: For now, the dependencies for the fits and analysis section aren't done automatically (to save time during development).  So to run everything in one fell swoop:
+
+```
+make downloaded-data-bulk-fetch downloaded-data-unpack
+make data fits analysis
+```
 
 # Other information:
 
@@ -74,12 +91,11 @@ Data downloaded from other sources::
 
 ## The `R` directory.
 
-Functions for handling the data, which are all called by the `make` files:
+Functions for handling the data, which are all sourced by the R files in `make/`:
 
-* `paths.R`
-* `data-process-taxonomic.R`
-* `data-process-kew.R`
 * `data-process-angio.R`
+* `data-process-kew.R`
+* `data-process-taxonomic.R`
 
 Functions that are called by `analysis/model-adequacy-ml.R` and `analysis/model-adequacy-bayes.R` to assist with the model fitting and analysis of model adequacy:
 
@@ -88,6 +104,8 @@ Functions that are called by `analysis/model-adequacy-ml.R` and `analysis/model-
 Functions for assisting with plotting and the analysis of final results:
 
 * `model-adequacy-analysis.R`
+
+The file `paths.R` contains paths and helpers to load partly processed data.
 
 ## Main analysis scripts
 
