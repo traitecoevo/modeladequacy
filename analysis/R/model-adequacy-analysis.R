@@ -202,30 +202,25 @@ count.pvalues <- function(dat, threshold){
 
 ## little functions for renaming traits and ranks
 rename.traits <- function(x){
-    y <- x
-    
-    if (x == "seedmass")
-        y <- "SeedMass"
-
-    if (x == "leafn")
-        y <- "LeafN"
-
-    y
+  tr <- c(seedmass="SeedMass",
+          leafn="LeafN",
+          SLA="SLA")
+  tr[[match.arg(x, names(tr))]]
 }
 
-cap.ranks <- function(x){
-    if (x == "family")
-        y <- "Family"
-
-    if (x == "timeslice")
-        y <- "Timeslice"
-
-    if (x == "order")
-        y <- "Order"
-
-    y
+prepare.df.for.ggplot <- function(df) {
+  ## Capitalize ranks
+  df$rank <- capitalise.first(df$rank)
+  ## rename and reorder trait
+  df$trait <- sapply(df$trait, rename.traits)
+  df$trait <- factor(df$trait, c("SLA", "SeedMass", "LeafN"))
+  df
 }
 
+
+capitalise.first <- function(x) {
+  sub("^([a-z])", "\\U\\1", x, perl=TRUE)
+}
 
 ## Evaluate expression 'expr' that produces a figure as a side effect,
 ## saving the result in a pdf file.

@@ -420,12 +420,7 @@ fig.pval.histogram(bay.best)
 
 ## ### Code for plotting the relative support (AIC) for the best model (compared to BM) vs. a multivariate measure of model adequacy
 fig.modelad.aic <- function(df){
-    
-    ## Capitalize ranks
-    df$rank <- sapply(df$rank, function(x) cap.ranks(x))
-    ## rename and reorder trait
-    df$trait <- sapply(df$trait, function(x) rename.traits(x))
-    df$trait <- factor(df$trait, c("SLA", "SeedMass", "LeafN"))
+    df <- prepare.df.for.ggplot(df)
     
    .e <- environment()
 
@@ -464,14 +459,8 @@ fig.modelad.aic(aic.df)
 
 ## ### Code for plotting the relative support (DIC) for the best model (compared to BM) vs. a multivariate measure of model adequacy
 fig.modelad.dic <- function(df){
-    
-    ## Capitalize ranks
-    df$rank <- sapply(df$rank, function(x) cap.ranks(x))
-    ## rename and reorder trait
-    df$trait <- sapply(df$trait, function(x) rename.traits(x))
-    df$trait <- factor(df$trait, c("SLA", "SeedMass", "LeafN"))
-    
-   .e <- environment()
+    df <- prepare.df.for.ggplot(df)
+    .e <- environment()
 
     ## the occasional dataset may have NA for Mahalanobis distance
     ## remove this for the plot
@@ -511,13 +500,8 @@ fig.modelad.dic(dic.df)
 
 ## ### Code to plot a multivariate measure of model adequacy (Mahalanobis distance) against clade size
 fig.modelad.size <- function(df){
+    df <- prepare.df.for.ggplot(df)
 
-    ## Capitalize ranks
-    df$rank <- sapply(df$rank, function(x) cap.ranks(x))
-    ## rename and reorder trait
-    df$trait <- sapply(df$trait, function(x) rename.traits(x))
-    df$trait <- factor(df$trait, c("SLA", "SeedMass", "LeafN"))
-    
    .e <- environment()
 
     ## the occasional dataset may have NA for Mahalanobis distance
@@ -553,12 +537,7 @@ fig.modelad.size(bay.best)
 
 ## ### Code to plot a multivariate measure of model adequacy (Mahalanobis distance) against clade age
 fig.modelad.age <- function(df){
-
-    ## Capitalize ranks
-    df$rank <- sapply(df$rank, function(x) cap.ranks(x))
-    ## rename and reorder trait
-    df$trait <- sapply(df$trait, function(x) rename.traits(x))
-    df$trait <- factor(df$trait, c("SLA", "SeedMass", "LeafN"))
+    df <- prepare.df.for.ggplot(df)
     
    .e <- environment()
 
