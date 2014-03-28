@@ -39,6 +39,9 @@ model.ad <- function(data, model, type) {
   states <- drop(data$states)
   SE     <- data$SE
 
+  # Make the analyses recomputable by using the same seed each time:
+  set.seed(1)
+
   make.lik <- switch(model, BM=make.bm, OU=make.ou, EB=make.eb)
   lik <- make.lik(phy, states, SE,
                   control=list(method="pruning", backend="C"))
@@ -79,9 +82,6 @@ model.ad <- function(data, model, type) {
     burnin <- 1000
     nsteps <- 10000
 
-    # Make the analyses recomputable by using the same seed each time:
-    set.seed(1)
-    
     # Run short chain to obtain appropriate step size for MCMC
     tmp <- mcmc(lik, x.init=start, nsteps=pilot, prior=prior, w=1,
                 print.every=0)
@@ -150,13 +150,14 @@ process <- function(res) {
   col.ic <- if (type == "ml") "aic" else "dic"
 
   process1 <- function(x) {
+    model <- tolower(x$info$model)
     # P values for the various statistics:
     pv <- pval.summ.stats(x$ma)
-    names(pv) <- sprintf("%s.%s.%s", type, tolower(x$info$model), names(pv))
+    names(pv) <- sprintf("%s.%s.%s", names(pv), type, model)
 
     # Mean distance
     #
-    # TODO: This fails sometimes (computationally singular) but I
+    # NOTE: This fails sometimes (computationally singular) but I
     # think I'm out of date with arbutus.  For now, just setting this
     # to use try(), and setting to NaN on error so we can track it
     # down later.
@@ -164,23 +165,30 @@ process <- function(res) {
     if (inherits(mv, "try-error")) {
       mv <- NaN
     }
-    names(mv) <- sprintf("mv.%s.%s", type, tolower(x$info$model))
-    
-    c(list(dic=x$info[[col.ic]]),
-      as.list(pv),
-      as.list(mv))
+    names(mv) <- sprintf("mv.%s.%s", type, model)
+
+    # Mean diagnostic
+    #
+    # This is not strictly necessary but was used to test whether
+    # m.pic was consistently under or overestimated This is the only
+    # summary statistic which we expected to be systematically biased
+    # in one direction
+    md <- sum(x$ma$summ.stats.sim$m.pic < x$ma$summ.stats.obs$m.pic)
+    names(md) <- sprintf("mean.diag.%s", model)
+
+    as.list(c(pv, mv, md))
   }
   
   info <- res$BM$info[c("taxa", "rank", "trait", "size", "age")]
 
-  weights <- as.list(ic.weights(sapply(res, function(x) x$info[[col.ic]])))
-  names(weights) <- sprintf("%sw.%s", col.ic, tolower(names(weights)))
+  ic <- sapply(res, function(x) x$info[[col.ic]])
+  icw <- ic.weights(ic)
+  names(ic) <- sprintf("%s.%s", col.ic, tolower(names(ic)))
+  names(icw) <- sprintf("%sw.%s", col.ic, tolower(names(icw)))
 
-  tmp <- lapply(res, process1)
-  stats <- unlist(tmp, recursive=FALSE, use.names=FALSE)
-  names(stats) <- unlist(lapply(tmp, names))
+  stats <- unlist.with.names(lapply(res, process1))
   
-  as.data.frame(c(info, weights, stats), stringsAsFactors=FALSE)
+  as.data.frame(c(info, ic, icw, stats), stringsAsFactors=FALSE)
 }
 
 ## Compute weights for AIC or DIC
@@ -269,4 +277,10 @@ bounds.ou <- function(phy, states){
   ## upper bound for alpha: greater than shortest branch
   ## upper bound for for sigsq: set to 2
   c(2, log(2)/sht)
+}
+
+unlist.with.names <- function(x) {
+  ret <- unlist(x, recursive=FALSE, use.names=FALSE)
+  names(ret) <- unlist(lapply(x, names))
+  ret
 }
