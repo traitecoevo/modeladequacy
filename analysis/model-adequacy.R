@@ -24,12 +24,6 @@ Ntip(t)
 ## Age of tree
 max(branching.times(t))
 
-### TODO: For the bits of code like those above, we could write things
-### like this instead:
-
-## There are `r Ntip(t)` taxa in the tree, which has a crown age of
-## `r max(branching.times(t))`.
-
 ## Read in the three data sets; these specific leaf area (metres
 ## square per gram), leaf mass (gram), and leaf nitrogen (grams per
 ## gram) by species.
