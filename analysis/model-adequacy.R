@@ -59,6 +59,34 @@ nrow(ml)
 
 
 
+## ## Results from case study: seed mass evolution in Meliaceae and Fagaceae
+
+## Subset the ML analyses by dataset
+## Meliaceae
+mm <- ml[which(ml[,"taxa"] == "Meliaceae"), ]
+## Fagaceae
+ff <- ml[which(ml[,"taxa"] == "Fagaceae"), ]
+ff <- ff[which(ff[,"trait"] == "seedmass"), ]
+
+## AIC weight of the OU model for Meliaceae
+mm$aicw.ou
+
+## AIC weight of the OU model for Fagaceae
+ff$aicw.ou
+
+## Get p-values for all six summary stats
+pvalue.names <- c("m.pic.ml.ou", "v.pic.ml.ou", "s.var.ml.ou",
+                  "s.anc.ml.ou", "s.hgt.ml.ou", "d.ks.ml.ou")
+
+## Meliaceae:
+mm[,pvalue.names]
+
+## Fagaceae:
+ff[,pvalue.names]
+
+
+
+
 ## ## Results from conventional model comparison using AIC:
 
 ## Get AIC support for each model
@@ -196,10 +224,6 @@ fig.model.support.dic <- function(dic){
 
 ## Plot DIC model support
 fig.model.support.dic(dic)
-
-
-
-
 
 
 
