@@ -6,7 +6,8 @@ library(grid)
 library(gridExtra)
 library(reshape2)
 library(ape)
-library(geiger)
+
+source("R/paths.R")
 
 ## Functions for making a dataframe with results from only the best model
 get.model.suffix <- function(x){

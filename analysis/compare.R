@@ -49,7 +49,7 @@ dd.new[i,1:5]
 
 ## Script for evaluating model adequacy of angiosperm clades
 ## Fitting models using maximum likelihood
-source("R/modelfit-helper-fxns.R")
+source("R/model-adequacy-fit.R")
 
 ## Look at the error around the distance estimate:
 dat <- readRDS(file.path(path.data(), "SLA_clade_Poales.rds"))

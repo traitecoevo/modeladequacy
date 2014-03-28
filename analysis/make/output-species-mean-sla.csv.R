@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 library(methods)
 suppressMessages(library(dplyr))
-source("R/load-scrubbing-tools.R")
-source("R/util.R")
+source("R/data-process-taxonomic.R")
+source("R/data-process-angio.R")
 
 ## Two data sets
 wright <- read.csv("data/wright-2004.csv",

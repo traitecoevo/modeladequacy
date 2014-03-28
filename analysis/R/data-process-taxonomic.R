@@ -1,5 +1,5 @@
 require(ape, quietly=TRUE)
-source("R/read-data-functions.R")
+source("R/paths.R")
 
 scrub.wrapper<-function(names){
   corrections <- get.corrections()

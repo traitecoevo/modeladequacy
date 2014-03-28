@@ -1,7 +1,30 @@
 ## functions for building rds file for all data and all traits
 require(geiger, quietly=TRUE)
 
-source("R/read-data-functions.R")
+source("R/paths.R")
+
+build.data <- function(dataset) {
+  dataset <- match.arg(dataset, c("sla", "seedMass", "leafN"))
+
+  t <- get.tree()
+  raw <- read.csv(sprintf("output/species-mean-%s.csv", dataset),
+                  stringsAsFactors=FALSE)
+  t <- extract.clade(t, node="Angiospermae")
+
+  ## NOTE: base 10 log
+  dat <- structure(log10(raw$mean), names=raw$gs)
+
+  ## Drop species from tree not in data, and v.v.
+  ## This step is the slow point.
+  phy <- geiger:::.drop.tip(phy=t, tip=setdiff(t$tip.label, names(dat)))
+  dat <- dat[phy$tip.label]
+
+  ## TODO: recompute SLA from data?
+  ##   mean(log10(raw$sd[log10(raw$sd) > 0.0001]), na.rm=TRUE)
+  se <- c(sla=0.1039405, seedMass=0.1551108, leafN=0.07626127)[[dataset]]
+
+  list(phy=phy, states=dat, SE=se)
+}
 
 treedata.q <- function(...)
   geiger::treedata(..., warnings=FALSE)
@@ -173,4 +196,17 @@ build.angio.data.time <- function(tree.states, age, trait, min.size){
                                     rank="timeslice", trait=trait)))
 
     all.trees
+}
+
+
+logspace.f <- function(x, f, ...) {
+  exp(f(log(x), ...))
+}
+
+geometric.mean <- function(x, ...) {
+  logspace.f(x, mean, ...)
+}
+
+geometric.sd <- function(x, ...) {
+  logspace.f(x, sd, ...)
 }

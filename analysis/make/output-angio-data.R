@@ -1,9 +1,9 @@
 #!/usr/bin/env Rscript
-source("R/build-angio-data.R")
+source("R/data-process-angio.R")
 
 ## Create the directory if it does not exist, but remove all files
 ## from it if it does:
-path <- "output/angio-data"
+path <- path.data()
 dir.create(path, FALSE)
 invisible(file.remove(dir(path, full.names=TRUE)))
 

@@ -6,18 +6,6 @@ library(arbutus)
 library(diversitree)
 library(parallel)
 
-# TODO: Find and replace manual uses of angio-data with this.
-path.data <- function() {
-  "output/angio-data"
-}
-path.ml <- function() {
-  "output/results-ml"
-}
-path.bayes <- function() {
-  "output/results-bayes"
-}
-
-
 # This function does all the ML or Bayesian analysis, depending on the
 # 'type' argument.  It takes a data set (which contains a tree,
 # character states, and standard errors for the character states),

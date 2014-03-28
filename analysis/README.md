@@ -62,8 +62,8 @@ Running the analysis.  Because of the length of time this takes, there are two s
 
 Most of these files are downloaded from elsewhere, but a few are local:
 
-* `errors.csv`: Data value error fixing (see `R/load-scrubbing-tools.R`)
-* `names-tr.txt`: Species name translations to fix spelling errors, etc (see `R/load-scrubbing-tools.R`)
+* `errors.csv`: Data value error fixing (see `R/data-process-taxonomic.R`)
+* `names-tr.txt`: Species name translations to fix spelling errors, etc (see `R/data-process-taxonomic.R`)
 * `spermatophyta_synonyms_PLANTLIST.csv` list of synonyms derived from the Plant List.  This will change to use the woodiness data shortly.
 
 Data downloaded from other sources::
@@ -74,32 +74,31 @@ Data downloaded from other sources::
 
 ## The `R` directory.
 
-Functions for handling the data, which are all called by the `make` files.::
+Functions for handling the data, which are all called by the `make` files:
 
-* `build-angio-data.R`
-* `read-data-functions.R`
-* `load-scrubbing-tools.R`
-* `kew.R`
-* `import-scrub.R`
+* `paths.R`
+* `data-process-taxonomic.R`
+* `data-process-kew.R`
+* `data-process-angio.R`
 
-Functions that are called by `analysis/model-ad-angio-ML.R` and `analysis/model-ad-angio-bayes.R` to assist with the model fitting and analysis of model adequacy::
+Functions that are called by `analysis/model-adequacy-ml.R` and `analysis/model-adequacy-bayes.R` to assist with the model fitting and analysis of model adequacy:
 
-* `modelfit-helper-fxns.R`
+* `model-adequacy-fit.R`
 
-Functions for assisting with plotting and the analysis of final results
+Functions for assisting with plotting and the analysis of final results:
 
-* `model-adequacy-helper.R`
+* `model-adequacy-analysis.R`
 
 ## Main analysis scripts
 
 There are two primary scripts for fitting models and assessing model adequacy::
 
-* `model-ad-angio-ML.R`
+* `model-ad-angio-ml.R`
 * `model-ad-angio-bayes.R`
 
 These two scripts fit the 3 evolutionary models (using ml or mcmc, respectively) and assess model adequacy. Both of these use multiple processes and the analyses will take some time.
 
-All of the analysis of the results produced from the above functions are handled with::
+All of the analysis of the results produced from the above functions are handled with:
 
 * `model-adequacy.R`
 

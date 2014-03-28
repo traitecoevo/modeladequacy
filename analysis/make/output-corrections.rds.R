@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 library(methods)
-source("R/read-data-functions.R")
+source("R/paths.R")
 
 tree <- get.tree()
 

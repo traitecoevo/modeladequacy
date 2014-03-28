@@ -1,8 +1,9 @@
 ## Script for evaluating model adequacy of angiosperm clades
 ## Fitting models using maximum likelihood
-source("R/modelfit-helper-fxns.R")
+source("R/model-adequacy-fit.R")
 
 dir.create(path.ml(), FALSE)
+
 options(mc.cores=2) # Adjust accordingly
 files <- dir(path.data())
 ok <- mclapply(files, run.model.ad, "ml", mc.preschedule=FALSE)

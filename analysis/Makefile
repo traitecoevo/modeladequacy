@@ -63,11 +63,11 @@ output/species-mean-sla.csv: ${TREE} ${SYN} data/wright-2004.csv data/leda.csv m
 output/species-mean-seedMass.csv: ${TREE} ${SYN} data/kew.csv make/output-species-mean-seedMass.csv.R
 	Rscript make/output-species-mean-seedMass.csv.R
 
-output/data-leafN.rds: output/species-mean-leafN.csv R/read-data-functions.R
+output/data-leafN.rds: output/species-mean-leafN.csv R/paths.R
 	Rscript make/output-data-leafN.rds.R
-output/data-sla.rds: output/species-mean-sla.csv R/read-data-functions.R
+output/data-sla.rds: output/species-mean-sla.csv R/paths.R
 	Rscript make/output-data-sla.rds.R
-output/data-seedMass.rds: output/species-mean-seedMass.csv R/read-data-functions.R
+output/data-seedMass.rds: output/species-mean-seedMass.csv R/paths.R
 	Rscript make/output-data-seedMass.rds.R
 
 output/angio-data: make/output-angio-data.R ${DATA_PHY}

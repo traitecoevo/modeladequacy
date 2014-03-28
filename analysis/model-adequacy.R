@@ -1,8 +1,7 @@
 ## # Model adequacy and the macroevolution of angiosperm functional traits -- Analysis
 
 ## Load packages and helper functions
-source("R/model-adequacy-helper.R")
-source("R/read-data-functions.R")
+source("R/model-adequacy-analysis.R")
 
 ### Set options
 ##+ echo=FALSE, results=FALSE

@@ -1,4 +1,4 @@
 #!/usr/bin/env Rscript
-source("R/kew.R")
+source("R/data-process-kew.R")
 dir.create("data/kew", FALSE)
 kew.fetch.clades()
