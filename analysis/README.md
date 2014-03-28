@@ -10,12 +10,19 @@ In slightly more detail:
 make data-preprocess
 ```
 
+Or, to grab a cached data set (avoiding hammering Kew)
+
+```
+make downloaded-data-bulk-fetch
+make downloaded-data-unpack
+make data-preprocess
+```
+
+
 2. Clean up data sets taxonomically and generate simple data sets by species (in the `output` directory).
 
 ```
-make data-process
-make data-species-mean
-make data-with-trees
+make data
 ```
 
 Currently:
@@ -23,12 +30,24 @@ Currently:
 * `seedMass-process.R`: `data/kew.csv` -> `output/species-mean-seedMass.csv`
 * `sla-process.R:trait`: {`data/wright-2004`, `data/leda.csv`} -> `output/species-mean-sla.csv`
 
+(that list out of date)
+
+3. Run the analyses
+
+At the moment, manually run the `model-adequacy-ml.R` and `model-adequacy-bayes.R`
+
+4. Process the analysis
+
+Run the `model-analysis.R` file.  The workflow from wood needs copying over for doing the R->Rmd->md translation.
+
+# Other information:
+
 Required packages
 
 * XML
 * arbutus
 * ape
-* ddply (>= 0.1.2)
+* dplyr (>= 0.1.2)
 * digest
 * diversitree
 * geiger
