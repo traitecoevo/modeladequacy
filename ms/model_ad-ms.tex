@@ -331,27 +331,35 @@ Measurement error can be incorporated by simply lengthening the terminal branche
 \subsection{Empirical results from the Bayesian analyses}
 As with the likelihood results (described in main text), OU models were highly supported across many datasets; 
 %% Number of datasets for which OU was best supported model: 178
-178/337 clades had the highest DIC weight (DIC$_w$) on an OU model; 155 of them with greater than 75\% of the total DIC$_w$ (see Figure \ref{fig:supp-dic-support}). While a generally similar pattern of model support holds for both likelihood and Bayesian inference, the likelihood analyses are much cleaner (compare Figure \ref{fig:aic-support} and Figure \ref{fig:supp-dic-support}). This differnce can be explained by the fact that there is a tight statistical relationship between the AIC values for these three models. (If two models have identical likelihoods, the AIC scores, defined as $-2\mathcal{L} + 2k$ [where $\mathcal{L}$ is the log-likelihood of the model and $k$ is the number of parameters] will differ by $2$. As BM is a special case of both OU and EB, in opposite directions in model space, the highest AIC$_w$ possible for BM is $\sim$ 0.731 \citep{SlaterPennell}). The rare clades were both OU and EB have higher support than BM likely reflect problems in optimization.) Calculating DIC values from posterior samples is inherently more stochastic; if there is little information in data, the best DIC model will depend on the values sampled by the chain. 
+%% Number of datasets for which OU > 0.75 of DICw: 157
+178/337 clades had the highest DIC weight (DIC$_w$) on an OU model; 157 of them with greater than 75\% of the total DIC$_w$ (see Figure \ref{fig:supp-dic-support}). While a generally similar pattern of model support holds for both likelihood and Bayesian inference, the likelihood analyses are much cleaner (compare Figure \ref{fig:aic-support} and Figure \ref{fig:supp-dic-support}). This differnce can be explained by the fact that there is a tight statistical relationship between the AIC values for these three models. (If two models have identical likelihoods, the AIC scores, defined as $-2\mathcal{L} + 2k$ [where $\mathcal{L}$ is the log-likelihood of the model and $k$ is the number of parameters] will differ by $2$. As BM is a special case of both OU and EB, in opposite directions in model space, the highest AIC$_w$ possible for BM is $\sim$0.731 \citep{SlaterPennell}). The rare clades were both OU and EB have higher support than BM likely reflect problems in optimization.) Calculating DIC values from posterior samples is inherently more stochastic; if there is little information in data, the best DIC model will depend on the values sampled by the chain. 
 
 For the model adequacy results, the results were also very similar to that of the likelihood analyses (compare to Empirical results section). The adequacy of these simple models was woefully poor across most of the datasets (Figure \ref{fig:supp-pvalues}). Again, we limit our analyses of model adequacy to only the most highly supported model in the candidate set.
 
 %% SLA data 
-%% rejected by at least one ss: 71
-%% rejected by at least two ss: 29
+%% rejected by at least one ss: 72
+%% rejected by at least two ss: 31
 %% rejected by at least three ss: 17
-Of the 72 comparative datasets of SLA, the best supported model was rejected by at least one summary statistic in 71 cases, 29 by at least two, and 17 by three or more.
+Of the 72 comparative datasets of SLA, the best supported model was rejected by at least one summary statistic in all 72 cases, 31 by at least two, and 17 by three or more.
 %% Seed mass data 
-%% rejected by at least one ss: 189
-%% rejected by at least two ss: 129
-%% rejected by at least three ss: 72
-For the seed mass data, the model was rejected by one or mor of the summary statistics in 189 datasets (by two or more in 129 datasets and by at least three in 64 cases).
+%% rejected by at least one ss: 185
+%% rejected by at least two ss: 128
+%% rejected by at least three ss: 75
+For the seed mass data, the model was rejected by one or mor of the summary statistics in 185 datasets (by two or more in 128 datasets and by at least three in 75 cases).
 %% Leaf nitrogen data
 %% rejected by at least one ss: 39
-%% rejected by at least two ss: 17
-%% rejected by at least three ss: 8
-All 39 leaf nitrogen datasets again rejected the best supported model with at least one summary statistic (17 by at least two and 8 by at least three).
+%% rejected by at least two ss: 18
+%% rejected by at least three ss: 7
+All 39 leaf nitrogen datasets again rejected the best supported model with at least one summary statistic (18 by at least two and 7 by at least three).
 
-Also, similar to the likelihood analyses, the frequency of rejection differed between the summary statistic. $M_{\text{PIC}}$ rejected the model in 248 datasets, and $V_{\text{PIC}}$ in 168 ($S_{\text{VAR}}$: 73, $S_{\text{ANC}}$: 71, $S_{\text{HGT}}$: 33, $D_{\text{KS}}$: 69). There was a strong relationship between model (in)adequacy and clade size (Figure \ref{fig:supp-size-adequacy}), but not for clade age (Figure \ref{fig:supp-age-bayes}).
+%% Number rejected by each of the summary statistics
+%% M.pic: 246
+%% V.pic: 169
+%% S.var: 76
+%% S.anc: 70
+%% S.hgt: 36
+%% D.ks: 68
+Also, similar to the likelihood analyses, the frequency of rejection differed between the summary statistic. $M_{\text{PIC}}$ rejected the model in 246 datasets, and $V_{\text{PIC}}$ in 169 ($S_{\text{VAR}}$: 76, $S_{\text{ANC}}$: 70, $S_{\text{HGT}}$: 36, $D_{\text{KS}}$: 68). Again, only 41 datasets were adequately modeled by one of the three models in our candidate set. There was a strong relationship between model (in)adequacy and clade size (Figure \ref{fig:supp-size-adequacy}), but not for clade age (Figure \ref{fig:supp-age-bayes}).
  
 
 \newpage

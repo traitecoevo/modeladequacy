@@ -19,7 +19,7 @@ get.model.suffix <- function(x){
 
 rm.model.suffix <- function(x){
     st <- strsplit(x, split=".", fixed=TRUE)[[1]]
-    if ("ml" %in% st | "mcmc" %in% st)
+    if ("ml" %in% st | "bayes" %in% st)
         st <- st[-(length(st) - 1)]
 
     strm <- st[-length(st)]

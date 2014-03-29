@@ -78,7 +78,7 @@ make fits
 
 This runs the code in `model-adequacy-ml.R` and `model-adequacy-bayes.R`, which goes through and fits models using ML or MCMC (respectively) and assesses adequacy using arbutus' `phy.model.check` function. If multiple processes are available, this can be sped up by changing the line `options(mc.cores=2)` in `model-adequacy-ml.R` and/or `model-adequacy-bayes.R` 
 
-Individual fits are stored in `data/results-ml` and `data/results-bayes` and then summarised together in `data/results-ml.csv` and `data/results-bayes.csv`.
+Individual fits are stored in `output/results-ml` and `output/results-bayes` and then summarised together in `output/results-ml.csv` and `output/results-bayes.csv`, respectively.
 
 
 ### Process the analysis
@@ -87,7 +87,7 @@ Individual fits are stored in `data/results-ml` and `data/results-bayes` and the
 make analysis
 ```
 
-This will run all the code in `model-analysis.R`, creating figures (in `output/figs`).  It also creates the file `model-adequacy.html` which shows the process of running all the code.  This makes use of knitr.
+This will run all the code in `model-analysis.R`, creating figures (in `output/figs`).  It also creates the file `model-adequacy.html` which shows the process of running all the code.  This makes use of knitr. The files summarizing the final results for the paper `output/results-ml.csv` and `output/results-bayes.csv` are included in the repository so `make analysis` can be used to generate the output files without re-running the analyses. This may be useful for researchers who want to know exactly where the numbers in the paper come from without having to rerun the analyses from scratch (which will take several hours). Also note that owing to the stochastic nature of the procedure, re-running the analyses will result in slightly different numbers from those reported in the paper.
 
 **Note**: For now, the dependencies for the fits and analysis section aren't loaded automatically (to save time during development).  So to run everything in one fell swoop:
 
