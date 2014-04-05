@@ -137,19 +137,65 @@ Once we have created the unit tree from the estimated parameters, new datasets c
 
 \section{The adequacy of models for the evolution of plant functional traits}
 
-We used the approach we developed to address an outstanding question in comparative biology: how well do commonly used models explain the evolution of traits along a phylogeny and when are more complex models required? We addressed this question by studying Angiosperm functional traits using a recently published a phylogeny containing 30,535 species \citep{Zanne2013}. This phylogeny is exceptional in terms of scope and allowed us to evaluate the adequacy of models through time and across many groups.  
+We used the approach we developed to address an outstanding question in comparative biology: how well do commonly used models explain the evolution of traits along a phylogeny and when are more complex models required? We sought to address this question by studying the evolution of Angiosperm functional traits at different temporal scales and across different groups. 
 
-We compiled data on three traits from the literature: specific leaf area (SLA, defined as fresh area/dry mass); seed mass; and leaf nitrogen content (\% mass) (see Methods for details on datasets). Seed mass is a crucial part of species' life--history strategy \citep{Leishman2000, Westoby2002} and SLA and leaf nitrogen content are important and widely measured components of species' carbon capture strategies \citep{Wright2004}. Understanding the macroevolutionary patterns of these three traits can provide key insights into the evolutionary processes that have shaped much of plant diversity \citep{ksi}.  
+\subsection{Data}
+%% Number of Angiosperms in big tree: 30535
+We used a phylogeny of Angiosperms, containing 30,535 species, from a recent study by \citet{Zanne2013}. We refer interested readers to the original publication for details on the phylogeny. For the purposes of this study, we conducted all analyses on the MLE of the phylogeny (available on DRYAD, doi:10.5061/dryad.63q27/3).
 
-We matched these data to the phylogeny and then extracted many subclades, pulling out all families and orders as well as unnamed clades obtained by time--slicing the tree at 50my intervals and collecting the most inclusive groups whose common ancestor was younger than the time--slice. This gave us 337 comparative datasets containing at least 20 species.
-%% Number of clades -- 337
-Following Harmon et al. \citep{Harmon2010}, we fit three simple models of trait evolution to each subclade in the dataset: 1) BM, which can be associated with genetic drift \citep{Lande1976, Felsenstein1988, Lynch1990, HansenMartins1996}, randomly--varying selection \citep{Felsenstein1973}, or the summation of many independent processes over macroevolutionary time \citep{HansenMartins1996, Uyeda2011, PennellPE}; 2) single optimum OU, which is often assumed to represent stabilizing selection \citep[following][]{Lande1976}, though we think a more meaningful interpretation is that it represents an ``adaptive zone'' \citep{Hansen2012book, PennellHarmon}; and 3) EB (also known as ACDC), which was developed as a mathematical representation of a niche--filling process during an adaptive radiation \citep{Blomberg2003, Harmon2010, SlaterPennell}. We evaluated the relative support for each of the three models using conventional model selection techniques and then assessed the adequacy of the models using our procedure. (See Methods section for further details.) 
+We assembled large datasets on three functionally important plant traits: specific leaf area (SLA, defined as fresh area/dry mass); seed mass; and leaf nitrogen content (\% mass). Seed mass is a crucial part of species' life--history strategy \citep{Leishman2000, Westoby2002} and SLA and leaf nitrogen content are important and widely measured components of species' carbon capture strategies \citep{Wright2004}. Understanding the macroevolutionary patterns of these three traits can provide key insights into the evolutionary processes that have shaped much of plant diversity \citep{ksi}. All data are previously published (see \texttt{https://github/richfitz/modeladequacy} for specific locations and scripts to access and process the original data). The specific leaf area (SLA) and leaf nitrogen data comes from \citet{Wright2004} with additional SLA data from the LEDA project \citep{Kleyer2008}. Seed mass data comes the Kew database \citep{Kew2008}. We used an approximate grepping approach to find and correct spelling mistakes and synonymy tools from \citet{plantlist} to match the trait databases to the Zanne et al. phylogeny. 
+%% Full data stats
+%% SLA
+%% in dataset: 3293
+%% matched to tree: 2200
+%% Seed mass
+%% in dataset: 22817
+%% matched to tree: 11107
+%% Leaf N
+%% in dataset: 1574
+%% matched to tree: 936
+The full data set includes 3293 species for SLA, of which 2200 match species in the Zanne et al. tree. For seed mass, the dataset included 22,817 species with 11,107 matched the phylogeny. For leaf nitrogen content, we have data for 1574 species with 936 included in the tree. All data was log transformed prior to analyses.
 
+Because the vast majority of the species are only represented by a single
+record, it was not possible to use a species--specific estimate of
+trait standard error (SE) to account for either measurement error or
+intraspecific variation.  As an alternative, we estimated a single SE for each trait
+by calculating the mean
+standard deviation for all species for which we had multiple
+measurements. The assumption of a constant SE across all species is
+unlikely to hold up to closer examination, but even a somewhat
+inaccurate estimate of error is better than assuming none at all
+\citep{Hansen2012}.
 
+\subsection{Analysis}
+
+We first matched our trait data to the whole phylogeny and then extracted subclades from this dataset in a three ways: 1) by family; 2) by order; and 3) by cutting the tree at 50 my intervals and extracting the most inclusive clades (named or unnamed) for which the most recent common ancestor of a group was younger than the time--slice. 
+%% Crown age of angiosperms: 243.2697 my
+(The crown age of Angiosperms is estimated to be $\sim$243 my in the MLE tree.) We kept only subclades for which there was at least 20 species present in both the phylogeny and trait data so that we had a reasonable ability to estimate parameters and distinguish between models \citep{Boettiger2012, SlaterPennell}. 
+%% Number of clades per trait
+%% SLA: 72
+%% Seed mass: 226
+%% leaf n: 39
+For SLA, this left us with 72 clades, seed mass, 226 clades, and leaf nitrogen content, 39 clades (337 in total). We note that these datasets are not independent as many of the same taxa were included in family, order and multiple time--slice subtrees. 
+
+Following \citet{Harmon2010}, we considered three simple models of trait evolution: 1) BM, which can be associated with genetic drift \citep{Lande1976, Felsenstein1988, Lynch1990, HansenMartins1996}, randomly--varying selection \citep{Felsenstein1973}, or the summation of many independent processes over macroevolutionary time \citep{HansenMartins1996, Uyeda2011, PennellPE}; 2) single optimum OU, which is often assumed to represent stabilizing selection \citep[following][]{Lande1976}, though we think a more meaningful interpretation is that it represents an ``adaptive zone'' \citep{Hansen2012book, PennellHarmon}; and 3) EB (also known as ACDC), which was developed as a mathematical representation of a niche--filling process during an adaptive radiation \citep{Blomberg2003, Harmon2010, SlaterPennell}. We fit each of these models to all 337 subclades in our dataset. We then used the approach we developed to assess the adequacy of each fitted model. 
+
+All of the analyses conducted in this paper were conducted using both likelihood and Bayesian inference. We did to demonstrate the scope of our approach and because both ML and Bayesian inference are commonly used in comparative biology. We emphasize that our approach is not tied to any single statistical paradigm.
+
+For the likelihood analyses, we fit the three models (BM, OU, and EB) using ML with the \texttt{diversitree} package \citep{FitzJohn2012}. We calculated the AIC score for each model. We then constructed a unit tree for each subtree, trait and model combination using the maximum likelihood estimates of the parameters. We calculated the six summary statistics described above ($M_{\text{PIC}}$, $V_{\text{PIC}}$, $S_{\text{VAR}}$, $S_{\text{ANC}}$, $S_{\text{HGT}}$, $D_{\text{KS}}$) on the contrasts of the data. We simulated 1000 datasets on each unit tree using a BM model with $\sigma^2=1$ and calculated the summary statistics on the contrasts of each simulated data set. 
+
+For the Bayesian analysis, we fit the same models as above using a MCMC approach, sampling parameter values using slice sampling \citep{Nealslice}, as implemented in  \texttt{diversitree} \citep{FitzJohn2012}. For the BM model we set a broad uniform prior on $\sigma^2 \sim \mathcal{U}[0, 2]$, the upper bound being substantially larger than the ML estimate of $\sigma^2$ for any clade. For the OU model, we used the same prior for $\sigma^2$ and drew $\alpha$ values (the strength of attraction to the optimum) from a Lognormal$(\log(0.5), \log(1.5))$ distribution. A complication involved in fitting OU models is deciding what assumptions to make about the state at the root $z_0$. Here, we follow other authors \citep{ButlerKing2004, Beaulieu2012} and assume that $z_0$ is at the optimum. For the EB model, we again used the same prior for $\sigma^2$ and a uniform prior on $a$, the exponential rate of decrease in $\sigma^2$, such that $a \sim \mathcal{U}[-1, 0]$ \citep[the minimum value is much less than we would typically expect;][]{SlaterPennell}.
+
+Again, for each model/trait/subtree combination, we ran a Markov chain for 10,000 generations. Preliminary investigations demonstrated that this was more than sufficient to obtain convergence and proper mixing for these simple models. After removing a burn--in of 1000 generations, we calculated the Deviance Information Criterion \citep[DIC, a Bayesian analog of AIC;][]{dic} for each model. We drew 1000 samples from the joint posterior distribution (again, after removing burn--in). For each of the sampled parameter sets, we used the parameter values to construct a unit tree and calculated our six summary statistics on the contrasts. We then simulated a dataset on the same unit tree and calculated the summary statistics on the contrasts of the simulated data. 
+
+In the likelihood analyses, for each dataset, we had one set $\mathcal{S}_X$ of observed summary statistics and a 1000 sets $\mathcal{S}_{Y,1}, \mathcal{S}_{Y,2}, \ldots, \mathcal{S}_{Y,1000}$ of summary statistics calculated on data simulated on the same unit tree. In the Bayesian version, we had 1000 sets of observed summary statistics $\mathcal{S}_{X,1}, \mathcal{S}_{X,2}, \ldots, \mathcal{S}_{X,1000}$ using a different unit tree for each set and 1000 sets of simulated summary statistics $\mathcal{S}_{Y,1}, \mathcal{S}_{Y,2}, \ldots, \mathcal{S}_{Y,1000}$, each $\mathcal{S}_{Y,i}$ corresponding to the unit tree used to compute $\mathcal{S}_{X,i}$.
+ 
+For both types of analyses, we report two--tailed $p$--values (i.e., the probability that the observed that a simulated summary statistic was more extreme than the observed). As a multivariate measure of model adequacy, we calculated the Mahalanobis distance, a scale--invariant metric, between the observed summary statistics and the mean of our simulated summary statistics, taking into account the covariance structure between the summary statistics. We took the log of the \text{KS} D--statistic, $D_{\text{KS}}$, as the Mahanalobis measure assumes data is multivariate normal and the D--statistic is bounded between 0 and 1. For the Bayesian analyses, we report the mean of the distribution of Mahalanobis distances. All analyses were conducted in R v3.0.2 \citep{R}. Scripts to run all analyses are available at \texttt{https://github.com/richfitz/modeladequacy}
+  
 \subsection{A case study: seed mass evolution in the Meliaceae and Fagaceae }
-As an illustration of our approach, we present a case study examining seed mass evolution in two tree families, the Meliaceae (the mahogany family) and Fagaceae (which contains oaks, chestnuts and beech trees). The trait data and phylogeny for both groups are subsets of the larger dataset used in the analysis (see Methods). Superficially, these datasets are quite similar. Both are of similar size (Meliaceae: 44 species in the dataset, 550 in the clade; Fagaceae: 70 species in the dataset and 600 in the clade), age (crown age of Meliaceae: $\sim$53my; Fagaceae: $\sim$40my) and are ecologically comparable in terms of dispersal strategy and climatic niche. 
+As an illustration of our approach, we present a case study examining seed mass evolution in two tree families, the Meliaceae (the mahogany family) and Fagaceae (which contains oaks, chestnuts and beech trees). The trait data and phylogeny for both groups are subsets of the larger dataset used in the analysis. Superficially, these datasets are quite similar. Both are of similar size (Meliaceae: 44 species in the dataset, 550 in the clade; Fagaceae: 70 species in the dataset and 600 in the clade), age (crown age of Meliaceae: $\sim$53my; Fagaceae: $\sim$40my) and are ecologically comparable in terms of dispersal strategy and climatic niche. 
 
-We fit three simple models of trait evolution (BM, OU, EB) to both datasets using ML and computed AIC weights \citep[AIC$_w$;][]{Akaike1974, aicweight} for the three models. For both datasets, an OU model was overwhelmingly supported (AIC$_w$ $>0.97$ for both groups). Therefore, looking only at relative model support, we might conclude that similar evolutionary processes are important in these two clades of trees.
+As described above, we fit three simple models of trait evolution (BM, OU, EB) to both datasets using ML and computed AIC weights \citep[AIC$_w$;][]{Akaike1974, aicweight} for the three models. For both datasets, an OU model was overwhelmingly supported (AIC$_w$ $>0.97$ for both groups). Therefore, looking only at relative model support, we might conclude that similar evolutionary processes are important in these two clades of trees.
 
 %% Meliaceae seedmass p-values (OU)
 %%    m.pic     v.pic     s.var     s.anc     s.hgt      d.ks 
@@ -163,7 +209,6 @@ Examining model adequacy provides a different perspective. We took the MLE of th
 
 \section{Results}
 
-All of the analyses conducted in this paper were conducted using both likelihood and Bayesian inference. We did to demonstrate the scope of our approach and because both ML and Bayesian inference are commonly used in comparative biology. We emphasize that our approach is not tied to any single statistical paradigm.
 Despite the potential for differences in the adequacy of models fit with likelihood versus Bayesian inference, we find the results to be broadly similar. For clarity and conciseness, we present only the results from the likelihood analyses here. Results from the Bayesian analysis are presented in full in the Supplemental Material (Results from all analyses are available at \texttt{https://github.com/richfitz/modeladequacy}). 
 
 Across the 337 subclades, we found widespread support for OU
@@ -239,55 +284,6 @@ For example, because contrasts are i.i.d., there should be no autocorrelation be
 
 \section{Concluding remarks}
 Attempts to assess the adequacy of phylogenetic models are almost as old as modern comparative phylogenetic biology.  In the 1980s and 1990s much discussion surrounded the appropriateness of various methods and models \citep{Felsenstein1985, Felsenstein1988, HarveyPagel1991, Garland1992, Diaz1996, Price1997, Garland1999, GarlandIves2000}. Ironically, as PCMs have become more widely adopted, criticism of modeling assumptions has waned \citep[but see][for recent discussions]{Losos2011, Felsenstein2012, Hansen2012}. In our analysis of Angiosperm functional traits, we demonstrate that these concerns regarding model inadequacy are not just theoretical. Commonly used models in comparative biology were extremely poor explanations for the data; this was true both across the tree and through time. The recent development of models that incorporate different types of heterogeneity is encouraging --- invoking increased complexity of processes and patterns will likely be necessary for making robust evolutionary inferences from comparative data. Evaluating the fit of macroevolutionary models should be an important component of any comparative analysis. We hope that our study can help move statistical model adequacy from being an ``unknown unknown''  to being a ``known known'', or at least a ``known unknown''. That is to say, we may not know exactly why our model is not capturing the variation in the data, but at least we will know it is not.
-
-\section{Methods}
-
-\subsection{Data}
-%% Number of Angiosperms in big tree: 30535
-We used a phylogeny of Angiosperms, containing 30,535 species, from a recent study by Zanne et al. \citep{Zanne2013}. We refer interested readers to the original publication for details on the phylogeny. For the purposes of this study, we conducted all analyses on the MLE of the phylogeny (available on DRYAD, doi:10.5061/dryad.63q27/3).
-
-We assembled large datasets on three functionally important plant traits: 1) specific leaf area (SLA), seed mass, and leaf nitrogen content. All data are previously published (see \texttt{https://github/richfitz/modeladequacy} for specific locations and scripts to access and process the original data). The specific leaf area (SLA) and leaf nitrogen data comes from Wright et al. \citep{Wright2004} with additional SLA data from the LEDA project \citep{Kleyer2008}. Seed mass data comes the Kew database \citep{Kew2008}. We used an approximate grepping approach to find and correct spelling mistakes and synonymy tools from The Plant List \citep{plantlist} to math the trait databases to the Zanne et al. phylogeny. 
-%% Full data stats
-%% SLA
-%% in dataset: 3293
-%% matched to tree: 2200
-%% Seed mass
-%% in dataset: 22817
-%% matched to tree: 11107
-%% Leaf N
-%% in dataset: 1574
-%% matched to tree: 936
-The full data set includes 3293 species for SLA, of which 2200 match species in the Zanne et al. tree. For seed mass, the dataset included 22,817 species with 11,107 matched the phylogeny. For leaf nitrogen content, we have data for 1574 species with 936 included in the tree. All data was log transformed prior to analyses.
-
-Because the vast majority of the species are only represented by a single
-record, it was not possible to use a species--specific estimate of
-trait standard error (SE) to account for either measurement error or
-intraspecific variation.  As an alternative, we estimated a single SE for each trait
-by calculating the mean
-standard deviation for all species for which we had multiple
-measurements. The assumption of a constant SE across all species is
-unlikely to hold up to closer examination, but even a somewhat
-inaccurate estimate of error is better than assuming none at all
-\citep{Hansen2012}.
-
-\subsection{Analysis}
-
-We first matched our trait data to the whole phylogeny and then extracted subclades from this dataset in a three ways: 1) by family; 2) by order; and 3) by cutting the tree at 50 my intervals and extracting the most inclusive clades (named or unnamed) for which the most recent common ancestor of a group was younger than the time--slice. 
-%% Crown age of angiosperms: 243.2697 my
-(The crown age of Angiosperms is estimated to be $\sim$243 my in the MLE tree.) We kept only subclades for which there was at least 20 species present in both the phylogeny and trait data so that we had a reasonable ability to estimate parameters and distinguish between models \citep{Boettiger2012, SlaterPennell}. 
-%% Number of clades per trait
-%% SLA: 72
-%% Seed mass: 226
-%% leaf n: 39
-For SLA, this left us with 72 clades, seed mass, 226 clades, and leaf nitrogen content, 39 clades. We note that these datasets are not independent as many of the same taxa were included in family, order and multiple time--slice subtrees. 
-
-For each subtree and each trait, we performed all analyses using both the likelihood and Bayesian approaches described above. For the likelihood analyses, we fit the three models (BM, OU, and EB) using ML with the \texttt{diversitree} package \citep{FitzJohn2012}. We calculated the AIC score for each model. We then constructed a unit tree for each subtree, trait and model combination using the maximum likelihood estimates of the parameters. We calculated the six summary statistics described above ($M_{\text{PIC}}$, $V_{\text{PIC}}$, $S_{\text{VAR}}$, $S_{\text{ANC}}$, $S_{\text{HGT}}$, $D_{\text{KS}}$) on the contrasts of the data. We simulated 1000 datasets on each unit tree using a BM model with $\sigma^2=1$ and calculated the summary statistics on the contrasts of each simulated data set. 
-
-For the Bayesian analysis, we fit the same models as above using a MCMC approach, sampling parameter values using slice sampling \citep{Nealslice}, as implemented in  \texttt{diversitree} \citep{FitzJohn2012}. For the BM model we set a broad uniform prior on $\sigma^2 \sim \mathcal{U}[0, 2]$, the upper bound being substantially larger than the ML estimate of $\sigma^2$ for any clade. For the OU model, we used the same prior for $\sigma^2$ and drew $\alpha$ values (the strength of attraction to the optimum) from a Lognormal$(\log(0.5), \log(1.5))$ distribution. A complication involved in fitting OU models is deciding what assumptions to make about the state at the root $z_0$. Here, we follow other authors \citep{ButlerKing2004, Beaulieu2012} and assume that $z_0$ is at the optimum. For the EB model, we again used the same prior for $\sigma^2$ and a uniform prior on $a$, the exponential rate of decrease in $\sigma^2$, such that $a \sim \mathcal{U}[-1, 0]$ \citep[the minimum value is much less than we would typically expect;][]{SlaterPennell}.
-
-Again, for each model/trait/subtree combination, we ran a Markov chain for 10,000 generations. Preliminary investigations demonstrated that this was more than sufficient to obtain convergence and proper mixing for these simple models. After removing a burn--in of 1000 generations, we calculated the Deviance Information Criterion \citep[DIC, a Bayesian analog of AIC;][]{dic} for each model. We drew 1000 samples from the joint posterior distribution (again, after removing burn--in). For each of the sampled parameter sets, we used the parameter values to construct a unit tree and calculated our six summary statistics on the contrasts. We then simulated a dataset on the same unit tree and calculated the summary statistics on the contrasts of the simulated data. In the likelihood analyses, for each dataset, we had one set $\mathcal{S}_X$ of observed summary statistics and a 1000 sets $\mathcal{S}_{Y,1}, \mathcal{S}_{Y,2}, \ldots, \mathcal{S}_{Y,1000}$ of summary statistics calculated on data simulated on the same unit tree. In the Bayesian version, we had 1000 sets of observed summary statistics $\mathcal{S}_{X,1}, \mathcal{S}_{X,2}, \ldots, \mathcal{S}_{X,1000}$ using a different unit tree for each set and 1000 sets of simulated summary statistics $\mathcal{S}_{Y,1}, \mathcal{S}_{Y,2}, \ldots, \mathcal{S}_{Y,1000}$, each $\mathcal{S}_{Y,i}$ corresponding to the unit tree used to compute $\mathcal{S}_{X,i}$.
- 
-For both types of analyses, we report two--tailed $p$--values (i.e., the probability that the observed that a simulated summary statistic was more extreme than the observed). As a multivariate measure of model adequacy, we calculated the Mahalanobis distance, a scale--invariant metric, between the observed summary statistics and the mean of our simulated summary statistics, taking into account the covariance structure between the summary statistics. (We took the log of the \text{KS} D--statistic, $D_{\text{KS}}$, as the Mahanalobis measure assumes data is multivariate normal and the D--statistic is bounded between 0 and 1.) For the Bayesian analyses, we report the mean of the distribution of Mahalanobis distances. All analyses were conducted in R v3.0.2 \citep{R}. Scripts to run all analyses are available at \texttt{https://github.com/richfitz/modeladequacy}
 
 \section{Arbutus}
 
