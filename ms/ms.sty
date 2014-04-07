@@ -108,12 +108,14 @@ Titles for Systematic biology:
 \def\author{\gdef\theauthor}
 \def\affiliation{\gdef\theaffiliation}
 \def\runninghead{\gdef\therunninghead}
+\def\mstype{\gdef\themstype}
 \def\keywords{\gdef\thekeywords}
 \def\version{\gdef\theversion}
 
 \newcommand{\mstitlepage}{
 %\begin{titlepage}
 %\singlespacing
+\paragraph{\MakeUppercase{\themstype}}
 \paragraph{Running head:} \MakeUppercase{\therunninghead}
 \parindent=0pt
 %\maketitle
@@ -132,6 +134,11 @@ Titles for Systematic biology:
 \theaffiliation
 \setlength{\parskip}{.2ex plus1pt} % threequarters
 % \end{titlepage}
+\paragraph{Keywords:} \thekeywords
+\\[2cm]
+\subsubsection*{Contents of supplementary material}
+\noindent Results from Bayesian analyses\\
+\noindent Supplemental figs. S1--S6
 \clearpage
 \doublespacing
 }

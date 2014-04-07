@@ -17,20 +17,21 @@
 \title{Model adequacy and the macroevolution of angiosperm functional traits}
 \author{
 Matthew W. Pennell$^{1, *}$, Richard G. FitzJohn$^2$,\\
-William K. Cornwell$^{3}$ \& Luke J. Harmon$^{1}$
+William K. Cornwell$^{3}$ \& Luke J. Harmon$^{1,4}$
 }
 
 \date{}
 \affiliation{
  $^{1}$ Department of Biological Sciences \& Institute for Bioinformatics and Evolutionary Studies, University of Idaho, Moscow, ID 83844, U.S.A.\\ 
  $^{*}$ Email for correspondence: \texttt{mwpennell@gmail.com}\\
- $^{2}$ Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia\\
- $^{3}$ School of Biological, Earth and Environmental Sciences, University of New South Wales, Sydney, NSW 2052, Australia
+ $^{2}$ Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia; \texttt{rich.fitzjohn@gmail.com}\\
+ $^{3}$ School of Biological, Earth and Environmental Sciences, University of New South Wales, Sydney, NSW 2052, Australia; \texttt{w.cornwell@unsw.edu.au}\\
+ $^{4}$ \texttt{lukeh@uidaho.edu}
 }
 
-
+\mstype{Article}
 \runninghead{Adequacy of phylogenetic trait models}
-\keywords{comparative methods, model adequacy, independent contrasts, Brownian motion}
+\keywords{phylogenetic comparative methods, model adequacy, independent contrasts, Angiosperm functional traits}
 
 
 \begin{document}
@@ -42,8 +43,7 @@ William K. Cornwell$^{3}$ \& Luke J. Harmon$^{1}$
 
 \doublespacing
 \section{Abstract}
-All models are wrong and sometimes even the best of a set of models is useless. The distinction between relative and absolute model fit is important. Modern phylogenetic comparative methods (PCMs), which are used in a wide variety of fields to test evolutionary hypotheses with interspecific data, are almost exclusively model--based. Making robust inferences from PCMs requires that the model used to describe the evolution of a trait along the phylogeny is a good explanation for the data. To date, researchers using PCMs have evaluated the explanatory power of a model only in terms of relative fit, not absolute fit. Though many researchers have discussed this shortcoming, there is no way to quantitatively assess this. Here we develop a general statistical framework for assessing the absolute fit, or adequacy, of phylogenetic models for the evolution of quantitative traits. We then use our approach to ask whether the simple models commonly used in PCMs are adequate descriptors of the macroevolutionary dynamics of real comparative data. We fit three models of trait evolution to 337 comparative datasets covering three key Angiosperm functional traits (specific leaf area, seed mass and leaf nitrogen content). The models we fit are very inadequate for the evolution of these traits; this was true for many different groups and at many different scales. Furthermore, the relative support for a model, as evaluated using conventional model selection criteria, had very little to do with absolute model adequacy. Our findings have serious implications for the analysis and interpretation of empirical data. We point to a way forward for PCMs, coupling model--fitting and assessment of model adequacy. This will help researchers ensure that inferences made from comparative data are robust and reliable.
-
+All models are wrong and sometimes even the best of a set of models is useless. Modern phylogenetic comparative methods (PCMs) are almost exclusively model--based and therefore making robust inferences from PCMs requires using a model of trait evolution that is a good explanation for the data. To date, researchers using PCMs have evaluated the explanatory power of a model only in terms of relative, not absolute, fit. Here we develop a general statistical framework for assessing the absolute fit, or adequacy, of phylogenetic models for the evolution of quantitative traits. We use our approach to test whether commonly used models are adequate descriptors of the macroevolutionary dynamics of real comparative data. We fit models of trait evolution to 337 comparative datasets covering three key Angiosperm functional traits and evaluated the absolute fit of the models to each dataset. Overall, the models we used are very inadequate for the evolution of these traits; this was true for many different groups and at many different scales. Furthermore, the relative support for a model had very little to do with its absolute adequacy. We argue that assessing model adequacy should be a key step in comparative analyses. 
 \vfill
 
 \newpage
@@ -276,19 +276,26 @@ However, it may be possible to extend our approach with an eye towards model sel
 There are a number of additional ways our approach could be extended. First, we have only considered a limited set of summary statistics. We chose them because each of these has a clear statistical expectation and observed deviations from them have intuitive biological explanations. However, they are certainly a subset of all possible summary statistics that could be applied. 
 For example, because contrasts are i.i.d., there should be no autocorrelation between neighboring contrasts; the summary statistics could be expanded to detect non--zero autocorrelation. Second, our approach can be applied equally well to phylogenetic regression models, such as phylogenetic generalized least squares \citep{Grafen1989} or phylogenetic mixed models \citep{Lynch1991, Hadfield2010}, where concerns regarding model adequacy are just as pertinent \citep{Hansen2012}. In most phylogenetic regression models, the trait model describes the pattern of covariance between the residuals rather than the data \citep{Rohlf2001, Rohlf2006, Freckleton2011} \citep[but see][]{Hansen2008}. If we form the unit tree from estimated model parameters and calculate the summary statistics on the contrasts of the residuals, we can apply our approach. While our approach can be used to assess the adequacy of the phylogenetic component of regression models ``out of the box'', additional steps are required to assess the adequacy of the linear component. Third, our method was designed for quantitative trait models that assume data can be modeled with a multivariate normal distribution. We need model adequacy approaches for other types of traits (e.g., binary, multistate, ordinal) and for quantitative models that do not predict a multivariate normal distribution of data \citep{Landis2012}.
 
-\section{Concluding remarks}
-Attempts to assess the adequacy of phylogenetic models are almost as old as modern comparative phylogenetic biology.  In the 1980s and 1990s much discussion surrounded the appropriateness of various methods and models \citep{Felsenstein1985, Felsenstein1988, HarveyPagel1991, Garland1992, Diaz1996, Price1997, Garland1999, GarlandIves2000}. Ironically, as PCMs have become more widely adopted, criticism of modeling assumptions has waned \citep[but see][for recent discussions]{Losos2011, Felsenstein2012, Hansen2012}. In our analysis of Angiosperm functional traits, we demonstrate that these concerns regarding model inadequacy are not just theoretical. Commonly used models in comparative biology were extremely poor explanations for the data; this was true both across the tree and through time. The recent development of models that incorporate different types of heterogeneity is encouraging --- invoking increased complexity of processes and patterns will likely be necessary for making robust evolutionary inferences from comparative data. Evaluating the fit of macroevolutionary models should be an important component of any comparative analysis. We hope that our study can help move statistical model adequacy from being an ``unknown unknown''  to being a ``known known'', or at least a ``known unknown''. That is to say, we may not know exactly why our model is not capturing the variation in the data, but at least we will know it is not.
-
 \section{Arbutus}
 
 We have implemented our approach in a new R package \texttt{arbutus}. It is available on github \texttt{https://github.com/mwpennell/arbutus}. For this project, we have also adopted code from the \texttt{ape} \citep{ape}, \texttt{geiger} \citep{geiger2}, \texttt{diversitree} \citep{FitzJohn2012} and \texttt{ggplot2} \citep{ggplot2} libraries. We have written functions to parse the output of a number of different programs for fitting trait evolution models (see the \texttt{arbutus} website for an up--to--date list of supported models and packages). As this approach was developed to be general, we have written the code in such a way that users can include their own summary statistics and trait models in the analyses; we include demonstrations of how this can be done on the project website.
 
+\section{Concluding remarks}
+Attempts to assess the adequacy of phylogenetic models are almost as old as modern comparative phylogenetic biology.  In the 1980s and 1990s much discussion surrounded the appropriateness of various methods and models \citep{Felsenstein1985, Felsenstein1988, HarveyPagel1991, Garland1992, Diaz1996, Price1997, Garland1999, GarlandIves2000}. Ironically, as PCMs have become more widely adopted, criticism of modeling assumptions has waned \citep[but see][for recent discussions]{Losos2011, Felsenstein2012, Hansen2012}. In our analysis of Angiosperm functional traits, we demonstrate that these concerns regarding model inadequacy are not just theoretical. Commonly used models in comparative biology were extremely poor explanations for the data; this was true both across the tree and through time. The recent development of models that incorporate different types of heterogeneity is encouraging --- invoking increased complexity of processes and patterns will likely be necessary for making robust evolutionary inferences from comparative data. Evaluating the fit of macroevolutionary models should be an important component of any comparative analysis. We hope that our study can help move statistical model adequacy from being an ``unknown unknown''  to being a ``known known'', or at least a ``known unknown''. That is to say, we may not know exactly why our model is not capturing the variation in the data, but at least we will know it is not.
+
+
 \section{Acknowledgments}
 We would like to thank the members of the Tempo and Mode of Trait Evolution Working Group at the National Evolutionary Synthesis Center (NESCent) for their suggestions and encouragement. We thank Josef Uyeda, Daniel Caetano and Will Pearse for their thoughtful comments on the manuscript. Paul Joyce and Graham Slater also provided valuable insights into this project. Last, we are grateful to the researchers who made their data available; this project would not have been possible without it. MWP was supported by a NESCent graduate fellowship and a NSERC post--graduate fellowship. This work was also supported by NSF grants awarded to LJH (DEB 0919499 and 1208912).
 
+
+
 \newpage
-\section{Supplementary material}
-\subsection{Results from the Bayesian analyses}
+\bibliographystyle{amnat}
+\bibliography{model_ad}
+
+\newpage
+
+\section{Results from Bayesian analyses}
 As with the likelihood results (described in main text), OU models were highly supported across many datasets; 
 %% Number of datasets for which OU was best supported model: 178
 %% Number of datasets for which OU > 0.75 of DICw: 157
@@ -321,10 +328,6 @@ All 39 leaf nitrogen datasets again rejected the best supported model with at le
 %% D.ks: 68
 Also, similar to the likelihood analyses, the frequency of rejection differed between the summary statistic. $M_{\text{PIC}}$ rejected the model in 246 datasets, and $V_{\text{PIC}}$ in 169 ($S_{\text{VAR}}$: 76, $S_{\text{ANC}}$: 70, $S_{\text{HGT}}$: 36, $D_{\text{KS}}$: 68). Again, only 41 datasets were adequately modeled by one of the three models in our candidate set. There was a strong relationship between model (in)adequacy and clade size (figure \ref{fig:supp-size-adequacy}), but not for clade age (figure \ref{fig:supp-age-bayes}).
  
-
-\newpage
-\bibliographystyle{amnat}
-\bibliography{model_ad}
 
 \begin{figure}[p]
   \centering
