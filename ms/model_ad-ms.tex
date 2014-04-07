@@ -17,17 +17,15 @@
 \title{Model adequacy and the macroevolution of angiosperm functional traits}
 \author{
 Matthew W. Pennell$^{1, *}$, Richard G. FitzJohn$^2$,\\
-William K. Cornwell$^{3}$ \& Luke J. Harmon$^{1,4}$
+William K. Cornwell$^{3}$ \& Luke J. Harmon$^{1}$
 }
 
 \date{}
 \affiliation{
  $^{1}$ Department of Biological Sciences \& Institute for Bioinformatics and Evolutionary Studies, University of Idaho, Moscow, ID 83844, U.S.A.\\ 
  $^{*}$ Email for correspondence: \texttt{mwpennell@gmail.com}\\
- $^{2}$ Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia;
-\texttt{rich.fitzjohn@gmail.com}\\
- $^{3}$ School of Biological, Earth and Environmental Sciences, University of New South Wales, Sydney, NSW 2052, Australia; \texttt{w.cornwell@unsw.edu.au}\\
- $^{4}$ \texttt{lukeh@uidaho.edu}
+ $^{2}$ Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia\\
+ $^{3}$ School of Biological, Earth and Environmental Sciences, University of New South Wales, Sydney, NSW 2052, Australia
 }
 
 
@@ -44,7 +42,7 @@ William K. Cornwell$^{3}$ \& Luke J. Harmon$^{1,4}$
 
 \doublespacing
 \section{Abstract}
-All models are wrong and sometimes even the best of a set of models is useless. The distinction between relative and absolute model fit is an important concept in statistics. Modern phylogenetic comparative methods (PCMs), which are used in a wide variety of fields to test evolutionary hypotheses with interspecific data, are almost exclusively model--based. Making robust inferences from PCMs requires that the model used to describe the evolution of a trait along the phylogeny is a good explanation for the data. To date, researchers using PCMs have evaluated the explanatory power of a model only in terms of relative fit, not absolute fit. Though many researchers have discussed this shortcoming, there is no way to quantitatively assess this. Here we develop a general statistical framework for assessing the absolute fit, or adequacy, of phylogenetic models for the evolution of quantitative traits. We then use our approach to ask whether the simple models commonly used in PCMs are adequate descriptors of the macroevolutionary dynamics of real comparative data. We fit three models of trait evolution to 337 comparative datasets covering three key Angiosperm functional traits (specific leaf area, seed mass and leaf nitrogen content), compiled from the literature.  The models we fit are very inadequate for the evolution of these traits; this was true for many different groups and at many different scales. Furthermore, the relative support for a model, as evaluated using conventional model selection criteria, had very little to do with absolute model adequacy. Our findings have serious implications for the analysis and interpretation of empirical data. We point to a way forward for PCMs, coupling model--fitting and assessment of model adequacy --- this will help researchers ensure that inferences made from comparative data are robust and reliable.
+All models are wrong and sometimes even the best of a set of models is useless. The distinction between relative and absolute model fit is important. Modern phylogenetic comparative methods (PCMs), which are used in a wide variety of fields to test evolutionary hypotheses with interspecific data, are almost exclusively model--based. Making robust inferences from PCMs requires that the model used to describe the evolution of a trait along the phylogeny is a good explanation for the data. To date, researchers using PCMs have evaluated the explanatory power of a model only in terms of relative fit, not absolute fit. Though many researchers have discussed this shortcoming, there is no way to quantitatively assess this. Here we develop a general statistical framework for assessing the absolute fit, or adequacy, of phylogenetic models for the evolution of quantitative traits. We then use our approach to ask whether the simple models commonly used in PCMs are adequate descriptors of the macroevolutionary dynamics of real comparative data. We fit three models of trait evolution to 337 comparative datasets covering three key Angiosperm functional traits (specific leaf area, seed mass and leaf nitrogen content). The models we fit are very inadequate for the evolution of these traits; this was true for many different groups and at many different scales. Furthermore, the relative support for a model, as evaluated using conventional model selection criteria, had very little to do with absolute model adequacy. Our findings have serious implications for the analysis and interpretation of empirical data. We point to a way forward for PCMs, coupling model--fitting and assessment of model adequacy. This will help researchers ensure that inferences made from comparative data are robust and reliable.
 
 \vfill
 
@@ -72,23 +70,17 @@ Many models for describing the evolution of phenotypic traits along a phylogeny 
 In this paper we seek to help rectify this situation. We address two major outstanding problems in comparative biology. First, we develop a general framework for assessing the adequacy of phylogenetic models of trait evolution, specifically those for quantitative characters. Second, we assess the adequacy of commonly used models using a recently published phylogeny of Angiosperms (flowering plants) \citep{Zanne2013} and data compiled from the literature on three important functional traits: specific leaf area, seed mass, and leaf nitrogen content. We did this to test whether the simple models used in comparative biology provide a reasonable description of the macroevolutionary dynamics of real trait data, across many different groups and time scales.
 
 \section{A general framework for assessing model adequacy}
-%% First, establish scope
 Though the number of models used in comparative biology is quite large, most of these fall into a relatively small set of classes \citep{Omeara2012}. In this paper, we focus on one of these classes --- models that describe the evolution of a single continuously valued trait. More specifically, our approach works for models that assume that trait values at the tips are multivariate normal; this applies to most models of quantitative trait evolution that have been developed to date \citep{Omeara2012}.
 
-%% General procedure for fitting models
 If we have a phylogenetic tree consisting of $n$ lineages and data on the trait values observed at each tip $X$ ($X=x_1, x_2, \ldots, x_n$), we can fit a model $\mathcal{M}$ with parameters $\theta$ to describe the pattern of trait evolution along the phylogeny. Most analyses using comparative data aim to answer one of the following questions: what values of $\theta$ best explain $X$ given $\mathcal{M}$?; or, does $\mathcal{M}_1$ explain the data better than $\mathcal{M}_0$? Our approach is conceptually distinct in that we want to ask, how likely is it that model $\mathcal{M}$ with parameters $\theta$ would produce a dataset similar to $X$ if we re--ran evolution?
 
-%% Frequentist/bayesian divide
 There are two primary ways of fitting models to comparative data. The first is use maximum likelihood (ML), restricted maximum likelihood (REML), least--squares, etc. to obtain a point estimate of $\theta$. The second is to estimate posterior probability distribution $\Pr(\theta|X, \mathcal{M})$ using Bayesian approaches.
 For the models used in comparative biology, estimating $\Pr(\theta|X, \mathcal{M})$ requires using Markov chain Monte Carlo (MCMC) machinery to sample values of $\theta$.   
 
-%% Overview of approach
 While likelihood and Bayesian approaches to model--fitting are philosophically different from one another, in practice, our approach to assessing model adequacy is much the same for both: 1) fit the model of trait evolution; 2) calculate a set of summary statitics on the observed data $\mathcal{S}_X$; 3) simulate many new datasets $Y_1, Y_2, \ldots, Y_m$ under the model using the estimated parameters; 4) calculate summary statistics on the simulated data $\mathcal{S}_{Y,1}, \mathcal{S}_{Y,2}, \ldots, \mathcal{S}_{Y,m}$; 5) compare $\mathcal{S}_X$ to the distribution of $\mathcal{S}_Y$. If $\mathcal{S}_X$ deviates significantly from the distribution of $\mathcal{S}_Y$, we can reject the model as inadequate (see figure \ref{fig:flowchart}).
 
-%% Likelihood
 If we have a point estimate of the model parameters $\hat{\theta}$, we simulate $Y_1, Y_2, \ldots, Y_m$ on the phylogeny accoridng to $\hat{\theta}$ and $\mathcal{M}$. We then compare a single set of summary statistics $\mathcal{S}_X$ calculated from our observed data to the distribution of values for $\mathcal{S}_Y$ computed across all $m$ simulated datasets. In statistical terminology, this procedure is known as parametric bootstrapping. Parametric bootstrapping is likely familiar to phylogenetic biologists in the form of the Goldman--Cox test \citep{Goldman} for assessing the adequacy of sequence evolution models.
 
-%% Bayesian inference
 If we have a posterior probability distribution $\Pr(\theta|X, \mathcal{M})$, we can assess model adequacy using posterior predictive simulation \citep{Rubin1984, Gelman1996}. We obtain new datasets by sampling from a second distribution, the posterior predictive distribution
 \begin{equation}
 \Pr(Y|X,\mathcal{M}) = \int \Pr(Y|\theta, \mathcal{M})\Pr(\theta |X,\mathcal{M})d\theta
@@ -96,7 +88,6 @@ If we have a posterior probability distribution $\Pr(\theta|X, \mathcal{M})$, we
 where $\Pr(Y|X,\mathcal{M})$ is the probability of a new dataset $Y$ given $X$ and $\mathcal{M}$, averaged over the distribution of the parameters. In practice, sampling from $\Pr(Y|X,\mathcal{M})$ entails drawing samples from the joint posterior distribution of parameters $\Pr(\theta|X, \mathcal{M})$ and simulating data on the phylogeny according to the sampled parameter values. Therefore, the datasets $Y_1, Y_2, \ldots, Y_m$ are each generated from different values of $\theta$.  
 Posterior predictive simulation approaches have been previously developed for models in molecular phylogenetics \citep{Bollback2002, Reid2013, Lewis2013, Brown2013}, and recently for PCMs \citep{SlaterPennell}, but have not been widely adopted in either field.
 
-%% Summary stats depend on both data and model parameters
 If the chosen summary statistics were properties of the data alone, such as the mean of observed trait values at the tips, we would have a single estimate of $\mathcal{S}_X$ for both likelihood and Bayesian approaches. However, in our approach for assessing model adequacy, the summary statistics depend on both the data and the parameter estimates, for reasons detailed below. Therefore for the likelihood case, we have a single set of observed summary statistics $\mathcal{S}_X$ based on the data and the point estimate of model parameters $\hat{\theta}$. For the Bayesian approach we have a distribution of observed summary statistics $\mathcal{S}_{X,1}, \mathcal{S}_{X,2}, \ldots, \mathcal{S}_{X,m}$, each $\mathcal{S}_{X,i}$ calculated using the same data but a different set of parameter values sampled from $\Pr(\theta|X, \mathcal{M})$. In this case, we compare the distribution of values of $\mathcal{S}_X$ to the distribution of values of $\mathcal{S}_Y$.
 
 \subsection{Summary statistics}
@@ -129,8 +120,6 @@ All of the summary statistics are designed to evaluate the adequacy of a BM mode
 
 Our solution to this problem is to create what we term a ``unit tree'', which is a phylogenetic tree transformation that captures the dynamics of trait change under a particular evolutionary model. More formally, for a particular evolutionary model $\mathcal{M}$ (with parameter values $\theta$), we define a unit tree as a phylogenetic tree that has the following property: the length of branch $i$, $\nu_i ^\prime$, is equal to the amount of variance expected to accumulate over $i$ under $\mathcal{M}, \theta$. The variance is standardized, such that the expected distribution of the trait data on the unit tree is equal to that of a Brownian Motion (BM) model with a rate $\sigma^2$ equal to 1. 
 
-Standardized independent contrasts calculated on a phylogenetic tree will be independent and identically distributed (i.i.d.) if we assume a BM model. We use unit trees for assessing model adequacy because under any model for which we can make a unit tree, independent contrasts on the unit tree from that model are expected to be i.i.d. $\sim \mathcal{N}(0,1)$.
-
 One can construct a unit tree by recognizing that many models of evolution can be represented via transformations of the branch lengths of a phylogenetic tree \citep{Omeara2012, Ho2014}, including multi--rate BM \citep{Omeara2006, Thomas2006, Eastman2011}, mulit--optima OU \citep{ButlerKing2004, Beaulieu2012, IngramMahler}, and models in which the rate and/or process change through time \citep{Blomberg2003, SlaterMEE}. 
 
 Specifically, we create unit trees by transforming branch lengths using the following general formula:
@@ -142,14 +131,6 @@ where $\nu_i^\prime$ is the transformed length of a branch $i$, $A$ and $C$ are 
 If the fitted model is adequate, the trait data at the tips of the unit tree will have the same distribution as data generated under a BM process with a rate of 1 and the contrasts will be $\sim \mathcal{N}(0,1)$ --- hence the name, unit tree. Creating the unit tree from the estimated model parameters prior to computing the contrasts generalizes the summary statistics to most models of quantitative trait evolution \citep[but see][for an exception]{Landis2012}. We also emphasize that because the contrasts are calculated on the unit tree, the summary statistics all must depend on both the data and the model --- it is for this reason that the Bayesian version of our approach produces a distribution of observed summary statistics.
 
 Once we have created the unit tree from the estimated parameters, new datasets can be simulated under the model simply using a BM process with $\sigma^2 = 1$. The distribution of summary statistics calculated on these simulated data sets can then be compared to the summary statistics from the observed data. We summarize the entire approach in figure \ref{fig:flowchart}. We have implemented our method in a new R package, \texttt{arbutus} (see below for more details). 
-
-%A unit tree is defined as a phylogeny which has branch lengths in units of expected (standardized) variance. We can rescale a phylogeny with branch lengths in units of time to a unit tree using the parameters of any quantitative trait model, as long as the data at the tips follows a multivariate normal distribution under the model (see Box 1 for details). This applies to nearly all quantitative trait models currently used in comparative biology \citep{Omeara2012}, including multi--rate BM \citep{Omeara2006, Thomas2006, Eastman2011}, mulit--optima OU \citep{ButlerKing2004, Beaulieu2012, IngramMahler}, and models in which the rate and/or process change through time \citep{Blomberg2003, SlaterMEE}. If the fitted model is adequate, the trait data at the tips of the unit tree will have the same distribution as data generated under a BM process with a rate of 1 and the contrasts will be $\sim \mathcal{N}(0,1)$ --- hence the name, unit tree. Creating the unit tree from the estimated model parameters prior to computing the contrasts generalizes the summary statistics to most models of quantitative trait evolution \citep[but see][for an exception]{Landis2012}. We also emphasize that because the contrasts are calculated on the unit tree, the summary statistics all must depend on both the data and the model --- it is for this reason that the Bayesian version of our approach produces a distribution of observed summary statistics.
-
-%Once we have created the unit tree from the estimated parameters, new datasets can be simulated under the model simply using a BM process with $\sigma^2 = 1$. The distribution of summary statistics calculated on these simulated data sets can then be compared to the summary statistics from the observed data. We summarize the entire approach in figure \ref{fig:flowchart}. We have implemented our method in a new R package, \texttt{arbutus} (see below for more details). 
-
-%\begin{center}
-%\textit{[Box 1 around here]}
-%\end{center}
 
 \section{The adequacy of models for the evolution of plant functional traits}
 
@@ -266,7 +247,6 @@ Across all 337 datasets, only 41 are adequately modeled by either BM, OU or EB -
 
 As the subclades are not independent (overlapping sets of taxa are present in family, order and time--slice phylogenies), conventional statistics, such as linear regression, are not straightforward to apply across datasets. Nonetheless, the trend is clear: the larger the phylogeny, the more likely OU is to be highly supported and the more likely the model is to be inadequate. There is a strong relationship between the size of a subclade and the overall distance between observed and simulated summary statistics, as measured by the Mahanalobis distance (figure \ref{fig:size-adequacy}). This is not simply an artifact of conducting the analyses using a larger number of contrasts for the summary statistics --- if the model was adequate at all scales, there would be no relationship between the Mahalanobis distance and the size of the phylogeny. As stated above, larger clades also tended to support a single model, meaning that the datasets for which the best model had a very poor absolute fit also had the most substantial difference between the relative fits of the three models (figure \ref{fig:supp-ad-aic}). There was no relationship between clade age and model adequacy (figure \ref{fig:supp-age-ml}).
 
-
 \section{Discussion}
 
 The distinction between relative and absolute fit is an important one. A model may provide the best explanation for a dataset compared to a few other models but still be a very poor explanation in terms of capturing the patterns of variation present in the data. To again draw an analogy with more conventional statistics, consider fitting a regular linear regression model to a dataset. In this case, we can often identify if the model is a good absolute fit simply by plotting the data. A number of distributions may produce similar results (i.e., intercept, slope, $p$--value, etc.) but our inferences are contingent upon the relationship being linear \citep[for a classic case study, see][]{anscombe1973}. For phylogenetic models of trait evolution, such simple diagnostic measures are usually not informative for assessing model adequacy due to the complex pattern of dependency between data points --- therefore, alternate statistical procedures are necessary. Here we have developed a general tool for this purpose. 
@@ -304,37 +284,7 @@ Attempts to assess the adequacy of phylogenetic models are almost as old as mode
 We have implemented our approach in a new R package \texttt{arbutus}. It is available on github \texttt{https://github.com/mwpennell/arbutus}. For this project, we have also adopted code from the \texttt{ape} \citep{ape}, \texttt{geiger} \citep{geiger2}, \texttt{diversitree} \citep{FitzJohn2012} and \texttt{ggplot2} \citep{ggplot2} libraries. We have written functions to parse the output of a number of different programs for fitting trait evolution models (see the \texttt{arbutus} website for an up--to--date list of supported models and packages). As this approach was developed to be general, we have written the code in such a way that users can include their own summary statistics and trait models in the analyses; we include demonstrations of how this can be done on the project website.
 
 \section{Acknowledgments}
-We would like to thank the members of the Tempo and Mode of Trait Evolution Working Group at the National Evolutionary Synthesis Center (NESCent) for their suggestions and encouragement. We thank Josef Uyeda, Daniel Caetano and Will Pearse for their thoughtful comments on the manuscript. Paul Joyce and Graham Slater also provided valuable insights into this project. Last, we are grateful to the researchers who made their data available; this project would not have been possible without it.
-
-%\newpage
-%\section{Box 1: Creating a unit tree}
-
-%Our approach to model adequacy relies on creating a ''unit tree'', which is a phylogenetic tree transformation that captures the dynamics of trait change under a particular evolutionary model. More formally, for a particular evolutionary model $\mathcal{M}$ (with parameter values $\theta$), we define a unit tree as a phylogenetic tree that has the following property: the length of branch $i$, $\nu_i ^\prime$, is equal to the amount of variance expected to accumulate over $i$ under $\mathcal{M}, \theta$. The variance is standardized, such that the expected distribution of the trait data on the unit tree is equal to that of a Brownian Motion (BM) model with a rate $\sigma^2$ equal to 1. 
-
-%Standardized independent contrasts calculated on a phylogenetic tree will be independent and identically distributed (i.i.d.) if we assume a BM model. We use unit trees for assessing model adequacy because under any model for which we can make a unit tree, independent contrasts on the unit tree from that model are expected to be i.i.d. $\sim \mathcal{N}(0,1)$.
-
-%One can construct a unit tree by recognizing that many models of evolution can be represented via transformations of the branch lengths of a phylogenetic tree \citep{Omeara2012, Ho2014}. Specifically, we create unit trees by transforming branch lengths using the following general formula:
-%\begin{equation}
-%\nu_i^\prime = \mathrm{E}[\mathrm{Cov}(A,B)] - \mathrm{E}[\mathrm{Cov}(A,C)]
-%\end{equation}
-%where $\nu_i^\prime$ is the transformed length of a branch $i$, $A$ and $C$ are two lineages subtended by the node at the rootward end of $i$, and $A$ and $B$ are two lineages subtended by the tipward end of $i$ (see figure \ref{fig:box1}). One can choose any pair of species that fits this property and then transverse the phylogeny in any direction so that each branch in the tree is transformed. For terminal branches, the formula reduces to $\mathrm{E}[\mathrm{Var}(A)] - \mathrm{E}[\mathrm{Cov}(A,B)]$.
-
-%For example, figure \ref{fig:box1} shows a tree transformation for an OU model with $\sigma^2=0.5$ and $\alpha = 1$, where $\alpha$ is the strength of attraction towards the optimum. The original phylogenetic tree, presumably with branches in units of time (figure \ref{fig:box1}, left panel), can be represented by a variance--covariance (vcv) matrix $\mathbf{C}$. The elements $C_{m,n}$ are the shared path--length from the root to the most recent common ancestor of $m$ and $n$. The diagonal elements ($m = n$) are simply the total distance from the root to the tips. Given $\mathcal{M}$ and $\theta$, the expected vcv of the trait values is described by a second matrix $\mathbf{\Sigma}$. For the case of a general OU model,
-%\begin{equation}
-%\Sigma_{m,n} = \frac{\sigma^2}{2\alpha} e^{-2\alpha (T_{max} - C_{m,n})} (1 - e^{-2\alpha C_{m,n}})
-%\end{equation} 
-%where $T_{max}$ is the depth of the tree \citep{Hansen1997, ButlerKing2004}. Therefore, for our example (figure \ref{fig:box1}), 
-
-%\begin{align*}
-%  \nu_i^\prime &= \Sigma_{A,B} - \Sigma_{A,C}  \\ 
-%&= \frac{\sigma^2}{2\alpha} \left(e^{-2\alpha (T_{max} - C_{A,B})} (1 -e^{-2\alpha C_{A,B}})
-%- e^{-2 \alpha (T_{max} - C_{A,C})} (1 - e^{-2\alpha C_{A,C}}) \right)  \\
-%&= \frac{1}{4} \left( e^{-2 (T - (\nu_i + \nu_j))} (1 - e^{-2 (\nu_i + \nu_j)})
-%- e^{-2 (T - \nu_j)} (1 - e^{-2 \nu_j}) \right) 
-%\end{align*}
-
-%Measurement error can be incorporated by simply lengthening the terminal branches of the unit tree by the estimated standard error. By simulating evolution on this unit tree under a BM model with a rate of 1, we can create data that have the exact statistical distribution as data simulated under an OU model on the original phylogenetic tree.
-
+We would like to thank the members of the Tempo and Mode of Trait Evolution Working Group at the National Evolutionary Synthesis Center (NESCent) for their suggestions and encouragement. We thank Josef Uyeda, Daniel Caetano and Will Pearse for their thoughtful comments on the manuscript. Paul Joyce and Graham Slater also provided valuable insights into this project. Last, we are grateful to the researchers who made their data available; this project would not have been possible without it. MWP was supported by a NESCent graduate fellowship and a NSERC post--graduate fellowship. This work was also supported by NSF grants awarded to LJH (DEB 0919499 and 1208912).
 
 \newpage
 \section{Supplementary material}
@@ -418,14 +368,8 @@ Also, similar to the likelihood analyses, the frequency of rejection differed be
   \label{fig:size-adequacy}
 \end{figure}
 
-%\renewcommand\thefigure{Box\arabic{figure}}
-%\renewcommand\thetable{Box \arabic{table}}
-%\setcounter{figure}{0}    
-%\setcounter{table}{0} 
 
-
-
-%% Suppmat figures
+%% Supporting figures
 \renewcommand\thefigure{S\arabic{figure}}
 \renewcommand\thetable{S \arabic{table}}
 \setcounter{figure}{0}    
