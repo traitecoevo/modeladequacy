@@ -127,7 +127,10 @@ clean-outputs:
 	rm -rf output/results-ml
 	rm -rf output/results-bayes
 
-.PHONY: all data data-fetch data-preprocess data-species-mean \
+deps:
+	Rscript make/dependencies.R
+
+.PHONY: all deps fits data data-fetch data-preprocess data-species-mean \
 	kew-fetch zae-fetch \
 	downloaded-data-delete downloaded-data-save \
 	downloaded-data-unpack downloaded-data-bulk-fetch \
