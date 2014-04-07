@@ -6,7 +6,7 @@ This is the repo for our project on assessing the adequacy of continuous trait m
 
 ### The `analysis` directory
 
-Scripts to reproduce all analyses done in the paper
+Scripts to reproduce all analyses done in the paper.  See the `README.md` file in this directory for more information.
 
 ### The `ms` directory
 

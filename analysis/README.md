@@ -20,11 +20,20 @@ To repeat our analyses, first ensure that [make](https://www.gnu.org/software/ma
 * sowsear
 
 All packages except [arbutus](https://github.com/mwpennell/arbutus) and [sowsear](https://github.com/richfitz/sowsear) are currently avaialbe on CRAN. To install `arbutus` and `sowsear`, the easiest way to install is to use [devtools](https://github.com/hadley/devtools). Install `devtools` then type
+
 ```
 library(devtools)
 install_github("mwpennell/arbutus")
 install_github("richfitz/sowsear")
 ```
+
+Or, run
+
+```
+make deps
+```
+
+which will install packages that are out of date or not installed.
 
 Once everything is installed, clone the repository
 ```
@@ -62,13 +71,26 @@ make data-preprocess
 make data
 ```
 
-Currently:
-* `leafN-process.R`: `data/wright-2004.csv` ->  `output/species-mean-leafN.csv`
-* `seedMass-process.R`: `data/kew.csv` -> `output/species-mean-seedMass.csv`
-* `sla-process.R:trait`: {`data/wright-2004`, `data/leda.csv`} -> `output/species-mean-sla.csv`
+On a fresh install this will run the following R scripts:
 
-(that list out of date)
+* `make/data-vascular_plant_phylogeny.tre.R`
+* `make/output-vascular_plant_phylogeny.rds.R`
+* `make/output-synonyms.rds.R`
+* `make/output-corrections.rds.R`
+* `make/data-wright-2004.csv.R`
+* `make/output-species-mean-leafN.csv.R`
+* `make/output-data-leafN.rds.R`
+* `make/data-leda.csv.R`
+* `make/output-species-mean-sla.csv.R`
+* `make/output-data-sla.rds.R`
+* `make/data-kew.csv.R`
+* `make/output-species-mean-seedMass.csv.R`
+* `make/output-data-seedMass.rds.R`
+* `make/output-angio-data.R`
 
+These all build proceessed data objects (for example `output-species-mean-seedMass.csv.R` builds the file `output/species-mean-seedMass.csv`).
+
+Running all these scripts should take a couple of minutes (probably 3-10 minutes).
 
 ### Run the analyses
 
@@ -76,10 +98,21 @@ Currently:
 make fits
 ```
 
-This runs the code in `model-adequacy-ml.R` and `model-adequacy-bayes.R`, which goes through and fits models using ML or MCMC (respectively) and assesses adequacy using arbutus' `phy.model.check` function. If multiple processes are available, this can be sped up by changing the line `options(mc.cores=2)` in `model-adequacy-ml.R` and/or `model-adequacy-bayes.R` 
+This runs the code in `model-adequacy-ml.R` and `model-adequacy-bayes.R`, which goes through and fits models using ML or MCMC (respectively) and assesses adequacy using arbutus' `phy.model.check` function. If multiple processes are available, this can be sped up by changing the line `options(mc.cores=2)` in `model-adequacy-ml.R` and/or `model-adequacy-bayes.R`.
 
-Individual fits are stored in `output/results-ml` and `output/results-bayes` and then summarised together in `output/results-ml.csv` and `output/results-bayes.csv`, respectively.
+This can be run in parallel: by default we use two cores, but this can be modified by changing the line:
 
+```
+options(mc.cores=2)
+```
+
+in both files.
+
+Individual fits are stored in `output/results-ml` and `output/results-bayes` directories.  If the fitting process is interrupted, rerunning `make fits` will skip over fits that have completed.  Note that this will generate about 1GB of files.
+
+It takes about 5 CPU hours to run the ML analyses, and 13 CPU hours for the Bayesian analysis (so about 9 hours total over two processors).
+
+All the fits are then summarised together in the csv files `output/results-ml.csv` (for ML) and `output/results-bayes.csv` (for Bayesian).
 
 ### Process the analysis
 
@@ -95,9 +128,6 @@ This will run all the code in `model-analysis.R`, creating figures (in `output/f
 make downloaded-data-bulk-fetch downloaded-data-unpack
 make data fits analysis
 ```
-
-
-
 
 ## Overview of contents:
 
