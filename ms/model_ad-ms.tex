@@ -127,13 +127,29 @@ Alternative sets of summary statisics are certainly possible. One could, for ins
 
 All of the summary statistics are designed to evaluate the adequacy of a BM model of trait evolution. Our summary statistics $S_{\text{VAR}}$, $S_{\text{ANC}}$, and $S_{\text{HGT}}$ have been used previously in the literature with this justification \citep{Garland1992, Garland1993,  Diaz1996}. However, if we propose a different model for the evolution of the trait, such as an Ornstein--Uhlenbeck \citep[OU;][]{Hansen1997} process, then the expected distribution of the contrasts is different. The expected distribution of contrasts under most models of trait evolution, aside from BM, is not formally characterized and even if it was, this would necessitate a specific set of summary statistics for every model proposed.
 
-Our solution to this problem is to create what we term a ``unit tree''. A unit tree is defined as a phylogeny which has branch lengths in units of expected (standardized) variance. We can rescale a phylogeny with branch lengths in units of time to a unit tree using the parameters of any quantitative trait model, as long as the data at the tips follows a multivariate normal distribution under the model (see Box 1 for details). This applies to nearly all quantitative trait models currently used in comparative biology \citep{Omeara2012}, including multi--rate BM \citep{Omeara2006, Thomas2006, Eastman2011}, mulit--optima OU \citep{ButlerKing2004, Beaulieu2012, IngramMahler}, and models in which the rate and/or process change through time \citep{Blomberg2003, SlaterMEE}. If the fitted model is adequate, the trait data at the tips of the unit tree will have the same distribution as data generated under a BM process with a rate of 1 and the contrasts will be $\sim \mathcal{N}(0,1)$ --- hence the name, unit tree. Creating the unit tree from the estimated model parameters prior to computing the contrasts generalizes the summary statistics to most models of quantitative trait evolution \citep[but see][for an exception]{Landis2012}. We also emphasize that because the contrasts are calculated on the unit tree, the summary statistics all must depend on both the data and the model --- it is for this reason that the Bayesian version of our approach produces a distribution of observed summary statistics.
+Our solution to this problem is to create what we term a ``unit tree'', which is a phylogenetic tree transformation that captures the dynamics of trait change under a particular evolutionary model. More formally, for a particular evolutionary model $\mathcal{M}$ (with parameter values $\theta$), we define a unit tree as a phylogenetic tree that has the following property: the length of branch $i$, $\nu_i ^\prime$, is equal to the amount of variance expected to accumulate over $i$ under $\mathcal{M}, \theta$. The variance is standardized, such that the expected distribution of the trait data on the unit tree is equal to that of a Brownian Motion (BM) model with a rate $\sigma^2$ equal to 1. 
+
+Standardized independent contrasts calculated on a phylogenetic tree will be independent and identically distributed (i.i.d.) if we assume a BM model. We use unit trees for assessing model adequacy because under any model for which we can make a unit tree, independent contrasts on the unit tree from that model are expected to be i.i.d. $\sim \mathcal{N}(0,1)$.
+
+One can construct a unit tree by recognizing that many models of evolution can be represented via transformations of the branch lengths of a phylogenetic tree \citep{Omeara2012, Ho2014}, including multi--rate BM \citep{Omeara2006, Thomas2006, Eastman2011}, mulit--optima OU \citep{ButlerKing2004, Beaulieu2012, IngramMahler}, and models in which the rate and/or process change through time \citep{Blomberg2003, SlaterMEE}. 
+
+Specifically, we create unit trees by transforming branch lengths using the following general formula:
+\begin{equation} \label{eq:unittree}
+\nu_i^\prime = \mathrm{E}[\mathrm{Cov}(A,B)] - \mathrm{E}[\mathrm{Cov}(A,C)]
+\end{equation}
+where $\nu_i^\prime$ is the transformed length of a branch $i$, $A$ and $C$ are two lineages subtended by the node at the rootward end of $i$, and $A$ and $B$ are two lineages subtended by the tipward end of $i$ (see figure \ref{fig:box1}). One can choose any pair of species that fits this property and then transverse the phylogeny in any direction so that each branch in the tree is transformed. For terminal branches, the formula reduces to $\mathrm{E}[\mathrm{Var}(A)] - \mathrm{E}[\mathrm{Cov}(A,B)]$. Measurement error can be incorporated by simply lengthening the terminal branches of the unit tree by the estimated standard error. As an example, we illustrate how a unit tree is constructed from the parameters of a fitted OU model (figure \ref{fig:box1}).
+
+If the fitted model is adequate, the trait data at the tips of the unit tree will have the same distribution as data generated under a BM process with a rate of 1 and the contrasts will be $\sim \mathcal{N}(0,1)$ --- hence the name, unit tree. Creating the unit tree from the estimated model parameters prior to computing the contrasts generalizes the summary statistics to most models of quantitative trait evolution \citep[but see][for an exception]{Landis2012}. We also emphasize that because the contrasts are calculated on the unit tree, the summary statistics all must depend on both the data and the model --- it is for this reason that the Bayesian version of our approach produces a distribution of observed summary statistics.
 
 Once we have created the unit tree from the estimated parameters, new datasets can be simulated under the model simply using a BM process with $\sigma^2 = 1$. The distribution of summary statistics calculated on these simulated data sets can then be compared to the summary statistics from the observed data. We summarize the entire approach in figure \ref{fig:flowchart}. We have implemented our method in a new R package, \texttt{arbutus} (see below for more details). 
 
-\begin{center}
-\textit{[Box 1 around here]}
-\end{center}
+%A unit tree is defined as a phylogeny which has branch lengths in units of expected (standardized) variance. We can rescale a phylogeny with branch lengths in units of time to a unit tree using the parameters of any quantitative trait model, as long as the data at the tips follows a multivariate normal distribution under the model (see Box 1 for details). This applies to nearly all quantitative trait models currently used in comparative biology \citep{Omeara2012}, including multi--rate BM \citep{Omeara2006, Thomas2006, Eastman2011}, mulit--optima OU \citep{ButlerKing2004, Beaulieu2012, IngramMahler}, and models in which the rate and/or process change through time \citep{Blomberg2003, SlaterMEE}. If the fitted model is adequate, the trait data at the tips of the unit tree will have the same distribution as data generated under a BM process with a rate of 1 and the contrasts will be $\sim \mathcal{N}(0,1)$ --- hence the name, unit tree. Creating the unit tree from the estimated model parameters prior to computing the contrasts generalizes the summary statistics to most models of quantitative trait evolution \citep[but see][for an exception]{Landis2012}. We also emphasize that because the contrasts are calculated on the unit tree, the summary statistics all must depend on both the data and the model --- it is for this reason that the Bayesian version of our approach produces a distribution of observed summary statistics.
+
+%Once we have created the unit tree from the estimated parameters, new datasets can be simulated under the model simply using a BM process with $\sigma^2 = 1$. The distribution of summary statistics calculated on these simulated data sets can then be compared to the summary statistics from the observed data. We summarize the entire approach in figure \ref{fig:flowchart}. We have implemented our method in a new R package, \texttt{arbutus} (see below for more details). 
+
+%\begin{center}
+%\textit{[Box 1 around here]}
+%\end{center}
 
 \section{The adequacy of models for the evolution of plant functional traits}
 
@@ -290,34 +306,34 @@ We have implemented our approach in a new R package \texttt{arbutus}. It is avai
 \section{Acknowledgments}
 We would like to thank the members of the Tempo and Mode of Trait Evolution Working Group at the National Evolutionary Synthesis Center (NESCent) for their suggestions and encouragement. We thank Josef Uyeda, Daniel Caetano and Will Pearse for their thoughtful comments on the manuscript. Paul Joyce and Graham Slater also provided valuable insights into this project. Last, we are grateful to the researchers who made their data available; this project would not have been possible without it.
 
-\newpage
-\section{Box 1: Creating a unit tree}
+%\newpage
+%\section{Box 1: Creating a unit tree}
 
-Our approach to model adequacy relies on creating a ''unit tree'', which is a phylogenetic tree transformation that captures the dynamics of trait change under a particular evolutionary model. More formally, for a particular evolutionary model $\mathcal{M}$ (with parameter values $\theta$), we define a unit tree as a phylogenetic tree that has the following property: the length of branch $i$, $\nu_i ^\prime$, is equal to the amount of variance expected to accumulate over $i$ under $\mathcal{M}, \theta$. The variance is standardized, such that the expected distribution of the trait data on the unit tree is equal to that of a Brownian Motion (BM) model with a rate $\sigma^2$ equal to 1. 
+%Our approach to model adequacy relies on creating a ''unit tree'', which is a phylogenetic tree transformation that captures the dynamics of trait change under a particular evolutionary model. More formally, for a particular evolutionary model $\mathcal{M}$ (with parameter values $\theta$), we define a unit tree as a phylogenetic tree that has the following property: the length of branch $i$, $\nu_i ^\prime$, is equal to the amount of variance expected to accumulate over $i$ under $\mathcal{M}, \theta$. The variance is standardized, such that the expected distribution of the trait data on the unit tree is equal to that of a Brownian Motion (BM) model with a rate $\sigma^2$ equal to 1. 
 
-Standardized independent contrasts calculated on a phylogenetic tree will be independent and identically distributed (i.i.d.) if we assume a BM model. We use unit trees for assessing model adequacy because under any model for which we can make a unit tree, independent contrasts on the unit tree from that model are expected to be i.i.d. $\sim \mathcal{N}(0,1)$.
+%Standardized independent contrasts calculated on a phylogenetic tree will be independent and identically distributed (i.i.d.) if we assume a BM model. We use unit trees for assessing model adequacy because under any model for which we can make a unit tree, independent contrasts on the unit tree from that model are expected to be i.i.d. $\sim \mathcal{N}(0,1)$.
 
-One can construct a unit tree by recognizing that many models of evolution can be represented via transformations of the branch lengths of a phylogenetic tree \citep{Omeara2012, Ho2014}. Specifically, we create unit trees by transforming branch lengths using the following general formula:
-\begin{equation}
-\nu_i^\prime = \mathrm{E}[\mathrm{Cov}(A,B)] - \mathrm{E}[\mathrm{Cov}(A,C)]
-\end{equation}
-where $\nu_i^\prime$ is the transformed length of a branch $i$, $A$ and $C$ are two lineages subtended by the node at the rootward end of $i$, and $A$ and $B$ are two lineages subtended by the tipward end of $i$ (see figure \ref{fig:box1}). One can choose any pair of species that fits this property and then transverse the phylogeny in any direction so that each branch in the tree is transformed. For terminal branches, the formula reduces to $\mathrm{E}[\mathrm{Var}(A)] - \mathrm{E}[\mathrm{Cov}(A,B)]$.
+%One can construct a unit tree by recognizing that many models of evolution can be represented via transformations of the branch lengths of a phylogenetic tree \citep{Omeara2012, Ho2014}. Specifically, we create unit trees by transforming branch lengths using the following general formula:
+%\begin{equation}
+%\nu_i^\prime = \mathrm{E}[\mathrm{Cov}(A,B)] - \mathrm{E}[\mathrm{Cov}(A,C)]
+%\end{equation}
+%where $\nu_i^\prime$ is the transformed length of a branch $i$, $A$ and $C$ are two lineages subtended by the node at the rootward end of $i$, and $A$ and $B$ are two lineages subtended by the tipward end of $i$ (see figure \ref{fig:box1}). One can choose any pair of species that fits this property and then transverse the phylogeny in any direction so that each branch in the tree is transformed. For terminal branches, the formula reduces to $\mathrm{E}[\mathrm{Var}(A)] - \mathrm{E}[\mathrm{Cov}(A,B)]$.
 
-For example, figure \ref{fig:box1} shows a tree transformation for an OU model with $\sigma^2=0.5$ and $\alpha = 1$, where $\alpha$ is the strength of attraction towards the optimum. The original phylogenetic tree, presumably with branches in units of time (figure \ref{fig:box1}, left panel), can be represented by a variance--covariance (vcv) matrix $\mathbf{C}$. The elements $C_{m,n}$ are the shared path--length from the root to the most recent common ancestor of $m$ and $n$. The diagonal elements ($m = n$) are simply the total distance from the root to the tips. Given $\mathcal{M}$ and $\theta$, the expected vcv of the trait values is described by a second matrix $\mathbf{\Sigma}$. For the case of a general OU model,
-\begin{equation}
-\Sigma_{m,n} = \frac{\sigma^2}{2\alpha} e^{-2\alpha (T_{max} - C_{m,n})} (1 - e^{-2\alpha C_{m,n}})
-\end{equation} 
-where $T_{max}$ is the depth of the tree \citep{Hansen1997, ButlerKing2004}. Therefore, for our example (figure \ref{fig:box1}), 
+%For example, figure \ref{fig:box1} shows a tree transformation for an OU model with $\sigma^2=0.5$ and $\alpha = 1$, where $\alpha$ is the strength of attraction towards the optimum. The original phylogenetic tree, presumably with branches in units of time (figure \ref{fig:box1}, left panel), can be represented by a variance--covariance (vcv) matrix $\mathbf{C}$. The elements $C_{m,n}$ are the shared path--length from the root to the most recent common ancestor of $m$ and $n$. The diagonal elements ($m = n$) are simply the total distance from the root to the tips. Given $\mathcal{M}$ and $\theta$, the expected vcv of the trait values is described by a second matrix $\mathbf{\Sigma}$. For the case of a general OU model,
+%\begin{equation}
+%\Sigma_{m,n} = \frac{\sigma^2}{2\alpha} e^{-2\alpha (T_{max} - C_{m,n})} (1 - e^{-2\alpha C_{m,n}})
+%\end{equation} 
+%where $T_{max}$ is the depth of the tree \citep{Hansen1997, ButlerKing2004}. Therefore, for our example (figure \ref{fig:box1}), 
 
-\begin{align*}
-  \nu_i^\prime &= \Sigma_{A,B} - \Sigma_{A,C}  \\ 
-&= \frac{\sigma^2}{2\alpha} \left(e^{-2\alpha (T_{max} - C_{A,B})} (1 -e^{-2\alpha C_{A,B}})
-- e^{-2 \alpha (T_{max} - C_{A,C})} (1 - e^{-2\alpha C_{A,C}}) \right)  \\
-&= \frac{1}{4} \left( e^{-2 (T - (\nu_i + \nu_j))} (1 - e^{-2 (\nu_i + \nu_j)})
-- e^{-2 (T - \nu_j)} (1 - e^{-2 \nu_j}) \right) 
-\end{align*}
+%\begin{align*}
+%  \nu_i^\prime &= \Sigma_{A,B} - \Sigma_{A,C}  \\ 
+%&= \frac{\sigma^2}{2\alpha} \left(e^{-2\alpha (T_{max} - C_{A,B})} (1 -e^{-2\alpha C_{A,B}})
+%- e^{-2 \alpha (T_{max} - C_{A,C})} (1 - e^{-2\alpha C_{A,C}}) \right)  \\
+%&= \frac{1}{4} \left( e^{-2 (T - (\nu_i + \nu_j))} (1 - e^{-2 (\nu_i + \nu_j)})
+%- e^{-2 (T - \nu_j)} (1 - e^{-2 \nu_j}) \right) 
+%\end{align*}
 
-Measurement error can be incorporated by simply lengthening the terminal branches of the unit tree by the estimated standard error. By simulating evolution on this unit tree under a BM model with a rate of 1, we can create data that have the exact statistical distribution as data simulated under an OU model on the original phylogenetic tree.
+%Measurement error can be incorporated by simply lengthening the terminal branches of the unit tree by the estimated standard error. By simulating evolution on this unit tree under a BM model with a rate of 1, we can create data that have the exact statistical distribution as data simulated under an OU model on the original phylogenetic tree.
 
 
 \newpage
@@ -363,49 +379,51 @@ Also, similar to the likelihood analyses, the frequency of rejection differed be
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.28]{figs/flowchart}
-  \caption{\textbf{Schematic diagram representing our approach for assessing model adequacy.} 1) Fit a model of trait evolution to the data; 2) use the estimated model parameters to build a unit tree; 3) compute the contrasts from the data on the unit tree and calculate a set of summary statistics $\mathcal{S}_X$; 4) simulate a large number of datasets on the unit tree, using a BM model with $\sigma^2= 1$; 5) calculate the summary statistics on the contrasts of each simulated dataset $\mathcal{S}_Y$; and 6) compare the observed and simulated summary statistics. If the observed summary statistic lies in the tails of the distribution of simulated summary statistics the model can be rejected as inadequate. The rotational circle in the center of the diagram indicates that assessing model adequacy is an iterative process. If a model is rejected as inadequate, the next step is to propose a new model and repeat the procedure.}
+  \caption{Schematic diagram representing our approach for assessing model adequacy. 1) Fit a model of trait evolution to the data; 2) use the estimated model parameters to build a unit tree; 3) compute the contrasts from the data on the unit tree and calculate a set of summary statistics $\mathcal{S}_X$; 4) simulate a large number of datasets on the unit tree, using a BM model with $\sigma^2= 1$; 5) calculate the summary statistics on the contrasts of each simulated dataset $\mathcal{S}_Y$; and 6) compare the observed and simulated summary statistics. If the observed summary statistic lies in the tails of the distribution of simulated summary statistics the model can be rejected as inadequate. The rotational circle in the center of the diagram indicates that assessing model adequacy is an iterative process. If a model is rejected as inadequate, the next step is to propose a new model and repeat the procedure.}
   \label{fig:flowchart}
 \end{figure}
 
 \begin{figure}[p]
   \centering
+  \includegraphics{figs/unit-tree}
+  \caption{Illustration of how a unit tree is constructed from model parameters. The original phylogenetic tree (in red) can be represented by a variance--covariance (vcv) matrix $\mathbf{C}$. The elements $C_{m,n}$ are the shared path--length from the root to the most recent common ancestor of $m$ and $n$. The diagonal elements ($m = n$) are simply the total distance from the root to the tips. Given a model $\mathcal{M}$ and parameters $\theta$, the expected vcv of the trait values is described by a second matrix $\mathbf{\Sigma}$. In the case of an OU model, the elements of $\mathbf{\Sigma}$ can be calculated as $\Sigma_{m,n} = \frac{\sigma^2}{2\alpha} e^{-2\alpha (T_{max} - C_{m,n})} (1 - e^{-2\alpha C_{m,n}})$, where $T_{max}$ is the depth of the tree \citep{Hansen1997}. We can then use the fitted parameter values (in this example, $\sigma^2=0.5$ and $\alpha$, the strength of attraction towards the optimum, is $1$), and equation \ref{eq:unittree} to construct the unit tree (blue). Focusing on a single branch $i$, the transformed branch length $\nu_i^\prime = \Sigma_{A,B} - \Sigma_{A,C}$. Note that not only have the branch lengths changed relative to one another but the total tree depth $T$ has decreased as well. While the original tree has branch lengths in units of time, the unit tree has branch lengths in units of expected (standardized) variance.}
+  \label{fig:box1}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
   \includegraphics[scale=0.5]{figs/two-clade-example}
-  \caption{\textbf{Illustration of our approach to model adequacy.} We fit three models (BM, OU, and EB) to seed mass data from two different tree families, the Meliaceae and the Fagaceae. In both cases, an OU model (analyzed here) was strongly supported when fit with ML. The plotted distributions are the summary statistics ($M_{\text{PIC}}, V_{\text{PIC}}, S_{\text{VAR}}, S_{\text{ANC}}, S_{\text{HGT}}, D_{\text{KS}}$) calculated from the contrasts of the simulated data; the bars underneath the plots represent 95\% of the density. The dashed vertical lines are the values of the summary statistics calculated on the contrasts of the observed data. Using our summary statistics, an OU model appears to be an adequate model for the evolution of seed mass in the Meliaceae; for all of the summary statistics, the observed summary statistic lies in the middle of the distribution of simulated summary statistics. For the Fagaceae, the rate estimate $M_{\text{PIC}}$ from the observed data is much lower that the rate estimate calculated on the simulated datasets. We can therefore reject an OU model as inadequate for this group (see text for details).}
+  \caption{Illustration of our approach to model adequacy. We fit three models (BM, OU, and EB) to seed mass data from two different tree families, the Meliaceae and the Fagaceae. In both cases, an OU model (analyzed here) was strongly supported when fit with ML. The plotted distributions are the summary statistics ($M_{\text{PIC}}, V_{\text{PIC}}, S_{\text{VAR}}, S_{\text{ANC}}, S_{\text{HGT}}, D_{\text{KS}}$) calculated from the contrasts of the simulated data; the bars underneath the plots represent 95\% of the density. The dashed vertical lines are the values of the summary statistics calculated on the contrasts of the observed data. Using our summary statistics, an OU model appears to be an adequate model for the evolution of seed mass in the Meliaceae; for all of the summary statistics, the observed summary statistic lies in the middle of the distribution of simulated summary statistics. For the Fagaceae, the rate estimate $M_{\text{PIC}}$ from the observed data is much lower that the rate estimate calculated on the simulated datasets. We can therefore reject an OU model as inadequate for this group (see text for details).}
   \label{fig:two-clades}
 \end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[angle=90, origin=c, scale=0.8]{figs/aic-support}
-  \caption{\textbf{The relative support, as measured by AIC weight, for the three models used in our study (BM, OU, and EB) across all 337 datasets.} An OU model is highly supported for a majority of the datasets.}
+  \caption{The relative support, as measured by AIC weight, for the three models used in our study (BM, OU, and EB) across all 337 datasets. An OU model is highly supported for a majority of the datasets.}
   \label{fig:aic-support}
 \end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[angle=90, origin=c, scale=0.85]{figs/pval-hist-ml}
-  \caption{\textbf{The distribution of $p$--values for our six summary statistics over all 337 datasets in our study after fitting the models using ML.} The $p$--values are from applying our model adequacy approach to the best supported of the three models (as evaluated with AIC). For both the rate estimate $M_{\text{PIC}}$ and the coefficient of variation $V_{\text{PIC}}$, the vast majority of datasets would reject the best of the three models (at $p<$ 0.05).}
+  \caption{The distribution of $p$--values for our six summary statistics over all 337 datasets in our study after fitting the models using ML. The $p$--values are from applying our model adequacy approach to the best supported of the three models (as evaluated with AIC). For both the rate estimate $M_{\text{PIC}}$ and the coefficient of variation $V_{\text{PIC}}$, the vast majority of datasets would reject the best of the three models (at $p<$ 0.05).}
   \label{fig:pvalues}
 \end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.9]{figs/ad-size-ml}
-  \caption{\textbf{The relationship between clade size and a multivariate measure of model adequacy.} The Mahalanobis distance is a scale--invariant metric that measures the distance between the observed and simulated summary statistics, taking into account the covariance between summary statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by AIC), there is a striking relationship between the two --- the larger the dataset, the worse the models performed (note the logarithmic scale). If the models were equally likely to be adequate at all scales, we would expect no relationship.}
+  \caption{The relationship between clade size and a multivariate measure of model adequacy. The Mahalanobis distance is a scale--invariant metric that measures the distance between the observed and simulated summary statistics, taking into account the covariance between summary statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by AIC), there is a striking relationship between the two --- the larger the dataset, the worse the models performed (note the logarithmic scale). If the models were equally likely to be adequate at all scales, we would expect no relationship.}
   \label{fig:size-adequacy}
 \end{figure}
 
-\renewcommand\thefigure{Box\arabic{figure}}
-\renewcommand\thetable{Box \arabic{table}}
-\setcounter{figure}{0}    
-\setcounter{table}{0} 
+%\renewcommand\thefigure{Box\arabic{figure}}
+%\renewcommand\thetable{Box \arabic{table}}
+%\setcounter{figure}{0}    
+%\setcounter{table}{0} 
 
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/unit-tree}
-  \caption{\textbf{Illustration of creating a unit tree from model parameters.} The original tree is in red. The unit tree constructed from an OU model with parameters $\sigma^2$ = 0.5 and $\alpha=$ 1 is in blue. The length of branch $i$, $\nu_i$ is rescaled to $v_i^\prime$ using Equation 3. Not only have the branch lengths changed relative to one another but the total tree depth $T$ has decreased as well. While the tree on the left had branch lengths in units of time, the unit tree has branch lengths in units of expected (standardized) variance.}
-  \label{fig:box1}
-\end{figure}
+
 
 %% Suppmat figures
 \renewcommand\thefigure{S\arabic{figure}}
@@ -417,42 +435,42 @@ Also, similar to the likelihood analyses, the frequency of rejection differed be
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.9]{figs/ad-aic}
-  \caption{\textbf{The relationship between relative and absolute fit}. For every clade for which a more complex model (OU, EB) was favored over BM using AIC, the Mahalanobis distance between the observed summary and simulated summary statistics is plotted against the improvement in AIC for the more complex model compared to BM. (Note that as all AIC values were negative, larger differences mean greater relative support). The greater the relative fit of a more complex model, the more likely the model was to be inadequate. This result in primarily driven by clade size but serves to emphasize the distinction between relative and absolute fit.}
+  \caption{The relationship between relative and absolute fit. For every clade for which a more complex model (OU, EB) was favored over BM using AIC, the Mahalanobis distance between the observed summary and simulated summary statistics is plotted against the improvement in AIC for the more complex model compared to BM. (Note that as all AIC values were negative, larger differences mean greater relative support). The greater the relative fit of a more complex model, the more likely the model was to be inadequate. This result in primarily driven by clade size but serves to emphasize the distinction between relative and absolute fit.}
   \label{fig:supp-ad-aic}
 \end{figure} 
 
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.9]{figs/ad-age-ml}
-  \caption{\textbf{The relationship between clade age and a multivariate measure of model adequacy}. Considering only the best supported of the three models (as selected by AIC, after fitting the models using ML), there is no  apparent relationship between the age of clade and the distance of the observed and simulated summary statistics, as measured by the Mahalanobis distance. Contrast this figure with figure \ref{fig:size-adequacy}, which demonstrates a very tight relationship between clade size and model inadequacy.}
+  \caption{The relationship between clade age and a multivariate measure of model adequacy. Considering only the best supported of the three models (as selected by AIC, after fitting the models using ML), there is no  apparent relationship between the age of clade and the distance of the observed and simulated summary statistics, as measured by the Mahalanobis distance. Contrast this figure with figure \ref{fig:size-adequacy}, which demonstrates a very tight relationship between clade size and model inadequacy.}
   \label{fig:supp-age-ml}
 \end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[angle=90, origin=c, scale=0.8]{figs/dic-support}
-  \caption{\textbf{The relative support, as measured by DIC weight, for the three models used in our study (BM, OU, and EB) across all 337 datasets.} All models were fit with MCMC. Like the model comparisons done with AIC, an OU model is highly supported for a majority of the datasets.}
+  \caption{The relative support, as measured by DIC weight, for the three models used in our study (BM, OU, and EB) across all 337 datasets. All models were fit with MCMC. Like the model comparisons done with AIC, an OU model is highly supported for a majority of the datasets.}
   \label{fig:supp-dic-support}
 \end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[angle=90, origin=c, scale=0.85]{figs/pval-hist-bayes}
-  \caption{\textbf{The distribution of $p$--values for our six summary statistics over all 337 datasets in our study after fitting the models using MCMC.} The $p$--values are from applying our model adequacy approach to the best supported of the three models (as evaluated with DIC). For both the rate estimate $M_{\text{PIC}}$ and the coefficient of variation $V_{\text{PIC}}$, the vast majority of datasets would reject the best of the three models (at $p<$ 0.05).}
+  \caption{The distribution of $p$--values for our six summary statistics over all 337 datasets in our study after fitting the models using MCMC. The $p$--values are from applying our model adequacy approach to the best supported of the three models (as evaluated with DIC). For both the rate estimate $M_{\text{PIC}}$ and the coefficient of variation $V_{\text{PIC}}$, the vast majority of datasets would reject the best of the three models (at $p<$ 0.05).}
   \label{fig:supp-pvalues}
 \end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.9]{figs/ad-size-bayes}
-  \caption{\textbf{The relationship between clade size and a multivariate measure of model adequacy from the Bayesian analysis.} The Mahalanobis distance is a scale--invariant metric that measures the distance between the observed and simulated summary statistics, taking into account the covariance between summary statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by DIC), there is a striking relationship between the two --- the larger the dataset, the worse the models performed (note the logarithmic scale). If the models were equally likely to be adequate at all scales, we would expect no relationship.}
+  \caption{The relationship between clade size and a multivariate measure of model adequacy from the Bayesian analysis. The Mahalanobis distance is a scale--invariant metric that measures the distance between the observed and simulated summary statistics, taking into account the covariance between summary statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by DIC), there is a striking relationship between the two --- the larger the dataset, the worse the models performed (note the logarithmic scale). If the models were equally likely to be adequate at all scales, we would expect no relationship.}
   \label{fig:supp-size-adequacy}
 \end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.9]{figs/ad-age-bayes}
-  \caption{\textbf{The relationship between clade age and a multivariate measure of model adequacy}. Considering only the best supported of the three models (as selected by AIC, after fitting the models using MCMC), there is no  apparent relationship between the age of clade and the distance of the observed and simulated summary statistics, as measured by the Mahalanobis distance. Contrast this figure with figure \ref{fig:supp-size-adequacy}, which demonstrates a very tight relationship between clade size and model inadequacy.}
+  \caption{The relationship between clade age and a multivariate measure of model adequacy. Considering only the best supported of the three models (as selected by AIC, after fitting the models using MCMC), there is no  apparent relationship between the age of clade and the distance of the observed and simulated summary statistics, as measured by the Mahalanobis distance. Contrast this figure with figure \ref{fig:supp-size-adequacy}, which demonstrates a very tight relationship between clade size and model inadequacy.}
   \label{fig:supp-age-bayes}
 \end{figure}
 
