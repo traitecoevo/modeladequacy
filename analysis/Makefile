@@ -93,22 +93,27 @@ model-adequacy.html: model-adequacy.md
 	 opts <- setdiff(markdownHTMLOptions(TRUE), 'base64_images');\
 	 markdownToHTML('$<', '$@', options=opts)"
 
+RELEASE=v0.2-rc1
+
 # Save on some farting about with data:
-DOWNLOADED_DATA = 		\
+
+DOWNLOADED_DATA_URL = https://github.com/richfitz/modeladequacy/releases/download/${RELEASE}/downloaded-data-cache.tar.gz
+DOWNLOADED_DATA_CACHE = .downloaded-data-cache.tar.gz
+DOWNLOADED_DATA_CONTENTS = 	\
 	data/kew/*.html 	\
 	data/leda.txt		\
 	data/wright-2004.xls 	\
 	data/zae/PhylogeneticResources.zip data/zae/Spermatophyta_Genera.csv
-DOWNLOADED_DATA_SAVE = .downloaded_data.tar.gz
 
+${DOWNLOADED_DATA_CACHE}:
+	curl -L -o $@ ${DOWNLOADED_DATA_URL}
+downloaded-data-cache-fetch: ${DOWNLOADED_DATA_CACHE}
 downloaded-data-delete:
-	rm -f ${DOWNLOADED_DATA}
-downloaded-data-save:
-	tar -zcvf .downloaded_data.tar.gz ${DOWNLOADED_DATA}
-downloaded-data-unpack:
-	tar -zxvf .downloaded_data.tar.gz
-downloaded-data-bulk-fetch:
-	curl -o .downloaded_data.tar.gz http://www.zoology.ubc.ca/~fitzjohn/files/modeladequacy_data.tar.gz
+	rm -rf ${DOWNLOADED_DATA_CONTENTS}
+downloaded-data-cache-unpack: ${DOWNLOADED_DATA_CACHE}
+	tar -zxf $<
+downloaded-data-cache-archive:
+	tar -zcf ${DOWNLOADED_DATA_CACHE} ${DOWNLOADED_DATA_CONTENTS}
 
 clean-data: clean-processed
 	rm -rf data/kew data/kew.csv
@@ -134,8 +139,15 @@ clean-outputs:
 deps:
 	Rscript make/dependencies.R
 
+release-files: ${ARCHIVES} ${DOWNLOADED_DATA_CACHE}
+	rm -rf release
+	mkdir -p release
+	cp ${DOWNLOADED_DATA_CACHE} release/downloaded-data-cache.tar.gz
+	tar -zcvf release/analysis.tar.gz model-adequacy.{Rmd,md,html} figure
+	cp ../ms/model_ad-ms.pdf release
+
 .PHONY: all deps fits data data-fetch data-preprocess data-species-mean \
 	kew-fetch zae-fetch \
-	downloaded-data-delete downloaded-data-save \
-	downloaded-data-unpack downloaded-data-bulk-fetch \
+	downloaded-data-cache-delete downloaded-data-cache-archive \
+	downloaded-data-cache-unpack downloaded-data-cache-fetch \
 	clean-data clean-processed

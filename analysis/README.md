@@ -59,8 +59,8 @@ make data-preprocess
 Note that one of the data sources (Kew) is continuously updated without a versioning control system and therefore the downloaded data may be different from what is presented in the paper. To use the same dataset, pull down a cached data set. This also has the added benefit of not hammering Kew's servers.
 
 ```
-make downloaded-data-bulk-fetch
-make downloaded-data-unpack
+make downloaded-data-cache-fetch
+make downloaded-data-cache-unpack
 make data-preprocess
 ```
 
@@ -125,7 +125,7 @@ This will run all the code in `model-analysis.R`, creating figures (in `output/f
 **Note**: For now, the dependencies for the fits and analysis section aren't loaded automatically (to save time during development).  So to run everything in one fell swoop:
 
 ```
-make downloaded-data-bulk-fetch downloaded-data-unpack
+make downloaded-data-cache-fetch downloaded-data-cache-unpack
 make data fits analysis
 ```
 
