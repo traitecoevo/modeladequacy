@@ -18,9 +18,9 @@ source("R/paths.R")
 # OU and EB.
 #
 # Note that the entire adequacy part of the function is the line
-#      ma <- phy.model.check(fit)
+#      ma <- arbutus(fit)
 # or
-#     ma <- phy.model.check(samples)
+#     ma <- arbutus(samples)
 model.ad <- function(data, model, type, seed=1) {
   model <- match.arg(model, c("BM", "OU", "EB"))
   type  <- match.arg(type,  c("ml", "bayes"))
@@ -38,7 +38,7 @@ model.ad <- function(data, model, type, seed=1) {
 
   # Start at REML estimate of sigsq for all models, using arbutus'
   # function to estiate this.
-  s2 <- sigsq.est(as.unit.tree(phy, data=drop(states)))
+  s2 <- pic_stat_msig(make_unit_tree(phy, data=drop(states)))
 
   # ML bounds, starting points and priors (priors only used in the
   # Bayesian analysis)
@@ -65,7 +65,7 @@ model.ad <- function(data, model, type, seed=1) {
     ic.name <- "aic"
 
     # Assess adequacy of all models
-    ma <- phy.model.check(fit)
+    ma <- arbutus(fit)
   } else if (type == "bayes") {
     # Some general parameters
     pilot  <- 100
@@ -86,7 +86,7 @@ model.ad <- function(data, model, type, seed=1) {
     ic.name <- "dic"
 
     # Assess adequacy of all models    
-    ma <- phy.model.check(samples, burnin=burnin, sample=1000)
+    ma <- arbutus(samples, burnin=burnin, sample=1000)
   }
 
   # For all cases, the general information about three we want is the same:
@@ -142,7 +142,7 @@ process <- function(res) {
   process1 <- function(x) {
     model <- tolower(x$info$model)
     # P values for the various statistics:
-    pv <- pval.summ.stats(x$ma)
+    pv <- pvalue_arbutus(x$ma)
     names(pv) <- sprintf("%s.%s.%s", names(pv), type, model)
 
     # Mean distance
@@ -151,7 +151,7 @@ process <- function(res) {
     # think I'm out of date with arbutus.  For now, just setting this
     # to use try(), and setting to NaN on error so we can track it
     # down later.
-    mv <- try(mean(mv.summ.stats(x$ma)), silent=TRUE)
+    mv <- try(mean(mahalanobis_arbutus(x$ma)), silent=TRUE)
     if (inherits(mv, "try-error")) {
       mv <- NaN
     }
@@ -163,7 +163,7 @@ process <- function(res) {
     # m.pic was consistently under or overestimated This is the only
     # summary statistic which we expected to be systematically biased
     # in one direction
-    md <- sum(x$ma$summ.stats.sim$m.pic < x$ma$summ.stats.obs$m.pic)
+    md <- sum(x$ma$sim$m.sig < x$ma$obs$m.sig)
     names(md) <- sprintf("mean.diag.%s", model)
 
     as.list(c(pv, mv, md))
