@@ -8,7 +8,7 @@ source("R/model-adequacy-analysis.R")
 knitr::opts_chunk$set(tidy=FALSE)
 
 ## Define colours used throughout
-col <- c("#a63813", "#4d697f", "gray15")
+col <- c("#0B775E", "firebrick3", "#D8B70A")
 
 ## ## Trait data across the angiosperm phylogeny
 ## Import tree
@@ -139,12 +139,14 @@ fig.model.support.aic <- function(aic){
     p <- ggplot(df, aes(factor(Subclade), weight, fill=model, order=model), environment=.e)
     p <- p + geom_bar(stat="identity", position="stack",width=1)
     p <- p + scale_y_continuous(name="AIC weight")
-    p <- p + scale_fill_manual(values=col)
+    p <- p + scale_fill_manual("Model", values=col)
     p <- p + theme_bw()
     p <- p + theme(axis.text.x=element_blank(),
                    axis.ticks.x=element_blank(),
                    axis.ticks.y=element_blank(),
                    axis.text.y=element_blank(),
+                   panel.border=element_blank(),
+                   panel.background=element_blank(),
                    strip.background=element_rect(fill="white"),
                    plot.background=element_blank())
     p <- p + xlab("Dataset")
@@ -210,12 +212,14 @@ fig.model.support.dic <- function(dic){
     p <- ggplot(df, aes(factor(Subclade), weight, fill=model, order=model), environment=.e)
     p <- p + geom_bar(stat="identity", position="stack",width=1)
     p <- p + scale_y_continuous(name="DIC weight")
-    p <- p + scale_fill_manual(values=col)
+    p <- p + scale_fill_manual("Model", values=col)
     p <- p + theme_bw()
     p <- p + theme(axis.text.x=element_blank(),
                    axis.ticks.x=element_blank(),
                    axis.ticks.y=element_blank(),
                    axis.text.y=element_blank(),
+                   panel.border=element_blank(),
+                   panel.background=element_blank(),
                    strip.background=element_rect(fill="white"),
                    plot.background=element_blank())
     p <- p + xlab("Dataset")
@@ -330,7 +334,7 @@ fig.pval.histogram <- function(best){
                        labels=c("SLA", "SeedMass", "LeafN"))
                         
     df$variable <- factor(df$variable,
-                          labels=c("italic(M[PIC])", "italic(V[PIC])", "italic(S[VAR])", "italic(S[ANC])", "italic(S[HGT])", "italic(D[KS])"))
+                          labels=c("italic(M[SIG])", "italic(C[VAR])", "italic(S[VAR])", "italic(S[ASR])", "italic(S[HGT])", "italic(D[CDF])"))
     .e <- environment()
 
     p <- ggplot(df, aes(x=value), environment = .e)
@@ -338,6 +342,7 @@ fig.pval.histogram <- function(best){
     p <- p + scale_fill_manual(values=col)
     p <- p + theme_bw()
     p <- p + xlab("p-value")
+    p <- p + ylab("Density")
     p <- p + facet_grid(trait~variable, labeller = label_parsed)
     p <- p + theme(strip.background=element_rect(fill="white"),
                    plot.background=element_blank(),
@@ -457,13 +462,16 @@ fig.modelad.aic <- function(df){
 
     p <- ggplot(df, aes(diff.bm, mv), environment=.e)
     p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.6)
-
-    p <- p + scale_colour_manual(values=col)
+    p <- p + scale_colour_manual("Trait", values=col)
+    p <- p + scale_shape_manual("Rank", values=c(15,16,17))
     p <- p + theme_bw()
     p <- p + theme(plot.background = element_blank(),
                    panel.grid.major = element_blank(),
                    panel.grid.minor = element_blank(),
                    panel.border=element_blank(),
+                   legend.justification=c(0.02,0.98),
+                   legend.position=c(0.02,0.98),
+                   legend.key=element_blank(),
                    axis.line = element_line(color = 'black'))
     p <- p + scale_y_log10()
     p <- p + scale_x_log10()
@@ -492,13 +500,16 @@ fig.modelad.dic <- function(df){
 
     p <- ggplot(df, aes(diff.bm, mv), environment=.e)
     p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.6)
-
-    p <- p + scale_colour_manual(values=col)
+    p <- p + scale_colour_manual("Trait", values=col)
+    p <- p + scale_shape_manual("Rank", values=c(15,16,17))
     p <- p + theme_bw()
     p <- p + theme(plot.background = element_blank(),
                    panel.grid.major = element_blank(),
                    panel.grid.minor = element_blank(),
                    panel.border=element_blank(),
+                   legend.justification=c(0.02,0.98),
+                   legend.position=c(0.02,0.98),
+                   legend.key=element_blank(),
                    axis.line = element_line(color = 'black'))
     p <- p + scale_y_log10()
     p <- p + scale_x_log10()
@@ -535,17 +546,21 @@ fig.modelad.size <- function(df){
     p <- ggplot(df, aes(size, mv), environment=.e)
     p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.6)
 
-    p <- p + scale_colour_manual(values=col)
+    p <- p + scale_colour_manual("Trait", values=col)
+    p <- p + scale_shape_manual("Rank", values=c(15,16,17))
     p <- p + theme_bw()
     p <- p + theme(plot.background = element_blank(),
                    panel.grid.major = element_blank(),
                    panel.grid.minor = element_blank(),
                    panel.border=element_blank(),
+                   legend.justification=c(0.98,0.02),
+                   legend.position=c(0.98,0.02),
+                   legend.key=element_blank(),
                    axis.line = element_line(color = 'black'))
     p <- p + scale_y_log10()
     p <- p + scale_x_log10()
     p <- p + xlab("Number of taxa")
-    p <- p + ylab("Mahalanobis distance")
+    p <- p + ylab("Mahalanobis distance between observed and simulated")
     p
 }
 
@@ -571,13 +586,16 @@ fig.modelad.age <- function(df){
 
     p <- ggplot(df, aes(age, mv), environment=.e)
     p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.6)
-
-    p <- p + scale_colour_manual(values=col)
+    p <- p + scale_colour_manual("Trait", values=col)
+    p <- p + scale_shape_manual("Rank", values=c(15,16,17))
     p <- p + theme_bw()
     p <- p + theme(plot.background = element_blank(),
                    panel.grid.major = element_blank(),
                    panel.grid.minor = element_blank(),
                    panel.border=element_blank(),
+                   legend.justification=c(0.02,0.98),
+                   legend.position=c(0.02,0.98),
+                   legend.key=element_blank(),
                    axis.line = element_line(color = 'black'))
     p <- p + scale_y_log10()
     p <- p + scale_x_log10()
