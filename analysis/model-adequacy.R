@@ -8,7 +8,6 @@ source("R/model-adequacy-analysis.R")
 knitr::opts_chunk$set(tidy=FALSE)
 
 ## Define colours used throughout
-#col <- c("#0B775E", "firebrick3", "#D8B70A")
 col <- c("#F46D43", "#3288BD", "#CDCD00")
 
 
@@ -630,6 +629,7 @@ fig.two.clades <- function(){
     par(mfrow=c(2,6))
     lapply(colnames(me.dat$ma$obs), function(x){
     par(mar=c(4,1,1,1))
+
     profiles.plot(me.dat$ma$sim[x], col.line=col[1],
                   opacity = 0.9, frame.plot=FALSE, yaxt="n",
                   xlab="", ylab="");
@@ -637,16 +637,18 @@ fig.two.clades <- function(){
 
     lapply(colnames(fa.dat$ma$obs), function(x){
     par(mar=c(4.5,1,1,1))
-
+    xl <- strsplit(toupper(x), split=".")
+    xlab <- bquote(.(xl[[1]][1], xl[[1]][2]) ~ [x
+    
     if (x == "m.sig"){
         profiles.plot(fa.dat$ma$sim[x], col.line=col[3],
                   opacity = 0.9, frame.plot=FALSE, yaxt="n",
-                  xlab=x, ylab="", cex.lab=1.5,
+                  xlab=expression(italic(xl.f)[xl.s]), ylab="", cex.lab=1.5,
                   xlim=c(as.numeric(fa.dat$ma$obs[x]-0.05), max(fa.dat$ma$sim[x])))
     } else {
         profiles.plot(fa.dat$ma$sim[x], col.line=col[3],
                   opacity = 0.9, frame.plot=FALSE, yaxt="n",
-                  xlab=x, ylab="", cex.lab=1.5)
+                  xlab=expression(italic(xl.f)[xl.s]), ylab="", cex.lab=1.5)
     }
     abline(v=fa.dat$ma$obs[,x], lty=2, lwd=2, col=col[2])
     })
