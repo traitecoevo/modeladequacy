@@ -8,7 +8,9 @@ source("R/model-adequacy-analysis.R")
 knitr::opts_chunk$set(tidy=FALSE)
 
 ## Define colours used throughout
-col <- c("#0B775E", "firebrick3", "#D8B70A")
+#col <- c("#0B775E", "firebrick3", "#D8B70A")
+col <- c("#F46D43", "#3288BD", "#CDCD00")
+
 
 ## ## Trait data across the angiosperm phylogeny
 ## Import tree
@@ -145,6 +147,8 @@ fig.model.support.aic <- function(aic){
                    axis.ticks.x=element_blank(),
                    axis.ticks.y=element_blank(),
                    axis.text.y=element_blank(),
+                   panel.grid.minor=element_blank(),
+                   panel.grid.major=element_blank(),
                    panel.border=element_blank(),
                    panel.background=element_blank(),
                    strip.background=element_rect(fill="white"),
@@ -218,6 +222,8 @@ fig.model.support.dic <- function(dic){
                    axis.ticks.x=element_blank(),
                    axis.ticks.y=element_blank(),
                    axis.text.y=element_blank(),
+                   panel.grid.minor=element_blank(),
+                   panel.grid.major=element_blank(),
                    panel.border=element_blank(),
                    panel.background=element_blank(),
                    strip.background=element_rect(fill="white"),
@@ -461,7 +467,7 @@ fig.modelad.aic <- function(df){
     df <- na.omit(df)
 
     p <- ggplot(df, aes(diff.bm, mv), environment=.e)
-    p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.6)
+    p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.8)
     p <- p + scale_colour_manual("Trait", values=col)
     p <- p + scale_shape_manual("Rank", values=c(15,16,17))
     p <- p + theme_bw()
@@ -499,7 +505,7 @@ fig.modelad.dic <- function(df){
     df <- na.omit(df)
 
     p <- ggplot(df, aes(diff.bm, mv), environment=.e)
-    p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.6)
+    p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.8)
     p <- p + scale_colour_manual("Trait", values=col)
     p <- p + scale_shape_manual("Rank", values=c(15,16,17))
     p <- p + theme_bw()
@@ -544,7 +550,7 @@ fig.modelad.size <- function(df){
     df <- na.omit(df)
 
     p <- ggplot(df, aes(size, mv), environment=.e)
-    p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.6)
+    p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.8)
 
     p <- p + scale_colour_manual("Trait", values=col)
     p <- p + scale_shape_manual("Rank", values=c(15,16,17))
@@ -585,7 +591,7 @@ fig.modelad.age <- function(df){
     df <- na.omit(df)
 
     p <- ggplot(df, aes(age, mv), environment=.e)
-    p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.6)
+    p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.8)
     p <- p + scale_colour_manual("Trait", values=col)
     p <- p + scale_shape_manual("Rank", values=c(15,16,17))
     p <- p + theme_bw()
@@ -610,6 +616,46 @@ fig.modelad.age(ml.best)
 
 ## For the best supported model from the Bayesian analysis
 fig.modelad.age(bay.best)
+
+
+## ## Two clade example figure
+
+## Only do this if results have actually been run
+if (file.info("output/results-ml")[,"isdir"]){
+
+## Read in Meliaceae and Fagaceae data
+fig.two.clades <- function(){
+    me.dat <- readRDS("output/results-ml/seedmass_clade_Meliaceae.rds")$OU
+    fa.dat <- readRDS("output/results-ml/seedmass_clade_Fagaceae.rds")$OU
+    par(mfrow=c(2,6))
+    lapply(colnames(me.dat$ma$obs), function(x){
+    par(mar=c(4,1,1,1))
+    profiles.plot(me.dat$ma$sim[x], col.line=col[1],
+                  opacity = 0.9, frame.plot=FALSE, yaxt="n",
+                  xlab="", ylab="");
+    abline(v=me.dat$ma$obs[,x], lty=2, lwd=2, col=col[2])})
+
+    lapply(colnames(fa.dat$ma$obs), function(x){
+    par(mar=c(4.5,1,1,1))
+
+    if (x == "m.sig"){
+        profiles.plot(fa.dat$ma$sim[x], col.line=col[3],
+                  opacity = 0.9, frame.plot=FALSE, yaxt="n",
+                  xlab=x, ylab="", cex.lab=1.5,
+                  xlim=c(as.numeric(fa.dat$ma$obs[x]-0.05), max(fa.dat$ma$sim[x])))
+    } else {
+        profiles.plot(fa.dat$ma$sim[x], col.line=col[3],
+                  opacity = 0.9, frame.plot=FALSE, yaxt="n",
+                  xlab=x, ylab="", cex.lab=1.5)
+    }
+    abline(v=fa.dat$ma$obs[,x], lty=2, lwd=2, col=col[2])
+    })
+}
+
+}
+
+
+
 
 
 ## ## Produce figures
@@ -647,6 +693,10 @@ if (!interactive()){
 
     to.pdf("output/figs/ad-age-bayes.pdf", width=7, height=6,
            fig.modelad.age(bay.best))
+
+    if (file.info("output/results-ml")[,"isdir"])
+        to.pdf("output/figs/two-clades.pdf", width=9, height=5,
+               fig.two.clades())
 
 }
 
