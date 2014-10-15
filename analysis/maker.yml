@@ -1,0 +1,68 @@
+sources: 
+  - maker/
+
+packages:
+  - ape
+  - XML
+  - geiger
+  - dplyr
+
+targets:
+  all:
+    depends: data
+
+  data:
+    depends:
+      - leafN
+      - seed_mass
+      - sla
+
+  data/wright_2004.xls:
+    command: download_wright_2004(target_name)
+    cleanup_level: purge
+  # There's a bug here where this randomly rebuilds.  I am trying to
+  # track it down.
+  wright_2004:
+    command: process_wright_2004("data/wright_2004.xls")
+  kew:
+    command: kew_build()
+    cleanup_level: never
+    check: exists
+
+  data/leda.txt:
+    command: download_leda(target_name)
+    cleanup_level: purge
+  leda:
+    command: process_leda("data/leda.txt")
+
+  data/zae/PhylogeneticResources.zip:
+    command: download_zae_trees(target_name)
+    cleanup_level: purge
+    check: exists
+  data/zae/Spermatophyta_Genera.csv:
+    command: download_zae_genera(target_name)
+    cleanup_level: purge
+
+  vascular_plant_phylogeny:
+    command: unpack_tree("data/zae/PhylogeneticResources.zip")
+  genus_order_lookup:
+    command: unpack_genus_order_lookup("data/zae/Spermatophyta_Genera.csv")
+
+  synonyms:
+    command: make_synonyms("data/spermatophyta_synonyms_PLANTLIST.csv", vascular_plant_phylogeny)
+  corrections:
+    command: make_corrections("data/names-tr.txt", vascular_plant_phylogeny)
+
+  species_leafN:
+    command: make_species_leafN(wright_2004, synonyms, corrections)
+  species_seed_mass:
+    command: make_species_seed_mass(kew, synonyms, corrections)
+  species_sla:
+    command: make_species_sla(wright_2004, leda, synonyms, corrections)
+
+  leafN:
+    command: build_data(species_leafN, vascular_plant_phylogeny)
+  seed_mass:
+    command: build_data(species_seed_mass, vascular_plant_phylogeny)
+  sla:
+    command: build_data(species_sla, vascular_plant_phylogeny)
