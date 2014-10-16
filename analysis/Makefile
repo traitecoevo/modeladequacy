@@ -1,8 +1,5 @@
 all: data
 
-output/angio-data: make/output-angio-data.R ${DATA_PHY}
-	Rscript $<
-
 # NOTE: the targets here are potentially screwy, and things may not
 # always get rebuilt at the appropriate times.  Because of the manual
 # caching that goes on, we might be best having these be phony

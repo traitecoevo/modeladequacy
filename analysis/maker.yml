@@ -5,6 +5,9 @@ packages:
   - XML
   - geiger
   - dplyr
+  - arbutus
+  - diversitree
+  - parallel
 
 targets:
   all:
@@ -97,3 +100,11 @@ targets:
     command: make_data_families(sla)
   sla_orders:
     command: make_data_orders(sla)
+
+  leafN_fits_times_ml:
+    command: run_model_ad_ml(leafN_times)
+  leafN_fits_families_ml:
+    command: run_model_ad_ml(leafN_families)
+  leafN_fits_orders_ml:
+    command: run_model_ad_ml(leafN_orders)
+    

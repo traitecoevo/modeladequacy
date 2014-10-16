@@ -21,7 +21,7 @@ source("R/paths.R")
 #      ma <- arbutus(fit)
 # or
 #     ma <- arbutus(samples)
-model.ad <- function(data, model, type, seed=1) {
+model_ad <- function(data, model, type, seed=1) {
   model <- match.arg(model, c("BM", "OU", "EB"))
   type  <- match.arg(type,  c("ml", "bayes"))
   ## Extract components from the pre-prepared data object.
@@ -105,7 +105,7 @@ model.ad <- function(data, model, type, seed=1) {
 # Little wrapper function that loads data, fits a model (ML or MCMC),
 # checks the model adequacy, and then saves the results in a file.  If
 # the output file exists, this is skipped.
-run.model.ad <- function(filename, type=c("ml", "bayes"),
+run_model_ad <- function(filename, type=c("ml", "bayes"),
                          regenerate=FALSE, verbose=TRUE) {
   type <- match.arg(type)
   if (type == "ml") {

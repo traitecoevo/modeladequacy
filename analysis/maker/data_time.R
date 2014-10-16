@@ -7,6 +7,9 @@ make_data_times <- function(data) {
   se <- data$se
 
   td <- lapply(times, treedata_time, data$phy, data$states, min_size)
+
+  ## Collapse all the different time spaces together:
+  td <- unlist(td, FALSE)
   for (i in seq_along(td)) {
     td[[i]] <- add_metadata(td[[i]], "timeslice", "random", trait, se)
   }

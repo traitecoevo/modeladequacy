@@ -13,5 +13,5 @@ ok <- mclapply(files, run.model.ad, "bayes", mc.preschedule=FALSE)
 fits <- lapply(dir(path.bayes(), full.names=TRUE), readRDS)
 
 # Combine everything together by stripping out some summary statistics
-results <- combine(fits)
+results <- combine_fits(fits)
 write.csv(results, "output/results-bayes.csv", row.names=FALSE)
