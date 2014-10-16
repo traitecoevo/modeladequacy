@@ -1,20 +1,22 @@
-make_synonyms <- function(plantlist, tree) {
-  dat <- read.csv(plantlist, stringsAsFactors=FALSE)
-  ## Drop an extra column that has turned up for some reason:
-  dat <- dat[c("synonym", "species", "genus")]
-  dat <- dat[dat$synonym != dat$species,]
-  dat$synonym[dat$synonym %in% tree$tip.label] <- NA
-  dat
+## Converts a raw data set into one with the tree associated with it.
+build_data <- function(raw, tree) {
+  ## NOTE: base 10 log
+  dat <- structure(log10(raw$mean), names=raw$gs)
+
+  ## Drop species from tree not in data, and v.v.
+  ## This step is the slow point.
+  t <- extract.clade(tree, node="Angiospermae")
+  phy <- geiger:::.drop.tip(phy=t, tip=setdiff(t$tip.label, names(dat)))
+  dat <- dat[phy$tip.label]
+  trait <- attr(raw, "trait")
+  se <- attr(raw, "sd")
+
+  list(phy=phy, states=dat, se=se, trait=trait)
 }
 
-make_corrections <- function(filename, tree) {
-  corrections <- read.delim(filename, stringsAsFactors=FALSE)
-  corrections <- corrections[!(corrections$originalName %in%
-                               sub("_"," ",tree$tip.label)),]
-  saveRDS(corrections, "output/corrections.rds")
-}
 
-## Serious data munging:
+## The more serious data munging: building the leafN, seed_mass and
+## sla data sets:
 make_species_leafN <- function(wright_2004, synonyms, corrections) {
   dat <- wright_2004[c("Species", "N.mass")]
   names(dat) <- c("gs", "N.mass")
@@ -37,6 +39,7 @@ make_species_leafN <- function(wright_2004, synonyms, corrections) {
 
   sd <- mean(log10(dat_spp$sd[log10(dat_spp$sd) > 0.0001]), na.rm=TRUE)
   attr(dat_spp, "sd") <- sd
+  attr(dat_spp, "trait") <- "leafN"
   
   dat_spp
 }
@@ -78,23 +81,24 @@ make_species_seed_mass <- function(kew, synonyms, corrections) {
 
   sd <- mean(log10(dat_spp$sd[log10(dat_spp$sd) > 0.0001]), na.rm=TRUE)
   attr(dat_spp, "sd") <- sd
+  attr(dat_spp, "trait") <- "seed_size"
 
   dat_spp
 }
 
-make_species_sla <- function(wright, leda, synonyms, corrections) {
+make_species_sla <- function(wright_2004, leda, synonyms, corrections) {
   ## TODO: Check $logLMA is not character
   ## TODO: We have unlogged LMA here...
-  wright$LogLMA <- as.numeric(wright$LogLMA)
-  wright <- data.frame(gs=wright$Species,
-                       sla=10000/10^(wright$LogLMA),
-                       dataset="glop",
-                       stringsAsFactors=FALSE)
+  wright_2004$LogLMA <- as.numeric(wright_2004$LogLMA)
+  wright_2004 <- data.frame(gs=wright_2004$Species,
+                            sla=10000/10^(wright_2004$LogLMA),
+                            dataset="glop",
+                            stringsAsFactors=FALSE)
   leda <- data.frame(gs=leda$SBS.name,
                      sla=10 * leda$SLA.mean,
                      dataset="leda",
                      stringsAsFactors=FALSE)
-  dat <- rbind(wright, leda)
+  dat <- rbind(wright_2004, leda)
 
   ## Sort out synonomy and mispellings in species names.
   dat$gs <- scrub_wrapper(dat$gs, corrections)
@@ -134,10 +138,16 @@ make_species_sla <- function(wright, leda, synonyms, corrections) {
 
   sd <- mean(log10(dat_spp$sd[log10(dat_spp$sd) > 0.0001]), na.rm=TRUE)
   attr(dat_spp, "sd") <- sd
+  attr(dat_spp, "trait") <- "sla"
 
   dat_spp
 }
 
-build_data_leafN <- function(leafN) {
-  build.data("leafN")
+## Used by both make_data_times and make_data_rank
+add_metadata <- function(d, rank, taxa, trait, se) {
+  d$rank <- rank
+  d$taxa <- taxa
+  d$trait <- trait
+  d$se <- se
+  d
 }

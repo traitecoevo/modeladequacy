@@ -1,3 +1,18 @@
+make_synonyms <- function(plantlist, tree) {
+  dat <- read.csv(plantlist, stringsAsFactors=FALSE)
+  ## Drop an extra column that has turned up for some reason:
+  dat <- dat[c("synonym", "species", "genus")]
+  dat <- dat[dat$synonym != dat$species,]
+  dat$synonym[dat$synonym %in% tree$tip.label] <- NA
+  dat
+}
+
+make_corrections <- function(filename, tree) {
+  corrections <- read.delim(filename, stringsAsFactors=FALSE)
+  corrections[!(corrections$originalName %in%
+                sub("_"," ",tree$tip.label)),]
+}
+
 update_synonomy <- function(names, syn) {
   ## TODO: What is going on here?
   temp <- syn$species[match(names, syn$synonym)]

@@ -18,3 +18,8 @@ geometric_mean <- function(x, ...) {
 geometric_sd <- function(x, ...) {
   logspace_f(x, sd, ...)
 }
+
+## Quiet version of treedata:
+treedata_q <- function(...) {
+  geiger::treedata(..., warnings=FALSE)
+}

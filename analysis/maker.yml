@@ -1,5 +1,4 @@
-sources: 
-  - maker/
+sources: maker/
 
 packages:
   - ape
@@ -16,6 +15,9 @@ targets:
       - leafN
       - seed_mass
       - sla
+
+  angio:
+    depends: [leafN_subsets, seed_mass_subsets, sla_subsets]
 
   data/wright_2004.xls:
     command: download_wright_2004(target_name)
@@ -66,3 +68,32 @@ targets:
     command: build_data(species_seed_mass, vascular_plant_phylogeny)
   sla:
     command: build_data(species_sla, vascular_plant_phylogeny)
+
+  ## These are the partitioned data sets.  There's repetition here
+  ## because I'm not yet supporting templating of target types.
+  leafN_subsets:
+    depends: [leafN_times, leafN_families, leafN_orders]
+  leafN_times:
+    command: make_data_times(leafN)
+  leafN_families:
+    command: make_data_families(leafN)
+  leafN_orders:
+    command: make_data_orders(leafN)
+
+  seed_mass_subsets:
+    depends: [seed_mass_times, seed_mass_families, seed_mass_orders]
+  seed_mass_times:
+    command: make_data_times(seed_mass)
+  seed_mass_families:
+    command: make_data_families(seed_mass)
+  seed_mass_orders:
+    command: make_data_orders(seed_mass)
+
+  sla_subsets:
+    depends: [sla_times, sla_families, sla_orders]
+  sla_times:
+    command: make_data_times(sla)
+  sla_families:
+    command: make_data_families(sla)
+  sla_orders:
+    command: make_data_orders(sla)
