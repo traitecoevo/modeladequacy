@@ -50,11 +50,16 @@ targets:
 
   vascular_plant_phylogeny:
     command: unpack_tree("data/zae/PhylogeneticResources.zip")
+    ## This will prevent the expensive re-hashing of
+    ## PhylogeneticResources.zip
+    check: code
   genus_order_lookup:
     command: unpack_genus_order_lookup("data/zae/Spermatophyta_Genera.csv")
 
   synonyms:
     command: make_synonyms("data/spermatophyta_synonyms_PLANTLIST.csv", vascular_plant_phylogeny)
+    ## Also avoids expensive hash
+    check: code
   corrections:
     command: make_corrections("data/names-tr.txt", vascular_plant_phylogeny)
 
@@ -75,36 +80,12 @@ targets:
   ## These are the partitioned data sets.  There's repetition here
   ## because I'm not yet supporting templating of target types.
   leafN_subsets:
-    depends: [leafN_times, leafN_families, leafN_orders]
-  leafN_times:
-    command: make_data_times(leafN)
-  leafN_families:
-    command: make_data_families(leafN)
-  leafN_orders:
-    command: make_data_orders(leafN)
-
+    command: make_data_subsets(leafN)
   seed_mass_subsets:
-    depends: [seed_mass_times, seed_mass_families, seed_mass_orders]
-  seed_mass_times:
-    command: make_data_times(seed_mass)
-  seed_mass_families:
-    command: make_data_families(seed_mass)
-  seed_mass_orders:
-    command: make_data_orders(seed_mass)
-
+    command: make_data_subsets(seed_mass)
   sla_subsets:
-    depends: [sla_times, sla_families, sla_orders]
-  sla_times:
-    command: make_data_times(sla)
-  sla_families:
-    command: make_data_families(sla)
-  sla_orders:
-    command: make_data_orders(sla)
+    command: make_data_subsets(sla)
 
   leafN_fits_times_ml:
-    command: run_model_ad_ml(leafN_times)
-  leafN_fits_families_ml:
-    command: run_model_ad_ml(leafN_families)
-  leafN_fits_orders_ml:
-    command: run_model_ad_ml(leafN_orders)
+    command: run_model_ad_ml(leafN_subsets)
     
