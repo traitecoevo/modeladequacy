@@ -1,4 +1,6 @@
-combine_fits <- function(fits) {
+combine_fits <- function(...) {
+  fits <- list(...)
+  fits <- unlist(fits, FALSE)
   do.call(rbind, lapply(fits, process))
 }
 

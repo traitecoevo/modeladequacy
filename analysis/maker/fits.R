@@ -1,23 +1,27 @@
 ## This is needed until I nail down some issues with argument passing
 ## and peering into lists:
 run_model_ad_ml <- function(dat) {
-  ## mclapply(dat, run_model_ad, "ml", mc.preschedule=FALSE)
-  lapply(dat, run_model_ad, "ml")
+  mclapply(dat, run_model_ad, "ml", mc.preschedule=FALSE)
 }
 run_model_ad_bayes <- function(dat) {
   mclapply(dat, run_model_ad, "bayes", mc.preschedule=FALSE)
 }
 
+run_model_ad_ml_noerr <- function(dat) {
+  mclapply(dat, run_model_ad, "ml", noerr=TRUE, mc.preschedule=FALSE)
+}
+
 # Little wrapper function that loads data, fits a model (ML or MCMC),
 # checks the model adequacy, and then saves the results in a file.  If
 # the output file exists, this is skipped.
-run_model_ad <- function(dat, type, verbose=TRUE) {
+run_model_ad <- function(dat, type, verbose=TRUE,
+                         noerr=FALSE, nolog=FALSE) {
   if (verbose) {
     message(sprintf("%s: %s / %s / %s",
                     type, dat$trait, dat$rank, dat$taxa))
   }
   models <- c("BM", "OU", "EB")
-  res <- lapply(models, function(m) model_ad(dat, m, type))
+  res <- lapply(models, function(m) model_ad(dat, m, type, noerr, nolog))
   names(res) <- models
   res
 }
@@ -35,13 +39,13 @@ run_model_ad <- function(dat, type, verbose=TRUE) {
 #      ma <- arbutus(fit)
 # or
 #     ma <- arbutus(samples)
-model_ad <- function(data, model, type, seed=1) {
+model_ad <- function(data, model, type, seed=1, noerr=FALSE, nolog=FALSE) {
   model <- match.arg(model, c("BM", "OU", "EB"))
   type  <- match.arg(type,  c("ml", "bayes"))
   ## Extract components from the pre-prepared data object.
   phy    <- data$phy
   states <- drop(data$data)
-  se     <- data$se
+  se     <- if (noerr) 0.0 else data$se
 
   # Make the analyses recomputable by using the same seed each time:
   set.seed(seed)

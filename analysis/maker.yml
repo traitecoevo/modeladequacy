@@ -86,6 +86,17 @@ targets:
   sla_subsets:
     command: make_data_subsets(sla)
 
-  leafN_fits_times_ml:
+  fits_ml_leafN:
     command: run_model_ad_ml(leafN_subsets)
+  fits_ml_seed_mass:
+    command: run_model_ad_ml(seed_mass_subsets)
+  fits_ml_sla:
+    command: run_model_ad_ml(sla_subsets)
+  fits_ml:
+    command: combine_fits(fits_ml_leafN, fits_ml_seed_mass, fits_ml_sla)
+
+  ## Variants requested by reviewers:
+  fits_ml_noerr_leafN:
+    command: run_model_ad_ml_noerr(leafN_subsets)
     
+
