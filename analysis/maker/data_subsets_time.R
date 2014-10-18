@@ -1,25 +1,16 @@
-make_data_times <- function(data) {
+make_data_subsets_times <- function(data) {
   ## These are constant across all data sets:
   min_size <- 20L
   times <- c(0.2687, 50.2697, 100.2697, 150.2697, 200.2697)
 
-  trait <- data$trait
-  se <- data$se
-
-  td <- lapply(times, treedata_time, data$phy, data$states, min_size)
-
+  td <- lapply(times, treedata_time, data, min_size)
   ## Collapse all the different time spaces together:
-  td <- unlist(td, FALSE)
-  for (i in seq_along(td)) {
-    td[[i]] <- add_metadata(td[[i]], "timeslice", "random", trait, se)
-  }
-
-  td
+  unlist(td, FALSE)
 }
 
-treedata_time <- function(age, tree, data, min_size) {
-  tr <- time_slice_tree(age, tree, min_size)
-  lapply(tr, treedata_q, data)
+treedata_time <- function(age, data, min_size) {
+  tr <- time_slice_tree(age, data$phy, min_size)
+  lapply(tr, treedata_subset, data, "timeslice", "random")
 }
 
 ## functions for extracting subtrees

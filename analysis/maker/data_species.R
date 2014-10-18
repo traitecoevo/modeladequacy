@@ -27,14 +27,6 @@ make_species_leafN <- function(wright_2004, synonyms, corrections) {
                   sd_raw   = sd(N.mass),
                   n_obs    = length(N.mass))
 
-  ## From the paper:
-  ## > we estimated a single SE for each trait by calculating the mean
-  ## > standard deviation for all species for which we had multiple
-  ## > measurements
-  ok <- dat_spp$n_obs > 1L
-  attr(dat_spp, "sd_raw") <- mean(dat_spp$sd_raw[ok])
-  attr(dat_spp, "sd_log") <- mean(dat_spp$sd_log[ok])
-
   ## Remember the trait for later:
   attr(dat_spp, "trait") <- "leafN"
   
@@ -47,8 +39,6 @@ make_species_seed_mass <- function(kew, synonyms, corrections) {
                     stringsAsFactors=FALSE)
 
   dat$gs <- scrub_wrapper(kew$species, corrections)
-
-  browser(skipCalls=2L)
 
   ## Correct errors:
   errors <- read.csv("data/errors.csv", stringsAsFactors=FALSE)
@@ -80,14 +70,6 @@ make_species_seed_mass <- function(kew, synonyms, corrections) {
                   mean_raw = mean(seed_mass),
                   sd_raw   = sd(seed_mass),
                   n_obs    = length(seed_mass))
-
-  ## From the paper:
-  ## > we estimated a single SE for each trait by calculating the mean
-  ## > standard deviation for all species for which we had multiple
-  ## > measurements
-  ok <- dat_spp$n_obs > 1L
-  attr(dat_spp, "sd_raw") <- mean(dat_spp$sd_raw[ok])
-  attr(dat_spp, "sd_log") <- mean(dat_spp$sd_log[ok])
 
   attr(dat_spp, "trait") <- "seed_size"
 
@@ -147,14 +129,6 @@ make_species_sla <- function(wright_2004, leda, synonyms, corrections) {
                   sd_raw   = sd(sla),
                   n_obs    = length(sla))
 
-  ## From the paper:
-  ## > we estimated a single SE for each trait by calculating the mean
-  ## > standard deviation for all species for which we had multiple
-  ## > measurements
-  ok <- dat_spp$n_obs > 1L
-  attr(dat_spp, "sd_raw") <- mean(dat_spp$sd_raw[ok])
-  attr(dat_spp, "sd_log") <- mean(dat_spp$sd_log[ok])
-  
   attr(dat_spp, "trait") <- "sla"
 
   dat_spp
