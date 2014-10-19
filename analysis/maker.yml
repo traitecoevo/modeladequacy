@@ -11,7 +11,7 @@ packages:
 
 targets:
   all:
-    depends: data
+    depends: fits_ml
 
   data:
     depends:
@@ -95,6 +95,15 @@ targets:
   fits_ml:
     command: combine_fits(fits_ml_leafN, fits_ml_seed_mass, fits_ml_sla)
 
-  ## Variants requested by reviewers:
-  fits_ml_noerr_leafN:
-    command: run_model_ad_ml_noerr(leafN_subsets)
+  fits_bayes_leafN:
+    command: run_model_ad_bayes(leafN_subsets)
+  fits_bayes_seed_mass:
+    command: run_model_ad_bayes(seed_mass_subsets)
+  fits_bayes_sla:
+    command: run_model_ad_bayes(sla_subsets)
+  fits_bayes:
+    command: combine_fits(fits_bayes_leafN, fits_bayes_seed_mass, fits_bayes_sla)
+
+  output/figs/aic-support.pdf:
+    plot: {width: 9, height:6}
+    command: fig_model_support_aic(fits_ml)

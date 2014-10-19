@@ -3,6 +3,9 @@
 ## Load packages and helper functions
 source("R/model-adequacy-analysis.R")
 
+## This is temporary:
+source("maker/figures.R")
+
 ### Set options
 ##+ echo=FALSE, results=FALSE
 knitr::opts_chunk$set(tidy=FALSE)
@@ -10,12 +13,20 @@ knitr::opts_chunk$set(tidy=FALSE)
 ## Define colours used throughout
 col <- c("#F46D43", "#3288BD", "#CDCD00")
 
+## Haul in stuff from maker, at least for now:
+library(maker)
+m <- maker$new()
+tree <- m$get("vascular_plant_phylogeny")
+
+sla <- m$get("species_sla")
+lfn <- m$get("species_leafN")
+sdm <- m$get("species_seed_mass")
+
+ml <- m$get("fits_ml")
 
 ## ## Trait data across the angiosperm phylogeny
-## Import tree
-tree <- get.tree()
 
-## Extract angiosperms
+## Extract angiosperms from the phylogeny
 t <- extract.clade(tree, node="Angiospermae")
 
 ## Number of taxa in angiosperm tree
@@ -24,12 +35,9 @@ Ntip(t)
 ## Age of tree
 max(branching.times(t))
 
-## Read in the three data sets; these specific leaf area (metres
-## square per gram), leaf mass (gram), and leaf nitrogen (grams per
-## gram) by species.
-sla <- read.csv("output/species-mean-sla.csv", stringsAsFactors=FALSE)
-sdm <- read.csv("output/species-mean-seedMass.csv", stringsAsFactors=FALSE)
-lfn <- read.csv("output/species-mean-leafN.csv", stringsAsFactors=FALSE)
+## We have three species-level data sets: specific leaf area (metres
+## square per gram; sla), seed mass (gram; sdm), and leaf nitrogen (grams per
+## gram; lfn).
 
 ## Number of species for which we have sla
 nrow(sla)
@@ -46,28 +54,17 @@ nrow(lfn)
 ## Overlap between tree and leafN
 length(intersect(t$tip.label, lfn$gs))
 
-
-## Read in results from model fitting
-## Maximum likelihood
-ml <- read.csv("output/results-ml.csv", as.is=TRUE)
-
-## MCMC
-bay <- read.csv("output/results-bayes.csv", as.is=TRUE)
-
-## Number of clades in dataset
+## After splitting and fitting, number of clades in the dataset:
 nrow(ml)
-
-
 
 
 ## ## Results from case study: seed mass evolution in Meliaceae and Fagaceae
 
 ## Subset the ML analyses by dataset
 ## Meliaceae
-mm <- ml[which(ml[,"taxa"] == "Meliaceae"), ]
+mm <- ml[ml$taxa == "Meliaceae" & ml$trait == "seed_size", ]
 ## Fagaceae
-ff <- ml[which(ml[,"taxa"] == "Fagaceae"), ]
-ff <- ff[which(ff[,"trait"] == "seedmass"), ]
+ff <- ml[ml$taxa == "Fagaceae" & ml$trait == "seed_size", ]
 
 ## AIC weight of the OU model for Meliaceae
 mm$aicw.ou
@@ -76,88 +73,51 @@ mm$aicw.ou
 ff$aicw.ou
 
 ## Get p-values for all six summary stats
-pvalue.names <- c("m.pic.ml.ou", "v.pic.ml.ou", "s.var.ml.ou",
-                  "s.anc.ml.ou", "s.hgt.ml.ou", "d.ks.ml.ou")
+pvalue_names_arbutus <- c("m.sig", "c.var", "s.var", "s.asr", "s.hgt", "d.cdf")
+pvalue_names <- paste0(pvalue_names_arbutus, ".ml.ou")
 
 ## Meliaceae:
-mm[,pvalue.names]
+mm[, pvalue_names]
 
 ## Fagaceae:
-ff[,pvalue.names]
-
-
-
+ff[, pvalue_names]
 
 ## ## Results from conventional model comparison using AIC:
 
 ## Get AIC support for each model
-aic.names <- c("aicw.bm", "aicw.ou", "aicw.eb")
-aic <- ml[,aic.names]
+aic_names <- c("aicw.bm", "aicw.ou", "aicw.eb")
+aic <- ml[aic_names]
 colnames(aic) <- c("BM", "OU", "EB")
 aic <- aic[order(aic[,"OU"], aic[,"BM"], decreasing = TRUE),]
 
-aic.best <- sapply(seq_len(nrow(aic)), function(x)
-                   return(colnames(aic)[which(aic[x,] == max(aic[x,]))]))
+aic_best <- names(aic)[apply(aic, 1, which.max)]
 
-## How many clades best supported by OU
-length(which(aic.best == "OU"))
+## How many clades best supported by each model:
+table(aic_best)
 
 ## How many clades support OU with 100% of AICw
-length(which(aic$OU == 1))
+sum(aic$OU == 1)
 
 ## How many clades support OU with >75% of AICw
-length(which(aic$OU > 0.75))
+sum(aic$OU > 0.75)
 
 ## How many clades support EB with >75% of AICw
-length(which(aic$EB > 0.75))
+sum(aic$EB > 0.75)
 
 ## Now subsetting the taxa to only look at trees with at least 100 taxa
-lg.trees <- which(ml$size >= 100)
-aic.lg <- aic[lg.trees,]
+aic_large <- aic[ml$size >= 100, ]
 
-## How many of the large trees supported by a single model with at least 90% AICw
-aic.lg.90 <- sapply(seq_len(nrow(aic.lg)), function(x)
-                    return(max(aic.lg[x,]) > 0.9))
-length(which(aic.lg.90))
+## How many of the large trees supported by a single model with at
+## least 90% AICw?
+sum(apply(aic_large, 1, max) > 0.9)
 
 ## Of the large trees, how many support OU with at least 90% AICw
-length(which(aic.lg$OU > 0.9))
-
+sum(aic_large$OU > 0.9)
 
 ## ### Code for plotting the relative AIC support for the different models
-fig.model.support.aic <- function(aic){
-    ## add dummy variable
-    dd <- cbind(rownames(aic), aic)
-    colnames(dd) <- c("Subclade", colnames(aic))
-    ord <- dd[order(dd[,"OU"], dd[,"BM"], decreasing = TRUE),"Subclade"]
-    ## reorient data frame for plotting
-    df <- melt(dd)
-    colnames(df)[2:3] <- c("model", "weight")
-    df$Subclade <- factor(df$Subclade, ord)
-
-    ## create geom_bar plot
-    .e <- environment()
-    p <- ggplot(df, aes(factor(Subclade), weight, fill=model, order=model), environment=.e)
-    p <- p + geom_bar(stat="identity", position="stack",width=1)
-    p <- p + scale_y_continuous(name="AIC weight")
-    p <- p + scale_fill_manual("Model", values=col)
-    p <- p + theme_bw()
-    p <- p + theme(axis.text.x=element_blank(),
-                   axis.ticks.x=element_blank(),
-                   axis.ticks.y=element_blank(),
-                   axis.text.y=element_blank(),
-                   panel.grid.minor=element_blank(),
-                   panel.grid.major=element_blank(),
-                   panel.border=element_blank(),
-                   panel.background=element_blank(),
-                   strip.background=element_rect(fill="white"),
-                   plot.background=element_blank())
-    p <- p + xlab("Dataset")
-    p
-}
 
 ## Plot AIC model support
-fig.model.support.aic(aic)
+fig_model_support_aic(aic)
 
 
 
@@ -187,8 +147,7 @@ length(which(dic$OU > 0.75))
 length(which(dic$EB > 0.75))
 
 ## Now subsetting the taxa to only look at trees with at least 100 taxa
-lg.trees.bay <- which(bay$size >= 100)
-dic.lg <- dic[lg.trees.bay,]
+dic.lg <- dic[bay$size >= 100,]
 
 ## How many of the large trees supported by a single model with at least 90% DICw
 dic.lg.90 <- sapply(seq_len(nrow(dic.lg)), function(x)
@@ -488,9 +447,9 @@ fig.modelad.aic <- function(df){
 ## Compile table with the best model only, excluding datasets where BM is the
 ## best supported model. Calculate difference in AIC score between best supported
 ## alternate model and BM.
-aic.df <- build.table.adequacy.aic(ml)
+aic_df <- build.table.adequacy.aic(ml)
 
-fig.modelad.aic(aic.df)
+fig.modelad.aic(aic_df)
 
 
 

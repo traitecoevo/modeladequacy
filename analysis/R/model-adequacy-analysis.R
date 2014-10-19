@@ -10,30 +10,18 @@ library(ape)
 source("R/paths.R")
 
 ## Functions for making a dataframe with results from only the best model
-get.model.suffix <- function(x){
-    st <- strsplit(x, split=".", fixed=TRUE)
-    sf <- st[[1]][length(st[[1]])]
-    sf
+get_model_suffix <- function(x) {
+  sub(".*\\.([^.]+)$", "\\1", x)
 }
 
-
-rm.model.suffix <- function(x){
-    st <- strsplit(x, split=".", fixed=TRUE)[[1]]
-    if ("ml" %in% st | "bayes" %in% st)
-        st <- st[-(length(st) - 1)]
-
-    strm <- st[-length(st)]
-    nofx <- paste(strm, collapse=".")
-    nofx      
+rm_model_suffix <- function(x) {
+  sub("\\.(ml\\.|bayes\\.)?([^.]+)$", "", x, perl=TRUE)
 }
 
-
-rm.model.suffix.colnames <- function(x){
-    colnames(x) <- sapply(colnames(x), function(y) rm.model.suffix(y))
-    x
+rm_model_suffix_colnames <- function(x){
+  colnames(x) <- rm_model_suffix(colnames(x))
+  x
 }
-
-
 
 prune.dataset.best.ml <- function(x){
     ## colnames to ignore
@@ -42,20 +30,20 @@ prune.dataset.best.ml <- function(x){
     tmp.df <- x[,tmp]
 
     ## get model for each column
-    suf <- sapply(tmp, function(y) get.model.suffix(y))
+    suf <- get_model_suffix(tmp)
 
     ## find best model
     aic <- c("aic.bm", "aic.ou", "aic.eb")
     mm <- sapply(seq_len(nrow(x)), function(y)
                  return(aic[which(x[y,aic] == min(x[y,aic]))]))
-    model <- sapply(mm, function(y) get.model.suffix(y))
+    model <- get_model_suffix(mm)
 
     ## build new dataframe inlcuding only the best model
     dd <- lapply(seq_len(nrow(tmp.df)), function(y)
                  return(tmp.df[y,which(suf == model[y])]))
 
     ## strip column names of last element
-    dd <- lapply(dd, function(y) rm.model.suffix.colnames(y))
+    dd <- lapply(dd, function(y) rm_model_suffix_colnames(y))
 
     df <- do.call(rbind, dd)
 
@@ -73,20 +61,20 @@ prune.dataset.best.bayes <- function(x){
     tmp.df <- x[,tmp]
 
     ## get model for each column
-    suf <- sapply(tmp, function(y) get.model.suffix(y))
+    suf <- get_model_suffix(tmp)
 
     ## find best model
     dic <- c("dic.bm", "dic.ou", "dic.eb")
     mm <- sapply(seq_len(nrow(x)), function(y)
                  return(dic[which(x[y,dic] == min(x[y,dic]))]))
-    model <- sapply(mm, function(y) get.model.suffix(y))
+    model <- get_model_suffix(mm)
 
     ## build new dataframe inlcuding only the best model
     dd <- lapply(seq_len(nrow(tmp.df)), function(y)
                  return(tmp.df[y,which(suf == model[y])]))
 
     ## strip column names of last element
-    dd <- lapply(dd, function(y) rm.model.suffix.colnames(y))
+    dd <- lapply(dd, function(y) rm_model_suffix_colnames(y))
 
     df <- do.call(rbind, dd)
 
@@ -107,13 +95,13 @@ build.table.adequacy.aic <- function(x){
     tmp.df <- x[,tmp]
 
     ## get model for each column
-    suf <- sapply(tmp, function(y) get.model.suffix(y))
+    suf <- get_model_suffix(tmp)
 
     ## find best model
     aic <- c("aic.bm", "aic.ou", "aic.eb")
     mm <- sapply(seq_len(nrow(x)), function(y)
                  return(aic[which(x[y,aic] == min(x[y,aic]))]))
-    model <- sapply(mm, function(y) get.model.suffix(y))
+    model <- get_model_suffix(mm)
 
     ## difference in AIC between best supported model and BM
     diff.bm <- sapply(seq_len(nrow(tmp.df)), function(x)
@@ -124,7 +112,7 @@ build.table.adequacy.aic <- function(x){
                  return(tmp.df[y,which(suf == model[y])]))
 
     ## strip column names of last element
-    dd <- lapply(dd, function(y) rm.model.suffix.colnames(y))
+    dd <- lapply(dd, function(y) rm_model_suffix_colnames(y))
 
     df <- do.call(rbind, dd)
 
@@ -149,13 +137,13 @@ build.table.adequacy.dic <- function(x){
     tmp.df <- x[,tmp]
 
     ## get model for each column
-    suf <- sapply(tmp, function(y) get.model.suffix(y))
+    suf <- get_model_suffix(tmp)
 
     ## find best model
     dic <- c("dic.bm", "dic.ou", "dic.eb")
     mm <- sapply(seq_len(nrow(x)), function(y)
                  return(dic[which(x[y,dic] == min(x[y,dic]))]))
-    model <- sapply(mm, function(y) get.model.suffix(y))
+    model <- get_model_suffix(mm)
 
     ## difference in AIC between best supported model and BM
     diff.bm <- sapply(seq_len(nrow(tmp.df)), function(x)
@@ -166,7 +154,7 @@ build.table.adequacy.dic <- function(x){
                  return(tmp.df[y,which(suf == model[y])]))
 
     ## strip column names of last element
-    dd <- lapply(dd, function(y) rm.model.suffix.colnames(y))
+    dd <- lapply(dd, function(y) rm_model_suffix_colnames(y))
 
     df <- do.call(rbind, dd)
 

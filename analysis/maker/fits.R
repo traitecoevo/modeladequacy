@@ -1,8 +1,7 @@
 ## This is needed until I nail down some issues with argument passing
 ## and peering into lists:
 run_model_ad_ml <- function(dat) {
-  lapply(dat, run_model_ad, "ml")
-  ## mclapply(dat, run_model_ad, "ml", mc.preschedule=FALSE)
+  mclapply(dat, run_model_ad, "ml", mc.preschedule=FALSE)
 }
 run_model_ad_bayes <- function(dat) {
   mclapply(dat, run_model_ad, "bayes", mc.preschedule=FALSE)
