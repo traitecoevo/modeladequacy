@@ -8,19 +8,26 @@ packages:
   - arbutus
   - diversitree
   - parallel
+  - reshape2
+  - ggplot2
+  - grid
+  - gridExtra
 
 targets:
   all:
-    depends: fits_ml
+    depends: fits
 
   data:
     depends:
-      - leafN
+      - leaf_n
       - seed_mass
       - sla
 
-  angio:
-    depends: [leafN_subsets, seed_mass_subsets, sla_subsets]
+  fits:
+    depends: [fits_ml, fits_bayes]
+
+  data_subsets:
+    depends: [leaf_n_subsets, seed_mass_subsets, sla_subsets]
 
   data/wright_2004.xls:
     command: download_wright_2004(target_name)
@@ -63,15 +70,15 @@ targets:
   corrections:
     command: make_corrections("data/names-tr.txt", vascular_plant_phylogeny)
 
-  species_leafN:
-    command: make_species_leafN(wright_2004, synonyms, corrections)
+  species_leaf_n:
+    command: make_species_leaf_n(wright_2004, synonyms, corrections)
   species_seed_mass:
     command: make_species_seed_mass(kew, synonyms, corrections)
   species_sla:
     command: make_species_sla(wright_2004, leda, synonyms, corrections)
 
-  leafN:
-    command: build_data(species_leafN, vascular_plant_phylogeny)
+  leaf_n:
+    command: build_data(species_leaf_n, vascular_plant_phylogeny)
   seed_mass:
     command: build_data(species_seed_mass, vascular_plant_phylogeny)
   sla:
@@ -79,31 +86,48 @@ targets:
 
   ## These are the partitioned data sets.  There's repetition here
   ## because I'm not yet supporting templating of target types.
-  leafN_subsets:
-    command: make_data_subsets(leafN)
+  leaf_n_subsets:
+    command: make_data_subsets(leaf_n)
   seed_mass_subsets:
     command: make_data_subsets(seed_mass)
   sla_subsets:
     command: make_data_subsets(sla)
 
-  fits_ml_leafN:
-    command: run_model_ad_ml(leafN_subsets)
+  fits_ml_leaf_n:
+    command: run_model_ad_ml(leaf_n_subsets)
   fits_ml_seed_mass:
     command: run_model_ad_ml(seed_mass_subsets)
   fits_ml_sla:
     command: run_model_ad_ml(sla_subsets)
   fits_ml:
-    command: combine_fits(fits_ml_leafN, fits_ml_seed_mass, fits_ml_sla)
+    command: combine_fits(fits_ml_leaf_n, fits_ml_seed_mass, fits_ml_sla)
 
-  fits_bayes_leafN:
-    command: run_model_ad_bayes(leafN_subsets)
+  fits_bayes_leaf_n:
+    command: run_model_ad_bayes(leaf_n_subsets)
   fits_bayes_seed_mass:
     command: run_model_ad_bayes(seed_mass_subsets)
   fits_bayes_sla:
     command: run_model_ad_bayes(sla_subsets)
   fits_bayes:
-    command: combine_fits(fits_bayes_leafN, fits_bayes_seed_mass, fits_bayes_sla)
+    command: combine_fits(fits_bayes_leaf_n, fits_bayes_seed_mass, fits_bayes_sla)
 
-  output/figs/aic-support.pdf:
-    plot: {width: 9, height: 6}
-    command: fig_model_support_aic(fits_ml)
+  # fits_ml_best:
+  #   command: prune_dataset_best(fits_ml)
+  # fits_bayes_best:
+  #   command: prune_dataset_best(fits_bayes)
+
+  # output/figs/aic-support.pdf:
+  #   plot: {width: 9, height: 6}
+  #   command: fig_model_support_ic(fits_ml)
+
+  # output/figs/dic-support.pdf:
+  #   plot: {width: 9, height: 6}
+  #   command: fig_model_support_ic(fits_bayes)
+
+  # output/figs/pval-hist-ml.pdf:
+  #   plot: {width: 9, height: 5}
+  #   command: fig_pval_histogram(fits_ml_best)
+
+  # output/figs/pval-hist-bayes.pdf:
+  #   plot: {width: 9, height: 5}
+  #   command: fig_pval_histogram(fits_bayes_best)

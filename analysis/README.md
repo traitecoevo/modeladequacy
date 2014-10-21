@@ -1,45 +1,84 @@
 # Model adequacy and the macroevolution of angiosperm functional traits: Analysis
 
-We developed this repository and structured our analysis with the goal of making our methods transparent and our results completely reproducible. 
+We developed this repository and structured our analysis with the goal of making our methods transparent and our results completely reproducible.
 
-To repeat our analyses, first ensure that [make](https://www.gnu.org/software/make) is installed on your computer. The analyses also rely on the following R packages:
+## Dependencies:
 
-* arbutus
-* ape
-* dplyr (>= 0.1.2)
-* digest
-* diversitree
-* geiger
-* ggplot2
-* xlsx
-* XML
-* grid
-* gridExtra
-* reshape2
-* knitr
-* sowsear
+First, install [maker](https://github.com/richfitz/maker) from github using devtools (maker is not yet on CRAN as it is under active development).
 
-All packages except [arbutus](https://github.com/mwpennell/arbutus) and [sowsear](https://github.com/richfitz/sowsear) are currently avaialbe on CRAN. To install `arbutus` and `sowsear`, the easiest way to install is to use [devtools](https://github.com/hadley/devtools). Install `devtools` then type
-
-```
-library(devtools)
-install_github("mwpennell/arbutus")
-install_github("richfitz/sowsear")
+```r
+devtools::install_github("richfitz/maker")
 ```
 
-Or, run
+We depend on quite a few packages for the analysis.  The full list is:
 
-```
-make deps
+  - XML
+  - ape
+  - arbutus
+  - diversitree
+  - dplyr
+  - geiger
+  - ggplot2
+  - grid
+  - gridExtra
+  - parallel
+  - reshape2
+  - xslx
+  - sowsear
+
+All packages except [arbutus](https://github.com/mwpennell/arbutus) and [sowsear](https://github.com/richfitz/sowsear) are currently avaialbe on CRAN.
+
+To install `arbutus` and `sowsear`, use devtools:
+
+```r
+devtools::install_github("mwpennell/arbutus")
+devtools::install_github("richfitz/sowsear")
 ```
 
-which will install packages that are out of date or not installed.
+The remaining packages can then by installed via CRAN.
 
-Once everything is installed, clone the repository
+Eventually you should be able to run:
+
+```r
+maker::make("deps")
 ```
-git clone https://github.com/richfitz/modeladequacy.git
+
+to install all dependencies, but this currently only works for CRAN dependencies and will skip xlsx.
+
+## Running the analysis
+
+From within the `analysis/` directory run `maker::make()`.  This will take several hours, depending on your computer.
+
+Or, in several steps:
+
+1. Construct a "maker" object that we'll interact with:
+
+```r
+m <- maker$new()
 ```
-move into the `/analysis` folder and type
+
+2. Download all the data and build into data sets
+
+```r
+m$make("data")
+```
+
+3. Split the data into a large number of subsets and run the analysis on each (both ML and Bayesian)
+
+```r
+m$make("fits")
+```
+
+This takes a while!  If you have a powerful computer, you will find that setting the `mc.cores` option helps (e.g. `options(mc.cores=8)` to use 8 cores).
+
+4. Generate the report and figures
+
+*(still under development as we move to the new system)*
+
+
+**NOTE** all the instructions below are out of date as we transition to using [maker](https://github.com/richfitz/maker) to control the workflow.  They may contain useful information though.
+
+---
 
 ```
 make

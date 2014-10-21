@@ -16,7 +16,12 @@ download_zae_genera <- function(destination_filename) {
 
 unpack_tree <- function(resources_zip) {
   tmp <- tempdir()
-  unzip(file.path(resources_zip),
+  ## unzip() will not throw an error if a the file does not exist in
+  ## the archive, so this is here to force an error to happen.  This
+  ## occurs if the zip file is corrupted for example.
+  oo <- options(warn=2)
+  on.exit(options(oo))
+  unzip(resources_zip,
         'PhylogeneticResources/Vascular_Plants_rooted.dated.tre',
         junkpaths=TRUE, exdir=tmp)
   read.tree(file.path(tmp, "Vascular_Plants_rooted.dated.tre"))

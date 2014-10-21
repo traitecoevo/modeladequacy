@@ -12,7 +12,10 @@ build_data <- function(dat_spp, tree) {
   ## > standard deviation for all species for which we had multiple
   ## > measurements
   ## NOTE: Do this *before* filtering by presence in the tree.
-  ok <- dat_spp$n_obs > 1L
+  ## NOTE: Some databases have multiple entries that are (essentially)
+  ## the same, deflating the sd estimate.  We filter these out with
+  ## the second clause.
+  ok <- dat_spp$n_obs > 1L & dat_spp$sd_raw > 0.0001
   se_raw <- mean(dat_spp$sd_raw[ok])
   se_log <- mean(dat_spp$sd_log[ok])
 

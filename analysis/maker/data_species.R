@@ -1,6 +1,6 @@
-## The more serious data munging: building the leafN, seed_mass and
+## The more serious data munging: building the leaf_n, seed_mass and
 ## sla data sets:
-make_species_leafN <- function(wright_2004, synonyms, corrections) {
+make_species_leaf_n <- function(wright_2004, synonyms, corrections) {
   dat <- wright_2004[c("Species", "N.mass")]
   names(dat) <- c("gs", "N.mass")
 
@@ -12,23 +12,22 @@ make_species_leafN <- function(wright_2004, synonyms, corrections) {
 
   dat$gs <- update_synonomy(dat$gs, synonyms)
 
-  ## Build a little data frame with the species names and geometric mean
-  ## of the trait:
-
   ## Here, what we want is four possible things:
-  ##   * Mean and sd of log(trait)
+  ##   * Mean and sd of log10(trait)
   ##   * Mean and sd of trait
+  ## We're using log10 here because that's common within the traits
+  ## literature.
   dat_spp <-
     dat[complete.cases(dat),] %>%
       group_by(gs)            %>%
-        summarise(mean_log = mean(log(N.mass)),
-                  sd_log   = sd(log(N.mass)),
+        summarise(mean_log = mean(log10(N.mass)),
+                  sd_log   = sd(log10(N.mass)),
                   mean_raw = mean(N.mass),
                   sd_raw   = sd(N.mass),
                   n_obs    = length(N.mass))
 
   ## Remember the trait for later:
-  attr(dat_spp, "trait") <- "leafN"
+  attr(dat_spp, "trait") <- "leaf_n"
   
   dat_spp
 }
@@ -60,18 +59,16 @@ make_species_seed_mass <- function(kew, synonyms, corrections) {
   #using modified plant list synonmy
   dat$gs <- update_synonomy(dat$gs, synonyms)
 
-  ## Build a little data frame with the species names and geometric mean
-  ## of the trait:
   dat_spp <-
     dat[complete.cases(dat),] %>%
       group_by(gs)            %>%
-        summarise(mean_log = mean(log(seed_mass)),
-                  sd_log   = sd(log(seed_mass)),
+        summarise(mean_log = mean(log10(seed_mass)),
+                  sd_log   = sd(log10(seed_mass)),
                   mean_raw = mean(seed_mass),
                   sd_raw   = sd(seed_mass),
                   n_obs    = length(seed_mass))
 
-  attr(dat_spp, "trait") <- "seed_size"
+  attr(dat_spp, "trait") <- "seed_mass"
 
   dat_spp
 }
@@ -118,13 +115,11 @@ make_species_sla <- function(wright_2004, leda, synonyms, corrections) {
 
   dat$gs <- update_synonomy(dat$gs, synonyms)
 
-  ## Build a little data frame with the species names and geometric mean
-  ## of the trait:
   dat_spp <-
     dat[complete.cases(dat),] %>%
       group_by(gs)            %>%
-        summarise(mean_log = mean(log(sla)),
-                  sd_log   = sd(log(sla)),
+        summarise(mean_log = mean(log10(sla)),
+                  sd_log   = sd(log10(sla)),
                   mean_raw = mean(sla),
                   sd_raw   = sd(sla),
                   n_obs    = length(sla))

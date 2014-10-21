@@ -4,21 +4,21 @@ targets:
     depends: [fits_noerr_ml, fits_nolog_ml]
 
   ## With no standard error (might fail to fit, for some data sets?)
-  fits_noerr_ml_leafN:
-    command: run_model_ad_ml_noerr(leafN_subsets)
+  fits_noerr_ml_leaf_n:
+    command: run_model_ad_ml_noerr(leaf_n_subsets)
   fits_noerr_ml_seed_mass:
     command: run_model_ad_ml_noerr(seed_mass_subsets)
   fits_noerr_ml_sla:
     command: run_model_ad_ml_noerr(sla_subsets)
   fits_noerr_ml:
-    command: combine_fits(fits_noerr_ml_leafN, fits_noerr_ml_seed_mass, fits_noerr_ml_sla)
+    command: combine_fits(fits_noerr_ml_leaf_n, fits_noerr_ml_seed_mass, fits_noerr_ml_sla)
 
   ## With traits _not_ log transformed prior to analysis.
-  fits_nolog_ml_leafN:
-    command: run_model_ad_ml_nolog(leafN_subsets)
+  fits_nolog_ml_leaf_n:
+    command: run_model_ad_ml_nolog(leaf_n_subsets)
   fits_nolog_ml_seed_mass:
     command: run_model_ad_ml_nolog(seed_mass_subsets)
   fits_nolog_ml_sla:
     command: run_model_ad_ml_nolog(sla_subsets)
   fits_nolog_ml:
-    command: combine_fits(fits_nolog_ml_leafN, fits_nolog_ml_seed_mass, fits_nolog_ml_sla)
+    command: combine_fits(fits_nolog_ml_leaf_n, fits_nolog_ml_seed_mass, fits_nolog_ml_sla)
