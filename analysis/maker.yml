@@ -105,5 +105,5 @@ targets:
     command: combine_fits(fits_bayes_leafN, fits_bayes_seed_mass, fits_bayes_sla)
 
   output/figs/aic-support.pdf:
-    plot: {width: 9, height:6}
+    plot: {width: 9, height: 6}
     command: fig_model_support_aic(fits_ml)
