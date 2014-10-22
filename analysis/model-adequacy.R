@@ -28,6 +28,9 @@ fits_ml_best <- m$get("fits_ml_best")
 fits_bayes <- m$get("fits_bayes")
 fits_bayes_best <- m$get("fits_bayes_best")
 
+e <- maker:::maker_environment(character(0), m)
+maker_environment_attach(e)
+
 ## ## Trait data across the angiosperm phylogeny
 
 ## Extract angiosperms from the phylogeny
@@ -66,9 +69,9 @@ nrow(fits_ml)
 
 ## Subset the ML analyses by dataset
 ## Meliaceae
-mm <- fits_ml[fits_ml$taxa == "Meliaceae" & fits_ml$trait == "seed_size", ]
+mm <- fits_ml[fits_ml$taxa == "Meliaceae" & fits_ml$trait == "seed_mass", ]
 ## Fagaceae
-ff <- fits_ml[fits_ml$taxa == "Fagaceae" & fits_ml$trait == "seed_size", ]
+ff <- fits_ml[fits_ml$taxa == "Fagaceae" & fits_ml$trait == "seed_mass", ]
 
 ## AIC weight of the OU model for Meliaceae
 mm$aicw.ou
@@ -88,10 +91,7 @@ ff[, pvalue_names]
 ## ## Results from conventional model comparison using AIC:
 
 ## Get AIC support for each model
-aic_names <- c("aicw.bm", "aicw.ou", "aicw.eb")
-aic <- fits_ml[aic_names]
-colnames(aic) <- c("BM", "OU", "EB")
-aic <- aic[order(aic[,"OU"], aic[,"BM"], decreasing = TRUE),]
+aic <- build_ic(fits_ml)
 
 aic_best <- names(aic)[apply(aic, 1, which.max)]
 
@@ -120,10 +120,7 @@ sum(aic_large$OU > 0.9)
 ## ### Code for plotting the relative AIC support for the different models
 
 ## Plot AIC model support
-fig_model_support_aic(fits_ml)
-
-
-
+fig_model_support_ic(fits_ml)
 
 
 ## ## Results from conventional model comparison using DIC (Bayesian analysis):

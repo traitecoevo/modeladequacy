@@ -111,10 +111,10 @@ targets:
   fits_bayes:
     command: combine_fits(fits_bayes_leaf_n, fits_bayes_seed_mass, fits_bayes_sla)
 
-  # fits_ml_best:
-  #   command: prune_dataset_best(fits_ml)
-  # fits_bayes_best:
-  #   command: prune_dataset_best(fits_bayes)
+  fits_ml_best:
+    command: prune_dataset_best(fits_ml)
+  fits_bayes_best:
+    command: prune_dataset_best(fits_bayes)
 
   # output/figs/aic-support.pdf:
   #   plot: {width: 9, height: 6}

@@ -1,3 +1,12 @@
+build_ic <- function(fits) {
+  models <- c("bm", "ou", "eb")
+  type <- if ("aic.bm" %in% names(fits)) "aic" else "dic"
+  col_names <- paste0(type, "w.", models)
+  ic <- fits[col_names]
+  colnames(ic) <- toupper(models)
+  ic
+}
+
 fig_cols <- function() {
   c("#F46D43", "#3288BD", "#CDCD00")
 }
@@ -7,10 +16,8 @@ fig_model_support_ic <- function(fits) {
   col <- fig_cols()
   ylab <- paste(toupper(type), "weight")
 
-  col_names <- paste0(type, "w.", c("bm", "ou", "eb"))
-  ic <- fits[col_names]
+  ic <- build_ic(fits)
 
-  colnames(ic) <- c("BM", "OU", "EB")
   ## add dummy variable
   dd <- cbind(Subclade=as.character(seq_len(nrow(ic))), ic)
   ord <- dd[order(dd[,"OU"], dd[,"BM"], decreasing = TRUE), "Subclade"]
