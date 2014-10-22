@@ -12,7 +12,7 @@ process_wright_2004 <- function(filename) {
   ## makerfile because it loads really slowly.
   library(methods) # Serious, WTF Rscript?
   library(xlsx, quietly=TRUE) # Yay, using xlsx::read won't work...
-  d <- read.xlsx2("data/wright-2004.xls", sheetIndex=1, startRow=11,
+  d <- read.xlsx2(filename, sheetIndex=1, startRow=11,
                   stringsAsFactors=FALSE, check.names=FALSE)
 
   ## Do some name translations:
