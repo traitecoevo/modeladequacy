@@ -1,18 +1,9 @@
-build_ic <- function(fits) {
-  models <- c("bm", "ou", "eb")
-  type <- if ("aic.bm" %in% names(fits)) "aic" else "dic"
-  col_names <- paste0(type, "w.", models)
-  ic <- fits[col_names]
-  colnames(ic) <- toupper(models)
-  ic
-}
-
 fig_cols <- function() {
   c("#F46D43", "#3288BD", "#CDCD00")
 }
 
 fig_model_support_ic <- function(fits) {
-  type <- if ("aic.bm" %in% names(fits)) "aic" else "dic"
+  type <- guess_ic(fits)
   col <- fig_cols()
   ylab <- paste(toupper(type), "weight")
 
@@ -58,13 +49,9 @@ fig_pval_histogram <- function(best) {
   df <- suppressMessages(melt(best))
 
   ## set the order and the labels
-  df$trait <- factor(df$trait,
-                     levels=c("sla", "seed_mass", "leaf_n"),
-                     labels=c("SLA", "SeedMass", "LeafN"))
+  df$trait <- rename_traits(df$trait)
+  df$variable <- rename_variables(df$variable)
 
-  df$variable <- factor(df$variable,
-                        levels=pvalue_names_arbutus(),
-                        labels=c("italic(M[SIG])", "italic(C[VAR])", "italic(S[VAR])", "italic(S[ASR])", "italic(S[HGT])", "italic(D[CDF])"))
   .e <- environment()
 
   p <- ggplot(df, aes(x=value), environment = .e)
@@ -83,4 +70,141 @@ fig_pval_histogram <- function(best) {
                  axis.text.y=element_blank(),
                  legend.position="none")
   print(p)
+}
+
+## Code for plotting the relative support (AIC) for the best model
+## (compared to BM) vs. a multivariate measure of model adequacy
+fig_modelad_ic <- function(fits) {
+  df <- build_table_adequacy_ic(fits)
+  df <- prepare_df_for_ggplot(df)
+
+  type <- guess_ic(fits)
+  xlab <- sprintf("%s(BM) - %s(OU/EB)", toupper(type), toupper(type))
+  col <- fig_cols()
+  
+  .e <- environment()
+
+  ## need to set options for scientific notation
+  options(scipen=1000)
+  
+  ## the occasional dataset may have NA for Mahalanobis distance
+  ## remove this for the plot
+  df <- na.omit(df)
+
+  p <- ggplot(df, aes(diff.bm, mv), environment=.e)
+  p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.8)
+  p <- p + scale_colour_manual("Trait", values=col)
+  p <- p + scale_shape_manual("Rank", values=c(15,16,17))
+  p <- p + theme_bw()
+  p <- p + theme(plot.background = element_blank(),
+                 panel.grid.major = element_blank(),
+                 panel.grid.minor = element_blank(),
+                 panel.border=element_blank(),
+                 legend.justification=c(0.02,0.98),
+                 legend.position=c(0.02,0.98),
+                 legend.key=element_blank(),
+                 axis.line = element_line(color = 'black'))
+  p <- p + scale_y_log10()
+  p <- p + scale_x_log10()
+  p <- p + xlab(xlab)
+  p <- p + ylab("Mahalanobis distance")
+  print(p)
+}
+
+## Code to plot a multivariate measure of model adequacy (Mahalanobis
+## distance) against clade size
+fig_modelad_size <- function(fits_best) {
+  df <- prepare_df_for_ggplot(fits_best)
+  col <- fig_cols()
+
+  .e <- environment()
+
+  ## the occasional dataset may have NA for Mahalanobis distance
+  ## remove this for the plot
+  df <- na.omit(df)
+
+  p <- ggplot(df, aes(size, mv), environment=.e)
+  p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.8)
+
+  p <- p + scale_colour_manual("Trait", values=col)
+  p <- p + scale_shape_manual("Rank", values=c(15,16,17))
+  p <- p + theme_bw()
+  p <- p + theme(plot.background = element_blank(),
+                 panel.grid.major = element_blank(),
+                 panel.grid.minor = element_blank(),
+                 panel.border=element_blank(),
+                 legend.justification=c(0.98,0.02),
+                 legend.position=c(0.98,0.02),
+                 legend.key=element_blank(),
+                 axis.line = element_line(color = 'black'))
+  p <- p + scale_y_log10()
+  p <- p + scale_x_log10()
+  p <- p + xlab("Number of taxa")
+  p <- p + ylab("Mahalanobis distance between observed and simulated")
+  print(p)
+}
+
+## ### Code to plot a multivariate measure of model adequacy (Mahalanobis distance) against clade age
+fig_modelad_age <- function(fits_best) {
+  df <- prepare_df_for_ggplot(fits_best)
+  col <- fig_cols()
+  
+  .e <- environment()
+
+  ## the occasional dataset may have NA for Mahalanobis distance
+  ## remove this for the plot
+  df <- na.omit(df)
+
+  p <- ggplot(df, aes(age, mv), environment=.e)
+  p <- p + geom_point(aes(colour=trait, shape=rank), size=3, alpha=0.8)
+  p <- p + scale_colour_manual("Trait", values=col)
+  p <- p + scale_shape_manual("Rank", values=c(15,16,17))
+  p <- p + theme_bw()
+  p <- p + theme(plot.background = element_blank(),
+                 panel.grid.major = element_blank(),
+                 panel.grid.minor = element_blank(),
+                 panel.border=element_blank(),
+                 legend.justification=c(0.02,0.98),
+                 legend.position=c(0.02,0.98),
+                 legend.key=element_blank(),
+                 axis.line = element_line(color = 'black'))
+  p <- p + scale_y_log10()
+  p <- p + scale_x_log10()
+  p <- p + xlab("Age of crown group (my)")
+  p <- p + ylab("Mahalanobis distance")
+  print(p)
+}
+
+fig_two_clades <- function(examples) {
+  me_dat <- examples$Meliaceae$OU
+  fa_dat <- examples$Fagaceae$OU
+
+  col <- fig_cols()
+
+  par(mfrow=c(2,6))
+  par(mar=c(4,1,1,1))
+  for (x in names(me_dat$ma$obs)) {
+    profiles.plot(me_dat$ma$sim[x], col.line=col[1],
+                  opacity = 0.9, frame.plot=FALSE, yaxt="n",
+                  xlab="", ylab="")
+    abline(v=me_dat$ma$obs[,x], lty=2, lwd=2, col=col[2])
+  }
+
+  par(mar=c(4.5,1,1,1))
+  for (x in names(fa_dat$ma$obs)) {
+    ## Matt: Please fix this: you were part way through something:
+    ##   xl <- strsplit(toupper(x), split=".")
+    ##   xlab <- bquote(.(xl[[1]][1], xl[[1]][2]) ~ [x
+    ## (I've reverted the relevant sections of below to @2728e47)
+    if (x == "m.sig") {
+      xlim <- c(as.numeric(fa_dat$ma$obs[x]-0.05), max(fa_dat$ma$sim[x]))
+    } else {
+      xlim <- range(fa_dat$ma$sim[x])
+    }
+    profiles.plot(fa_dat$ma$sim[x], col.line=col[3],
+                  opacity = 0.9, frame.plot=FALSE, yaxt="n",
+                  xlab=x, ylab="", cex.lab=1.5,
+                  xlim=xlim)
+    abline(v=fa_dat$ma$obs[,x], lty=2, lwd=2, col=col[2])
+  }
 }

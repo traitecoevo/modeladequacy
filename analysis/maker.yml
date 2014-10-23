@@ -15,7 +15,9 @@ packages:
 
 targets:
   all:
-    depends: fits
+    depends:
+      - figures
+      - tables
 
   data:
     depends:
@@ -24,7 +26,28 @@ targets:
       - sla
 
   fits:
-    depends: [fits_ml, fits_bayes]
+    depends: 
+      - fits_ml
+      - fits_bayes
+
+  figures:
+    depends:
+      - output/figs/aic-support.pdf
+      - output/figs/dic-support.pdf
+      - output/figs/pval-hist-ml.pdf
+      - output/figs/pval-hist-bayes.pdf
+      - output/figs/ad-aic.pdf
+      - output/figs/ad-dic.pdf
+      - output/figs/ad-size-ml.pdf
+      - output/figs/ad-size-bayes.pdf
+      - output/figs/ad-age-ml.pdf
+      - output/figs/ad-age-bayes.pdf
+      - output/figs/two-clades.pdf
+
+  tables:
+    depends:
+      - output/results-ml.csv
+      - output/results-bayes.csv
 
   data_subsets:
     depends: [leaf_n_subsets, seed_mass_subsets, sla_subsets]
@@ -116,18 +139,54 @@ targets:
   fits_bayes_best:
     command: prune_dataset_best(fits_bayes)
 
-  # output/figs/aic-support.pdf:
-  #   plot: {width: 9, height: 6}
-  #   command: fig_model_support_ic(fits_ml)
+  example_fits:
+    command: extract_example_fits(fits_ml_seed_mass)
 
-  # output/figs/dic-support.pdf:
-  #   plot: {width: 9, height: 6}
-  #   command: fig_model_support_ic(fits_bayes)
+  output/figs/aic-support.pdf:
+    plot: {width: 9, height: 6}
+    command: fig_model_support_ic(fits_ml)
 
-  # output/figs/pval-hist-ml.pdf:
-  #   plot: {width: 9, height: 5}
-  #   command: fig_pval_histogram(fits_ml_best)
+  output/figs/dic-support.pdf:
+    plot: {width: 9, height: 6}
+    command: fig_model_support_ic(fits_bayes)
 
-  # output/figs/pval-hist-bayes.pdf:
-  #   plot: {width: 9, height: 5}
-  #   command: fig_pval_histogram(fits_bayes_best)
+  output/figs/pval-hist-ml.pdf:
+    plot: {width: 9, height: 5}
+    command: fig_pval_histogram(fits_ml_best)
+
+  output/figs/pval-hist-bayes.pdf:
+    plot: {width: 9, height: 5}
+    command: fig_pval_histogram(fits_bayes_best)
+
+  output/figs/ad-aic.pdf:
+    plot: {width: 7, height: 6}
+    command: fig_modelad_ic(fits_ml)
+
+  output/figs/ad-dic.pdf:
+    plot: {width: 7, height: 6}
+    command: fig_modelad_ic(fits_bayes)
+
+  output/figs/ad-size-ml.pdf:
+    plot: {width: 7, height: 6}
+    command: fig_modelad_size(fits_ml_best)
+
+  output/figs/ad-size-bayes.pdf:
+    plot: {width: 7, height: 6}
+    command: fig_modelad_size(fits_bayes_best)
+
+  output/figs/ad-age-ml.pdf:
+    plot: {width: 7, height: 6}
+    command: fig_modelad_age(fits_ml_best)
+
+  output/figs/ad-age-bayes.pdf:
+    plot: {width: 7, height: 6}
+    command: fig_modelad_age(fits_bayes_best)
+
+  output/figs/two-clades.pdf:
+    plot: {width: 9, height: 5}
+    command: fig_two_clades(example_fits)
+
+  output/results-ml.csv:
+    command: write_csv(fits_ml, target_name)
+  output/results-bayes.csv:
+    command: write_csv(fits_bayes, target_name)
