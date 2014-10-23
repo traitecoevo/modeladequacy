@@ -12,12 +12,14 @@ packages:
   - ggplot2
   - grid
   - gridExtra
+  - sowsear
 
 targets:
   all:
     depends:
       - figures
       - tables
+      - model-adequacy.md
 
   data:
     depends:
@@ -59,6 +61,7 @@ targets:
   # track it down.
   wright_2004:
     command: process_wright_2004("data/wright_2004.xls")
+    check: exists
   kew:
     command: kew_build()
     cleanup_level: never
@@ -190,3 +193,17 @@ targets:
     command: write_csv(fits_ml, target_name)
   output/results-bayes.csv:
     command: write_csv(fits_bayes, target_name)
+
+  model-adequacy.Rmd:
+    command: sowsear("./model-adequacy.R", output=target_name)
+  model-adequacy.md:
+    knitr: true
+    depends:
+      - species_sla
+      - species_leaf_n
+      - species_seed_mass
+      - fits_ml
+      - fits_ml_best
+      - fits_bayes
+      - fits_bayes_best
+      - vascular_plant_phylogeny

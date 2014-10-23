@@ -73,10 +73,23 @@ This takes a while!  If you have a powerful computer, you will find that setting
 
 4. Generate the report and figures
 
-*(still under development as we move to the new system)*
+```
+m$make()
+```
+
+Or do this:
+```
+m <- maker$new()
+e <- m$make_dependencies("model-adequacy.md")
+maker_environment_attach(e)
+```
+
+and then any of the code in `model-adequacy.R` should be runnable.
 
 
 **NOTE** all the instructions below are out of date as we transition to using [maker](https://github.com/richfitz/maker) to control the workflow.  They may contain useful information though.
+
+
 
 ---
 

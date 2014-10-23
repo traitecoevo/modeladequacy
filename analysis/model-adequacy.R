@@ -7,29 +7,6 @@
 ##+ echo=FALSE, results=FALSE
 knitr::opts_chunk$set(tidy=FALSE)
 
-## Define colours used throughout
-col <- c("#F46D43", "#3288BD", "#CDCD00")
-
-## Haul in stuff from maker, at least for now:
-library(maker)
-m <- maker$new()
-m$load_sources()
-tree <- m$get("vascular_plant_phylogeny")
-
-sla <- m$get("species_sla")
-lfn <- m$get("species_leaf_n")
-sdm <- m$get("species_seed_mass")
-
-fits_ml <- m$get("fits_ml")
-fits_ml_best <- m$get("fits_ml_best")
-
-fits_bayes <- m$get("fits_bayes")
-fits_bayes_best <- m$get("fits_bayes_best")
-
-m$load_sources()
-e <- maker:::maker_environment(character(0), m)
-maker_environment_attach(e)
-
 ## ## Trait data across the angiosperm phylogeny
 
 ## Extract angiosperms from the phylogeny
