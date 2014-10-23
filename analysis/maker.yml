@@ -207,6 +207,7 @@ targets:
       - fits_ml_best
       - fits_bayes
       - fits_bayes_best
+      - example_fits
       - vascular_plant_phylogeny
   model-adequacy.html:
     command: md2html("model-adequacy.md")

@@ -339,5 +339,5 @@ fig_modelad_age(fits_ml_best)
 fig_modelad_age(fits_bayes_best)
 
 ## ## Two clade example figure
-fig_two_clades(examples)
+fig_two_clades(example_fits)
 
