@@ -15,13 +15,11 @@ path.sim <- function()
 ## overwrite function from model-adequacy-fits to change output
 ## Now writes to file
 
-model_ad_simfit <- function(data, model, type, seed=1) {
+model_ad_simfit <- function(phy, states, pars, model, type, seed=1) {
+
   model <- match.arg(model, c("BM", "OU", "EB"))
   type  <- match.arg(type,  c("ml", "bayes"))
-  ## Extract components from the pre-prepared data object.
-  phy    <- data$phy
-  states <- drop(data$states)
-  SE     <- data$SE
+  SE    <- pars$SE 
 
   # Make the analyses recomputable by using the same seed each time:
   set.seed(seed)
@@ -83,14 +81,26 @@ model_ad_simfit <- function(data, model, type, seed=1) {
     ma <- arbutus(samples, burnin=burnin, sample=1000)
   }
 
-  filename.out <- paste(path.sim(), model, "-", type, "-", sep="")
-  param <- paste(Ntip(phy), data$sigsq, data$alpha, data$a, SE, data$sim.id, sep="-")
-  saveRDS(ma, paste(filename.out, param, ".rds", sep="")) 
+  p <- as.numeric(ma$p.values)
+  res <- list()
+  res$model <- model
+  res$size <- Ntip(phy)
+  res$sigsq <- pars$sigsq
+  res$alpha <- pars$alpha
+  res$a <- pars$a
+  res$SE <- SE
+  res$m.sig <- p[1]
+  res$c.var <- p[2]
+  res$s.var <- p[3]
+  res$s.asr <- p[4]
+  res$s.hgt <- p[5]
+  res$d.cdf <- p[6]
+  res
 }
 
 
-## Functions for simulation
-sim_phydata <- function(pars, model, n.taxa, sim.id){
+## Functions for simulation and fitting data
+model_ad_sim <- function(pars, model, type, n.taxa){
     phy <- tree.bd(c(1,0), max.taxa=n.taxa)
     ## rescale tree to be unit length
     phy$edge.length <- phy$edge.length / max(branching.times(phy))
@@ -107,18 +117,24 @@ sim_phydata <- function(pars, model, n.taxa, sim.id){
         
     ## add error
     ## NOTE: Need to check SE vs. SD!!
-    states <- states + rnorm(n.taxa, sd=pars$SE)
-
-    ## combine the data
-    list(phy=phy, states=states, sim.id=sim.id,
-         sigsq=pars$sigsq, alpha=pars$alpha, a=pars$a, SE=pars$SE)
-
+    SE <- pars$SE
+    states <- states[,1] + rnorm(n.taxa, sd=SE)
+    model_ad_simfit(phy, states, pars, model, type) 
 }
 
 
-## Simulates multiple datasets, performs model adequacy calcs on each
-sim_ad <- function(pars, model, type, n.taxa, n.sims){
-    sims <- lapply(seq_len(n.sims), function(x) sim_phydata(pars, model, n.taxa, x))
-    mclapply(sims, function(x) model_ad_simfit(x, model, type),
-             mc.cores=n.cores, mc.preschedule=FALSE)
+## Wrapper function to simulate multiple times
+model_ad_sim_multi <- function(pars, model, type, n.taxa, n.sims, write=TRUE, filename){
+    res <- mclapply(seq_len(nsims), function(x)
+                    model_ad_sim(pars, model, type, n.taxa),
+                    mc.cores=mc.cores, mc.preschedule=FALSE)
+    res <- do.call(rbind, res)
+
+    if (write)
+        saveRDS(res, paste(path.sim(), filename, ".rds", sep=""))
+
+    res 
 }
+
+
+
