@@ -48,3 +48,9 @@ rename <- function(x, tr, as_factor=TRUE) {
 write_csv <- function(x, ...) {
   write.csv(x, ..., row.names=FALSE)
 }
+
+md2html <- function(filename) {
+  dest <- paste0(tools::file_path_sans_ext(filename), ".html")
+  opts <- setdiff(markdownHTMLOptions(TRUE), 'base64_images')
+  markdownToHTML(filename, dest, options=opts)
+}

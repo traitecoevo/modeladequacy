@@ -10,7 +10,7 @@ knitr::opts_chunk$set(tidy=FALSE)
 ## ## Trait data across the angiosperm phylogeny
 
 ## Extract angiosperms from the phylogeny
-t <- extract.clade(tree, node="Angiospermae")
+t <- extract.clade(vascular_plant_phylogeny, node="Angiospermae")
 
 ## Number of taxa in angiosperm tree
 Ntip(t)
@@ -21,6 +21,10 @@ max(branching.times(t))
 ## We have three species-level data sets: specific leaf area (metres
 ## square per gram; sla), seed mass (gram; sdm), and leaf nitrogen (grams per
 ## gram; lfn).
+
+sla <- species_sla
+lfn <- species_leaf_n
+sdm <- species_seed_mass
 
 ## Number of species for which we have sla
 nrow(sla)

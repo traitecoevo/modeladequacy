@@ -13,6 +13,7 @@ packages:
   - grid
   - gridExtra
   - sowsear
+  - markdown
 
 targets:
   all:
@@ -207,3 +208,5 @@ targets:
       - fits_bayes
       - fits_bayes_best
       - vascular_plant_phylogeny
+  model-adequacy.html:
+    command: md2html("model-adequacy.md")
