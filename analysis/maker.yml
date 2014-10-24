@@ -20,7 +20,7 @@ targets:
     depends:
       - figures
       - tables
-      - model-adequacy.md
+      - model-adequacy.html
 
   data:
     depends:
