@@ -58,11 +58,10 @@ targets:
   data/wright_2004.xls:
     command: download_wright_2004(target_name)
     cleanup_level: purge
-  # There's a bug here where this randomly rebuilds.  I am trying to
-  # track it down.
   wright_2004:
     command: process_wright_2004("data/wright_2004.xls")
-    check: exists
+    packages: xlsx
+
   kew:
     command: kew_build()
     cleanup_level: never

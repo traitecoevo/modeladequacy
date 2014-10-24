@@ -7,11 +7,6 @@ download_wright_2004 <- function(destination_filename) {
 process_wright_2004 <- function(filename) {
   ## There are several strategies for reading in an excel file, but
   ## this one works quite well.
-  ##
-  ## I'm keeping the xlsx dependency here rather than within the
-  ## makerfile because it loads really slowly.
-  library(methods) # Serious, WTF Rscript?
-  library(xlsx, quietly=TRUE) # Yay, using xlsx::read won't work...
   d <- read.xlsx2(filename, sheetIndex=1, startRow=11,
                   stringsAsFactors=FALSE, check.names=FALSE)
 
