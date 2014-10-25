@@ -181,6 +181,12 @@ fig_two_clades <- function(examples) {
 
   col <- fig_cols()
 
+  test_names <- names(me_dat$ma$obs)
+  test_labels <- lapply(test_names, function(x) {
+      tmp <- strsplit(toupper(x), split=".", fixed=TRUE);
+      list(f=tmp[[1]][1], s=tmp[[1]][2])})
+  names(test_labels) <- test_names
+
   par(mfrow=c(2,6))
   par(mar=c(4,1,1,1))
   for (x in names(me_dat$ma$obs)) {
@@ -192,19 +198,24 @@ fig_two_clades <- function(examples) {
 
   par(mar=c(4.5,1,1,1))
   for (x in names(fa_dat$ma$obs)) {
-    ## Matt: Please fix this: you were part way through something:
-    ##   xl <- strsplit(toupper(x), split=".")
-    ##   xlab <- bquote(.(xl[[1]][1], xl[[1]][2]) ~ [x
-    ## (I've reverted the relevant sections of below to @2728e47)
-    if (x == "m.sig") {
-      xlim <- c(as.numeric(fa_dat$ma$obs[x]-0.05), max(fa_dat$ma$sim[x]))
-    } else {
-      xlim <- range(fa_dat$ma$sim[x])
-    }
+      ## set xlims properly
+      if (fa_dat$ma$obs[x] > max(fa_dat$ma$sim[x]) | fa_dat$ma$obs[x] < min(fa_dat$ma$sim[x])){
+          xlim <- c(as.numeric(fa_dat$ma$obs[x]-0.05), max(fa_dat$ma$sim[x]))
+      } else {
+          xlim <- range(fa_dat$ma$sim[x])
+      }
+
+      ## get labels for x axis
+      label_f <- test_labels[x][[1]]$f
+      label_s <- test_labels[x][[1]]$s
+      xlab <- bquote(italic(.(label_f))[.(label_s)])
+
     profiles.plot(fa_dat$ma$sim[x], col.line=col[3],
                   opacity = 0.9, frame.plot=FALSE, yaxt="n",
-                  xlab=x, ylab="", cex.lab=1.5,
+                  xlab=xlab,
+                  ylab="", cex.lab=1.5,
                   xlim=xlim)
     abline(v=fa_dat$ma$obs[,x], lty=2, lwd=2, col=col[2])
+      
   }
 }
