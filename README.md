@@ -8,7 +8,7 @@ As part of this project, we also developed a R package [arbutus](https://github.
 
 ### The `analysis` directory
 
-Scripts to reproduce all analyses done in the paper.  See the [`README.md`](https://github.com/richfitz/modeladequacy/blob/master/analysis/README.md) file in this directory for more information.
+Scripts to reproduce all analyses done in the paper.  See the [`README.md`](analysis/README.md) file in that directory for more information.
 
 ### The `ms` directory
 
