@@ -4,7 +4,7 @@
 ## doing this should not be really needed anyway.
 ##
 ## Note that that the kew_path() bits are also hard coded here:
-## Ideally they'd be set in the makerfile.  But such is life.
+## Ideally they'd be set in the remakefile.  But such is life.
 kew_build <- function() {
   clades <- kew_clades()
   kew_fetch_clades(clades)

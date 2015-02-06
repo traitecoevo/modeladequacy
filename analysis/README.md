@@ -4,38 +4,33 @@ We developed this repository and structured our analysis with the goal of making
 
 ## Dependencies:
 
-First, install [maker](https://github.com/richfitz/maker) from github using devtools (maker is not yet on CRAN as it is under active development).
+First, install [remake](https://github.com/richfitz/remake) from github using devtools (remake is not yet on CRAN as it is under active development).
 
 ```r
-devtools::install_github("richfitz/maker")
+devtools::install_github("richfitz/remake")
 ```
 
 We depend on quite a few packages for the analysis.  To install any missing packages, run:
 
 ```r
-maker::make("install_packages")
+remake::install_missing_packages()
 ```
 
-This step also requires `devtools` to install [arbutus](https://github.com/mwpennell/arbutus) and [sowsear](https://github.com/richfitz/sowsear) from github (see [maker_sources.yml](maker_sources.yml))
+This step also requires `devtools` to install [arbutus](https://github.com/mwpennell/arbutus) and [sowsear](https://github.com/richfitz/sowsear) from github (see [remake_sources.yml](remake_sources.yml))
 
-The full list of required packages is in [the `packages:` section of maker.yml](analysis/maker.yml), plus the `xlsx` package to build `wright_2004`.
+The full list of required packages is in [the `packages:` section of remake.yml](analysis/remake.yml), plus the `xlsx` package to build `wright_2004`.
 
 ## Running the analysis
 
-From within the `analysis/` directory run `maker::make()`.  This will take several hours, depending on your computer, and print out some information to what it is doing.
+From within the `analysis/` directory run `remake::make()`.  This will take several hours, depending on your computer, and print out some information to what it is doing.
 
 Or, in several steps:
 
-1. Construct a "maker" object that we'll interact with:
+
+1. Download all the data and build into data sets
 
 ```r
-m <- maker()
-```
-
-2. Download all the data and build into data sets
-
-```r
-m$make("data")
+remake::make("data")
 ```
 
 Note that one of the data sources (Kew) is continuously updated without a versioning control system and therefore the downloaded data may be different from what is presented in the paper.  We will organise a cached verison of this data.
@@ -43,7 +38,7 @@ Note that one of the data sources (Kew) is continuously updated without a versio
 3. Split the data into a large number of subsets and run the analysis on each (both ML and Bayesian)
 
 ```r
-m$make("fits")
+remake::make("fits")
 ```
 
 This step takes a while (about 5 CPU hours to run the ML analyses, and 13 CPU hours for the Bayesian analysis: so about 9 hours total over two processors).
@@ -52,16 +47,15 @@ If you have a powerful computer, you will find that setting the global `mc.cores
 4. Generate the report and figures
 
 ```
-m$make()
+remake::make()
 ```
 
 This will build an html report (`model-adequacy.html`) that includes all numbers referenced in the paper, plus all the figures (pdf versions in `output/figs`, plus summary tables (`output/results-ml.csv` and `output/results-bayes.csv`).  Note that owing to the stochastic nature of the procedure, re-running the analyses will result in slightly different numbers from those reported in the paper.
 
 To explore further, run:
 ```
-m <- maker$new()
-e <- m$make_dependencies("model-adequacy.md")
-maker_attach(e)
+e <- remake:::make_dependencies(remake::remake(), "model-adequacy.md")
+remake::remake_attach(e)
 ```
 
 and then any of the code in `model-adequacy.R` will be runnable.

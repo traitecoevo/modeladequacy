@@ -1,4 +1,4 @@
-sources: maker/
+sources: remake/
 
 packages:
   - ape
