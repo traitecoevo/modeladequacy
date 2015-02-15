@@ -1,0 +1,147 @@
+\documentclass[12pt,twoside]{article}
+
+% Things that are not loaded by the package, though these might be
+% generally useful.
+\usepackage{natbib}
+\usepackage{graphicx}
+\setcounter{secnumdepth}{0}
+
+% Load the package first - should sort everything out...
+\usepackage{suppmat}
+
+% ...and then we add some metadata
+\titleprefix{Supporting information}
+\runninghead{Adequacy of phylogenetic trait models}
+\title{Model adequacy and the macroevolution of angiosperm functional traits}
+\author{
+Matthew W. Pennell$^{1}$, Richard G. FitzJohn$^2$,\\
+William K. Cornwell$^{3}$, Luke J. Harmon$^{1}$
+}
+\address{
+1& Department of Biological Sciences \& Institute for Bioinformatics and Evolutionary Studies, University of Idaho, Moscow, ID 83844, U.S.A.\\ 
+2& Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia\\
+3& School of Biological, Earth and Environmental Sciences, University of New South Wales, Sydney, NSW 2052, Australia\\
+}
+\emailaddress{\email{mwpennell@gmail.com}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Results from Bayesian analyses}
+As with the likelihood results (described in main text), OU models were highly supported across many datasets; 
+%% Number of datasets for which OU was best supported model: 177
+%% Number of datasets for which OU > 0.75 of DICw: 156
+177/337 clades had the highest DIC weight (DIC$_w$) on an OU model; 156 of them with greater than 75\% of the total DIC$_w$ (see figure \ref{fig:supp-dic-support}). While a generally similar pattern of model support holds for both likelihood and Bayesian inference, the likelihood analyses are much cleaner (compare figure 3 and figure \ref{fig:supp-dic-support}). This differnce can be explained by the fact that there is a tight statistical relationship between the AIC values for these three models. If two models have identical likelihoods, the AIC scores, defined as $-2\mathcal{L} + 2k$ (where $\mathcal{L}$ is the log-likelihood of the model and $k$ is the number of parameters) will differ by $2$. As BM is a special case of both OU and EB, in opposite directions in model space, the highest AIC$_w$ possible for BM is $\sim$0.731. The rare clades where both OU and EB have higher support than BM likely reflect problems in optimization. Calculating DIC values from posterior samples is inherently more stochastic; if there is little information in data, the best DIC model will depend on the values sampled by the chain. 
+
+For the model adequacy results, the results were also very similar to that of the likelihood analyses (compare to Results section in the main text). The adequacy of these simple models was poor across the majority of the datasets (figure \ref{fig:supp-pvalues}). Again, we limit our analyses of model adequacy to only the most highly supported model in the candidate set.
+
+%% SLA data 
+%% rejected by at least one ss: 35
+%% rejected by at least two ss: 26
+%% rejected by at least three ss: 19
+Of the 72 comparative datasets of SLA, we detected deviations from the expectations of the best supported model using at least one test statistic in 35 cases, 26 by at least two, and 19 by three or more.
+%% Seed mass data 
+%% rejected by at least one ss: 173
+%% rejected by at least two ss: 109
+%% rejected by at least three ss: 72
+For the seed mass data, we detected deviations with at least one test statistic in 173 cases (by two or more in 109 datasets and by at least three in 72 cases).
+%% Leaf nitrogen data
+%% rejected by at least one ss: 24
+%% rejected by at least two ss: 13
+%% rejected by at least three ss: 10
+24/39 leaf nitrogen datasets were found to be inadequately described by the best supported model with at least one test statistic (13 by at least two and 10 by at least three).
+
+%% Number rejected by each of the test statistics
+%% m.sig: 24
+%% c.var: 171
+%% s.var: 141
+%% s.asr: 101
+%% s.hgt: 78
+%% d.cdf: 67
+Also, similar to the likelihood analyses, the frequency at which deviations were found differed between the test statistics. In 171 cases, we detected model misspecification with $C_{\text{VAR}}$ and with $S_{\text{VAR}}$, 141 ($M_{\text{SIG}}$: 24, $S_{\text{ASR}}$: 101, $S_{\text{HGT}}$: 78, $D_{\text{CDF}}$: 67). Again, only 105 datasets were adequately modeled by one of the three models in our candidate set. As with the likelihood analyses, we were more likely to detect model deviations when examining larger clades (figure \ref{fig:supp-size-adequacy}).
+ 
+\newpage
+\listoffigures
+%% Supporting figures
+\renewcommand\thefigure{S\arabic{figure}}
+\renewcommand\thetable{S \arabic{table}}
+\setcounter{figure}{0}    
+\setcounter{table}{0}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figs/ad-size-ml}
+  \caption[Model adequacy vs. clade size (ML)]{The relationship between clade size and a multivariate measure of model adequacy. The Mahalanobis distance is a scale-invariant metric that measures the distance between the observed and simulated test statistics, taking into account the covariance between test statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by AIC), there is a striking relationship between the two--the larger the dataset, the stronger the evidence that the model does not capture variation in the data.}
+  \label{fig:size-adequacy}
+\end{figure}
+
+
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[scale=0.8]{figs/ad-aic}
+%  \caption{The relationship between relative and absolute fit. For every clade for which a more complex model (OU, EB) was favored over BM using AIC, the Mahalanobis distance between the observed test and simulated test statistics is plotted against the improvement in AIC for the more complex model compared to BM. (Note that as all AIC values were negative, larger differences mean greater relative support). The greater the relative fit of a more complex model, the more likely the model was to be inadequate. This result in primarily driven by clade size but serves to emphasize the distinction between relative and absolute fit.}
+%  \label{fig:supp-ad-aic}
+%\end{figure} 
+
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[scale=0.8]{figs/ad-age-ml}
+%  \caption{The relationship between clade age and a multivariate measure of model adequacy. Considering only the best supported of the three models (as selected by AIC, after fitting the models using ML), there is no  apparent relationship between the age of clade and the distance of the observed and simulated test statistics, as measured by the Mahalanobis distance. Contrast this figure with figure \ref{fig:size-adequacy}, which demonstrates a very tight relationship between clade size and model inadequacy.}
+%  \label{fig:supp-age-ml}
+%\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[angle=90, origin=c, scale=0.8]{figs/dic-support}
+  \caption[Relative model support (Bayesian)]{The relative support, as measured by DIC weight, for the three models used in our study (BM, OU, and EB) across all 337 datasets. All models were fit with MCMC. Like the model comparisons done with AIC, an OU model is highly supported for a majority of the datasets.}
+  \label{fig:supp-dic-support}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[angle=90, origin=c, scale=0.75]{figs/pval-hist-bayes}
+  \caption[Distribution of p-values for all 337 datasets (Bayesian)]{The distribution of $p$-values for our six test statistics over all 337 datasets in our study after fitting the models using MCMC. The $p$-values are from applying our model adequacy approach to the best supported of the three models (as evaluated with DIC). Many of the datasets deviate from the expectations under the best model along a variety of axes of variation. Deviations are particularly common for the coefficient of variation $C_{\text{VAR}}$ and the slope of the contrasts against their expected variances $S_{\text{VAR}}$.}
+  \label{fig:supp-pvalues}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{figs/ad-size-bayes}
+  \caption[Model adequacy vs. clade size (Bayesian)]{The relationship between clade size and a multivariate measure of model adequacy from the Bayesian analysis. The Mahalanobis distance is a scale-invariant metric that measures the distance between the observed and simulated test statistics, taking into account the covariance between test statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by DIC), there is a striking relationship between the two--the larger the dataset, the stronger the evidence that the model does not capture variation in the data.}
+  \label{fig:supp-size-adequacy}
+\end{figure}
+
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[scale=0.8]{figs/ad-age-bayes}
+%  \caption{The relationship between clade age and a multivariate measure of model adequacy. Considering only the best supported of the three models (as selected by AIC, after fitting the models using MCMC), there is no  apparent relationship between the age of clade and the distance of the observed and simulated test statistics, as measured by the Mahalanobis distance. Contrast this figure with figure \ref{fig:supp-size-adequacy}, which demonstrates a very tight relationship between clade size and model inadequacy.}
+%  \label{fig:supp-age-bayes}
+%\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{figs/bm-sim-res}
+  \caption[Type-1 error rates for BM simulations]{Type-1 error rates for data simulated under a Brownian motion (BM) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace $, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, rising to above 20\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
+  \label{fig:bm-sim}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{figs/ou-sim-res}
+  \caption[Type-1 error rates for OU simulations]{Type-1 error rates for data simulated under an Ornstein-Uhlenbeck (OU) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace$, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). We also simulated under three values for the $\alpha$ parameter ($\alpha=\lbrace \text{1,2,4} \rbrace$, top, middle and bottom panel), representing phylogenetic half-lives of 69\%, 35\%, 17\% of total tree depth, respectively.  The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, approaching 20\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
+  \label{fig:ou-sim}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{figs/eb-sim-res}
+  \caption[Type-1 error rates for EB simulations]{Type-1 error rates for data simulated under an Ornstein-Uhlenbeck (OU) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace$, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). We also simulated under three values for the exponential rate of slowdown, $a$ ($a=\lbrace \log(\text{0.01}),\log(\text{0.02}),\log(\text{0.04}) \rbrace$, top, middle and bottom panel), which translate to the rate of trait evolution halfing every 0.15, 0.17, and 0.21 time units, respectively (note that the tree was scaled so the total depth was equal to unity).  The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, approaching 15\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
+  \label{fig:eb-sim}
+\end{figure}
+
+
+
+\end{document}
