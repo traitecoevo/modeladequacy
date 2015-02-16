@@ -52,6 +52,9 @@ fig_pval_histogram <- function(best) {
   df$trait <- rename_traits(df$trait)
   df$variable <- rename_variables(df$variable)
 
+  ## subset to include only p-values less than 1
+  df <- subset(df, value <= 1)
+
   .e <- environment()
 
   p <- ggplot(df, aes(x=value), environment = .e)
