@@ -70,8 +70,30 @@ Also, similar to the likelihood analyses, the frequency at which deviations were
 \setcounter{figure}{0}    
 \setcounter{table}{0}
 
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{figs/bm-sim-res}
+  \caption[Type-1 error rates for BM simulations]{Type-1 error rates for data simulated under a Brownian motion (BM) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace $, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, rising to above 20\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
+  \label{fig:bm-sim}
+\end{figure}
 
-\begin{figure}[H]
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{figs/ou-sim-res}
+  \caption[Type-1 error rates for OU simulations]{Type-1 error rates for data simulated under an Ornstein-Uhlenbeck (OU) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace$, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). We also simulated under three values for the $\alpha$ parameter ($\alpha=\lbrace \text{1,2,4} \rbrace$, top, middle and bottom panel), representing phylogenetic half-lives of 69\%, 35\%, 17\% of total tree depth, respectively.  The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, approaching 20\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
+  \label{fig:ou-sim}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{figs/eb-sim-res}
+  \caption[Type-1 error rates for EB simulations]{Type-1 error rates for data simulated under an Ornstein-Uhlenbeck (OU) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace$, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). We also simulated under three values for the exponential rate of slowdown, $a$ ($a=\lbrace \log(\text{0.01}),\log(\text{0.02}),\log(\text{0.04}) \rbrace$, top, middle and bottom panel), which translate to the rate of trait evolution halfing every 0.15, 0.17, and 0.21 time units, respectively (note that the tree was scaled so the total depth was equal to unity).  The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, approaching 15\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
+  \label{fig:eb-sim}
+\end{figure}
+
+
+
+\begin{figure}[p]
   \centering
   \includegraphics[width=\textwidth]{figs/ad-size-ml}
   \caption[Model adequacy vs. clade size (ML)]{The relationship between clade size and a multivariate measure of model adequacy. The Mahalanobis distance is a scale-invariant metric that measures the distance between the observed and simulated test statistics, taking into account the covariance between test statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by AIC), there is a striking relationship between the two--the larger the dataset, the stronger the evidence that the model does not capture variation in the data.}
@@ -121,26 +143,6 @@ Also, similar to the likelihood analyses, the frequency at which deviations were
 %  \label{fig:supp-age-bayes}
 %\end{figure}
 
-\begin{figure}[p]
-  \centering
-  \includegraphics[width=\textwidth]{figs/bm-sim-res}
-  \caption[Type-1 error rates for BM simulations]{Type-1 error rates for data simulated under a Brownian motion (BM) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace $, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, rising to above 20\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
-  \label{fig:bm-sim}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics[width=\textwidth]{figs/ou-sim-res}
-  \caption[Type-1 error rates for OU simulations]{Type-1 error rates for data simulated under an Ornstein-Uhlenbeck (OU) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace$, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). We also simulated under three values for the $\alpha$ parameter ($\alpha=\lbrace \text{1,2,4} \rbrace$, top, middle and bottom panel), representing phylogenetic half-lives of 69\%, 35\%, 17\% of total tree depth, respectively.  The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, approaching 20\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
-  \label{fig:ou-sim}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics[width=\textwidth]{figs/eb-sim-res}
-  \caption[Type-1 error rates for EB simulations]{Type-1 error rates for data simulated under an Ornstein-Uhlenbeck (OU) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace$, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). We also simulated under three values for the exponential rate of slowdown, $a$ ($a=\lbrace \log(\text{0.01}),\log(\text{0.02}),\log(\text{0.04}) \rbrace$, top, middle and bottom panel), which translate to the rate of trait evolution halfing every 0.15, 0.17, and 0.21 time units, respectively (note that the tree was scaled so the total depth was equal to unity).  The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, approaching 15\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
-  \label{fig:eb-sim}
-\end{figure}
 
 
 
