@@ -239,7 +239,7 @@ Our results for likelihood and Bayesian inference were broadly similar; for conc
 
 Across the 337 subclades, we found widespread support for OU
 %% n. clades OU best supported model: 235
-models. For 236 clades, OU had the highest AIC$_w$.
+models. For 235 clades, OU had the highest AIC$_w$.
 %% n. clades OU supported with 100% aicw: 27
 %% n. clades OU supported with >75% aicw: 189
 OU had $\sim$100\% of the AIC$_w$ in 27 clades and $>$75\% of the weight in 189 clades (figure \ref{fig:aic-support}). Consistent with \citet{Harmon2010} we found that EB models rarely had high support (only 6 clades supported EB with $>$75\% AIC$_w$), though we acknowledge that even if early burst dynamics were important to long-term patterns of trait evolution, these may be difficult to detect with extant species alone \citep{Slater2012Fossil, SlaterPennell}. Larger clades commonly had
@@ -254,17 +254,17 @@ We limit our analyses of model adequacy to only the most highly supported model 
 %% rejected by at least one ss: 32
 %% rejected by at least two ss: 22
 %% rejected by at least three ss: 15
-Of the 72 comparative datasets of SLA, we detected deviations from the expectations in 32 datasets (using a cut-off of $p= 0.05$), 33 by at least two, and 17 by three or more. 
+Of the 72 comparative datasets of SLA, we detected deviations from the expectations in 32 datasets (using a cut-off of $p= 0.05$), 22 by at least two, and 15 by three or more. 
 %% Seed mass data for 226 clades
 %% rejected by at least one ss: 153
 %% rejected by at least two ss: 95
 %% rejected by at least three ss: 65
-Results were similar in the seed mass data (of the 226 seed mass datasets, we detected deviations in 153 datasets with at least one test statistic, 128 by at least two and 74 by three or more) and leaf nitrogen content 
+Results were similar in the seed mass data (of the 226 seed mass datasets, we detected deviations in 153 datasets with at least one test statistic, 95 by at least two and 65 by three or more) and leaf nitrogen content 
 %% Leaf nitrogen data for 39 clades
 %% rejected by at least one ss: 19
 %% rejected by at least two ss: 12
 %% rejected by at least three ss: 8
-(of the 39 datasets, we detected deviations in 19 by at least one, 24 by at least two, and 11 by three or more test statistic). 
+(of the 39 datasets, we detected deviations in 19 by at least one, 12 by at least two, and 8 by three or more test statistic). 
 %% statistics which were most often violated
 %% rejected by m.sig: 39
 %% rejected by c.var: 163
@@ -276,7 +276,7 @@ Results were similar in the seed mass data (of the 226 seed mass datasets, we de
 Some test statistics were much more likely to detect model violations than others. In 163 cases $C_{\text{VAR}}$ revealed the data deviated significantly from the expections of the best model. In 118 cases, $S_{\text{VAR}}$ did. The rate of deviation was much somewhat lower for the other test statistics ($M_{\text{SIG}}$: 39, $S_{\text{ASR}}$: 84, $S_{\text{HGT}}$: 54, $D_{\text{CDF}}$: 67).
 
 %% The number of datasets which were adequately modeled: 133
-Across all 337 datasets, 133 are adequately modeled by either BM, OU or EB. As stated above, the numbers of models that showed deviations with at least one test statistic may be somewhat overinflated. However, the proportion of clades in which $p$-values were less than 0.05 is much, much greater than the error rates we found in our simulations. And the proportions for each individual test statistic is much higher than would be expected by chance. 
+For 133 of the 337 datasets, we did not detect any deviations from the expectations of the best-supported model. As stated above, the numbers of models that showed deviations with at least one test statistic may be somewhat overinflated. However, the proportion of clades in which $p$-values were less than 0.05 is much, much greater than the error rates we found in our simulations. And the proportions for each individual test statistic is much higher than would be expected by chance. 
 
 As the subclades are not independent (overlapping sets of taxa are present in family, order and time-slice phylogenies), conventional statistics, such as linear regression, are not straightforward to apply across datasets. Nonetheless, the trend is clear: the larger the phylogeny, the more likely OU is to be highly supported and the stronger the evidence the model is inadequate. There is a strong relationship between the size of a subclade and the overall distance between observed and simulated test statistics, as measured by the Mahanalobis distance (figure S4). While it is likely that evolutionary rates and processes are more heterogeneous when one considers larger clades, it is also true that violations from model expectations are more easily detected when considering more data: the more contrasts that are examined, the lower the variance in the distribution of simulated test statistics, and therefore we are more likely to detect model misspecification (see Discussion). We also note here that if the model was adequate at all scales (for example, if a single OU process described the evolution of these traits across all angiosperms), then there would be no relationship between the Mahalanobis distance and the size of the phylogeny.
 
@@ -363,85 +363,6 @@ We would like to thank the members of the Tempo and Mode of Trait Evolution Work
   \caption{The distribution of $p$-values for our six test statistics over all 337 datasets in our study after fitting the models using ML. The $p$-values are from applying our model adequacy approach to the best supported of the three models (as evaluated with AIC). Many of the datasets deviate from the expectations under the best model along a variety of axes of variation. Deviations are particularly common for the coefficient of variation $C_{\text{VAR}}$ and the slope of the contrasts against their expected variances $S_{\text{VAR}}$.}
   \label{fig:pvalues}
 \end{figure}
-
-
-%% Supporting figures
-\renewcommand\thefigure{S\arabic{figure}}
-\renewcommand\thetable{S \arabic{table}}
-\setcounter{figure}{0}    
-\setcounter{table}{0}
-
-%\begin{figure}[p]
-%  \centering
-%  \includegraphics[scale=0.8]{figs/ad-size-ml}
-%  \caption{The relationship between clade size and a multivariate measure of model adequacy. The Mahalanobis distance is a scale-invariant metric that measures the distance between the observed and simulated test statistics, taking into account the covariance between test statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by AIC), there is a striking relationship between the two--the larger the dataset, the stronger the evidence that the model does not capture variation in the data.}
-%  \label{fig:size-adequacy}
-%\end{figure}
-
-
-%\begin{figure}[p]
-%  \centering
-%  \includegraphics[scale=0.8]{figs/ad-aic}
-%  \caption{The relationship between relative and absolute fit. For every clade for which a more complex model (OU, EB) was favored over BM using AIC, the Mahalanobis distance between the observed test and simulated test statistics is plotted against the improvement in AIC for the more complex model compared to BM. (Note that as all AIC values were negative, larger differences mean greater relative support). The greater the relative fit of a more complex model, the more likely the model was to be inadequate. This result in primarily driven by clade size but serves to emphasize the distinction between relative and absolute fit.}
-%  \label{fig:supp-ad-aic}
-%\end{figure} 
-
-%\begin{figure}[p]
-%  \centering
-%  \includegraphics[scale=0.8]{figs/ad-age-ml}
-%  \caption{The relationship between clade age and a multivariate measure of model adequacy. Considering only the best supported of the three models (as selected by AIC, after fitting the models using ML), there is no  apparent relationship between the age of clade and the distance of the observed and simulated test statistics, as measured by the Mahalanobis distance. Contrast this figure with figure \ref{fig:size-adequacy}, which demonstrates a very tight relationship between clade size and model inadequacy.}
-%  \label{fig:supp-age-ml}
-%\end{figure}
-
-%\begin{figure}[p]
-%  \centering
-%  \includegraphics[angle=90, origin=c, scale=0.8]{figs/dic-support}
-%  \caption{The relative support, as measured by DIC weight, for the three models used in our study (BM, OU, and EB) across all 337 datasets. All models were fit with MCMC. Like the model comparisons done with AIC, an OU model is highly supported for a majority of the datasets.}
-%  \label{fig:supp-dic-support}
-%\end{figure}
-
-%\begin{figure}[p]
-%  \centering
-%  \includegraphics[angle=90, origin=c, scale=0.85]{figs/pval-hist-bayes}
-%  \caption{The distribution of $p$-values for our six test statistics over all 337 datasets in our study after fitting the models using MCMC. The $p$-values are from applying our model adequacy approach to the best supported of the three models (as evaluated with DIC). Many of the datasets deviate from the expectations under the best model along a variety of axes of variation. Deviations are particularly common for the coefficient of variation $C_{\text{VAR}}$ and the slope of the contrasts against their expected variances $S_{\text{VAR}}$.}
-%  \label{fig:supp-pvalues}
-%\end{figure}
-
-%\begin{figure}[p]
-%  \centering
-%  \includegraphics[scale=0.8]{figs/ad-size-bayes}
-%  \caption{The relationship between clade size and a multivariate measure of model adequacy from the Bayesian analysis. The Mahalanobis distance is a scale-invariant metric that measures the distance between the observed and simulated test statistics, taking into account the covariance between test statistics. The greater the Mahalanobis distance, the worse the model captures variation in the data. Considering only the best supported model for each clade (as chosen by DIC), there is a striking relationship between the two--the larger the dataset, the stronger the evidence that the model does not capture variation in the data.}
-%  \label{fig:supp-size-adequacy}
-%\end{figure}
-
-%\begin{figure}[p]
-%  \centering
-%  \includegraphics[scale=0.8]{figs/ad-age-bayes}
-%  \caption{The relationship between clade age and a multivariate measure of model adequacy. Considering only the best supported of the three models (as selected by AIC, after fitting the models using MCMC), there is no  apparent relationship between the age of clade and the distance of the observed and simulated test statistics, as measured by the Mahalanobis distance. Contrast this figure with figure \ref{fig:supp-size-adequacy}, which demonstrates a very tight relationship between clade size and model inadequacy.}
-%  \label{fig:supp-age-bayes}
-%\end{figure}
-
-%\begin{figure}[p]
-%  \centering
-%  \includegraphics[scale=0.70]{figs/bm-sim-res}
-%  \caption{Type-1 error rates for data simulated under a Brownian motion (BM) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace $, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, rising to above 20\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
-%  \label{fig:bm-sim}
-%\end{figure}
-
-%\begin{figure}[p]
-%  \centering
-%  \includegraphics[scale=0.70]{figs/ou-sim-res}
-%  \caption{Type-1 error rates for data simulated under an Ornstein-Uhlenbeck (OU) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace$, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). We also simulated under three values for the $\alpha$ parameter ($\alpha=\lbrace \text{1,2,4} \rbrace$, top, middle and bottom panel), representing phylogenetic half-lives of 69\%, 35\%, 17\% of total tree depth, respectively.  The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, approaching 20\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
-%  \label{fig:ou-sim}
-%\end{figure}
-
-%\begin{figure}[p]
-%  \centering
-%  \includegraphics[scale=0.70]{figs/eb-sim-res}
-%  \caption{Type-1 error rates for data simulated under an Ornstein-Uhlenbeck (OU) model. We simulated 500 datasets under for 3 different tree sizes ($N=\lbrace \text{50, 100, 200} \rbrace$, represented by the different colors) and two known values of standard error of observed species means (0 and 0.05, left and right panel, respectively). We also simulated under three values for the exponential rate of slowdown, $a$ ($a=\lbrace \log(\text{0.01}),\log(\text{0.02}),\log(\text{0.04}) \rbrace$, top, middle and bottom panel), which translate to the rate of trait evolution halfing every 0.15, 0.17, and 0.21 time units, respectively (note that the tree was scaled so the total depth was equal to unity).  The Type-1 error rates for each test statistic are consistently around or lower than a 0.05 threshold. However, the frequency at which \emph{at least one} of the test statistics deviated significantly from the expectations (the variable ``Min'' on the left side of each plot) was substantially greater, approaching 15\% in some cases. See text for why we decided against correcting for the effect of multiple comparisons in the analysis.}
-%  \label{fig:eb-sim}
-%\end{figure}
-
 
 
 \end{document}
