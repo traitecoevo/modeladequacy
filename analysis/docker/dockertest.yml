@@ -1,0 +1,6 @@
+names:
+  # This is the source unpacked and all dependencies installed.
+  clean: richfitz/modeladequacy
+  # Run the full analysis
+  all: richfitz/modeladequacy_all
+source: https://github.com/richfitz/modeladequacy
