@@ -1,6 +1,5 @@
 download_leda <- function(destination_filename) {
-  url <-
-    "http://www.leda-traitbase.org/LEDAportal/objects/Data_files/SLA%20und%20geo.txt"
+  url <- "http://www.uni-oldenburg.de/fileadmin/user_upload/biologie/ag/landeco/download/LEDA/Data_files/SLA_und_geo.txt"
   download.file(url, destination_filename)
 }
 
