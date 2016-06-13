@@ -1,4 +1,4 @@
-sources: remake/
+sources: remake
 
 packages:
   - ape
